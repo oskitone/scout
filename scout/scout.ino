@@ -11,6 +11,7 @@ float freqMax = 1046.5;
 void setup() {
         Serial.begin(9600);
         pinMode(buttonPin, INPUT_PULLUP);
+        pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
@@ -19,7 +20,9 @@ void loop() {
 
         if (digitalRead(buttonPin) == LOW) {
                 tone(speakerPin, frequency);
+                digitalWrite(LED_BUILTIN, HIGH);
         } else {
                 noTone(speakerPin);
+                digitalWrite(LED_BUILTIN, LOW);
         }
 }
