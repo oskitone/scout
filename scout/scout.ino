@@ -2,58 +2,40 @@
    WiP
  */
 
-int inputPin = A0;
-int buttonPin = 8;
+#include <Keypad.h>
+
 int speakerPin = 12;
 
-float freqMin = 65.41;
-float freqMax = 1046.5;
+const byte ROWS = 4;
+const byte COLS = 4;
+// intentionally 1-indexed because 0 is null?
+byte key_indexes[ROWS][COLS] = {
+    {1,5,9,13},
+    {2,6,10,14},
+    {3,7,11,15},
+    {4,8,12,16},
+};
+float notes[] = {523, 554, 587, 622, 659, 698, 740, 784, 831, 880, 932, 988, 1047, 1109, 1175, 1245};
+byte rowPins[ROWS] = {6,10,11,4};
+byte colPins[COLS] = {8,5,3,7};
 
-const int numReadings = 10;
-
-int readings[numReadings];      // the readings from the analog input
-int readIndex = 0;              // the index of the current reading
-int total = 0;                  // the running total
-int average = 0;                // the average
+Keypad buttons = Keypad( makeKeymap(key_indexes), rowPins, colPins, ROWS, COLS );
 
 void setup() {
         Serial.begin(9600);
-        pinMode(buttonPin, INPUT_PULLUP);
         pinMode(LED_BUILTIN, OUTPUT);
-
-        for (int thisReading = 0; thisReading < numReadings; thisReading++) {
-                readings[thisReading] = 0;
-        }
+//        buttons.setDebounceTime(0);
 }
 
 void loop() {
-        // subtract the last reading:
-        total = total - readings[readIndex];
-        // read from the sensor:
-        readings[readIndex] = analogRead(A0);
-        // add the reading to the total:
-        total = total + readings[readIndex];
-        // advance to the next position in the array:
-        readIndex = readIndex + 1;
+        byte key = buttons.getKey();
+//        Serial.println(buttons.getKeys());
 
-        // if we're at the end of the array...
-        if (readIndex >= numReadings) {
-                // ...wrap around to the beginning:
-                readIndex = 0;
-        }
-
-        // calculate the average:
-        average = total / numReadings;
-
-        Serial.println(average);
-
-        float voltage = average * (5.0 / 1023.0);
-        float frequency = freqMin + (freqMax - freqMin) * (voltage / 5.0);
-
-        if (digitalRead(buttonPin) == LOW) {
-                tone(speakerPin, frequency);
+        if (key > 0) { // TODO: confirm acceptable
+                Serial.println(key);
+                tone(speakerPin, notes[key - 1]);
                 digitalWrite(LED_BUILTIN, HIGH);
-        } else {
+        } else if (buttons.getState() == IDLE) {
                 noTone(speakerPin);
                 digitalWrite(LED_BUILTIN, LOW);
         }
