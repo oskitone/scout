@@ -4,6 +4,7 @@
 
 #include <Keypad.h>
 
+int octaveSwitchPin = 9;
 int speakerPin = 12;
 
 const byte ROWS = 4;
@@ -21,6 +22,7 @@ byte colPins[COLS] = {8, 5, 3, 7};
 Keypad buttons = Keypad( makeKeymap(key_indexes), rowPins, colPins, ROWS, COLS );
 
 float frequency = 0;
+int octave = 0;
 bool isActive = false;
 
 void populateFrequencyAndIsActive() {
@@ -32,7 +34,9 @@ void populateFrequencyAndIsActive() {
     byte kstate = buttons.key[i].kstate;
 
     if (kstate == PRESSED || kstate == HOLD) {
-      frequency = notes[buttons.key[i].kchar];
+      octave = (digitalRead(octaveSwitchPin) == LOW) + 1;
+      frequency = notes[buttons.key[i].kchar] / 2 * octave;
+
       isActive = true;
     }
   }
@@ -40,6 +44,7 @@ void populateFrequencyAndIsActive() {
 
 void setup() {
   Serial.begin(9600);
+  pinMode(octaveSwitchPin, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
   buttons.setDebounceTime(1); // 1 is the library's minimum debounce
 }
