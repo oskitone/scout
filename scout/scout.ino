@@ -10,10 +10,10 @@ int speakerPin = 12;
 const byte ROWS = 4;
 const byte COLS = 4;
 byte key_indexes[ROWS][COLS] = {
-  {0, 4, 8, 12},
   {1, 5, 9, 13},
   {2, 6, 10, 14},
-  {3, 7, 11, 15}
+  {3, 7, 11, 15},
+  {4, 8, 12, 16}
 };
 float notes[] = {523, 554, 587, 622, 659, 698, 740, 784, 831, 880, 932, 988, 1047, 1109, 1175, 1245};
 byte rowPins[ROWS] = {6, 10, 11, 4};
