@@ -11,7 +11,7 @@ int speakerPin = 12;
 
 const byte ROWS = 4;
 const byte COLS = 4;
-int key_indexes[ROWS][COLS] = {
+byte key_indexes[ROWS][COLS] = {
   {1, 5, 9, 13},
   {2, 6, 10, 14},
   {3, 7, 11, 15},
@@ -23,12 +23,26 @@ byte colPins[COLS] = {8, 5, 3, 7};
 
 Keypad buttons = Keypad( makeKeymap(key_indexes), rowPins, colPins, ROWS, COLS );
 
-float frequency = 0;
-int octave = 0;
-bool isActive = false;
+CircularBuffer<int, 4> buffer;
 
-void populateFrequencyAndIsActive() {
-  isActive = false;
+bool isInBuffer(int c) {
+  bool value = false;
+
+  if (!buffer.isEmpty()) {
+    // TODO: duplicate issue may be from up here
+    for (decltype(buffer)::index_t i = 0; i < buffer.size() - 1; i++) {
+      if (c == buffer[i]) {
+        value = true;
+        break;
+      }
+    }
+  }
+
+  return value;
+}
+
+void populateBuffer() {
+  bool isActive = false;
 
   buttons.getKeys(); // populate keys
 
@@ -37,19 +51,24 @@ void populateFrequencyAndIsActive() {
     byte kchar = buttons.key[i].kchar - 1;
 
     if (kstate == PRESSED || kstate == HOLD) {
-      octave = (digitalRead(octaveSwitchPin) == LOW) + 1;
-      frequency = notes[kchar] * octave;
+      // TODO: fix duplicates...
+      if (!isInBuffer(kchar)) {
+        buffer.unshift(kchar);
+      }
+
       isActive = true;
+    } else if (isInBuffer(kchar)) {
+      removeFromBuffer(kchar);
     }
+  }
+
+  if (!isActive) {
+    buffer.clear();
   }
 }
 
-CircularBuffer<int, 4> buffer;
-
 void printBuffer() {
-  if (buffer.isEmpty()) {
-//    Serial.println("empty");
-  } else {
+  if (!buffer.isEmpty()) {
     Serial.print("[");
     for (decltype(buffer)::index_t i = 0; i < buffer.size() - 1; i++) {
       Serial.print(buffer[i]);
@@ -69,23 +88,8 @@ void printBuffer() {
   }
 }
 
-bool isPressed(char c) {
-  bool value = false;
-
-  if (!buffer.isEmpty()) {
-    for (decltype(buffer)::index_t i = 0; i < buffer.size() - 1; i++) {
-      if (c == buffer[i]) {
-        value = true;
-        break;
-      }
-    }
-
-    return value;
-  }
-}
-
-bool removeFromStack(char c) {
-  char newStack[4 - 1] = {};
+bool removeFromBuffer(int c) {
+  int newStack[4 - 1] = {};
   int newI = 0;
 
   bool hasRemoval = false;
@@ -102,16 +106,10 @@ bool removeFromStack(char c) {
     buffer.clear();
 
     for (int i = 0; i < 4 - 1; i++) {
+      // TODO: pretty sure this is adding 0s when it runs out
       buffer.push(newStack[i]);
     }
   }
-}
-
-void testBuffer(char c) {
-  if (!isPressed(c)) {
-    buffer.unshift(c);
-  }
-  printBuffer();
 }
 
 void setup() {
@@ -123,35 +121,26 @@ void setup() {
   buttons.setDebounceTime(KEYPAD_LIBRARY_MINIMUM_DEBOUNCE);
 
   Serial.println("---------");
-  printBuffer();
+}
 
-  testBuffer(1);
-  testBuffer(2);
-  testBuffer(3);
-  testBuffer(4);
-  testBuffer(5);
-  testBuffer(6);
-  testBuffer(4);
-  testBuffer(1);
+int getOctave() {
+  return (digitalRead(octaveSwitchPin) == LOW) + 1;
+}
 
-  removeFromStack(1);
-  printBuffer();
-
-  removeFromStack(8);
-  printBuffer();
-
-  testBuffer(7);
+float getFrequency() {
+  return notes[buffer.first()] * getOctave();
 }
 
 void loop() {
-  populateFrequencyAndIsActive();
+  populateBuffer();
 
-  if (isActive) {
-    //    Serial.println(String(frequency));
-    tone(speakerPin, frequency);
-    digitalWrite(LED_BUILTIN, HIGH);
-  } else {
+  if (buffer.isEmpty()) {
     noTone(speakerPin);
     digitalWrite(LED_BUILTIN, LOW);
+  } else {
+    tone(speakerPin, getFrequency());
+    digitalWrite(LED_BUILTIN, HIGH);
   }
+
+  printBuffer();
 }
