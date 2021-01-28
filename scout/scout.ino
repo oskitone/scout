@@ -15,7 +15,7 @@ byte key_indexes[ROWS][COLS] = {
   {3, 7, 11, 15},
   {4, 8, 12, 16}
 };
-float notes[] = {523, 554, 587, 622, 659, 698, 740, 784, 831, 880, 932, 988, 1047, 1109, 1175, 1245};
+float notes[] = {130.75, 138.5, 146.75, 155.5, 164.75, 174.5, 185, 196, 207.75, 220, 233, 247, 261.75, 277.25, 293.75, 311.25};
 byte rowPins[ROWS] = {6, 10, 11, 4};
 byte colPins[COLS] = {8, 5, 3, 7};
 
@@ -32,11 +32,11 @@ void populateFrequencyAndIsActive() {
 
   for (int i = 0; i < LIST_MAX; i++) {
     byte kstate = buttons.key[i].kstate;
+    byte kchar = buttons.key[i].kchar;
 
     if (kstate == PRESSED || kstate == HOLD) {
       octave = (digitalRead(octaveSwitchPin) == LOW) + 1;
-      frequency = notes[buttons.key[i].kchar] / 2 * octave;
-
+      frequency = notes[kchar] * octave;
       isActive = true;
     }
   }
