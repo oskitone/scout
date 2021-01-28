@@ -32,7 +32,7 @@ void populateFrequencyAndIsActive() {
 
   for (int i = 0; i < LIST_MAX; i++) {
     byte kstate = buttons.key[i].kstate;
-    byte kchar = buttons.key[i].kchar;
+    byte kchar = buttons.key[i].kchar - 1;
 
     if (kstate == PRESSED || kstate == HOLD) {
       octave = (digitalRead(octaveSwitchPin) == LOW) + 1;
