@@ -43,10 +43,12 @@ void populateFrequencyAndIsActive() {
 }
 
 void setup() {
+  int KEYPAD_LIBRARY_MINIMUM_DEBOUNCE = 1;
+
   Serial.begin(9600);
   pinMode(octaveSwitchPin, INPUT_PULLUP);
   pinMode(LED_BUILTIN, OUTPUT);
-  buttons.setDebounceTime(1); // 1 is the library's minimum debounce
+  buttons.setDebounceTime(KEYPAD_LIBRARY_MINIMUM_DEBOUNCE);
 }
 
 void loop() {
