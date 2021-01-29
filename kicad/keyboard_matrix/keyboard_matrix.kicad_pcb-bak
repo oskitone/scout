@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 10)
+    (drawings 8)
     (tracks 199)
     (zones 0)
     (modules 25)
@@ -1391,12 +1391,6 @@
     )
   )
 
-  (gr_text "OSKITONE 20_key_piano_keyboard_matrix" (at 235.204 78.232) (layer B.SilkS) (tstamp 601585DF)
-    (effects (font (size 1 1) (thickness 0.15)) (justify left mirror))
-  )
-  (gr_text "rev xyz123" (at 235.204 79.756) (layer B.SilkS) (tstamp 601585DE)
-    (effects (font (size 1 1) (thickness 0.15)) (justify left mirror))
-  )
   (gr_text "rev xyz123" (at 81.788 79.756) (layer F.SilkS) (tstamp 60157D83)
     (effects (font (size 1 1) (thickness 0.15)) (justify left))
   )
