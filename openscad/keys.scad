@@ -1,14 +1,31 @@
+/* TODO: extract into common parts repo */
+use <../../poly555/openscad/lib/keys.scad>;
+use <../../poly555/openscad/lib/utils.scad>;
+
 include <keyboard_matrix_pcb.scad>;
 
 key_plot = 2.54 * 3;
 key_gutter = 1;
 
+key_width = key_plot * 2 - key_gutter;
 key_length = 50;
 key_height = 7;
 
 mount_length = 8;
 
 accidental_height = 2;
+
+keys_count = 20;
+starting_natural_key_index = 3;
+
+mount_width = get_keys_total_width(
+    count = keys_count,
+    starting_note_index = 0,
+    natural_width = key_width,
+    gutter = key_gutter
+);
+offset = mount_width - PCB_WIDTH;
+echo(offset);
 
 module _mounted_keys(
     include_mount = false,
@@ -24,10 +41,10 @@ module _mounted_keys(
 ) {
     y = PCB_LENGTH - key_length - mount_length;
 
-    translate([key_plot / -2, y, 1.6 + 6]) {
+    translate([offset / -2, y, PCB_HEIGHT + BUTTON_HEIGHT]) {
         mounted_keys(
-            count = 20,
-            starting_natural_key_index = 3,
+            count = keys_count,
+            starting_natural_key_index = starting_natural_key_index,
 
             natural_length = key_length,
             natural_width = key_plot * 2 - key_gutter,
@@ -60,7 +77,7 @@ module _mounted_keys(
 
             cantilever_length = 4,
             cantilever_height = 2,
-            cantilever_recession = 4 - .1 * 2 // fixed tolerance
+            cantilever_recession = 4 - .1 * 2 // TODO: extract
         );
     }
 }

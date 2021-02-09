@@ -32,6 +32,8 @@ PCB_HOLE_POSITIONS = [
     [3.774, 24.765],
 ];
 
+BUTTON_HEIGHT = 6;
+
 module keyboard_matrix_pcb() {
     e = .0943;
     silkscreen_height = e;
@@ -61,7 +63,7 @@ module keyboard_matrix_pcb() {
         translate([xy.x + 4.6 / 2, xy.y + 6.5 / 2, PCB_HEIGHT]) {
             color("black") cylinder(
                 h = 6,
-                d = 6
+                d = BUTTON_HEIGHT
             );
         }
     }
