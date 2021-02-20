@@ -9,15 +9,15 @@
 #include <Keypad.h>
 
 const byte ROWS = 4;
-const byte COLS = 4;
+const byte COLS = 5;
 byte key_indexes[ROWS][COLS] = {
-  {1, 5, 9, 13},
-  {2, 6, 10, 14},
-  {3, 7, 11, 15},
-  {4, 8, 12, 16}
+  {1, 5, 9, 13, 17},
+  {2, 6, 10, 14, 18},
+  {3, 7, 11, 15, 19},
+  {4, 8, 12, 16, 20}
 };
-byte rowPins[ROWS] = {6, 10, 11, 4};
-byte colPins[COLS] = {8, 5, 3, 7};
+byte rowPins[ROWS] = {7, 8, 9, 10};
+byte colPins[COLS] = {2, 3, 4, 5, 6};
 
 // TODO: move into constructor
 Keypad _buttons = Keypad( makeKeymap(key_indexes), rowPins, colPins, ROWS, COLS );
