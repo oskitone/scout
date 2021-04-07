@@ -44,7 +44,9 @@ module keyboard_matrix_pcb() {
 
             translate([0, 0, PCB_HEIGHT - e]) {
                 linear_extrude(silkscreen_height + e) {
-                    import("../keyboard_matrix-brd.svg");
+                    offset(e) {
+                        import("../keyboard_matrix-brd.svg");
+                    }
                 }
             }
         }
@@ -53,7 +55,8 @@ module keyboard_matrix_pcb() {
             translate([xy.x, xy.y, -e]) {
                 cylinder(
                     d = 3.2,
-                    h = PCB_HEIGHT + e * 2 + 3
+                    h = PCB_HEIGHT + e * 2 + 3,
+                    $fn = 12
                 );
             }
         }
