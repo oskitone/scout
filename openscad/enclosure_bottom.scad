@@ -1,3 +1,6 @@
+/* TODO: extract into common parts repo */
+use <../../poly555/openscad/lib/supportless_screw_cavity.scad>;
+
 /* TODO: extract */
 ENCLOSURE_FLOOR_CEILING = 2;
 ENCLOSURE_INNER_WALL = 1.2;
@@ -46,14 +49,24 @@ module enclosure_bottom(
         }
     }
 
-    module _screw_holes() {
+    module _screw_head_exposures() {
+        diameter = SCREW_HEAD_DIAMETER + DEFAULT_TOLERANCE * 2;
+        height = SCREW_HEAD_HEIGHT + exposed_screw_head_clearance;
+
         for (xy = PCB_HOLE_POSITIONS) {
             translate([PCB_X + xy.x, PCB_Y + xy.y, -e]) {
                 cylinder(
-                    d = SCREW_HEAD_DIAMETER + DEFAULT_TOLERANCE * 2,
-                    h = SCREW_HEAD_HEIGHT + exposed_screw_head_clearance + e,
+                    d = diameter,
+                    h = height + e,
                     $fn = 12
                 );
+
+                translate([0, 0, height]) {
+                    supportless_screw_cavity(
+                        span = diameter,
+                        diameter = PCB_HOLE_DIAMTER + DEFAULT_TOLERANCE * 2
+                    );
+                }
             }
         }
     }
@@ -66,6 +79,6 @@ module enclosure_bottom(
             cube([ENCLOSURE_WIDTH, ENCLOSURE_LENGTH, ENCLOSURE_FLOOR_CEILING]);
         }
 
-        _screw_holes();
+        _screw_head_exposures();
     }
 }
