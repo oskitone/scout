@@ -25,6 +25,7 @@ PCB_BUTTON_POSITIONS = [
     [1.524, 2.54],
 ];
 
+PCB_HOLE_DIAMTER = 3.2;
 PCB_HOLE_POSITIONS = [
     [115.534, 24.765],
     [59.654, 24.765],
@@ -33,6 +34,7 @@ PCB_HOLE_POSITIONS = [
 ];
 
 BUTTON_HEIGHT = 6;
+BUTTON_Y_OFFSET = 6.5 / 2;
 
 module keyboard_matrix_pcb() {
     e = .0943;
@@ -54,7 +56,7 @@ module keyboard_matrix_pcb() {
         for (xy = PCB_HOLE_POSITIONS) {
             translate([xy.x, xy.y, -e]) {
                 cylinder(
-                    d = 3.2,
+                    d = PCB_HOLE_DIAMTER,
                     h = PCB_HEIGHT + e * 2 + 3,
                     $fn = 12
                 );
@@ -63,7 +65,7 @@ module keyboard_matrix_pcb() {
     }
 
     for (xy = PCB_BUTTON_POSITIONS) {
-        translate([xy.x + 4.6 / 2, xy.y + 6.5 / 2, PCB_HEIGHT]) {
+        translate([xy.x + 4.6 / 2, xy.y + BUTTON_Y_OFFSET, PCB_HEIGHT]) {
             color("black") cylinder(
                 h = 6,
                 d = BUTTON_HEIGHT
