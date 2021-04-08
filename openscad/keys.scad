@@ -98,7 +98,6 @@ module keys_with_nut_locking_mount(
     z = PCB_Z + PCB_HEIGHT + BUTTON_HEIGHT;
 
     nut_lock_width = NUT_DIAMETER + DEFAULT_TOLERANCE * 2;
-    nut_lock_length = mount_length + e * 2;
 
     // TODO: fix, make non-magic
     translate([PCB_X, PCB_Y, PCB_Z]) {
@@ -114,19 +113,18 @@ module keys_with_nut_locking_mount(
         mounting_rail(
             height = cantilever_height + NUT_HEIGHT,
             x_bleed = PCB_X,
-            z = z,
-            length = mount_length
+            z = z
         );
 
         for (xy = PCB_HOLE_POSITIONS) {
             translate([
                 PCB_X + xy.x + nut_lock_width / -2,
-                PCB_Y + xy.y + nut_lock_length / -2,
+                PCB_Y + PCB_LENGTH - mount_length - e,
                 z + cantilever_height
             ]) {
                 cube([
                     nut_lock_width,
-                    nut_lock_length,
+                    mount_length + e * 2,
                     NUT_HEIGHT + e
                 ]);
             }
