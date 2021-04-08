@@ -68,7 +68,7 @@ module keys(
 
                 cantilever_length = cantilever_length,
                 cantilever_height = cantilever_height,
-                cantilever_recession = 4 - .1 * 2 // TODO: extract
+                cantilever_recession = cantilever_length - .1 * 2 // TODO: extract
             );
         }
     }
@@ -86,4 +86,49 @@ module keys(
         include_accidental = false,
         include_cantilevers = true
     );
+}
+
+module keys_with_nut_locking_mount(
+    cantilever_height = 2,
+    tolerance = 0,
+    quick_preview = false
+) {
+    e = .06789;
+    z = PCB_Z + PCB_HEIGHT + BUTTON_HEIGHT;
+
+    nut_lock_width = NUT_DIAMETER + DEFAULT_TOLERANCE * 2;
+    nut_lock_length = mount_length + e * 2;
+
+    // TODO: fix, make non-magic
+    translate([PCB_X, PCB_Y, PCB_Z]) {
+        keys(
+            tolerance = tolerance,
+            quick_preview = quick_preview,
+            cantilever_length = 4, // TODO: derive or obviate (_extension?)
+            cantilever_height = cantilever_height
+        );
+    }
+
+    difference() {
+        mounting_rail(
+            height = cantilever_height + NUT_HEIGHT,
+            x_bleed = PCB_X,
+            z = z,
+            length = mount_length
+        );
+
+        for (xy = PCB_HOLE_POSITIONS) {
+            translate([
+                PCB_X + xy.x + nut_lock_width / -2,
+                PCB_Y + xy.y + nut_lock_length / -2,
+                z + cantilever_height
+            ]) {
+                cube([
+                    nut_lock_width,
+                    nut_lock_length,
+                    NUT_HEIGHT + e
+                ]);
+            }
+        }
+    }
 }
