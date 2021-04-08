@@ -47,11 +47,16 @@ module assembly(
     }
 }
 
+SHOW_KEYS = true;
+SHOW_MOUNTING_RAIL = true;
+SHOW_PCB = true;
+SHOW_ENCLOSURE_BOTTOM = true;
+
 assembly(
-    show_keys = true,
-    show_mounting_rail = true,
-    show_pcb = true,
-    show_enclosure_bottom = true,
+    show_keys = SHOW_KEYS,
+    show_mounting_rail = SHOW_MOUNTING_RAIL,
+    show_pcb = SHOW_PCB,
+    show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
 
     tolerance = DEFAULT_TOLERANCE,
     quick_preview = $preview
