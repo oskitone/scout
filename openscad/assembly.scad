@@ -2,6 +2,7 @@ include <enclosure_bottom.scad>;
 include <keyboard_matrix_pcb.scad>;
 include <keys.scad>;
 include <mounting_rail.scad>;
+include <utils.scad>;
 
 side_width = 1.2;
 front_lip_length = side_width;
@@ -32,7 +33,7 @@ module assembly(
     }
 
     if (show_pcb) {
-        translate([PCB_X, PCB_Y, PCB_Z]) {
+        e_translate([PCB_X, PCB_Y, PCB_Z]) {
             keyboard_matrix_pcb();
         }
     }

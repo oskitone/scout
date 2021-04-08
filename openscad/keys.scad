@@ -3,6 +3,7 @@ use <../../poly555/openscad/lib/keys.scad>;
 use <../../poly555/openscad/lib/utils.scad>;
 
 include <keyboard_matrix_pcb.scad>;
+include <utils.scad>;
 
 key_plot = 2.54 * 3;
 key_gutter = 1;
@@ -73,7 +74,7 @@ module keys(
         }
     }
 
-    translate($preview ? [0, -e, e] : [0, 0, 0]) {
+    e_translate(direction = [0, 1, -1]) {
         color("black") _keys(
             include_natural = false,
             include_accidental = true,
