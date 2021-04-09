@@ -56,23 +56,29 @@ function export_stl() {
     # flip_vertically="$3"
 
     function _run() {
+        ascii_filename="$dir/$prefix-$timestamp-$commit_hash-$stub-ascii.stl"
         filename="$dir/$prefix-$timestamp-$commit_hash-$stub.stl"
 
         echo "Exporting $filename..."
 
         # -D "FLIP_VERTICALLY=$flip_vertically" \
 
-        # The "& \" at the end runs everything in parallel!
         $openscad "openscad/assembly.scad" \
             --quiet \
-            -o "$filename" \
-            --export-format "binstl" \
+            -o "$ascii_filename" \
+            --export-format "asciistl" \
             -D 'SHOW_KEYS=false '\
             -D 'SHOW_MOUNTING_RAIL=false '\
             -D 'SHOW_PCB=false '\
             -D 'SHOW_ENCLOSURE_BOTTOM=false '\
             -D "$override=true" \
-            & \
+
+        # The "& \" at the end runs everything in parallel!
+        echo "Compressing $filename..."
+        admesh "$ascii_filename" \
+            --no-check \
+            --write-binary-stl="$filename" \
+            > /dev/null
     }
 
     if [[ -z "$query" ]]; then
@@ -108,9 +114,9 @@ function run() {
 
     start=`date +%s`
 
-    export_stl 'keys' 'SHOW_KEYS'
-    export_stl 'mounting_rail' 'SHOW_MOUNTING_RAIL'
-    export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM'
+    export_stl 'keys' 'SHOW_KEYS' & \
+    export_stl 'mounting_rail' 'SHOW_MOUNTING_RAIL' & \
+    export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' & \
     wait
 
     end=`date +%s`
