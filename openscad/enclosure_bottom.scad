@@ -28,59 +28,64 @@ module enclosure_bottom(
         }
     }
 
-    module _bottom_mounting_rail(pcb_clearance = 1) {
-        difference() {
-            mounting_rail(
-                height = PCB_Z - ENCLOSURE_FLOOR_CEILING + PCB_HEIGHT + e,
-                z = ENCLOSURE_FLOOR_CEILING - e
-            );
+    module _plate() {
+        screw_head_cavity_diameter = SCREW_HEAD_DIAMETER + DEFAULT_TOLERANCE * 2;
+        screw_hole_diameter = PCB_HOLE_DIAMTER + DEFAULT_TOLERANCE * 2;
 
-            translate([
-                PCB_X - pcb_clearance,
-                PCB_Y + PCB_LENGTH - mount_length - e,
-                PCB_Z
-            ]) {
-                cube([
-                    PCB_WIDTH + pcb_clearance * 2,
-                    mount_length + e * 2,
-                    PCB_HEIGHT + e
-                ]);
-            }
-        }
-    }
-
-    module _screw_head_exposures() {
-        diameter = SCREW_HEAD_DIAMETER + DEFAULT_TOLERANCE * 2;
-        height = SCREW_HEAD_HEIGHT + exposed_screw_head_clearance;
-
-        for (xy = PCB_HOLE_POSITIONS) {
-            translate([PCB_X + xy.x, PCB_Y + xy.y, -e]) {
-                cylinder(
-                    d = diameter,
-                    h = height + e,
-                    $fn = 12
+        module _bottom_mounting_rail(pcb_clearance = 1) {
+            difference() {
+                mounting_rail(
+                    height = PCB_Z - ENCLOSURE_FLOOR_CEILING + PCB_HEIGHT + e,
+                    z = ENCLOSURE_FLOOR_CEILING - e
                 );
 
-                translate([0, 0, height]) {
-                    supportless_screw_cavity(
-                        span = diameter,
-                        diameter = PCB_HOLE_DIAMTER + DEFAULT_TOLERANCE * 2
-                    );
+                translate([
+                    PCB_X - pcb_clearance,
+                    PCB_Y + PCB_LENGTH - mount_length - e,
+                    PCB_Z
+                ]) {
+                    cube([
+                        PCB_WIDTH + pcb_clearance * 2,
+                        mount_length + e * 2,
+                        PCB_HEIGHT + e
+                    ]);
                 }
             }
+        }
+
+        module _screw_head_exposures() {
+            height = SCREW_HEAD_HEIGHT + exposed_screw_head_clearance;
+
+            for (xy = PCB_HOLE_POSITIONS) {
+                translate([PCB_X + xy.x, PCB_Y + xy.y, -e]) {
+                    cylinder(
+                        d = screw_head_cavity_diameter,
+                        h = height + e,
+                        $fn = 12
+                    );
+
+                    translate([0, 0, height]) {
+                        supportless_screw_cavity(
+                            span = screw_head_cavity_diameter,
+                            diameter = screw_hole_diameter
+                        );
+                    }
+                }
+            }
+        }
+
+        difference() {
+            union() {
+                _bottom_mounting_rail();
+                cube([ENCLOSURE_WIDTH, ENCLOSURE_LENGTH, ENCLOSURE_FLOOR_CEILING]);
+            }
+
+            _screw_head_exposures();
         }
     }
 
     _stool();
-
-    difference() {
-        union() {
-            _bottom_mounting_rail();
-            cube([ENCLOSURE_WIDTH, ENCLOSURE_LENGTH, ENCLOSURE_FLOOR_CEILING]);
-        }
-
-        _screw_head_exposures();
-    }
+    _plate();
 
     /* TODO: extend back plate for arduino/breadboard */
     /* TODO: PCB registration/aligners */
