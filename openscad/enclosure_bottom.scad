@@ -87,7 +87,6 @@ module enclosure_bottom(
     _stool();
     _plate();
 
-    /* TODO: extend back plate for arduino/breadboard */
     /* TODO: PCB registration/aligners */
     /* TODO: key endstop */
     /* TODO: key hitch */
