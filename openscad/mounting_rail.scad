@@ -1,6 +1,6 @@
 module mounting_rail(
     height,
-    x_bleed = PCB_X,
+    x_bleed = PCB_X - ENCLOSURE_WALL - DEFAULT_TOLERANCE * 2,
     z = 0,
     length = mount_length
 ) {

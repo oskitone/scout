@@ -2,7 +2,8 @@
 use <../../poly555/openscad/lib/supportless_screw_cavity.scad>;
 
 /* TODO: extract */
-ENCLOSURE_FLOOR_CEILING = 2;
+ENCLOSURE_WALL = 2.4;
+ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
 
 /* TODO: extract into common parts repo */
@@ -35,6 +36,7 @@ module enclosure_bottom(
         module _bottom_mounting_rail(pcb_clearance = 1) {
             difference() {
                 mounting_rail(
+                    x_bleed = PCB_X - ENCLOSURE_WALL + e,
                     height = PCB_Z - ENCLOSURE_FLOOR_CEILING + PCB_HEIGHT + e,
                     z = ENCLOSURE_FLOOR_CEILING - e
                 );
@@ -84,8 +86,40 @@ module enclosure_bottom(
         }
     }
 
+    module _walls() {
+        z = ENCLOSURE_FLOOR_CEILING - e;
+
+        natural_side_exposure = accidental_height;
+        natural_front_exposure = natural_side_exposure * 2;
+
+        function get_height(natural_exposure) = (
+            PCB_Z + PCB_HEIGHT + BUTTON_HEIGHT
+            + key_height - natural_exposure
+            - ENCLOSURE_FLOOR_CEILING
+        );
+
+        for (x = [0, ENCLOSURE_WIDTH - ENCLOSURE_WALL]) {
+            translate([x, 0, z]) {
+                cube([
+                    ENCLOSURE_WALL,
+                    ENCLOSURE_LENGTH,
+                    get_height(natural_side_exposure) + e
+                ]);
+            }
+        }
+
+        translate([ENCLOSURE_WALL - e, 0, z]) {
+            cube([
+                ENCLOSURE_WIDTH - ENCLOSURE_WALL * 2 + e * 2,
+                ENCLOSURE_WALL,
+                get_height(natural_front_exposure) + e
+            ]);
+        }
+    }
+
     _stool();
     _plate();
+    _walls();
 
     /* TODO: PCB registration/aligners */
     /* TODO: key endstop */

@@ -116,9 +116,8 @@ module keys_with_nut_locking_mount(
     }
 
     difference() {
-        mounting_rail(
+        color("white") mounting_rail(
             height = cantilever_height + NUT_HEIGHT,
-            x_bleed = PCB_X,
             z = z
         );
 
