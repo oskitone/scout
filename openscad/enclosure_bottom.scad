@@ -81,4 +81,9 @@ module enclosure_bottom(
 
         _screw_head_exposures();
     }
+
+    /* TODO: extend back plate for arduino/breadboard */
+    /* TODO: PCB registration/aligners */
+    /* TODO: key endstop */
+    /* TODO: key hitch */
 }
