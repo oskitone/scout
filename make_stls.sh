@@ -73,12 +73,13 @@ function export_stl() {
             -D 'SHOW_ENCLOSURE_BOTTOM=false '\
             -D "$override=true" \
 
-        # The "& \" at the end runs everything in parallel!
         echo "Compressing $filename..."
         admesh "$ascii_filename" \
             --no-check \
             --write-binary-stl="$filename" \
             > /dev/null
+
+        rm "$ascii_filename"
     }
 
     if [[ -z "$query" ]]; then
@@ -114,6 +115,7 @@ function run() {
 
     start=`date +%s`
 
+    # The "& \" at the end runs everything in parallel!
     export_stl 'keys' 'SHOW_KEYS' & \
     export_stl 'mounting_rail' 'SHOW_MOUNTING_RAIL' & \
     export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' & \
