@@ -72,11 +72,11 @@ module assembly(
         height = 20;
 
         e_translate([peripheral_clearance, y, z]) {
-            # cube([ARDUINO_WIDTH, ARDUINO_LENGTH, height]);
+            % cube([ARDUINO_WIDTH, ARDUINO_LENGTH, height]);
         }
 
         e_translate([peripheral_clearance * 2 + ARDUINO_WIDTH, y, z]) {
-            # cube([BREADBOARD_WIDTH, BREADBOARD_LENGTH, height]);
+            % cube([BREADBOARD_WIDTH, BREADBOARD_LENGTH, height]);
         }
 
         translate([
@@ -84,7 +84,7 @@ module assembly(
             ENCLOSURE_LENGTH - peripheral_length / 2 - peripheral_clearance,
             z
         ]) {
-            # speaker(SPEAKER_HEIGHT);
+            % speaker(SPEAKER_HEIGHT);
         }
     }
 }
