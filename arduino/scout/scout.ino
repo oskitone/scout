@@ -15,43 +15,78 @@ KeyBuffer buffer;
 
 int octave;
 
-unsigned long updateThrottle = 100;
-unsigned long previousMillis = 0;
+long octaveThrottle = 200;
+long frequencyThrottle = 24; // max
+
+float glideStep = 10; // TODO: pot control like octave
+float frequency = 0;
 
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
-
-  Serial.println("---------");
 }
 
-float getFrequency() {
-  return notes[buffer.getFirst()] / 2 * octave;
+float getFrequency(long key) {
+  return notes[key] / 2 * octave;
 }
 
+float getTargetFrequency() {
+  return getFrequency(buffer.getFirst());
+}
+
+unsigned long frequencyPreviousMillis = 0;
+void updateFrequency() {
+  unsigned long currentMillis = millis();
+
+  if (
+    (frequency == 0) ||
+    ((unsigned long)(currentMillis - frequencyPreviousMillis) >= frequencyThrottle)
+  ) {
+    float target = getTargetFrequency();
+
+    if ((frequency == 0) || (glideStep == 0)) {
+      frequency = target;
+    } else if (frequency != target) {
+      frequency = (target > frequency)
+                  ? min(target, frequency + glideStep)
+                  : max(target, frequency - glideStep);
+    }
+
+    frequencyPreviousMillis = millis();
+  }
+}
+
+unsigned long octavePreviousMillis = 0;
 void updateOctave() {
   unsigned long currentMillis = millis();
 
-  if ((unsigned long)(currentMillis - previousMillis) >= updateThrottle) {
+  if ((unsigned long)(currentMillis - octavePreviousMillis) >= octaveThrottle) {
     float voltage = analogRead(octaveRangePin) * (5.0 / 1023.0);
     octave = round(voltage / 5 * (OCTAVE_RANGE - 1)) + 1;
-    Serial.println(octave);
 
-    previousMillis = millis();
+    octavePreviousMillis = millis();
   }
 }
 
 void loop() {
   buffer.populate();
+
   updateOctave();
 
   if (buffer.isEmpty()) {
+    frequency = 0;
+
     noTone(speakerPin);
     digitalWrite(LED_BUILTIN, LOW);
   } else {
-    tone(speakerPin, getFrequency());
-    digitalWrite(LED_BUILTIN, HIGH);
-  }
+    updateFrequency();
 
-  buffer.print();
+    tone(speakerPin, frequency);
+    digitalWrite(LED_BUILTIN, HIGH);
+
+    Serial.println(
+      "frequency: " + String(frequency)
+      + "\ttarget: " + String(getTargetFrequency())
+    );
+  }
 }
