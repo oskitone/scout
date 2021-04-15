@@ -25,12 +25,8 @@ void setup() {
   Serial.println("---------");
 }
 
-int getOctave() {
-  return octave;
-}
-
 float getFrequency() {
-  return notes[buffer.getFirst()] / 2 * getOctave();
+  return notes[buffer.getFirst()] / 2 * octave;
 }
 
 void updateOctave() {
