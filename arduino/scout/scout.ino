@@ -26,11 +26,6 @@ long settingsThrottle = 500;
 float frequency = 0;
 float glideStep = glide * GLIDE_STEP_RANGE;
 
-void setup() {
-  Serial.begin(9600);
-  pinMode(LED_BUILTIN, OUTPUT);
-}
-
 float getFrequency(long key) {
   return notes[key] / 2 * octave;
 }
@@ -56,10 +51,11 @@ float getVoltage(int pin) {
 }
 
 unsigned long settingsPreviousMillis = 0;
-void updateSettings() {
-  unsigned long currentMillis = millis();
+void updateSettings(bool skipPoll = false) {
+  bool pollPasses =
+    (unsigned long)(millis() - settingsPreviousMillis) >= settingsThrottle;
 
-  if ((unsigned long)(currentMillis - settingsPreviousMillis) >= settingsThrottle) {
+  if (skipPoll || pollPasses) {
     octave = round(getVoltage(octaveControlPin) * (OCTAVE_RANGE - 1)) + 1;
 
     glide = getVoltage(glideStepControlPin);
@@ -67,6 +63,13 @@ void updateSettings() {
 
     settingsPreviousMillis = millis();
   }
+}
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(LED_BUILTIN, OUTPUT);
+
+  updateSettings(true);
 }
 
 void loop() {
