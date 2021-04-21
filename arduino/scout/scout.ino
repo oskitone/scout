@@ -4,13 +4,14 @@
 
 #include "KeyBuffer.h"
 
+bool printToSerial = false;
+
 int OCTAVE_RANGE = 6;
-float GLIDE_STEP_RANGE = 2;
+int CYCLES_PER_GLIDE_MAX = printToSerial ? 100 : 1000;
 
 int octaveControlPin = A0;
-int glideStepControlPin = A1;
+int glideControlPin = A1;
 int speakerPin = 12;
-bool printToSerial = false;
 
 float notes[] = {174.61, 185.00, 196.00, 207.65, 220.00, 233.08, 246.94, 261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.30, 440.00, 466.16, 493.88, 523.25};
 
@@ -24,7 +25,7 @@ float POT_TOLERANCE = .05;
 long settingsThrottle = 500;
 
 float frequency = 0;
-float glideStep = glide * GLIDE_STEP_RANGE;
+float glideStep;
 
 float getFrequency(long key) {
   return notes[key] / 2 * octave;
@@ -34,15 +35,28 @@ float getTargetFrequency() {
   return getFrequency(buffer.getFirst());
 }
 
+float previousTargetFrequency;
 void updateFrequency() {
   float target = getTargetFrequency();
+  bool needsUpdate = frequency != target;
 
-  if ((frequency == 0) || (glide <= POT_TOLERANCE)) {
-    frequency = target;
-  } else if (frequency != target) {
-    frequency = (target > frequency)
-                ? min(target, frequency + glideStep)
-                : max(target, frequency - glideStep);
+  if (needsUpdate) {
+    if ((frequency == 0) || (glide <= POT_TOLERANCE)) {
+      frequency = target;
+    } else {
+      if (target != previousTargetFrequency) {
+        glideStep = abs(target - previousTargetFrequency)
+          / (glide * CYCLES_PER_GLIDE_MAX);
+      }
+
+      frequency = (target > frequency)
+        ? min(target, frequency + glideStep)
+        : max(target, frequency - glideStep);
+      }
+  }
+
+  if (!needsUpdate) {
+    previousTargetFrequency = target;
   }
 }
 
@@ -57,9 +71,7 @@ void updateSettings(bool skipPoll = false) {
 
   if (skipPoll || pollPasses) {
     octave = round(getVoltage(octaveControlPin) * (OCTAVE_RANGE - 1)) + 1;
-
-    glide = getVoltage(glideStepControlPin);
-    glideStep = GLIDE_STEP_RANGE - glide * GLIDE_STEP_RANGE;
+    glide = getVoltage(glideControlPin);
 
     settingsPreviousMillis = millis();
   }
@@ -79,10 +91,9 @@ void loop() {
 
   if (printToSerial) {
     Serial.println(
-      "frequency: " + String(frequency)
-      + "\ttarget: " + String(getTargetFrequency())
-      + "glideStep: " + String(glideStep)
-      + "  glide: " + String(glide)
+      "frequency:" + String(frequency)
+      + ",target:" + String(getTargetFrequency())
+      + ",previousTargetFrequency:" + String(previousTargetFrequency)
     );
   }
 
