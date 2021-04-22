@@ -6,3 +6,5 @@ local/
 *.eep
 *.elf
 *.hex
+
+fp-info-cache
