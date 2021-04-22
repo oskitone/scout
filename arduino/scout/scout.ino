@@ -20,7 +20,7 @@ KeyBuffer buffer;
 int octave = OCTAVE_RANGE / 2;
 float glide = .5;
 
-float POT_TOLERANCE = .05;
+float POT_TOLERANCE = .01;
 
 long settingsThrottle = 500;
 
