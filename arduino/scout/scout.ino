@@ -11,7 +11,7 @@ int CYCLES_PER_GLIDE_MAX = printToSerial ? 100 : 1000;
 
 int octaveControlPin = A0;
 int glideControlPin = A1;
-int speakerPin = 12;
+int speakerPin = 11;
 
 float notes[] = {174.61, 185.00, 196.00, 207.65, 220.00, 233.08, 246.94, 261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.30, 440.00, 466.16, 493.88, 523.25};
 

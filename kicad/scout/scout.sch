@@ -592,6 +592,4 @@ Wire Wire Line
 	7950 5300 7800 5300
 Wire Wire Line
 	7800 5300 7800 5350
-Text Notes 6350 2800 0    50   ~ 0
-TODO: update arduino code to use 11
 $EndSCHEMATC
