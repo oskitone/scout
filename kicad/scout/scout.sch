@@ -155,7 +155,7 @@ U 1 1 601473F9
 P 3000 2000
 F 0 "BT1" H 2700 2050 50  0000 L CNN
 F 1 "4.5v" H 2700 1950 50  0000 L CNN
-F 2 "Connector_PinHeader_1.00mm:PinHeader_1x02_P1.00mm_Vertical" V 3000 2060 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" V 3000 2060 50  0001 C CNN
 F 3 "~" V 3000 2060 50  0001 C CNN
 	1    3000 2000
 	1    0    0    -1  
@@ -226,7 +226,7 @@ U 1 1 6098893A
 P 8600 5200
 F 0 "LS1" H 8770 5196 50  0000 L CNN
 F 1 "Speaker" H 8770 5105 50  0000 L CNN
-F 2 "Connector_PinHeader_1.00mm:PinHeader_1x02_P1.00mm_Vertical" H 8600 5000 50  0001 C CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 8600 5000 50  0001 C CNN
 F 3 "~" H 8590 5150 50  0001 C CNN
 	1    8600 5200
 	1    0    0    -1  
@@ -289,7 +289,7 @@ U 1 1 60850CEC
 P 7950 5200
 F 0 "RV1" H 7850 5150 50  0000 R CNN
 F 1 "10k Log" H 7850 5250 50  0000 R CNN
-F 2 "Potentiometer_THT:Potentiometer_Bourns_PTV09A-1_Single_Vertical" H 7950 5200 50  0001 C CNN
+F 2 "Potentiometer_THT:Potentiometer_Piher_PT-6-V_Vertical" H 7950 5200 50  0001 C CNN
 F 3 "~" H 7950 5200 50  0001 C CNN
 	1    7950 5200
 	1    0    0    1   
