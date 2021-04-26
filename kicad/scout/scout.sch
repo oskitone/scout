@@ -289,7 +289,7 @@ U 1 1 60850CEC
 P 7950 5200
 F 0 "RV1" H 7850 5150 50  0000 R CNN
 F 1 "10k Log" H 7850 5250 50  0000 R CNN
-F 2 "Potentiometer_THT:Potentiometer_Piher_PT-6-V_Vertical" H 7950 5200 50  0001 C CNN
+F 2 "Potentiometer_THT:Potentiometer_Bourns_PTV09A-1_Single_Vertical" H 7950 5200 50  0001 C CNN
 F 3 "~" H 7950 5200 50  0001 C CNN
 	1    7950 5200
 	1    0    0    1   
