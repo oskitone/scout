@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name sparkfun-connectors)(type KiCad)(uri /Users/tommy/SparkFun-KiCad-Libraries/Footprints/Connectors.pretty)(options "")(descr ""))
+  (lib (name digikey)(type KiCad)(uri /Users/tommy/digikey-kicad-library/digikey-footprints.pretty)(options "")(descr ""))
 )
