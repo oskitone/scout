@@ -33,7 +33,7 @@ ENCLOSURE_LENGTH =
 
 DEFAULT_TOLERANCE = .1;
 
-module assembly(
+module keyboard_matrix_playground(
     show_keys = true,
     show_mounting_rail = true,
     show_pcb = true,
@@ -95,7 +95,7 @@ SHOW_PCB = true;
 SHOW_PERIPHERALS = true;
 SHOW_ENCLOSURE_BOTTOM = true;
 
-assembly(
+keyboard_matrix_playground(
     show_keys = SHOW_KEYS,
     show_mounting_rail = SHOW_MOUNTING_RAIL,
     show_pcb = SHOW_PCB,
