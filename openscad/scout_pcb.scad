@@ -38,6 +38,21 @@ PCB_HOLE_POSITIONS = [
     _([70.358, 107.696]),
 ];
 
+PCB_LED_POSITION = _([37.592 - 2.54 * .75, 95.758]);
+PCB_POT_POSITION = _([172.72 - 2.54, 102.616 - 7]);
+
+LED_DIAMETER = 5.9;
+LED_HEIGHT = 8.6;
+
+PTV09A_POT_BASE_WIDTH = 10;
+PTV09A_POT_BASE_HEIGHT = 6.8;
+PTV09A_POT_ACTUATOR_DIAMETER = 6;
+PTV09A_POT_ACTUATOR_BASE_DIAMETER = 6.9;
+PTV09A_POT_ACTUATOR_BASE_HEIGHT = 2;
+PTV09A_POT_ACTUATOR_HEIGHT = 20 - PTV09A_POT_BASE_HEIGHT;
+PTV09A_POT_ACTUATOR_D_SHAFT_HEIGHT = 7;
+PTV09A_POT_ACTUATOR_D_SHAFT_DEPTH = PTV09A_POT_ACTUATOR_DIAMETER - 4.5;
+
 BUTTON_HEIGHT = 6;
 
 module scout_pcb(
@@ -87,12 +102,7 @@ module scout_pcb(
     }
 
     if (show_led) {
-        LED_DIAMETER = 5.9;
-        LED_HEIGHT = 8.6;
-
-        xy = _([37.592 - 2.54 * .75, 95.758]);
-
-        translate([xy.x, xy.y, PCB_HEIGHT - e]) {
+        translate([PCB_LED_POSITION.x, PCB_LED_POSITION.y, PCB_HEIGHT - e]) {
             % cylinder(
                 d = LED_DIAMETER,
                 h = LED_HEIGHT + e,
@@ -102,18 +112,7 @@ module scout_pcb(
     }
 
     if (show_pot) {
-        PTV09A_POT_BASE_WIDTH = 10;
-        PTV09A_POT_BASE_HEIGHT = 6.8;
-        PTV09A_POT_ACTUATOR_DIAMETER = 6;
-        PTV09A_POT_ACTUATOR_BASE_DIAMETER = 6.9;
-        PTV09A_POT_ACTUATOR_BASE_HEIGHT = 2;
-        PTV09A_POT_ACTUATOR_HEIGHT = 20 - PTV09A_POT_BASE_HEIGHT;
-        PTV09A_POT_ACTUATOR_D_SHAFT_HEIGHT = 7;
-        PTV09A_POT_ACTUATOR_D_SHAFT_DEPTH = PTV09A_POT_ACTUATOR_DIAMETER - 4.5;
-
-        xy = _([172.72 - 2.54, 102.616 - 7]);
-
-        translate([xy.x, xy.y, PCB_HEIGHT - e]) {
+        translate([PCB_POT_POSITION.x, PCB_POT_POSITION.y, PCB_HEIGHT - e]) {
             % pot();
         }
     }

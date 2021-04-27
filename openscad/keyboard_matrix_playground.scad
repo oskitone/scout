@@ -43,11 +43,55 @@ module keyboard_matrix_playground(
     tolerance = 0,
     quick_preview = true
 ) {
+    module keys_with_nut_locking_mount(
+        cantilever_height = 2,
+        tolerance = 0,
+        quick_preview = false
+    ) {
+        e = .06789;
+        z = PCB_Z + PCB_HEIGHT + BUTTON_HEIGHT;
+
+        nut_lock_width = NUT_DIAMETER + DEFAULT_TOLERANCE * 2;
+
+        // TODO: fix, make non-magic
+        translate([PCB_X, PCB_Y, PCB_Z]) {
+            keys(
+                tolerance = tolerance,
+                quick_preview = quick_preview,
+                cantilever_length = 4, // TODO: derive or obviate (_extension?)
+                cantilever_height = cantilever_height
+            );
+        }
+
+        difference() {
+            color("white") mounting_rail(
+                height = cantilever_height + NUT_HEIGHT,
+                z = z
+            );
+
+            for (xy = PCB_HOLE_POSITIONS) {
+                translate([
+                    PCB_X + xy.x + nut_lock_width / -2,
+                    PCB_Y + PCB_LENGTH - mount_length - e,
+                    z + cantilever_height
+                ]) {
+                    cube([
+                        nut_lock_width,
+                        mount_length + e * 2,
+                        NUT_HEIGHT + e
+                    ]);
+                }
+            }
+        }
+    }
+
     if (show_keys) {
-        keys_with_nut_locking_mount(
-            tolerance = tolerance,
-            quick_preview = quick_preview
-        );
+        translate([offset / -2, y, PCB_HEIGHT + BUTTON_HEIGHT]) {
+            keys_with_nut_locking_mount(
+                tolerance = tolerance,
+                quick_preview = quick_preview
+            );
+        }
     }
 
     if (show_pcb) {
