@@ -1,5 +1,6 @@
 /* TODO: extract into common parts repo */
 use <../../poly555/openscad/lib/basic_shapes.scad>;
+use <../../poly555/openscad/lib/engraving.scad>;
 
 include <scout_pcb.scad>;
 include <keys.scad>;
@@ -9,6 +10,7 @@ include <utils.scad>;
 ENCLOSURE_WALL = 2.4;
 ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
+ENCLOSURE_ENGRAVING_DEPTH = 1.2;
 
 ENCLOSURE_TO_PCB_CLEARANCE = 2;
 
@@ -25,6 +27,8 @@ module scout(
     show_pcb = true,
     show_accoutrements = true,
     show_enclosure_stub = true,
+
+    label_size = 3,
 
     accidental_key_recession = 2,
     key_lip_exposure = 4, // should be comfortably over ~2 travel
@@ -51,11 +55,22 @@ module scout(
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
 
+    label_distance = keys_x / 2;
+
     keys_full_width = (
         10 * key_width // TODO: derive natural key count
         + 9 * key_gutter // TODO: derive natural key count - 1
     );
     key_min_height = 4;
+
+    // TODO: confirm label size, then remove
+    pot_nudge = (
+        (keys_y + key_length) - (pcb_y + PCB_POT_POSITION.y - knob_radius)
+        + label_distance
+        + label_size
+        + keys_x
+    );
+    echo("pot_nudge", pot_nudge);
 
     enclosure_width = (
         keys_x * 2 + keys_full_width
@@ -79,7 +94,12 @@ module scout(
     knob_z = pcb_z + PCB_HEIGHT + PTV09A_POT_BASE_HEIGHT;
     knob_height = enclosure_height - knob_z + knob_top_exposure;
 
-    lightpipe_radius = (pcb_x + PCB_LED_POSITION.x) - keys_x;
+    lightpipe_width = (pcb_x + PCB_LED_POSITION.x - keys_x) * 2;
+    lightpipe_x = keys_x;
+
+    branding_x = keys_x * 2 + lightpipe_width;
+    branding_y = keys_y + key_length + keys_x;
+    branding_length = enclosure_length - branding_y - keys_x;
 
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
@@ -92,6 +112,31 @@ module scout(
 
         vertical_clearance = 1;
         xy_clearance = 1;
+
+        module _engraving(
+            string,
+            size,
+            center = false,
+            position = [0, 0],
+            font = "Orbitron:style=Black"
+        ) {
+            translate([
+                position.x,
+                position.y,
+                enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
+            ]) {
+                engraving(
+                    string = string,
+                    svg = undef,
+                    font = font,
+                    size = size,
+                    bleed = quick_preview ? 0 : .1,
+                    height = ENCLOSURE_ENGRAVING_DEPTH + e,
+                    center = center,
+                    chamfer = quick_preview ? 0 : .1
+                );
+            }
+        }
 
         difference() {
             color("#FF69B4") {
@@ -115,25 +160,60 @@ module scout(
                     ]);
                 }
 
+                _engraving(
+                    string = "SCOUT",
+                    size = branding_length / 2,
+                    position = [
+                        branding_x,
+                        branding_y
+                    ]
+                );
+
+                // TODO: swap for proper branding
+                translate([0, , 0]) {
+                    _engraving(
+                        string = "OSKITONE",
+                        font = "Work Sans:style=Black",
+                        size = branding_length / 2 - label_distance,
+                        position = [
+                            branding_x,
+                            branding_y + branding_length / 2 + label_distance
+                        ]
+                    );
+                }
+
                 translate([
-                    pcb_x + PCB_LED_POSITION.x,
-                    pcb_y + PCB_LED_POSITION.y,
+                    lightpipe_x - tolerance,
+                    branding_y,
                     pcb_z + PCB_HEIGHT - e
                 ]) {
-                    cylinder(
-                        r = lightpipe_radius + tolerance,
-                        h = enclosure_height
-                    );
+                    cube([
+                        lightpipe_width + tolerance * 2,
+                        branding_length,
+                        enclosure_height
+                    ]);
                 }
 
                 translate([
                     pcb_x + PCB_POT_POSITION.x,
                     pcb_y + PCB_POT_POSITION.y,
-                    knob_z - vertical_clearance
+                    0
                 ]) {
-                    cylinder(
-                        r = knob_radius + xy_clearance + tolerance,
-                        h = enclosure_height
+                    translate([0, 0, knob_z - vertical_clearance]) {
+                        cylinder(
+                            r = knob_radius, // TODO: xy_clearance + tolerance,
+                            h = enclosure_height
+                        );
+                    }
+
+                    _engraving(
+                        string = "VOL",
+                        size = label_size,
+                        center = true,
+                        position = [
+                            0,
+                            -knob_radius - label_size / 2 - label_distance
+                        ]
                     );
                 }
 
@@ -154,14 +234,15 @@ module scout(
         lightpipe_z = pcb_z + PCB_HEIGHT;
 
         translate([
-            pcb_x + PCB_LED_POSITION.x,
-            pcb_y + PCB_LED_POSITION.y,
+            lightpipe_x + tolerance,
+            branding_y + tolerance,
             pcb_z + PCB_HEIGHT
         ]) {
-            # cylinder(
-                r = lightpipe_radius,
-                h = enclosure_height - lightpipe_z - lightpipe_recession
-            );
+            # cube([
+                lightpipe_width - tolerance * 2,
+                branding_length - tolerance * 2,
+                enclosure_height - lightpipe_z - lightpipe_recession
+            ]);
         }
 
         translate([
