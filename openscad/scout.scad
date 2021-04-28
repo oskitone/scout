@@ -30,6 +30,7 @@ module scout(
     key_lip_exposure = 4, // should be comfortably over ~2 travel
 
     knob_top_exposure = 10,
+    knob_radius = 10,
 
     lightpipe_recession = 2,
 
@@ -59,11 +60,12 @@ module scout(
     enclosure_width = (
         keys_x * 2 + keys_full_width
     );
-    enclosure_length = (
+    enclosure_length = max(
         keys_y + key_length
-        + PCB_LENGTH - pcb_key_mount_y
-        + ENCLOSURE_TO_PCB_CLEARANCE
-        + ENCLOSURE_WALL
+            + PCB_LENGTH - pcb_key_mount_y
+            + ENCLOSURE_TO_PCB_CLEARANCE
+            + ENCLOSURE_WALL,
+        pcb_y + PCB_POT_POSITION.y + knob_radius + keys_x
     );
     enclosure_height = max(
         keys_z + key_min_height + accidental_height + accidental_key_recession,
@@ -74,7 +76,6 @@ module scout(
     key_height = enclosure_height - keys_z - accidental_height
         - accidental_key_recession;
 
-    knob_radius = enclosure_width - (pcb_x + PCB_POT_POSITION.x) - keys_x;
     knob_z = pcb_z + PCB_HEIGHT + PTV09A_POT_BASE_HEIGHT;
     knob_height = enclosure_height - knob_z + knob_top_exposure;
 
@@ -168,7 +169,7 @@ module scout(
             pcb_y + PCB_POT_POSITION.y,
             knob_z
         ]) {
-            cylinder(
+            # cylinder(
                 r = knob_radius,
                 h = knob_height
             );

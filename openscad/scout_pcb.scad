@@ -5,8 +5,8 @@ PCB_WIDTH = 177.292 - 32.004;
 PCB_LENGTH = 123.444 - 89.154;
 PCB_HEIGHT = 1.6;
 
-function _(xy) = (
-    [(xy.x - 32.004), -(xy.y - 123.444)]
+function _(xy, nudge = [0, 0]) = (
+    [(xy.x + nudge.x - 32.004), -(xy.y - 123.444) + nudge.y]
 );
 
 PCB_BUTTON_POSITIONS = [
@@ -39,7 +39,8 @@ PCB_HOLE_POSITIONS = [
 ];
 
 PCB_LED_POSITION = _([37.592 - 2.54 * .75, 95.758]);
-PCB_POT_POSITION = _([172.72 - 2.54, 102.616 - 7]);
+// TODO: move pot on board
+PCB_POT_POSITION = _([172.72 - 2.54, 102.616 - 7], [.104, 0]); // .104 for 20 diameter
 
 LED_DIAMETER = 5.9;
 LED_HEIGHT = 8.6;
