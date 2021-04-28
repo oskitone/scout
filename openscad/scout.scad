@@ -1,16 +1,15 @@
 /* TODO: extract into common parts repo */
 use <../../poly555/openscad/lib/basic_shapes.scad>;
-use <../../poly555/openscad/lib/engraving.scad>;
 
 include <scout_pcb.scad>;
+use <enclosure_engraving.scad>;
 include <keys.scad>;
-include <utils.scad>;
+use <utils.scad>;
 
 /* TODO: extract */
 ENCLOSURE_WALL = 2.4;
 ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
-ENCLOSURE_ENGRAVING_DEPTH = 1.2;
 
 ENCLOSURE_TO_PCB_CLEARANCE = 2;
 
@@ -113,31 +112,6 @@ module scout(
         vertical_clearance = 1;
         xy_clearance = 1;
 
-        module _engraving(
-            string,
-            size,
-            center = false,
-            position = [0, 0],
-            font = "Orbitron:style=Black"
-        ) {
-            translate([
-                position.x,
-                position.y,
-                enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
-            ]) {
-                engraving(
-                    string = string,
-                    svg = undef,
-                    font = font,
-                    size = size,
-                    bleed = quick_preview ? 0 : .1,
-                    height = ENCLOSURE_ENGRAVING_DEPTH + e,
-                    center = center,
-                    chamfer = quick_preview ? 0 : .1
-                );
-            }
-        }
-
         difference() {
             color("#FF69B4") {
                 rounded_cube(
@@ -160,25 +134,29 @@ module scout(
                     ]);
                 }
 
-                _engraving(
+                enclosure_engraving(
                     string = "SCOUT",
                     size = branding_length / 2,
                     position = [
                         branding_x,
                         branding_y
-                    ]
+                    ],
+                    quick_preview = quick_preview,
+                    enclosure_height = enclosure_height
                 );
 
                 // TODO: swap for proper branding
                 translate([0, , 0]) {
-                    _engraving(
+                    enclosure_engraving(
                         string = "OSKITONE",
                         font = "Work Sans:style=Black",
                         size = branding_length / 2 - label_distance,
                         position = [
                             branding_x,
                             branding_y + branding_length / 2 + label_distance
-                        ]
+                        ],
+                        quick_preview = quick_preview,
+                        enclosure_height = enclosure_height
                     );
                 }
 
@@ -206,14 +184,16 @@ module scout(
                         );
                     }
 
-                    _engraving(
+                    enclosure_engraving(
                         string = "VOL",
                         size = label_size,
                         center = true,
                         position = [
                             0,
                             -knob_radius - label_size / 2 - label_distance
-                        ]
+                        ],
+                        quick_preview = quick_preview,
+                        enclosure_height = enclosure_height
                     );
                 }
 
