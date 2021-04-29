@@ -46,11 +46,11 @@ module enclosure_engraving(
     }
 }
 
-sizes = [3, 4, 5];
-bleeds = [-.1, .1];
+sizes = [3.2, 3.4, 3.6, 3.8];
+bleeds = [-.1, 0];
 
-plot_width = 24;
-plot_length = 8;
+plot_width = 22;
+plot_length = 7;
 
 difference() {
     cube([
@@ -70,37 +70,10 @@ difference() {
                     plot_width * i + plot_width / 2,
                     plot_length * ii + plot_length / 2
                 ],
+                placard = [plot_width - 2, plot_length - 2],
                 enclosure_height = 2,
-                quick_preview = $preview
+                quick_preview = false // $preview
             );
-        }
-    }
-}
-
-translate([0, plot_length * 2, 0]) {
-    difference() {
-        cube([
-            plot_width * len(sizes),
-            plot_length * len(bleeds),
-            2
-        ]);
-
-        for (i = [0 : len(sizes) - 1]) {
-            for (ii = [0 : len(bleeds) - 1]) {
-                enclosure_engraving(
-                    string = "AB30",
-                    size = sizes[i],
-                    bleed = bleeds[ii],
-                    center = true,
-                    position = [
-                        plot_width * i + plot_width / 2,
-                        plot_length * ii + plot_length / 2
-                    ],
-                    placard = [plot_width - 1, plot_length - 1],
-                    enclosure_height = 2,
-                    quick_preview = $preview
-                );
-            }
         }
     }
 }

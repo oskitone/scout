@@ -27,7 +27,8 @@ module scout(
     show_accoutrements = true,
     show_enclosure_stub = true,
 
-    label_size = 3,
+    pot_label_text_size = 3.2,
+    pot_label_length = 5,
 
     accidental_key_recession = 2,
     key_lip_exposure = 4, // should be comfortably over ~2 travel
@@ -66,10 +67,15 @@ module scout(
     pot_nudge = (
         (keys_y + key_length) - (pcb_y + PCB_POT_POSITION.y - knob_radius)
         + label_distance
-        + label_size
+        + pot_label_length
         + keys_x
     );
     echo("pot_nudge", pot_nudge);
+
+    echo(
+        (branding_y + branding_length / 2) -
+        (pcb_y + PCB_LED_POSITION.y)
+    );
 
     enclosure_width = (
         keys_x * 2 + keys_full_width
@@ -186,12 +192,13 @@ module scout(
 
                     enclosure_engraving(
                         string = "VOL",
-                        size = label_size,
+                        size = pot_label_text_size,
                         center = true,
                         position = [
                             0,
-                            -knob_radius - label_size / 2 - label_distance
+                            -knob_radius - pot_label_length / 2 - label_distance
                         ],
+                        placard = [knob_radius * 2, pot_label_length],
                         quick_preview = quick_preview,
                         enclosure_height = enclosure_height
                     );

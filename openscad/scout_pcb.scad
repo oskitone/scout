@@ -39,10 +39,10 @@ PCB_HOLE_POSITIONS = [
 ];
 
 // TODO: move LED as far left as possible, and down a bit
-PCB_LED_POSITION = _([37.592 - 2.54 * .75, 95.758], [0, -1.717]);
+PCB_LED_POSITION = _([37.592 - 2.54 * .75, 95.758], [-.1, 2.312]);
 // TODO: Y nudge is eyeballed. Get exact value and update board. was .2 + .4
 // NOTE: x nudge of .104 is for 20 diameter, 4.104 for 12, and so on
-PCB_POT_POSITION = _([172.72 - 2.54, 102.616 - 7], [.104, 3.52]);
+PCB_POT_POSITION = _([172.72 - 2.54, 102.616 - 7], [.104, 5.52]);
 
 LED_DIAMETER = 5.9;
 LED_HEIGHT = 8.6;
