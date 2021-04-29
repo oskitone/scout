@@ -21,6 +21,17 @@ NUT_HEIGHT = 2.4;
 
 DEFAULT_TOLERANCE = .1;
 
+/* TODO: extract into common parts repo */
+/* https://www.ckswitches.com/media/1428/os.pdf */
+SWITCH_BASE_WIDTH = 4.4;
+SWITCH_BASE_LENGTH = 8.7;
+SWITCH_BASE_HEIGHT = 4.5;
+SWITCH_ACTUATOR_WIDTH = 2;
+SWITCH_ACTUATOR_LENGTH = 2.1;
+SWITCH_ACTUATOR_HEIGHT = 3.8;
+SWITCH_ACTUATOR_TRAVEL = 1.5;
+SWITCH_ORIGIN = [SWITCH_BASE_WIDTH / 2, 6.36];
+
 module scout(
     show_keys = true,
     show_pcb = true,
@@ -37,6 +48,7 @@ module scout(
     knob_radius = 10,
 
     lightpipe_recession = 2,
+    exposed_switch_clearance = 1,
 
     tolerance = 0,
     quick_preview = true
@@ -47,15 +59,18 @@ module scout(
     key_to_pcb_x_offset = ((key_width - 6) / 2 - key_gutter);
     pcb_key_mount_y = PCB_HOLE_POSITIONS[0][1] - keys_mount_length / 2;
 
-    pcb_x = ENCLOSURE_WALL + key_to_pcb_x_offset + key_gutter;
-    pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y; // key_length - PCB_LENGTH + mount_length + ENCLOSURE_WALL + key_gutter;
-    pcb_z = ENCLOSURE_FLOOR_CEILING + ENCLOSURE_TO_PCB_CLEARANCE;
+    keys_x = ENCLOSURE_WALL + key_gutter;
+    default_gutter = keys_x;
 
-    keys_x = pcb_x - key_to_pcb_x_offset;
+    label_distance = default_gutter / 2;
+
+    pcb_x = keys_x + key_to_pcb_x_offset;
+    pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y;
+    pcb_z = SWITCH_BASE_HEIGHT + SWITCH_ACTUATOR_HEIGHT
+        + exposed_switch_clearance;
+
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
-
-    label_distance = keys_x / 2;
 
     keys_full_width = (
         10 * key_width // TODO: derive natural key count
@@ -63,29 +78,13 @@ module scout(
     );
     key_min_height = 4;
 
-    // TODO: confirm label size, then remove
-    pot_nudge = (
-        (keys_y + key_length) - (pcb_y + PCB_POT_POSITION.y - knob_radius)
-        + label_distance
-        + pot_label_length
-        + keys_x
-    );
-    echo("pot_nudge", pot_nudge);
-
-    echo(
-        (branding_y + branding_length / 2) -
-        (pcb_y + PCB_LED_POSITION.y)
-    );
-
-    enclosure_width = (
-        keys_x * 2 + keys_full_width
-    );
+    enclosure_width = default_gutter * 2 + keys_full_width;
     enclosure_length = max(
         keys_y + key_length
             + PCB_LENGTH - pcb_key_mount_y
             + ENCLOSURE_TO_PCB_CLEARANCE
             + ENCLOSURE_WALL,
-        pcb_y + PCB_POT_POSITION.y + knob_radius + keys_x
+        pcb_y + PCB_POT_POSITION.y + knob_radius + default_gutter
     );
     enclosure_height = max(
         keys_z + key_min_height + accidental_height + accidental_key_recession,
@@ -99,12 +98,12 @@ module scout(
     knob_z = pcb_z + PCB_HEIGHT + PTV09A_POT_BASE_HEIGHT;
     knob_height = enclosure_height - knob_z + knob_top_exposure;
 
-    lightpipe_width = (pcb_x + PCB_LED_POSITION.x - keys_x) * 2;
-    lightpipe_x = keys_x;
+    lightpipe_width = (pcb_x + PCB_LED_POSITION.x - default_gutter) * 2;
+    lightpipe_x = default_gutter;
 
-    branding_x = keys_x * 2 + lightpipe_width;
-    branding_y = keys_y + key_length + keys_x;
-    branding_length = enclosure_length - branding_y - keys_x;
+    branding_x = default_gutter * 2 + lightpipe_width;
+    branding_y = keys_y + key_length + default_gutter;
+    branding_length = enclosure_length - branding_y - default_gutter;
 
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
@@ -185,7 +184,7 @@ module scout(
                 ]) {
                     translate([0, 0, knob_z - vertical_clearance]) {
                         cylinder(
-                            r = knob_radius, // TODO: xy_clearance + tolerance,
+                            r = knob_radius + xy_clearance + tolerance,
                             h = enclosure_height
                         );
                     }
@@ -273,13 +272,20 @@ module scout(
 
 SHOW_KEYS = true;
 SHOW_PCB = true;
+SHOW_ACCOUTREMENTS = true;
+SHOW_ENCLOSURE_STUB = true;
 
-scout(
-    show_keys = SHOW_KEYS,
-    show_pcb = SHOW_PCB,
-    show_accoutrements = true,
-    show_enclosure_stub = true,
+intersection() {
+    scout(
+        show_keys = SHOW_KEYS,
+        show_pcb = SHOW_PCB,
+        show_accoutrements = SHOW_ACCOUTREMENTS,
+        show_enclosure_stub = SHOW_ENCLOSURE_STUB,
 
-    tolerance = DEFAULT_TOLERANCE,
-    quick_preview = $preview
-);
+        tolerance = DEFAULT_TOLERANCE,
+        quick_preview = $preview
+    );
+
+    // switch
+    /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
+}
