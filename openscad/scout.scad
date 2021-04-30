@@ -105,11 +105,13 @@ module scout(
             branding_y + tolerance,
             pcb_z + PCB_HEIGHT
         ]) {
-            # cube([
-                lightpipe_width - tolerance * 2,
-                branding_length - tolerance * 2,
-                enclosure_height - lightpipe_z - lightpipe_recession
-            ]);
+            color([0, 1, round($t)]) {
+                cube([
+                    lightpipe_width - tolerance * 2,
+                    branding_length - tolerance * 2,
+                    enclosure_height - lightpipe_z - lightpipe_recession
+                ]);
+            }
         }
 
         translate([
