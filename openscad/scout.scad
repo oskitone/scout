@@ -29,7 +29,8 @@ module scout(
     show_keys = true,
     show_pcb = true,
     show_accoutrements = true,
-    show_enclosure_stub = true,
+    show_enclosure_top = true,
+    show_enclosure_bottom = true,
 
     accidental_key_recession = 2,
     key_lip_exposure = 4, // should be comfortably over ~2 travel
@@ -141,8 +142,11 @@ module scout(
         }
     }
 
-    if (show_enclosure_stub) {
-        _enclosure_stub(
+    if (show_enclosure_top || show_enclosure_bottom) {
+        enclosure(
+            show_top = show_enclosure_top,
+            show_bottom = show_enclosure_bottom,
+
             dimensions = [
                 enclosure_width,
                 enclosure_length,
@@ -186,14 +190,16 @@ module scout(
 SHOW_KEYS = true;
 SHOW_PCB = true;
 SHOW_ACCOUTREMENTS = true;
-SHOW_ENCLOSURE_STUB = true;
+SHOW_ENCLOSURE_TOP = true;
+SHOW_ENCLOSURE_BOTTOM = true;
 
 intersection() {
     scout(
         show_keys = SHOW_KEYS,
         show_pcb = SHOW_PCB,
         show_accoutrements = SHOW_ACCOUTREMENTS,
-        show_enclosure_stub = SHOW_ENCLOSURE_STUB,
+        show_enclosure_top = SHOW_ENCLOSURE_TOP,
+        show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
 
         tolerance = DEFAULT_TOLERANCE,
         quick_preview = $preview

@@ -1,3 +1,6 @@
+// TODO: extract parts to common repo
+use <../../poly555/openscad/lib/enclosure.scad>;
+
 use <enclosure_engraving.scad>;
 
 /* TODO: extract */
@@ -7,7 +10,14 @@ ENCLOSURE_INNER_WALL = 1.2;
 
 ENCLOSURE_TO_PCB_CLEARANCE = 2;
 
-module _enclosure_stub(
+ENCLOSURE_FILLET = 2;
+
+DEFAULT_ROUNDING = $preview ? undef : 24;
+
+module enclosure(
+    show_top = true,
+    show_bottom = true,
+
     dimensions = [],
 
     keys_cavity_height,
@@ -41,15 +51,33 @@ module _enclosure_stub(
     vertical_clearance = 1;
     xy_clearance = 1;
 
-    width = dimensions.x;
-    length = dimensions.y;
-    height = dimensions.z;
+    top_height = dimensions.z / 2;
+    bottom_height = dimensions.z / 2;
+
+    module _half(
+        _height,
+        lip,
+        quick_preview = true
+    ) {
+        enclosure_half(
+            width = dimensions.x,
+            length = dimensions.y,
+            height = _height,
+            wall = ENCLOSURE_WALL,
+            floor_ceiling = ENCLOSURE_FLOOR_CEILING,
+            add_lip = lip,
+            remove_lip = !lip,
+            fillet = ENCLOSURE_FILLET,
+            tolerance = DEFAULT_TOLERANCE,
+            $fn = DEFAULT_ROUNDING
+        );
+    }
 
     module _keys_exposure() {
         translate([
             keys_position.x - key_gutter,
             -e,
-            height - keys_cavity_height
+            dimensions.z - keys_cavity_height
         ]) {
             cube([
                 keys_full_width + key_gutter * 2,
@@ -68,7 +96,7 @@ module _enclosure_stub(
                 branding_position.y
             ],
             quick_preview = quick_preview,
-            enclosure_height = height
+            enclosure_height = dimensions.z
         );
 
         // TODO: swap for proper branding
@@ -81,7 +109,7 @@ module _enclosure_stub(
                 branding_position.y + branding_length / 2 + label_distance
             ],
             quick_preview = quick_preview,
-            enclosure_height = height
+            enclosure_height = dimensions.z
         );
     }
 
@@ -89,7 +117,7 @@ module _enclosure_stub(
         translate([
             lightpipe_position.x - tolerance,
             lightpipe_position.y,
-            height - ENCLOSURE_FLOOR_CEILING - e
+            dimensions.z - ENCLOSURE_FLOOR_CEILING - e
         ]) {
             cube([
                 lightpipe_dimensions.x + tolerance * 2,
@@ -104,7 +132,7 @@ module _enclosure_stub(
             translate([0, 0, knob_position.z - vertical_clearance]) {
                 cylinder(
                     r = knob_radius + xy_clearance + tolerance,
-                    h = height
+                    h = dimensions.z
                 );
             }
 
@@ -118,34 +146,32 @@ module _enclosure_stub(
                 ],
                 placard = [knob_radius * 2, pot_label_length],
                 quick_preview = quick_preview,
-                enclosure_height = height
+                enclosure_height = dimensions.z
             );
         }
     }
 
-    difference() {
-        color(outer_color) {
-            rounded_cube(
-                [width, length, height],
-                radius = quick_preview ? 0 : 2,
-                $fn = 24
-            );
-        }
+    if (show_top || show_bottom) {
+        difference() {
+            color(outer_color) {
+                if (show_bottom) {
+                    _half(top_height, lip = true);
+                }
 
-        color(cavity_color) {
-            _keys_exposure();
-            _branding();
-            _lightpipe_exposure();
-            _knob_exposure();
+                if (show_top) {
+                    translate([0, 0, dimensions.z]) {
+                        mirror([0, 0, 1]) {
+                            _half(bottom_height, lip = false);
+                        }
+                    }
+                }
+            }
 
-            translate([
-                ENCLOSURE_WALL, ENCLOSURE_WALL, ENCLOSURE_FLOOR_CEILING
-            ]) {
-                cube([
-                    width - ENCLOSURE_WALL * 2,
-                    length - ENCLOSURE_WALL * 2,
-                    height - ENCLOSURE_FLOOR_CEILING * 2
-                ]);
+            color(cavity_color) {
+                _keys_exposure();
+                _branding();
+                _lightpipe_exposure();
+                _knob_exposure();
             }
         }
     }
