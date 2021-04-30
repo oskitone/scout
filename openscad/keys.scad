@@ -55,12 +55,6 @@ module keys(
             accidental_length = key_length * 3/5,
             accidental_height = key_height + accidental_height,
 
-            remove_empty_space = !quick_preview,
-            // based on .2 SPEED PrusaSlicer settings
-            wall = .8,
-            ceiling = 1,
-            bottom = .8,
-
             front_fillet = quick_preview ? 0 : 2,
             sides_fillet = quick_preview ? 0 : 1,
 
