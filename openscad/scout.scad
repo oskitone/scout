@@ -155,6 +155,8 @@ module scout(
                 enclosure_height
             ],
 
+            pcb_position = [pcb_x, pcb_y, pcb_z],
+
             keys_cavity_height = min(
                 accidental_key_recession + accidental_height + key_lip_exposure,
                 enclosure_height - keys_z

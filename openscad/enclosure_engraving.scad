@@ -8,11 +8,13 @@ module enclosure_engraving(
     string,
     size,
     bleed = .1,
-    center = false,
+    center = true,
     position = [0, 0],
     font = "Orbitron:style=Black",
 
     placard = undef,
+
+    bottom = false,
 
     // TODO: de-arg
     quick_preview = true,
@@ -23,25 +25,37 @@ module enclosure_engraving(
     translate([
         position.x,
         position.y,
-        enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
+        bottom
+            ? -e
+            : enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
     ]) {
-        difference() {
-            if (placard) {
-                translate(center ? [placard.x / -2, placard.y / -2] : placard) {
-                    cube([placard.x, placard.y, ENCLOSURE_ENGRAVING_DEPTH + e]);
+        mirror([bottom ? 1 : 0, 0, 0]) {
+            difference() {
+                if (placard) {
+                    translate(
+                        center
+                            ? [placard.x / -2, placard.y / -2]
+                            : [placard.x, placard.y, 0]
+                    ) {
+                        cube([placard.x, placard.y, ENCLOSURE_ENGRAVING_DEPTH]);
+                    }
+                }
+
+                translate(placard ? [0, 0, -e] : [0, 0, 0]) {
+                    engraving(
+                        string = string,
+                        svg = undef,
+                        font = font,
+                        size = size,
+                        bleed = quick_preview ? 0 : bleed,
+                        height = placard
+                            ? ENCLOSURE_ENGRAVING_DEPTH + e * 2
+                            : ENCLOSURE_ENGRAVING_DEPTH + e,
+                        center = center,
+                        chamfer =  quick_preview ? 0 : (placard ? 0 : .1)
+                    );
                 }
             }
-
-            engraving(
-                string = string,
-                svg = undef,
-                font = font,
-                size = size,
-                bleed = quick_preview ? 0 : bleed,
-                height = ENCLOSURE_ENGRAVING_DEPTH + e,
-                center = center,
-                chamfer =  quick_preview ? 0 : (placard ? 0 : .1)
-            );
         }
     }
 }

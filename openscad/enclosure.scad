@@ -1,5 +1,6 @@
 // TODO: extract parts to common repo
 use <../../poly555/openscad/lib/enclosure.scad>;
+use <../../poly555/openscad/lib/switch.scad>;
 
 use <enclosure_engraving.scad>;
 
@@ -20,6 +21,8 @@ module enclosure(
 
     dimensions = [],
 
+    pcb_position = [],
+
     keys_cavity_height,
     keys_position = [],
     key_gutter,
@@ -36,8 +39,8 @@ module enclosure(
     knob_radius,
     knob_position,
 
-    pot_label_text_size = 3.2,
-    pot_label_length = 5,
+    label_text_size = 3.2,
+    label_length = 5,
 
     tolerance = 0,
 
@@ -91,6 +94,7 @@ module enclosure(
         enclosure_engraving(
             string = "SCOUT",
             size = branding_length / 2,
+            center = false,
             position = [
                 branding_position.x,
                 branding_position.y
@@ -104,6 +108,7 @@ module enclosure(
             string = "OSKITONE",
             font = "Work Sans:style=Black",
             size = branding_length / 2 - label_distance,
+            center = false,
             position = [
                 branding_position.x,
                 branding_position.y + branding_length / 2 + label_distance
@@ -138,15 +143,54 @@ module enclosure(
 
             enclosure_engraving(
                 string = "VOL",
-                size = pot_label_text_size,
-                center = true,
+                size = label_text_size,
                 position = [
                     0,
-                    -knob_radius - pot_label_length / 2 - label_distance
+                    -knob_radius - label_length / 2 - label_distance
                 ],
-                placard = [knob_radius * 2, pot_label_length],
+                placard = [knob_radius * 2, label_length],
                 quick_preview = quick_preview,
                 enclosure_height = dimensions.z
+            );
+        }
+    }
+
+    module _switch_exposure(cavity = false) {
+        exposure_height = pcb_position.z - SWITCH_BASE_HEIGHT;
+
+        if (cavity) {
+            enclosure_engraving(
+                string = "POW",
+                size = label_text_size,
+                position = [
+                    pcb_position.x + PCB_SWITCH_POSITION.x,
+                    pcb_position.y + PCB_SWITCH_POSITION.y
+                        - label_length / 2
+                        - (SWITCH_BASE_LENGTH - SWITCH_ORIGIN.y)
+                        - exposure_height
+                        - label_distance
+                ],
+                placard = [
+                    exposure_height * 2 + SWITCH_BASE_WIDTH,
+                    label_length
+                ],
+                bottom = true,
+                quick_preview = quick_preview,
+                enclosure_height = dimensions.z
+            );
+        }
+
+        translate([
+            pcb_position.x + PCB_SWITCH_POSITION.x,
+            pcb_position.y + PCB_SWITCH_POSITION.y
+                - SWITCH_BASE_LENGTH + SWITCH_ORIGIN.y * 2, // TODO: really?
+            cavity ? 0 : e
+        ]) {
+            switch_exposure(
+                exposure_height = exposure_height,
+                xy_bleed = cavity ? tolerance : ENCLOSURE_INNER_WALL,
+                include_switch_cavity = true,
+                z_bleed = cavity ? e * 2 : 0
             );
         }
     }
@@ -156,6 +200,7 @@ module enclosure(
             color(outer_color) {
                 if (show_bottom) {
                     _half(top_height, lip = true);
+                    _switch_exposure(false);
                 }
 
                 if (show_top) {
@@ -172,6 +217,7 @@ module enclosure(
                 _branding();
                 _lightpipe_exposure();
                 _knob_exposure();
+                _switch_exposure(true);
             }
         }
     }
