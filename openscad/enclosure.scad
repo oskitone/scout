@@ -1,5 +1,6 @@
 // TODO: extract parts to common repo
 use <../../poly555/openscad/lib/enclosure.scad>;
+use <../../poly555/openscad/lib/screw_head_exposures.scad>;
 use <../../poly555/openscad/lib/switch.scad>;
 
 use <enclosure_engraving.scad>;
@@ -15,6 +16,7 @@ ENCLOSURE_TO_PCB_CLEARANCE = 2;
 ENCLOSURE_FILLET = 2;
 
 DEFAULT_ROUNDING = $preview ? undef : 24;
+HIDEF_ROUNDING = $preview ? undef : 120;
 
 module enclosure(
     show_top = true,
@@ -196,6 +198,25 @@ module enclosure(
         }
     }
 
+    module _screw_cavities() {
+        for (p = PCB_HOLE_POSITIONS) {
+            translate([pcb_position.x + p.x, pcb_position.y + p.y, 0]) {
+                screw_head_exposure(
+                    tolerance = tolerance,
+                    clearance = 0
+                );
+
+                translate([0, 0, -e]) {
+                    cylinder(
+                        d = PCB_HOLE_DIAMTER,
+                        h = pcb_position.z + e * 2,
+                        $fn = HIDEF_ROUNDING
+                    );
+                }
+            }
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
@@ -220,6 +241,7 @@ module enclosure(
                 _lightpipe_exposure();
                 _knob_exposure();
                 _switch_exposure(true);
+                _screw_cavities();
             }
         }
     }

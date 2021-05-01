@@ -211,4 +211,7 @@ intersection() {
 
     // switch
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
+
+    // screw mount
+    /* translate([44, -10, -10]) { cube([200, 100, 100]); } */
 }

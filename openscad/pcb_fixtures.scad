@@ -67,7 +67,38 @@ module pcb_fixtures(
         }
     }
 
+    module _mounting_columns() {
+        head_column_height = SCREW_HEAD_HEIGHT + ENCLOSURE_FLOOR_CEILING;
+        head_column_z = z;
+
+        shaft_column_height = pcb_position.z - head_column_height;
+        shaft_column_z = head_column_height - e;
+
+        for (p = PCB_HOLE_POSITIONS) {
+            translate([pcb_position.x + p.x, pcb_position.y + p.y, 0]) {
+                translate([0, 0, head_column_z]) {
+                    cylinder(
+                        h = head_column_height - head_column_z,
+                        d = SCREW_HEAD_DIAMETER
+                            + clearance * 2
+                            + ENCLOSURE_INNER_WALL * 2
+                    );
+                }
+
+                translate([0, 0, shaft_column_z]) {
+                    cylinder(
+                        h = pcb_position.z - shaft_column_z,
+                        d = PCB_HOLE_DIAMTER
+                            + clearance * 2
+                            + ENCLOSURE_INNER_WALL * 2
+                    );
+                }
+            }
+        }
+    }
+
     _corners();
     _back_stools();
     _button_rail();
+    _mounting_columns();
 }
