@@ -3,6 +3,7 @@ use <../../poly555/openscad/lib/enclosure.scad>;
 use <../../poly555/openscad/lib/switch.scad>;
 
 use <enclosure_engraving.scad>;
+include <pcb_fixtures.scad>;
 
 /* TODO: extract */
 ENCLOSURE_WALL = 2.4;
@@ -201,6 +202,7 @@ module enclosure(
                 if (show_bottom) {
                     _half(top_height, lip = true);
                     _switch_exposure(false);
+                    pcb_fixtures(pcb_position = pcb_position);
                 }
 
                 if (show_top) {
