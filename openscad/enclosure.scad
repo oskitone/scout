@@ -41,6 +41,7 @@ module enclosure(
 
     knob_radius,
     knob_position = [],
+    knob_vertical_clearance = 0,
 
     speaker_position = [],
 
@@ -58,7 +59,6 @@ module enclosure(
 ) {
     e = .0345;
 
-    vertical_clearance = 1;
     xy_clearance = 1;
 
     top_height = dimensions.z / 2;
@@ -139,26 +139,45 @@ module enclosure(
         }
     }
 
-    module _knob_exposure() {
+    module _knob_exposure(cavity) {
+        cavity_z = knob_position.z - knob_vertical_clearance;
+        cavity_height = dimensions.z - cavity_z + e;
+        cavity_diameter = (knob_radius + xy_clearance + tolerance) * 2;
+
+        well_z = cavity_z - ENCLOSURE_FLOOR_CEILING;
+        well_height = dimensions.z - well_z - ENCLOSURE_FLOOR_CEILING + e;
+        well_diameter = cavity_diameter + ENCLOSURE_INNER_WALL;
+
         translate([knob_position.x, knob_position.y, 0]) {
-            translate([0, 0, knob_position.z - vertical_clearance]) {
+            translate([0, 0, cavity ? cavity_z : well_z]) {
                 cylinder(
-                    r = knob_radius + xy_clearance + tolerance,
-                    h = dimensions.z
+                    d = cavity ? cavity_diameter : well_diameter,
+                    h = cavity ? cavity_height : well_height
                 );
             }
 
-            enclosure_engraving(
-                string = "VOL",
-                size = label_text_size,
-                position = [
-                    0,
-                    -knob_radius - label_length / 2 - label_distance
-                ],
-                placard = [knob_radius * 2, label_length],
-                quick_preview = quick_preview,
-                enclosure_height = dimensions.z
-            );
+            if (cavity) {
+                translate([0, 0, well_z - e]) {
+                    cylinder(
+                        d = PTV09A_POT_ACTUATOR_DIAMETER + tolerance * 2,
+                        h = ENCLOSURE_FLOOR_CEILING + e * 2
+                    );
+
+                    // TODO: DFM
+                }
+
+                enclosure_engraving(
+                    string = "VOL",
+                    size = label_text_size,
+                    position = [
+                        0,
+                        -knob_radius - label_length / 2 - label_distance
+                    ],
+                    placard = [knob_radius * 2, label_length],
+                    quick_preview = quick_preview,
+                    enclosure_height = dimensions.z
+                );
+            }
         }
     }
 
@@ -261,6 +280,8 @@ module enclosure(
                             _half(bottom_height, lip = false);
                         }
                     }
+
+                    _knob_exposure(false);
                 }
             }
 
@@ -268,7 +289,7 @@ module enclosure(
                 _keys_exposure();
                 _branding();
                 _lightpipe_exposure();
-                _knob_exposure();
+                _knob_exposure(true);
                 _switch_exposure(true);
                 _screw_cavities();
             }

@@ -39,6 +39,7 @@ module scout(
 
     knob_top_exposure = 10,
     knob_radius = 10,
+    knob_vertical_clearance = 1,
 
     lightpipe_recession = 2,
     exposed_switch_clearance = 1,
@@ -86,7 +87,9 @@ module scout(
     key_height = enclosure_height - keys_z - accidental_height
         - accidental_key_recession;
 
-    knob_z = pcb_z + PCB_HEIGHT + PTV09A_POT_BASE_HEIGHT;
+    knob_z = pcb_z + PCB_HEIGHT
+        + PTV09A_POT_BASE_HEIGHT + PTV09A_POT_ACTUATOR_BASE_HEIGHT
+        + knob_vertical_clearance + ENCLOSURE_FLOOR_CEILING;
     knob_height = enclosure_height - knob_z + knob_top_exposure;
 
     lightpipe_width = (pcb_x + PCB_LED_POSITION.x - default_gutter) * 2;
@@ -197,6 +200,7 @@ module scout(
                 pcb_y + PCB_POT_POSITION.y,
                 knob_z
             ],
+            knob_vertical_clearance = knob_vertical_clearance,
 
             speaker_position = [
                 speaker_x,
@@ -247,4 +251,7 @@ intersection() {
 
     // speaker
     /* translate([130, -10, -10]) { cube([200, 100, 100]); } */
+
+    // knob
+    /* translate([-10, -10, -10]) { cube([155, 100, 100]); } */
 }
