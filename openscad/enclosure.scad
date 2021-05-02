@@ -44,6 +44,8 @@ module enclosure(
 
     speaker_position = [],
 
+    batteries_position = [],
+
     label_text_size = 3.2,
     label_length = 5,
 
@@ -233,6 +235,15 @@ module enclosure(
         }
     }
 
+    module _battery_fixture() {
+        translate(batteries_position) {
+            battery_fixture(
+                wall = ENCLOSURE_INNER_WALL,
+                tolerance = tolerance + e
+            );
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
@@ -241,6 +252,7 @@ module enclosure(
                     _switch_exposure(false);
                     pcb_fixtures(pcb_position = pcb_position);
                     _speaker_fixture();
+                    _battery_fixture();
                 }
 
                 if (show_top) {

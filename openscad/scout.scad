@@ -1,6 +1,7 @@
 /* TODO: extract into common parts repo */
 use <../../poly555/openscad/lib/basic_shapes.scad>;
 
+include <batteries.scad>;
 include <scout_pcb.scad>;
 include <enclosure.scad>;
 include <keys.scad>;
@@ -99,6 +100,10 @@ module scout(
     speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
     speaker_z = pcb_z - SPEAKER_HEIGHT - PCB_PIN_CLEARANCE;
 
+    batteries_x = pcb_x;
+    batteries_y = ENCLOSURE_WALL + tolerance;
+    batteries_z = ENCLOSURE_FLOOR_CEILING;
+
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
 
@@ -132,6 +137,10 @@ module scout(
 
         translate([speaker_x, speaker_y, speaker_z - e]) {
             % speaker();
+        }
+
+        translate([batteries_x, batteries_y, batteries_z + e]) {
+            % battery_array();
         }
     }
 
@@ -195,6 +204,12 @@ module scout(
                 speaker_z
             ],
 
+            batteries_position = [
+                batteries_x,
+                batteries_y,
+                batteries_z
+            ],
+
             tolerance = tolerance,
 
             quick_preview = quick_preview
@@ -224,7 +239,7 @@ intersection() {
         quick_preview = $preview
     );
 
-    // switch
+    // switch and batteries
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
 
     // screw mount
