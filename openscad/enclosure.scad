@@ -85,12 +85,12 @@ module enclosure(
 
     module _keys_exposure() {
         translate([
-            keys_position.x - key_gutter,
+            keys_position.x - key_gutter + e,
             -e,
             dimensions.z - keys_cavity_height
         ]) {
             cube([
-                keys_full_width + key_gutter * 2,
+                keys_full_width + key_gutter * 2 - e * 2,
                 keys_position.y + key_length + tolerance * 2,
                 keys_cavity_height + e
             ]);
