@@ -58,6 +58,8 @@ PTV09A_POT_ACTUATOR_D_SHAFT_DEPTH = PTV09A_POT_ACTUATOR_DIAMETER - 4.5;
 
 BUTTON_HEIGHT = 6;
 
+PCB_PIN_CLEARANCE = 2;
+
 module scout_pcb(
     show_buttons = true,
     show_silkscreen = true,

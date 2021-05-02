@@ -4,6 +4,7 @@ use <../../poly555/openscad/lib/basic_shapes.scad>;
 include <scout_pcb.scad>;
 include <enclosure.scad>;
 include <keys.scad>;
+include <speaker.scad>;
 use <utils.scad>;
 
 /* TODO: extract into common parts repo */
@@ -94,6 +95,10 @@ module scout(
     branding_y = keys_y + key_length + default_gutter;
     branding_length = enclosure_length - branding_y - default_gutter;
 
+    speaker_x = pcb_x + PCB_WIDTH - SPEAKER_DIAMETER / 2;
+    speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
+    speaker_z = pcb_z - SPEAKER_HEIGHT - PCB_PIN_CLEARANCE;
+
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
 
@@ -123,6 +128,10 @@ module scout(
                 r = knob_radius,
                 h = knob_height
             );
+        }
+
+        translate([speaker_x, speaker_y, speaker_z - e]) {
+            % speaker();
         }
     }
 
@@ -180,6 +189,12 @@ module scout(
                 knob_z
             ],
 
+            speaker_position = [
+                speaker_x,
+                speaker_y,
+                speaker_z
+            ],
+
             tolerance = tolerance,
 
             quick_preview = quick_preview
@@ -214,4 +229,7 @@ intersection() {
 
     // screw mount
     /* translate([44, -10, -10]) { cube([200, 100, 100]); } */
+
+    // speaker
+    /* translate([130, -10, -10]) { cube([200, 100, 100]); } */
 }

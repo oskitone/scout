@@ -40,7 +40,9 @@ module enclosure(
     lightpipe_dimensions = [],
 
     knob_radius,
-    knob_position,
+    knob_position = [],
+
+    speaker_position = [],
 
     label_text_size = 3.2,
     label_length = 5,
@@ -217,6 +219,20 @@ module enclosure(
         }
     }
 
+    module _speaker_fixture() {
+        translate([
+            speaker_position.x,
+            speaker_position.y,
+            ENCLOSURE_FLOOR_CEILING - e
+        ]) {
+            speaker_fixture(
+                height = speaker_position.z + SPEAKER_HEIGHT
+                    - ENCLOSURE_FLOOR_CEILING + e,
+                tolerance = tolerance
+            );
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
@@ -224,6 +240,7 @@ module enclosure(
                     _half(top_height, lip = true);
                     _switch_exposure(false);
                     pcb_fixtures(pcb_position = pcb_position);
+                    _speaker_fixture();
                 }
 
                 if (show_top) {
