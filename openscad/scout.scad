@@ -142,8 +142,6 @@ module scout(
     }
 
     if (show_keys) {
-        cantilever_height = 2;
-
         e_translate([keys_x, keys_y, keys_z], [0, 0, -1]) {
             keys(
                 key_height = key_height,
@@ -180,7 +178,7 @@ module scout(
                 accidental_key_recession + accidental_height + key_lip_exposure,
                 enclosure_height - keys_z
             ),
-            keys_position = [keys_x, keys_y],
+            keys_position = [keys_x, keys_y, keys_z],
             key_gutter = key_gutter,
             keys_full_width = keys_full_width,
 

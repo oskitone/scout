@@ -6,12 +6,14 @@ use <../../poly555/openscad/lib/switch.scad>;
 use <../../apc/openscad/floating_hole_cavity.scad>;
 
 use <enclosure_engraving.scad>;
+include <keys.scad>;
 include <pcb_fixtures.scad>;
 
 /* TODO: extract */
 ENCLOSURE_WALL = 2.4;
 ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
+LIP_BOX_DEFAULT_LIP_HEIGHT = 3;
 
 ENCLOSURE_TO_PCB_CLEARANCE = 2;
 
@@ -293,15 +295,39 @@ module enclosure(
         }
     }
 
+    module _keys_mount_alignment_fixture(bottom) {
+        keys_to_enclosure_distance = get_keys_to_enclosure_distance(tolerance);
+        z = bottom
+            ? ENCLOSURE_FLOOR_CEILING - e
+            : bottom_height + LIP_BOX_DEFAULT_LIP_HEIGHT;
+        height = bottom
+            ? bottom_height + LIP_BOX_DEFAULT_LIP_HEIGHT - z
+            : keys_position.z - z + cantilever_height;
+
+        translate([
+            keys_position.x - keys_to_enclosure_distance,
+            keys_position.y + key_length,
+            z
+        ]) {
+            keys_mount_alignment_fixture(
+                height,
+                cavity = false,
+                tolerance = tolerance
+            );
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
                 if (show_bottom) {
                     _half(top_height, lip = true);
+
                     _switch_exposure(false);
                     pcb_fixtures(pcb_position = pcb_position);
                     _speaker_fixture();
                     _battery_fixture();
+                    _keys_mount_alignment_fixture(true);
                 }
 
                 if (show_top) {
@@ -312,6 +338,7 @@ module enclosure(
                     }
 
                     _knob_exposure(false);
+                    _keys_mount_alignment_fixture(false);
                 }
             }
 

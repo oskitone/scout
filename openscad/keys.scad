@@ -14,6 +14,8 @@ key_length = 50;
 
 accidental_height = 2;
 
+cantilever_height = 2;
+
 key_to_pcb_x_offset = ((key_width - 6) / 2 - key_gutter);
 
 keys_full_width = (
@@ -31,17 +33,29 @@ function get_keys_mount_rail_width(tolerance) = (
 
 module keys_mount_alignment_fixture(
     height,
-    bleed = 0,
+    cavity,
     tolerance = 0,
+
     fixture_width = 1,
     fixture_length = 2
 ) {
     e = .0825;
 
-    fixture_width = fixture_width + bleed;
-    fixture_length = fixture_length + bleed;
+    x_bleed = cavity ? 0 : tolerance + e;
 
-    for (x = [-e, get_keys_mount_rail_width(tolerance) - fixture_width]) {
+    fixture_width = cavity
+        ? fixture_width + tolerance
+        : fixture_width + x_bleed;
+    fixture_length = cavity
+        ? fixture_length + tolerance
+        : fixture_length;
+
+    xs = [
+        -e - x_bleed,
+        get_keys_mount_rail_width(tolerance) - fixture_width + x_bleed
+    ];
+
+    for (x = xs) {
         for (y = [(keys_mount_length - fixture_length) / 2]) {
             translate([x, y, -e]) {
                 cube([fixture_width + e, fixture_length, height + e * 2]);
@@ -76,7 +90,7 @@ module keys_mount_rail(
             translate([0, front_y_bleed, 0]) {
                 keys_mount_alignment_fixture(
                     height = height,
-                    bleed = tolerance,
+                    cavity = true,
                     tolerance = tolerance
                 );
             }
