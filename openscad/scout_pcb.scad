@@ -44,6 +44,9 @@ PCB_POT_POSITION = _([172.824 - 2.54, 97.096 - 7], [-.104, 2.9]);
 
 PCB_SWITCH_POSITION = _([44.45, 97.345], [0, 2.9]);
 
+PCB_FTDI_HEADER_POSITION = _([67.056, 92.71], [- 2.54 / 2, 2.9]);
+PCB_FTDI_HEADER_WIDTH = 2.54 * 6;
+
 LED_DIAMETER = 5.9;
 LED_HEIGHT = 8.6;
 
@@ -65,9 +68,10 @@ module scout_pcb(
     show_silkscreen = true,
     show_led = true,
     show_pot = true,
-    show_switch = true
+    show_switch = true,
+    show_pcb_ftdi_header_position = true
 ) {
-    e = .0943;
+    e = .0143;
     silkscreen_height = e;
 
     difference() {
@@ -107,8 +111,14 @@ module scout_pcb(
         }
     }
 
+    module _translate(position, z = PCB_HEIGHT - e) {
+        translate([position.x, position.y, z]) {
+            children();
+        }
+    }
+
     if (show_led) {
-        translate([PCB_LED_POSITION.x, PCB_LED_POSITION.y, PCB_HEIGHT - e]) {
+        _translate(PCB_LED_POSITION) {
             % cylinder(
                 d = LED_DIAMETER,
                 h = LED_HEIGHT + e,
@@ -118,15 +128,28 @@ module scout_pcb(
     }
 
     if (show_pot) {
-        translate([PCB_POT_POSITION.x, PCB_POT_POSITION.y, PCB_HEIGHT - e]) {
+        _translate(PCB_POT_POSITION) {
             % pot();
         }
     }
 
     if (show_switch) {
-        translate([PCB_SWITCH_POSITION.x, PCB_SWITCH_POSITION.y, e]) {
+        _translate(PCB_SWITCH_POSITION, e) {
             mirror([0, 0, 1]) mirror([0, 1, 0]) {
                 % switch();
+            }
+        }
+    }
+
+    if (show_pcb_ftdi_header_position) {
+        pin_size = .8;
+        xz = 2.54 / 2 - pin_size / 2;
+
+        _translate(PCB_FTDI_HEADER_POSITION) {
+            for (i = [0 : 5]) {
+                translate([xz + i * 2.54, 0, xz]) {
+                    % cube([pin_size, 10, pin_size]);
+                }
             }
         }
     }

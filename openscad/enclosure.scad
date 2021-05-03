@@ -61,8 +61,6 @@ module enclosure(
 ) {
     e = .0345;
 
-    xy_clearance = 1;
-
     top_height = dimensions.z / 2;
     bottom_height = dimensions.z / 2;
 
@@ -141,7 +139,10 @@ module enclosure(
         }
     }
 
-    module _knob_exposure(cavity) {
+    module _knob_exposure(
+        cavity,
+        xy_clearance = 1
+    ) {
         cavity_z = knob_position.z - knob_vertical_clearance;
         cavity_height = dimensions.z - cavity_z + e;
         cavity_diameter = (knob_radius + xy_clearance + tolerance) * 2;
@@ -272,6 +273,26 @@ module enclosure(
         }
     }
 
+    module _ftdi_header_exposure(
+        x_bleed = 1,
+        z_clearance = 1,
+        height = 2.54
+    ) {
+        translate([
+            pcb_position.x + PCB_FTDI_HEADER_POSITION.x - x_bleed,
+            dimensions.y - ENCLOSURE_WALL - e,
+            pcb_position.z + PCB_HEIGHT + 2.54 / 2
+                - height / 2
+                - z_clearance
+        ]) {
+            cube([
+                PCB_FTDI_HEADER_WIDTH + x_bleed * 2,
+                ENCLOSURE_WALL + e * 2,
+                height + z_clearance * 2
+            ]);
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
@@ -301,6 +322,7 @@ module enclosure(
                 _knob_exposure(true);
                 _switch_exposure(true);
                 _screw_cavities();
+                _ftdi_header_exposure();
             }
         }
     }
