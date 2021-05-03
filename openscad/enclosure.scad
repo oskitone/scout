@@ -3,6 +3,8 @@ use <../../poly555/openscad/lib/enclosure.scad>;
 use <../../poly555/openscad/lib/screw_head_exposures.scad>;
 use <../../poly555/openscad/lib/switch.scad>;
 
+use <../../apc/openscad/floating_hole_cavity.scad>;
+
 use <enclosure_engraving.scad>;
 include <pcb_fixtures.scad>;
 
@@ -157,13 +159,20 @@ module enclosure(
             }
 
             if (cavity) {
+                diameter = PTV09A_POT_ACTUATOR_DIAMETER + tolerance * 2;
+
+                translate([0, 0, well_z + ENCLOSURE_FLOOR_CEILING]) {
+                    floating_hole_cavity(
+                        diameter,
+                        cavity_diameter
+                    );
+                }
+
                 translate([0, 0, well_z - e]) {
                     cylinder(
-                        d = PTV09A_POT_ACTUATOR_DIAMETER + tolerance * 2,
+                        d = diameter,
                         h = ENCLOSURE_FLOOR_CEILING + e * 2
                     );
-
-                    // TODO: DFM
                 }
 
                 enclosure_engraving(
