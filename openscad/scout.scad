@@ -49,8 +49,6 @@ module scout(
 ) {
     e = .0432;
 
-    keys_mount_length = 5;
-    key_to_pcb_x_offset = ((key_width - 6) / 2 - key_gutter);
     pcb_key_mount_y = PCB_HOLE_POSITIONS[0][1] - keys_mount_length / 2;
 
     keys_x = ENCLOSURE_WALL + key_gutter;
@@ -64,10 +62,6 @@ module scout(
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
 
-    keys_full_width = (
-        10 * key_width // TODO: derive natural key count
-        + 9 * key_gutter // TODO: derive natural key count - 1
-    );
     key_min_height = 4;
 
     enclosure_width = default_gutter * 2 + keys_full_width;
@@ -148,12 +142,16 @@ module scout(
     }
 
     if (show_keys) {
+        cantilever_height = 2;
+
         e_translate([keys_x, keys_y, keys_z], [0, 0, -1]) {
             keys(
-                keys_count = 17,
-                starting_natural_key_index = 0,
                 key_height = key_height,
                 tolerance = tolerance,
+
+                cantilever_length = key_height - cantilever_height,
+                cantilever_height = cantilever_height,
+
                 quick_preview = quick_preview
             );
         }

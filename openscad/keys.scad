@@ -4,34 +4,96 @@ use <../../poly555/openscad/lib/utils.scad>;
 
 include <utils.scad>;
 
+keys_mount_length = 5;
+
 key_plot = 2.54 * 3;
 key_gutter = 1;
 
 key_width = key_plot * 2 - key_gutter;
 key_length = 50;
 
-mount_length = 8;
-
 accidental_height = 2;
 
-keys_count = 20;
-starting_natural_key_index = 3;
+key_to_pcb_x_offset = ((key_width - 6) / 2 - key_gutter);
 
-mount_width = get_keys_total_width(
-    count = keys_count,
-    starting_note_index = 0,
-    natural_width = key_width,
-    gutter = key_gutter
+keys_full_width = (
+    10 * key_width // TODO: derive natural key count
+    + 9 * key_gutter // TODO: derive natural key count - 1
 );
-offset = mount_width - PCB_WIDTH;
+
+function get_keys_to_enclosure_distance(tolerance = 0) = (
+    key_gutter - tolerance * 2
+);
+
+function get_keys_mount_rail_width(tolerance) = (
+    keys_full_width + get_keys_to_enclosure_distance(tolerance) * 2
+);
+
+module keys_mount_alignment_fixture(
+    height,
+    bleed = 0,
+    tolerance = 0,
+    fixture_width = 1,
+    fixture_length = 2
+) {
+    e = .0825;
+
+    fixture_width = fixture_width + bleed;
+    fixture_length = fixture_length + bleed;
+
+    for (x = [-e, get_keys_mount_rail_width(tolerance) - fixture_width]) {
+        for (y = [(keys_mount_length - fixture_length) / 2]) {
+            translate([x, y, -e]) {
+                cube([fixture_width + e, fixture_length, height + e * 2]);
+            }
+        }
+    }
+}
+
+module keys_mount_rail(
+    height,
+    front_y_bleed = 0,
+    tolerance = 0
+) {
+    keys_to_enclosure_distance = get_keys_to_enclosure_distance(tolerance);
+
+    translate([-keys_to_enclosure_distance, key_length - front_y_bleed, 0]) {
+        difference() {
+            cube([
+                get_keys_mount_rail_width(tolerance),
+                keys_mount_length + front_y_bleed,
+                height
+            ]);
+
+            translate([
+                key_to_pcb_x_offset + keys_to_enclosure_distance,
+                keys_mount_length / 2 + front_y_bleed,
+                0
+            ]) {
+                scout_pcb_holes(0);
+            }
+
+            translate([0, front_y_bleed, 0]) {
+                keys_mount_alignment_fixture(
+                    height = height,
+                    bleed = tolerance,
+                    tolerance = tolerance
+                );
+            }
+        }
+    }
+}
 
 module keys(
-    keys_count = keys_count,
-    starting_natural_key_index = starting_natural_key_index,
     key_height = 7,
     tolerance = 0,
+
     cantilever_length = 0,
     cantilever_height = 0,
+
+    keys_count = 17,
+    starting_natural_key_index = 0,
+
     quick_preview = true
 ) {
     e = .0234;
@@ -41,8 +103,6 @@ module keys(
         include_accidental = false,
         include_cantilevers = false
     ) {
-        y = PCB_LENGTH - key_length - mount_length;
-
         mounted_keys(
             count = keys_count,
             starting_natural_key_index = starting_natural_key_index,
@@ -67,21 +127,31 @@ module keys(
 
             cantilever_length = cantilever_length,
             cantilever_height = cantilever_height,
-            cantilever_recession = cantilever_length - .1 * 2 // TODO: extract
+            cantilever_recession = cantilever_length
         );
     }
 
     e_translate(direction = [0, 1, -1]) {
-        color("black") _keys(
-            include_natural = false,
-            include_accidental = true,
-            include_cantilevers = true
-        );
+        color("black") {
+            _keys(
+                include_natural = false,
+                include_accidental = true,
+                include_cantilevers = true
+            );
+        }
     }
 
-    color("white") _keys(
-        include_natural = true,
-        include_accidental = false,
-        include_cantilevers = true
-    );
+    color("white") {
+        _keys(
+            include_natural = true,
+            include_accidental = false,
+            include_cantilevers = true
+        );
+
+        keys_mount_rail(
+            height = cantilever_height,
+            front_y_bleed = e,
+            tolerance = tolerance
+        );
+    }
 }

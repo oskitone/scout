@@ -63,6 +63,20 @@ BUTTON_HEIGHT = 6;
 
 PCB_PIN_CLEARANCE = 2;
 
+module scout_pcb_holes(y) {
+    e = .0343;
+
+    for (xy = PCB_HOLE_POSITIONS) {
+        translate([xy.x, y != undef ? y : xy.y, -e]) {
+            cylinder(
+                d = PCB_HOLE_DIAMTER,
+                h = PCB_HEIGHT + e * 2 + 3,
+                $fn = 12
+            );
+        }
+    }
+}
+
 module scout_pcb(
     show_buttons = true,
     show_silkscreen = true,
@@ -89,15 +103,7 @@ module scout_pcb(
             }
         }
 
-        for (xy = PCB_HOLE_POSITIONS) {
-            translate([xy.x, xy.y, -e]) {
-                cylinder(
-                    d = PCB_HOLE_DIAMTER,
-                    h = PCB_HEIGHT + e * 2 + 3,
-                    $fn = 12
-                );
-            }
-        }
+        scout_pcb_holes();
     }
 
     if (show_buttons) {
