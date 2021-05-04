@@ -72,14 +72,17 @@ BUTTON_HEIGHT = 6;
 
 PCB_PIN_CLEARANCE = 2;
 
-module scout_pcb_holes(y) {
+module scout_pcb_holes(
+    y,
+    height = PCB_HEIGHT
+) {
     e = .0343;
 
     for (xy = PCB_HOLE_POSITIONS) {
         translate([xy.x, y != undef ? y : xy.y, -e]) {
             cylinder(
                 d = PCB_HOLE_DIAMTER,
-                h = PCB_HEIGHT + e * 2 + 3,
+                h = height + e * 2 + 3,
                 $fn = 12
             );
         }

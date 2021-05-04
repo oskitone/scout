@@ -31,6 +31,7 @@ SWITCH_ORIGIN = [SWITCH_BASE_WIDTH / 2, 6.36];
 module scout(
     show_keys = true,
     show_pcb = true,
+    show_keys_mount_rail = true,
     show_accoutrements = true,
     show_enclosure_top = true,
     show_enclosure_bottom = true,
@@ -44,6 +45,9 @@ module scout(
 
     lightpipe_recession = 2,
     exposed_switch_clearance = 1,
+
+    enclosure_outer_color = "#FF69B4",
+    enclosure_cavity_color = "#cc5490",
 
     tolerance = 0,
     quick_preview = true
@@ -169,6 +173,18 @@ module scout(
         }
     }
 
+    if (show_keys_mount_rail) {
+        translate([keys_x, keys_y, pcb_z + PCB_HEIGHT]) {
+            color(enclosure_outer_color) {
+                keys_mount_rail(
+                    height = BUTTON_HEIGHT,
+                    front_y_bleed = 0,
+                    tolerance = tolerance
+                );
+            }
+        }
+    }
+
     if (show_enclosure_top || show_enclosure_bottom) {
         enclosure(
             show_top = show_enclosure_top,
@@ -220,6 +236,9 @@ module scout(
 
             tolerance = tolerance,
 
+            outer_color = enclosure_outer_color,
+            cavity_color = enclosure_cavity_color,
+
             quick_preview = quick_preview
         );
     }
@@ -231,6 +250,7 @@ module scout(
 
 SHOW_KEYS = true;
 SHOW_PCB = true;
+SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_ACCOUTREMENTS = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ENCLOSURE_BOTTOM = true;
@@ -239,6 +259,7 @@ intersection() {
     scout(
         show_keys = SHOW_KEYS,
         show_pcb = SHOW_PCB,
+        show_keys_mount_rail = SHOW_KEYS_MOUNT_RAIL,
         show_accoutrements = SHOW_ACCOUTREMENTS,
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
         show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,

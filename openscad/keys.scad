@@ -84,7 +84,10 @@ module keys_mount_rail(
                 keys_mount_length / 2 + front_y_bleed,
                 0
             ]) {
-                scout_pcb_holes(0);
+                scout_pcb_holes(
+                    y = 0,
+                    height = height
+                );
             }
 
             translate([0, front_y_bleed, 0]) {

@@ -56,8 +56,8 @@ module enclosure(
 
     tolerance = 0,
 
-    outer_color = "#FF69B4",
-    cavity_color = "#cc5490",
+    outer_color = undef,
+    cavity_color = undef,
 
     quick_preview = true
 ) {
