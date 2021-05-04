@@ -29,12 +29,12 @@ SWITCH_ACTUATOR_TRAVEL = 1.5;
 SWITCH_ORIGIN = [SWITCH_BASE_WIDTH / 2, 6.36];
 
 module scout(
-    show_keys = true,
+    show_enclosure_bottom = true,
     show_pcb = true,
     show_keys_mount_rail = true,
-    show_accoutrements = true,
+    show_keys = true,
     show_enclosure_top = true,
-    show_enclosure_bottom = true,
+    show_accoutrements = true,
 
     accidental_key_recession = 2,
     key_lip_exposure = 4, // should be comfortably over ~2 travel
@@ -248,21 +248,21 @@ module scout(
     }
 }
 
-SHOW_KEYS = true;
+SHOW_ENCLOSURE_BOTTOM = true;
 SHOW_PCB = true;
 SHOW_KEYS_MOUNT_RAIL = true;
-SHOW_ACCOUTREMENTS = true;
+SHOW_KEYS = true;
 SHOW_ENCLOSURE_TOP = true;
-SHOW_ENCLOSURE_BOTTOM = true;
+SHOW_ACCOUTREMENTS = true;
 
 intersection() {
     scout(
-        show_keys = SHOW_KEYS,
+        show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
         show_pcb = SHOW_PCB,
         show_keys_mount_rail = SHOW_KEYS_MOUNT_RAIL,
-        show_accoutrements = SHOW_ACCOUTREMENTS,
+        show_keys = SHOW_KEYS,
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
-        show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
+        show_accoutrements = SHOW_ACCOUTREMENTS,
 
         tolerance = DEFAULT_TOLERANCE,
         quick_preview = $preview
