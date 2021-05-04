@@ -1,4 +1,5 @@
 /* TODO: extract into common parts repo */
+use <../../apc/openscad/wheels.scad>;
 use <../../poly555/openscad/lib/basic_shapes.scad>;
 
 include <batteries.scad>;
@@ -126,10 +127,14 @@ module scout(
             pcb_y + PCB_POT_POSITION.y,
             knob_z
         ]) {
-            # cylinder(
-                r = knob_radius,
-                h = knob_height
-            );
+            color("white") {
+                wheel(
+                    diameter = knob_radius * 2,
+                    height = knob_height,
+                    tolerance = tolerance,
+                    $fn = quick_preview ? 0 : DEFAULT_ROUNDING
+                );
+            }
         }
 
         translate([speaker_x, speaker_y, speaker_z - e]) {
