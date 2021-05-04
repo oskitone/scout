@@ -146,7 +146,7 @@ module keys(
     }
 
     e_translate(direction = [0, 1, -1]) {
-        color("black") {
+        color("#444") {
             _keys(
                 include_natural = false,
                 include_accidental = true,
