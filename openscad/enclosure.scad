@@ -317,6 +317,24 @@ module enclosure(
         }
     }
 
+    module _headphone_jack_cavity(
+        plug_diameter = 10
+    ) {
+        translate([
+            pcb_position.x + PCB_HEADPHONE_JACK_POSITION.x
+                + HEADPHONE_JACK_WIDTH / 2,
+            dimensions.y - ENCLOSURE_WALL - e,
+            pcb_position.z + PCB_HEIGHT + HEADPHONE_JACK_BARREL_Z
+        ]) {
+            rotate([-90, 0, 0]) {
+                cylinder(
+                    d = plug_diameter + tolerance * 2,
+                    h = ENCLOSURE_WALL + e * 2
+                );
+            }
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
@@ -350,6 +368,7 @@ module enclosure(
                 _switch_exposure(true);
                 _screw_cavities();
                 _ftdi_header_exposure();
+                _headphone_jack_cavity();
             }
         }
     }

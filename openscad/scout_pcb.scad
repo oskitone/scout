@@ -47,6 +47,15 @@ PCB_SWITCH_POSITION = _([44.45, 97.345], [0, 2.9]);
 PCB_FTDI_HEADER_POSITION = _([67.056, 92.71], [- 2.54 / 2, 2.9]);
 PCB_FTDI_HEADER_WIDTH = 2.54 * 6;
 
+PCB_HEADPHONE_JACK_POSITION = _([129.54, 86.868], [-6, 2.9 - 7.49]);
+
+HEADPHONE_JACK_WIDTH = 12;
+HEADPHONE_JACK_LENGTH = 11;
+HEADPHONE_JACK_HEIGHT = 1 + 5;
+HEADPHONE_JACK_BARREL_LENGTH = 3;
+HEADPHONE_JACK_BARREL_DIAMETER = 6;
+HEADPHONE_JACK_BARREL_Z = 1 + 5 / 2;
+
 LED_DIAMETER = 5.9;
 LED_HEIGHT = 8.6;
 
@@ -83,7 +92,8 @@ module scout_pcb(
     show_led = true,
     show_pot = true,
     show_switch = true,
-    show_pcb_ftdi_header_position = true
+    show_pcb_ftdi_header = true,
+    show_headphone_jack = true
 ) {
     e = .0143;
     silkscreen_height = e;
@@ -147,7 +157,7 @@ module scout_pcb(
         }
     }
 
-    if (show_pcb_ftdi_header_position) {
+    if (show_pcb_ftdi_header) {
         pin_size = .8;
         xz = 2.54 / 2 - pin_size / 2;
 
@@ -155,6 +165,29 @@ module scout_pcb(
             for (i = [0 : 5]) {
                 translate([xz + i * 2.54, 0, xz]) {
                     % cube([pin_size, 10, pin_size]);
+                }
+            }
+        }
+    }
+
+    if (show_headphone_jack) {
+        _translate(PCB_HEADPHONE_JACK_POSITION) {
+            % cube([
+                HEADPHONE_JACK_WIDTH,
+                HEADPHONE_JACK_LENGTH,
+                HEADPHONE_JACK_HEIGHT
+            ]);
+
+            translate([
+                HEADPHONE_JACK_WIDTH / 2,
+                HEADPHONE_JACK_LENGTH - e,
+                HEADPHONE_JACK_BARREL_Z
+            ]) {
+                rotate([-90, 0, 0]) {
+                    % cylinder(
+                        d = HEADPHONE_JACK_BARREL_DIAMETER,
+                        h = HEADPHONE_JACK_BARREL_LENGTH + e
+                    );
                 }
             }
         }
