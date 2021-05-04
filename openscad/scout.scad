@@ -127,14 +127,17 @@ module scout(
             pcb_y + PCB_POT_POSITION.y,
             knob_z
         ]) {
-            color("white") {
-                wheel(
-                    diameter = knob_radius * 2,
-                    height = knob_height,
-                    tolerance = tolerance,
-                    $fn = quick_preview ? 0 : DEFAULT_ROUNDING
-                );
-            }
+            wheel(
+                diameter = knob_radius * 2,
+                height = knob_height,
+                spokes_count = 0,
+                brodie_knob_count = 0,
+                dimple_count = 1,
+                color = "#444",
+                cavity_color = "#333",
+                tolerance = tolerance,
+                $fn = quick_preview ? 0 : DEFAULT_ROUNDING
+            );
         }
 
         translate([speaker_x, speaker_y, speaker_z - e]) {
