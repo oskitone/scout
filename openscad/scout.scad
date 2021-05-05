@@ -6,14 +6,9 @@ include <batteries.scad>;
 include <scout_pcb.scad>;
 include <enclosure.scad>;
 include <keys.scad>;
+include <nuts_and_bolts.scad>;
 include <speaker.scad>;
 use <utils.scad>;
-
-/* TODO: extract into common parts repo */
-SCREW_HEAD_DIAMETER = 6;
-SCREW_HEAD_HEIGHT = 2.1;
-NUT_DIAMETER = 6.4;
-NUT_HEIGHT = 2.4;
 
 DEFAULT_TOLERANCE = .1;
 
@@ -112,6 +107,7 @@ module scout(
     module _accoutrements() {
         lightpipe_z = pcb_z + PCB_HEIGHT;
 
+        // TODO: fix obstruction with keys_mount_rail
         translate([
             lightpipe_x + tolerance,
             branding_y + tolerance,
@@ -151,6 +147,11 @@ module scout(
         translate([batteries_x, batteries_y, batteries_z + e]) {
             % battery_array();
         }
+
+        % nuts(
+            pcb_position = [pcb_x, pcb_y, pcb_z],
+            z = keys_z + cantilever_height
+        );
     }
 
     if (show_keys) {
@@ -270,6 +271,9 @@ intersection() {
 
     // switch and batteries
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
+
+    // lightpipe
+    /* translate([10, -10, -10]) { cube([200, 100, 100]); } */
 
     // screw mount
     /* translate([44, -10, -10]) { cube([200, 100, 100]); } */

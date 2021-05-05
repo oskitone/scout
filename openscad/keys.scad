@@ -2,8 +2,11 @@
 use <../../poly555/openscad/lib/keys.scad>;
 use <../../poly555/openscad/lib/utils.scad>;
 
+include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
+// NOTE: this is knowingly less than NUT_DIAMETER
+// TODO: Provide cavities on the keys ensure there's no obstruction
 keys_mount_length = 5;
 
 key_plot = 2.54 * 3;

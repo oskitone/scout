@@ -22,6 +22,8 @@ ENCLOSURE_FILLET = 2;
 DEFAULT_ROUNDING = $preview ? undef : 24;
 HIDEF_ROUNDING = $preview ? undef : 120;
 
+nut_lock_floor = ENCLOSURE_FLOOR_CEILING;
+
 module enclosure(
     show_top = true,
     show_bottom = true,
@@ -336,7 +338,6 @@ module enclosure(
     }
 
     module _keys_mount_nut_lock_rail(
-        nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
         nut_cavity_size = NUT_DIAMETER + tolerance * 2,
         nut_cavity_height = NUT_HEIGHT
     ) {
@@ -347,15 +348,19 @@ module enclosure(
             DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
             dfm_length = PCB_HOLE_DIAMTER;
 
+            nuts(
+                pcb_position = pcb_position,
+                z = keys_position.z + cantilever_height,
+                diameter = nut_cavity_size,
+                height = nut_cavity_height
+            );
+
             for (xy = PCB_HOLE_POSITIONS) {
                 translate([
                     pcb_position.x + xy.x - nut_cavity_size / 2,
                     pcb_position.y + xy.y - nut_cavity_size / 2,
                     z + nut_lock_floor
                 ]) {
-                    cube([nut_cavity_size, nut_cavity_size, nut_cavity_height]);
-
-                    // DFM
                     translate([
                         0,
                         (nut_cavity_size - dfm_length) / 2,
