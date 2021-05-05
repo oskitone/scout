@@ -595,8 +595,6 @@ $EndComp
 Wire Wire Line
 	3700 6800 4050 6800
 Wire Wire Line
-	3650 6000 3650 5750
-Wire Wire Line
 	3700 6400 3700 6800
 Wire Wire Line
 	3700 6400 2800 6400
@@ -711,5 +709,24 @@ TODO: confirm cap value\nfor speaker boost
 Text Notes 2950 5650 0    50   ~ 0
 TODO: confirm value\nfor safe headphone out
 Wire Wire Line
-	3300 6100 3800 6100
+	3800 6400 3700 6400
+Connection ~ 3700 6400
+Wire Wire Line
+	3300 6100 3550 6100
+Wire Wire Line
+	3650 6000 3650 5750
+Wire Wire Line
+	3800 6000 3650 6000
+Wire Wire Line
+	3800 6300 3550 6300
+Wire Wire Line
+	3550 6300 3550 6100
+Connection ~ 3550 6100
+Wire Wire Line
+	3550 6100 3800 6100
+Wire Wire Line
+	3800 6200 3650 6200
+Wire Wire Line
+	3650 6200 3650 6000
+Connection ~ 3650 6000
 $EndSCHEMATC

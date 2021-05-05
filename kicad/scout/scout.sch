@@ -15,8 +15,6 @@ Comment4 ""
 $EndDescr
 Wire Wire Line
 	3550 1550 3550 1650
-Text Notes 3650 4850 0    50   ~ 0
-NOTE: this should also be pin 22\nTODO: confirm
 Wire Wire Line
 	3550 1550 3650 1550
 Wire Wire Line
