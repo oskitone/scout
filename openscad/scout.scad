@@ -156,17 +156,18 @@ module scout(
     }
 
     if (show_keys) {
-        e_translate([keys_x, keys_y, keys_z], [0, 0, -1]) {
-            keys(
-                key_height = key_height,
-                tolerance = tolerance,
+        keys(
+            key_height = key_height,
+            tolerance = tolerance,
 
-                cantilever_length = key_height - cantilever_height,
-                cantilever_height = cantilever_height,
+            cantilever_length = key_height - cantilever_height,
+            cantilever_height = cantilever_height,
 
-                quick_preview = quick_preview
-            );
-        }
+            keys_position = [keys_x, keys_y, keys_z],
+            pcb_position = [pcb_x, pcb_y, pcb_z],
+
+            quick_preview = quick_preview
+        );
     }
 
     if (show_pcb) {

@@ -117,6 +117,9 @@ module keys(
     keys_count = 17,
     starting_natural_key_index = 0,
 
+    keys_position = [],
+    pcb_position = [],
+
     quick_preview = true
 ) {
     e = .0234;
@@ -154,27 +157,41 @@ module keys(
         );
     }
 
-    e_translate(direction = [0, 1, -1]) {
-        color("#444") {
-            _keys(
-                include_natural = false,
-                include_accidental = true,
-                include_cantilevers = true
-            );
+    difference() {
+        union() {
+            e_translate(keys_position, [0, 1, -1]) {
+                color("#444") {
+                    _keys(
+                        include_natural = false,
+                        include_accidental = true,
+                        include_cantilevers = true
+                    );
+                }
+            }
+
+            color("white") {
+                translate(keys_position) {
+                    _keys(
+                        include_natural = true,
+                        include_accidental = false,
+                        include_cantilevers = true
+                    );
+
+                    keys_mount_rail(
+                        height = cantilever_height,
+                        front_y_bleed = e,
+                        tolerance = tolerance
+                    );
+                }
+            }
         }
-    }
 
-    color("white") {
-        _keys(
-            include_natural = true,
-            include_accidental = false,
-            include_cantilevers = true
-        );
-
-        keys_mount_rail(
-            height = cantilever_height,
-            front_y_bleed = e,
-            tolerance = tolerance
+        nuts(
+            pcb_position = pcb_position,
+            z = keys_position.z + cantilever_height,
+            diameter = NUT_DIAMETER + tolerance * 2,
+            height = NUT_HEIGHT,
+            chamfer_top = true
         );
     }
 }
