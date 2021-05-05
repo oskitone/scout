@@ -88,7 +88,7 @@ module pcb_fixtures(
                 translate([0, 0, shaft_column_z]) {
                     cylinder(
                         h = pcb_position.z - shaft_column_z,
-                        d = PCB_HOLE_DIAMTER
+                        d = PCB_HOLE_DIAMETER
                             + clearance * 2
                             + ENCLOSURE_INNER_WALL * 2
                     );

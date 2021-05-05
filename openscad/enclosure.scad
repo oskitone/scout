@@ -285,7 +285,7 @@ module enclosure(
 
                 translate([0, 0, -e]) {
                     cylinder(
-                        d = PCB_HOLE_DIAMTER,
+                        d = PCB_HOLE_DIAMETER,
                         h = pcb_position.z + e * 2,
                         $fn = HIDEF_ROUNDING
                     );
@@ -394,7 +394,7 @@ module enclosure(
 
             if (show_dfm) {
                 DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
-                dfm_length = PCB_HOLE_DIAMTER;
+                dfm_length = PCB_HOLE_DIAMETER;
 
                 for (xy = PCB_HOLE_POSITIONS) {
                     translate([

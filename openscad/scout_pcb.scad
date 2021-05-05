@@ -30,7 +30,7 @@ PCB_BUTTON_POSITIONS = [
     _([33.782 + 2.54 * .9, 121.92 - 2.54 * 2.45]),
 ];
 
-PCB_HOLE_DIAMTER = 3.2;
+PCB_HOLE_DIAMETER = 3.2;
 PCB_HOLE_POSITIONS = [
     _([138.938, 107.696 - 2.9]),
     _([104.648, 107.696 - 2.9]),
@@ -81,7 +81,7 @@ module scout_pcb_holes(
     for (xy = PCB_HOLE_POSITIONS) {
         translate([xy.x, y != undef ? y : xy.y, -e]) {
             cylinder(
-                d = PCB_HOLE_DIAMTER,
+                d = PCB_HOLE_DIAMETER,
                 h = height + e * 2 + 3,
                 $fn = 12
             );
