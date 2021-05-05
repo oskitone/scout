@@ -30,6 +30,7 @@ module scout(
     show_keys = true,
     show_enclosure_top = true,
     show_accoutrements = true,
+    show_dfm = false,
 
     accidental_key_recession = 2,
     key_lip_exposure = 4, // should be comfortably over ~2 travel
@@ -235,6 +236,8 @@ module scout(
                 batteries_z
             ],
 
+            show_dfm = show_dfm,
+
             tolerance = tolerance,
 
             outer_color = enclosure_outer_color,
@@ -255,6 +258,7 @@ SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_KEYS = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ACCOUTREMENTS = true;
+SHOW_DFM = false;
 
 intersection() {
     scout(
@@ -264,6 +268,7 @@ intersection() {
         show_keys = SHOW_KEYS,
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
         show_accoutrements = SHOW_ACCOUTREMENTS,
+        show_dfm = SHOW_DFM,
 
         tolerance = DEFAULT_TOLERANCE,
         quick_preview = $preview

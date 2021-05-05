@@ -56,6 +56,8 @@ module enclosure(
     label_text_size = 3.2,
     label_length = 5,
 
+    show_dfm = false,
+
     tolerance = 0,
 
     outer_color = undef,
@@ -185,11 +187,13 @@ module enclosure(
             if (cavity) {
                 diameter = PTV09A_POT_ACTUATOR_DIAMETER + tolerance * 2;
 
-                translate([0, 0, well_z + ENCLOSURE_FLOOR_CEILING]) {
-                    floating_hole_cavity(
-                        diameter,
-                        cavity_diameter
-                    );
+                if (show_dfm) {
+                    translate([0, 0, well_z + ENCLOSURE_FLOOR_CEILING]) {
+                        floating_hole_cavity(
+                            diameter,
+                            cavity_diameter
+                        );
+                    }
                 }
 
                 translate([0, 0, well_z - e]) {
@@ -381,9 +385,6 @@ module enclosure(
         height = dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
 
         module _nut_locks() {
-            DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
-            dfm_length = PCB_HOLE_DIAMTER;
-
             nuts(
                 pcb_position = pcb_position,
                 z = keys_position.z + cantilever_height,
@@ -391,22 +392,27 @@ module enclosure(
                 height = nut_cavity_height
             );
 
-            for (xy = PCB_HOLE_POSITIONS) {
-                translate([
-                    pcb_position.x + xy.x - nut_cavity_size / 2,
-                    pcb_position.y + xy.y - nut_cavity_size / 2,
-                    z + nut_lock_floor
-                ]) {
+            if (show_dfm) {
+                DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
+                dfm_length = PCB_HOLE_DIAMTER;
+
+                for (xy = PCB_HOLE_POSITIONS) {
                     translate([
-                        0,
-                        (nut_cavity_size - dfm_length) / 2,
-                        -DEFAULT_DFM_LAYER_HEIGHT
+                        pcb_position.x + xy.x - nut_cavity_size / 2,
+                        pcb_position.y + xy.y - nut_cavity_size / 2,
+                        z + nut_lock_floor
                     ]) {
-                        cube([
-                            nut_cavity_size,
-                            dfm_length,
-                            DEFAULT_DFM_LAYER_HEIGHT + e
-                        ]);
+                        translate([
+                            0,
+                            (nut_cavity_size - dfm_length) / 2,
+                            -DEFAULT_DFM_LAYER_HEIGHT
+                        ]) {
+                            cube([
+                                nut_cavity_size,
+                                dfm_length,
+                                DEFAULT_DFM_LAYER_HEIGHT + e
+                            ]);
+                        }
                     }
                 }
             }
