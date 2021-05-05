@@ -14,7 +14,7 @@ key_length = 50;
 
 accidental_height = 2;
 
-cantilever_height = 2;
+cantilever_height = 1;
 
 key_to_pcb_x_offset = ((key_width - 6) / 2 - key_gutter);
 
