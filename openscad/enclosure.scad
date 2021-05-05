@@ -101,10 +101,17 @@ module enclosure(
         }
     }
 
-    module _branding() {
+    module _branding(
+        make_to_model_ration = .25,
+        gutter = label_distance,
+        debug = false
+    ) {
+        make_length = (branding_length - gutter) * (1 - make_to_model_ration);
+        model_length = branding_length - make_length - gutter;
+
         enclosure_engraving(
             string = "SCOUT",
-            size = branding_length / 2,
+            size = make_length,
             center = false,
             position = [
                 branding_position.x,
@@ -114,19 +121,31 @@ module enclosure(
             enclosure_height = dimensions.z
         );
 
-        // TODO: swap for proper branding
         enclosure_engraving(
-            string = "OSKITONE",
-            font = "Work Sans:style=Black",
-            size = branding_length / 2 - label_distance,
+            size = model_length,
             center = false,
             position = [
                 branding_position.x,
-                branding_position.y + branding_length / 2 + label_distance
+                branding_position.y + make_length + gutter
             ],
             quick_preview = quick_preview,
             enclosure_height = dimensions.z
         );
+
+        if (debug) {
+            width = dimensions.x
+                - branding_position.x
+                - knob_radius * 2
+                - 3.4 * 2; // TODO: expose default_gutter
+
+            translate([
+                branding_position.x,
+                branding_position.y,
+                dimensions.z - ENCLOSURE_FLOOR_CEILING
+            ]) {
+                # cube([width, branding_length, ENCLOSURE_FLOOR_CEILING + 1]);
+            }
+        }
     }
 
     module _lightpipe_exposure() {
@@ -195,7 +214,12 @@ module enclosure(
         }
     }
 
-    module _switch_exposure(cavity = false) {
+    module _switch_exposure(
+        cavity = false,
+
+        bottom_engraving_length = 8,
+        bottom_engraving_corner = 10
+    ) {
         exposure_height = pcb_position.z - SWITCH_BASE_HEIGHT;
 
         if (cavity) {
@@ -213,6 +237,18 @@ module enclosure(
                 placard = [
                     exposure_height * 2 + SWITCH_BASE_WIDTH,
                     label_length
+                ],
+                bottom = true,
+                quick_preview = quick_preview,
+                enclosure_height = dimensions.z
+            );
+
+            enclosure_engraving(
+                size = bottom_engraving_length,
+                center = false,
+                position = [
+                    dimensions.x - bottom_engraving_corner,
+                    bottom_engraving_corner
                 ],
                 bottom = true,
                 quick_preview = quick_preview,

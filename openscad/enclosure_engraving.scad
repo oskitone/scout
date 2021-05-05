@@ -29,6 +29,8 @@ module enclosure_engraving(
             ? -e
             : enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
     ]) {
+        OSKITONE_LENGTH_WIDTH_RATIO = 4.6 / 28; // TODO: extract
+
         mirror([bottom ? 1 : 0, 0, 0]) {
             difference() {
                 if (placard) {
@@ -43,10 +45,13 @@ module enclosure_engraving(
 
                 translate(placard ? [0, 0, -e] : [0, 0, 0]) {
                     engraving(
-                        string = string,
-                        svg = undef,
+                        string = string ? string : undef,
+                        svg = string ? undef : "../../branding.svg",
                         font = font,
-                        size = size,
+                        size = string ? size : undef,
+                        resize = string
+                            ? undef
+                            : [size / OSKITONE_LENGTH_WIDTH_RATIO, size],
                         bleed = quick_preview ? 0 : bleed,
                         height = placard
                             ? ENCLOSURE_ENGRAVING_DEPTH + e * 2
