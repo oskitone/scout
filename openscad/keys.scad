@@ -67,6 +67,7 @@ module keys_mount_alignment_fixture(
 module keys_mount_rail(
     height,
     front_y_bleed = 0,
+    include_alignment_fixture = true,
     tolerance = 0
 ) {
     keys_to_enclosure_distance = get_keys_to_enclosure_distance(tolerance);
@@ -90,12 +91,14 @@ module keys_mount_rail(
                 );
             }
 
-            translate([0, front_y_bleed, 0]) {
-                keys_mount_alignment_fixture(
-                    height = height,
-                    cavity = true,
-                    tolerance = tolerance
-                );
+            if (include_alignment_fixture) {
+                translate([0, front_y_bleed, 0]) {
+                    keys_mount_alignment_fixture(
+                        height = height,
+                        cavity = true,
+                        tolerance = tolerance
+                    );
+                }
             }
         }
     }

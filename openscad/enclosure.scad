@@ -335,6 +335,55 @@ module enclosure(
         }
     }
 
+    module _keys_mount_nut_lock_rail(
+        nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
+        nut_cavity_size = NUT_DIAMETER + tolerance * 2,
+        nut_cavity_height = NUT_HEIGHT
+    ) {
+        z = keys_position.z + cantilever_height;
+        height = dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
+
+        module _nut_locks() {
+            DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
+            dfm_length = PCB_HOLE_DIAMTER;
+
+            for (xy = PCB_HOLE_POSITIONS) {
+                translate([
+                    pcb_position.x + xy.x - nut_cavity_size / 2,
+                    pcb_position.y + xy.y - nut_cavity_size / 2,
+                    z + nut_lock_floor
+                ]) {
+                    cube([nut_cavity_size, nut_cavity_size, nut_cavity_height]);
+
+                    // DFM
+                    translate([
+                        0,
+                        (nut_cavity_size - dfm_length) / 2,
+                        -DEFAULT_DFM_LAYER_HEIGHT
+                    ]) {
+                        cube([
+                            nut_cavity_size,
+                            dfm_length,
+                            DEFAULT_DFM_LAYER_HEIGHT + e
+                        ]);
+                    }
+                }
+            }
+        }
+
+        difference() {
+            translate([keys_position.x, keys_position.y, z]) {
+                keys_mount_rail(
+                    height = height,
+                    include_alignment_fixture = false,
+                    tolerance = -e
+                );
+            }
+
+            _nut_locks();
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
@@ -357,6 +406,7 @@ module enclosure(
 
                     _knob_exposure(false);
                     _keys_mount_alignment_fixture(false);
+                    _keys_mount_nut_lock_rail();
                 }
             }
 
