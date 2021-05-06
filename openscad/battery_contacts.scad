@@ -11,7 +11,14 @@ KEYSTONE_181_BUTTON_LENGTH = 1.4;
 
 KEYSTONE_181_GUTTER = 0; // TODO: measure or derive
 
+KEYSTONE_180_CUT_LEAD_HEIGHT = 5;
+
+DUAL = "dual";
+BUTTON = "button";
+SPRING = "spring";
+
 module keystone_181_dual_battery_contact(
+    type = DUAL,
     flip = false,
 
     compressed = true,
@@ -29,7 +36,7 @@ module keystone_181_dual_battery_contact(
 ) {
     e = .094;
 
-    module _contact(contact_length, x) {
+    module _contact(contact_length, x = 0) {
         translate([x, 0, height / 2]) {
             rotate([270, 0, 0]) {
                 cylinder(
@@ -59,13 +66,57 @@ module keystone_181_dual_battery_contact(
         }
     }
 
-    translate([0, 0, flip ? KEYSTONE_181_HEIGHT / -2 : KEYSTONE_181_HEIGHT / 2]) {
-        rotate(flip ? [0, 0, 90] : [0, 180, -90]) {
-            _contact(
-                compressed ? spring_compressed_length : spring_length, contact_x
-            );
-            _contact(button_length, width - contact_x);
+    module arrange(z = 0) {
+        y = flip ? KEYSTONE_181_HEIGHT / -2 : KEYSTONE_181_HEIGHT / 2;
+
+        translate([0, z, y]) {
+            rotate(flip ? [0, 0, 90] : [0, 180, -90]) {
+                children();
+            }
+        }
+    }
+
+    module _spring() {
+        _contact(
+            compressed ? spring_compressed_length : spring_length, contact_x
+        );
+    }
+
+    module _button(x = 0) {
+        _contact(button_length, x);
+    }
+
+    module _dual_contacts() {
+        arrange() {
+            _spring();
+            _button(width - contact_x);
             _connector();
+        }
+    }
+
+    if (type == DUAL) {
+        _dual_contacts();
+    } else if (type == BUTTON) {
+        arrange(AAA_BATTERY_DIAMETER / 2) {
+            _button();
+
+            translate([0, 0, height - e]) {
+                cylinder(
+                    d = diameter,
+                    h = KEYSTONE_180_CUT_LEAD_HEIGHT + e
+                );
+            }
+        }
+    } else if (type == SPRING) {
+        arrange() {
+            _spring();
+
+            translate([height / 2, 0, e - KEYSTONE_180_CUT_LEAD_HEIGHT]) {
+                cylinder(
+                    d = diameter,
+                    h = KEYSTONE_180_CUT_LEAD_HEIGHT + e
+                );
+            }
         }
     }
 }

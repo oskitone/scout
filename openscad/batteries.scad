@@ -86,17 +86,36 @@ module battery_fixture_contacts(
     cavity_width = get_battery_fixture_cavity_width(tolerance);
 
     if (floor(count) > 1) {
-        for (i = [0 : floor(count) - 2]) {
+        for (i = [0 : floor(count)]) {
             is_even = i % 2 == 0;
 
-            translate([
-                is_even ? e : cavity_width - tolerance * 2 - e,
-                (AAA_BATTERY_DIAMETER + gutter) * i
-                    /* + (is_even ? gutter / 2 : gutter / 2), */
-                    + (AAA_BATTERY_DIAMETER * 2 - KEYSTONE_181_WIDTH) / 2,
-                AAA_BATTERY_DIAMETER / 2
-            ]) {
-                keystone_181_dual_battery_contact(flip = !is_even);
+            left_x = e;
+            right_x = cavity_width - tolerance * 2 - e;
+
+            y = (AAA_BATTERY_DIAMETER + gutter) * i
+                + (AAA_BATTERY_DIAMETER * 2 - KEYSTONE_181_WIDTH) / 2;
+            z = AAA_BATTERY_DIAMETER / 2;
+
+            if (i <= count - 2) {
+                translate([is_even ? left_x : right_x, y, z]) {
+                    keystone_181_dual_battery_contact(flip = !is_even);
+                }
+            }
+
+            if (i == 0) {
+                translate([right_x, 0, z]) {
+                    keystone_181_dual_battery_contact(
+                        flip = true,
+                        type = BUTTON
+                    );
+                }
+            } else if (i == count - 1) {
+                translate([left_x, y, z]) {
+                    keystone_181_dual_battery_contact(
+                        flip = false,
+                        type = SPRING
+                    );
+                }
             }
         }
     }
