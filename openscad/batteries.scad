@@ -1,3 +1,5 @@
+include <battery_contacts.scad>;
+
 AAA_BATTERY_DIAMETER = 10.5;
 AAA_BATTERY_LENGTH = 44.5;
 
@@ -6,6 +8,9 @@ AAA_BATTERY_POSITIVE_CONTACT_MAX_DIAMETER = 3.8;
 
 AAA_BATTERY_TOTAL_LENGTH = AAA_BATTERY_LENGTH +
     AAA_BATTERY_POSITIVE_CONTACT_MIN_LENGTH;
+
+KEYSTONE_5213_Z = KEYSTONE_5213_CONTACT_Z - AAA_BATTERY_DIAMETER / 2;
+KEYSTONE_5213_GUTTER = KEYSTONE_5213_CONTACT_CADENCE - AAA_BATTERY_DIAMETER;
 
 module battery(reverse = false) {
     module _output() {
@@ -39,37 +44,85 @@ module battery(reverse = false) {
 
 module battery_array(
     count = 3,
-    gutter = 0
+    gutter = KEYSTONE_5213_GUTTER,
+
+    positive_x = KEYSTONE_5213_LENGTH + KEYSTONE_5213_BUTTON_LENGTH,
+    negative_x = KEYSTONE_5213_LENGTH + KEYSTONE_5213_SPRING_COMPRESSED_LENGTH
 ) {
     plot = AAA_BATTERY_DIAMETER + gutter;
 
     for (i = [0 : count - 1]) {
-        translate([0, i * plot, 0]) {
-            battery(reverse = i % 2 == 1);
+        is_odd = i % 2 == 1;
+
+        translate([is_odd ? positive_x : negative_x, i * plot, 0]) {
+            battery(reverse = is_odd);
+        }
+    }
+}
+
+function get_battery_fixture_cavity_width(
+    tolerance = 0
+) = (
+    AAA_BATTERY_TOTAL_LENGTH
+        + KEYSTONE_5213_LENGTH * 2
+        + KEYSTONE_5213_SPRING_COMPRESSED_LENGTH
+        + KEYSTONE_5213_BUTTON_LENGTH
+        + tolerance * 2
+);
+
+function get_battery_fixture_cavity_length(
+    count,
+    tolerance,
+    gutter = KEYSTONE_5213_GUTTER
+) = (
+    AAA_BATTERY_DIAMETER * count
+        + gutter * (count - 1)
+        + tolerance * 2
+);
+
+module battery_fixture_contacts(
+    tolerance = 0,
+    gutter = KEYSTONE_5213_GUTTER,
+    count = 3
+) {
+    e = .091;
+
+    cavity_width = get_battery_fixture_cavity_width(tolerance);
+
+    if (floor(count) > 1) {
+        for (i = [0 : floor(count) - 2]) {
+            is_even = i % 2 == 0;
+
+            translate([
+                is_even ? e : cavity_width - tolerance * 2 - e,
+                (AAA_BATTERY_DIAMETER + gutter) * i
+                    + (is_even ? gutter / 2 : gutter / 2),
+                -KEYSTONE_5213_Z
+            ]) {
+                keystone_5213_dual_battery_contact(flip = !is_even);
+            }
         }
     }
 }
 
 module battery_fixture(
     wall = 2,
+    wall_height_extension = 0,
     floor = 0,
     tolerance = 0,
     count = 3,
-    gutter = 0
+    gutter = KEYSTONE_5213_GUTTER
 ) {
     e = .0837;
 
-    batteries_width = AAA_BATTERY_TOTAL_LENGTH + tolerance * 2;
-    batteries_length = AAA_BATTERY_DIAMETER * count
-        + gutter * (count - 1)
-        + tolerance * 2;
+    cavity_width = get_battery_fixture_cavity_width(tolerance);
+    cavity_length = get_battery_fixture_cavity_length(count, tolerance, gutter);
 
-    width = batteries_width + wall * 2;
-    length = batteries_length + wall * 2;
-    height = AAA_BATTERY_DIAMETER + floor;
+    width = cavity_width + wall * 2;
+    length = cavity_length + wall * 2;
+    height = AAA_BATTERY_DIAMETER + floor + wall_height_extension;
 
     // TODO: inner alignment rails
-    // TODO: fixtures for contacts
 
     difference() {
         translate([-(wall + tolerance), -(wall + tolerance), -floor]) {
@@ -77,7 +130,11 @@ module battery_fixture(
         }
 
         translate([-tolerance, -tolerance, -e]) {
-            cube([batteries_width, batteries_length, AAA_BATTERY_DIAMETER + e * 2]);
+            cube([
+                cavity_width,
+                cavity_length,
+                AAA_BATTERY_DIAMETER + wall_height_extension + e * 2
+            ]);
         }
     }
 }
