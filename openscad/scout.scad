@@ -147,7 +147,7 @@ module scout(
 
         translate([batteries_x, batteries_y, batteries_z + e]) {
             % battery_array();
-            % # battery_fixture_contacts(tolerance = tolerance);
+            % # battery_contacts(tolerance = tolerance);
         }
 
         % nuts(

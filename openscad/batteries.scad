@@ -9,7 +9,10 @@ AAA_BATTERY_POSITIVE_CONTACT_MAX_DIAMETER = 3.8;
 AAA_BATTERY_TOTAL_LENGTH = AAA_BATTERY_LENGTH +
     AAA_BATTERY_POSITIVE_CONTACT_MIN_LENGTH;
 
-module battery(reverse = false) {
+module battery(
+    reverse = false,
+    $fn = 24
+) {
     module _output() {
         translate([0, AAA_BATTERY_DIAMETER / 2, AAA_BATTERY_DIAMETER / 2]) {
             rotate([0, 90, 0]) {
@@ -76,7 +79,7 @@ function get_battery_fixture_cavity_length(
         + tolerance * 2
 );
 
-module battery_fixture_contacts(
+module battery_contacts(
     tolerance = 0,
     gutter = KEYSTONE_181_GUTTER,
     count = 3
@@ -121,6 +124,62 @@ module battery_fixture_contacts(
     }
 }
 
+module battery_contact_fixtures(
+    tolerance = 0,
+    gutter = KEYSTONE_181_GUTTER,
+    height = AAA_BATTERY_DIAMETER,
+    count = 3
+) {
+    e = .091;
+
+    cavity_width = get_battery_fixture_cavity_width(tolerance);
+
+    if (floor(count) > 1) {
+        for (i = [0 : floor(count)]) {
+            is_even = i % 2 == 0;
+
+            left_x = -e - tolerance;
+            right_x = cavity_width - tolerance + e;
+
+            y = (AAA_BATTERY_DIAMETER + gutter) * i
+                + (AAA_BATTERY_DIAMETER * 2 - KEYSTONE_181_WIDTH) / 2;
+
+            if (i <= count - 2) {
+                translate([is_even ? left_x : right_x, y, 0]) {
+                    battery_contact_fixture(
+                        flip = is_even,
+                        diameter = KEYSTONE_181_WIDTH,
+                        depth = KEYSTONE_181_DIAMETER + e,
+                        tolerance = tolerance,
+                        height = height - e
+                    );
+                }
+            }
+
+            if (i == 0) {
+                translate([right_x, y, 0]) {
+                    battery_contact_fixture(
+                        flip = false,
+                        diameter = KEYSTONE_181_HEIGHT,
+                        depth = KEYSTONE_181_DIAMETER + e,
+                        tolerance = tolerance,
+                        height = height - e
+                    );
+                }
+            } else if (i == count - 1) {
+                translate([left_x, y, 0]) {
+                    battery_contact_fixture(
+                        flip = true,
+                        depth = KEYSTONE_181_DIAMETER + e,
+                        tolerance = tolerance,
+                        height = height - e
+                    );
+                }
+            }
+        }
+    }
+}
+
 module battery_fixture(
     wall = 2,
     wall_height_extension = 0,
@@ -139,6 +198,14 @@ module battery_fixture(
     height = AAA_BATTERY_DIAMETER + floor + wall_height_extension;
 
     // TODO: inner alignment rails
+    // TODO: output pin cavities
+
+    battery_contact_fixtures(
+        tolerance = tolerance,
+        gutter = gutter,
+        height = height,
+        count = count
+    );
 
     difference() {
         translate([-(wall + tolerance), -(wall + tolerance), -floor]) {
@@ -154,3 +221,9 @@ module battery_fixture(
         }
     }
 }
+
+/* translate([0, -40, 0]) {
+    % battery_array();
+    battery_fixture(tolerance = .3);
+    % battery_contacts(tolerance = .3);
+} */

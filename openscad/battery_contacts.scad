@@ -36,7 +36,11 @@ module keystone_181_dual_battery_contact(
 ) {
     e = .094;
 
-    module _contact(contact_length, x = 0) {
+    module _contact(
+        contact_length,
+        x = 0,
+        $fn = 12
+    ) {
         translate([x, 0, height / 2]) {
             rotate([270, 0, 0]) {
                 cylinder(
@@ -116,6 +120,52 @@ module keystone_181_dual_battery_contact(
                     d = diameter,
                     h = KEYSTONE_180_CUT_LEAD_HEIGHT + e
                 );
+            }
+        }
+    }
+}
+
+module battery_contact_fixture(
+    height = KEYSTONE_181_HEIGHT,
+    tolerance = 0,
+    contact_z = undef,
+
+    flip = false,
+
+    diameter = KEYSTONE_181_HEIGHT,
+    depth = KEYSTONE_181_DIAMETER,
+    wall = 1
+) {
+    e = .048;
+
+    contact_z = contact_z ? contact_z : height - AAA_BATTERY_DIAMETER / 2;
+    cavity_z = contact_z - KEYSTONE_181_HEIGHT / 2 - e;
+
+    cavity_width = diameter + tolerance * 2;
+    cavity_depth = depth + tolerance;
+    cavity_height = height - cavity_z + e;
+
+    exposure_width = cavity_width - wall * 2;
+    exposure_height = cavity_height - wall;
+    exposure_z = cavity_z + wall;
+
+    outer_width = cavity_width + wall * 2;
+    outer_length = cavity_depth + wall;
+
+    y = -(tolerance + wall);
+
+    translate(flip ? [outer_length, y, 0] : [-outer_length, y + outer_width, 0]) {
+        rotate(flip ? [0, 0, 90] : [0, 0, -90]) {
+            difference() {
+                cube([outer_width, outer_length, height]);
+
+                translate([wall, wall, cavity_z]) {
+                    cube([cavity_width, cavity_depth + e, cavity_height]);
+                }
+
+                translate([wall * 2, -e, exposure_z]) {
+                    cube([exposure_width, wall + e * 2, exposure_height]);
+                }
             }
         }
     }
