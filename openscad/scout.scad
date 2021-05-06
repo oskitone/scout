@@ -75,8 +75,7 @@ module scout(
     );
     enclosure_height = max(
         keys_z + key_min_height + accidental_height + accidental_key_recession,
-        pcb_z + PCB_HEIGHT + PTV09A_POT_BASE_HEIGHT + PTV09A_POT_ACTUATOR_HEIGHT
-            - knob_top_exposure
+        pcb_z + PCB_HEIGHT + PCB_CIRCUITRY_CLEARANCE + ENCLOSURE_FLOOR_CEILING
     );
 
     key_height = enclosure_height - keys_z - accidental_height

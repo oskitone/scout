@@ -70,6 +70,7 @@ PTV09A_POT_ACTUATOR_D_SHAFT_DEPTH = PTV09A_POT_ACTUATOR_DIAMETER - 4.5;
 
 BUTTON_HEIGHT = 6;
 
+PCB_CIRCUITRY_CLEARANCE = 12;
 PCB_PIN_CLEARANCE = 2;
 
 module scout_pcb_holes(
@@ -96,7 +97,8 @@ module scout_pcb(
     show_pot = true,
     show_switch = true,
     show_pcb_ftdi_header = true,
-    show_headphone_jack = true
+    show_headphone_jack = true,
+    show_circuitry_clearance = false
 ) {
     e = .0143;
     silkscreen_height = e;
@@ -108,7 +110,7 @@ module scout_pcb(
             if (show_silkscreen) {
                 translate([0, 0, PCB_HEIGHT - e]) {
                     linear_extrude(silkscreen_height + e) {
-                        offset(e) {
+                        offset(.1) {
                             import("../scout-brd.svg");
                         }
                     }
@@ -193,6 +195,14 @@ module scout_pcb(
                     );
                 }
             }
+        }
+    }
+
+    if (show_circuitry_clearance) {
+        length = PCB_LENGTH - PCB_HOLE_POSITIONS[0].y - keys_mount_length / 2;
+
+        translate([0, PCB_LENGTH - length, PCB_HEIGHT - e]) {
+            % cube([PCB_WIDTH, length, PCB_CIRCUITRY_CLEARANCE + e]);
         }
     }
 }
