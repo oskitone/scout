@@ -9,9 +9,6 @@ AAA_BATTERY_POSITIVE_CONTACT_MAX_DIAMETER = 3.8;
 AAA_BATTERY_TOTAL_LENGTH = AAA_BATTERY_LENGTH +
     AAA_BATTERY_POSITIVE_CONTACT_MIN_LENGTH;
 
-KEYSTONE_5213_Z = KEYSTONE_5213_CONTACT_Z - AAA_BATTERY_DIAMETER / 2;
-KEYSTONE_5213_GUTTER = KEYSTONE_5213_CONTACT_CADENCE - AAA_BATTERY_DIAMETER;
-
 module battery(reverse = false) {
     module _output() {
         translate([0, AAA_BATTERY_DIAMETER / 2, AAA_BATTERY_DIAMETER / 2]) {
@@ -44,10 +41,10 @@ module battery(reverse = false) {
 
 module battery_array(
     count = 3,
-    gutter = KEYSTONE_5213_GUTTER,
+    gutter = KEYSTONE_181_GUTTER,
 
-    positive_x = KEYSTONE_5213_LENGTH + KEYSTONE_5213_BUTTON_LENGTH,
-    negative_x = KEYSTONE_5213_LENGTH + KEYSTONE_5213_SPRING_COMPRESSED_LENGTH
+    positive_x = KEYSTONE_181_BUTTON_LENGTH,
+    negative_x = KEYSTONE_181_SPRING_COMPRESSED_LENGTH
 ) {
     plot = AAA_BATTERY_DIAMETER + gutter;
 
@@ -64,16 +61,15 @@ function get_battery_fixture_cavity_width(
     tolerance = 0
 ) = (
     AAA_BATTERY_TOTAL_LENGTH
-        + KEYSTONE_5213_LENGTH * 2
-        + KEYSTONE_5213_SPRING_COMPRESSED_LENGTH
-        + KEYSTONE_5213_BUTTON_LENGTH
+        + KEYSTONE_181_SPRING_COMPRESSED_LENGTH
+        + KEYSTONE_181_BUTTON_LENGTH
         + tolerance * 2
 );
 
 function get_battery_fixture_cavity_length(
     count,
     tolerance,
-    gutter = KEYSTONE_5213_GUTTER
+    gutter = KEYSTONE_181_GUTTER
 ) = (
     AAA_BATTERY_DIAMETER * count
         + gutter * (count - 1)
@@ -82,7 +78,7 @@ function get_battery_fixture_cavity_length(
 
 module battery_fixture_contacts(
     tolerance = 0,
-    gutter = KEYSTONE_5213_GUTTER,
+    gutter = KEYSTONE_181_GUTTER,
     count = 3
 ) {
     e = .091;
@@ -96,10 +92,11 @@ module battery_fixture_contacts(
             translate([
                 is_even ? e : cavity_width - tolerance * 2 - e,
                 (AAA_BATTERY_DIAMETER + gutter) * i
-                    + (is_even ? gutter / 2 : gutter / 2),
-                -KEYSTONE_5213_Z
+                    /* + (is_even ? gutter / 2 : gutter / 2), */
+                    + (AAA_BATTERY_DIAMETER * 2 - KEYSTONE_181_WIDTH) / 2,
+                AAA_BATTERY_DIAMETER / 2
             ]) {
-                keystone_5213_dual_battery_contact(flip = !is_even);
+                keystone_181_dual_battery_contact(flip = !is_even);
             }
         }
     }
@@ -111,7 +108,7 @@ module battery_fixture(
     floor = 0,
     tolerance = 0,
     count = 3,
-    gutter = KEYSTONE_5213_GUTTER
+    gutter = KEYSTONE_181_GUTTER
 ) {
     e = .0837;
 

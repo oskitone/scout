@@ -1,103 +1,71 @@
-KEYSTONE_5213_WIDTH = 21;
-KEYSTONE_5213_LENGTH = .51;
-KEYSTONE_5213_TOTAL_HEIGHT = 11;
+KEYSTONE_181_HEIGHT = 7;
+KEYSTONE_181_CONTACT_X = KEYSTONE_181_HEIGHT / 2;
+KEYSTONE_181_CADENCE = 10.5;
+KEYSTONE_181_WIDTH = KEYSTONE_181_CADENCE + KEYSTONE_181_CONTACT_X * 2;
+KEYSTONE_181_DIAMETER = .5;
 
-KEYSTONE_5213_BOTTOM_TAB_HEIGHT = 1.5;
-KEYSTONE_5213_BOTTOM_TAB_WIDTH = 4.5;
+KEYSTONE_181_SPRING_LENGTH = 7.2;
+KEYSTONE_181_SPRING_COMPRESSED_LENGTH = KEYSTONE_181_SPRING_LENGTH * .5;
 
-KEYSTONE_5213_VALLEY_WIDTH = 1.78;
-KEYSTONE_5213_VALLEY_HEIGHT = 7.01; // includes bottom_tab
+KEYSTONE_181_BUTTON_LENGTH = 1.4;
 
-KEYSTONE_5213_CONTACT_CADENCE = 11.5;
-KEYSTONE_5213_CONTACT_Z = 7.5;
+KEYSTONE_181_GUTTER = 0; // TODO: measure or derive
 
-KEYSTONE_5213_SPRING_LENGTH = 7; // TODO: measure
-KEYSTONE_5213_SPRING_COMPRESSED_LENGTH = KEYSTONE_5213_SPRING_LENGTH / 2;
-KEYSTONE_5213_SPRING_DIAMETER = 5;
-
-KEYSTONE_5213_BUTTON_LENGTH = 1; // TODO: measure
-KEYSTONE_5213_BUTTON_DIAMETER = 3.2;
-
-module keystone_5213_dual_battery_contact(
-    width = KEYSTONE_5213_WIDTH,
-    length = KEYSTONE_5213_LENGTH,
-    total_height = KEYSTONE_5213_TOTAL_HEIGHT,
-
-    bottom_tab_height = KEYSTONE_5213_BOTTOM_TAB_HEIGHT,
-    bottom_tab_width = KEYSTONE_5213_BOTTOM_TAB_WIDTH,
-
-    valley_width = KEYSTONE_5213_VALLEY_WIDTH,
-    valley_height = KEYSTONE_5213_VALLEY_HEIGHT,
-
-    contact_z = KEYSTONE_5213_CONTACT_Z,
-
-    spring_length = KEYSTONE_5213_SPRING_LENGTH,
-    spring_compressed_length = KEYSTONE_5213_SPRING_COMPRESSED_LENGTH,
-    spring_diameter = KEYSTONE_5213_SPRING_DIAMETER,
-
-    button_length = KEYSTONE_5213_BUTTON_LENGTH,
-    button_diameter = KEYSTONE_5213_BUTTON_DIAMETER,
-
+module keystone_181_dual_battery_contact(
     flip = false,
-    compressed = true
+
+    compressed = true,
+
+    height = KEYSTONE_181_HEIGHT,
+    contact_x = KEYSTONE_181_CONTACT_X,
+    cadence = KEYSTONE_181_CADENCE,
+    width = KEYSTONE_181_WIDTH,
+    diameter = KEYSTONE_181_DIAMETER,
+
+    spring_length = KEYSTONE_181_SPRING_LENGTH,
+    spring_compressed_length = KEYSTONE_181_SPRING_COMPRESSED_LENGTH,
+
+    button_length = KEYSTONE_181_BUTTON_LENGTH
 ) {
-    e = .01;
+    e = .094;
 
-    side_width = (width - valley_width) / 2;
-
-    module _plate() {
-        difference() {
-            translate([0, 0, bottom_tab_height]) {
-                cube([width, length, total_height - bottom_tab_height]);
-            }
-
-            translate([side_width, -e, -e]) {
-                cube([valley_width, length + e * 2, valley_height + e]);
-            }
-        }
-    }
-
-    module _bottom_tabs() {
-        for (x = [
-            (side_width - bottom_tab_width) / 2,
-            side_width + valley_width + (side_width - bottom_tab_width) / 2
-        ]) {
-            translate([x, 0, 0]) {
-                cube([bottom_tab_width, length, bottom_tab_height + e]);
-            }
-        }
-    }
-
-    module _contacts() {
-        translate([side_width / 2, e, contact_z]) {
-            rotate([90,0,0]) {
+    module _contact(contact_length, x) {
+        translate([x, 0, height / 2]) {
+            rotate([270, 0, 0]) {
                 cylinder(
-                    d1 = spring_diameter,
-                    d2 = spring_diameter * .67,
-                    h = compressed ? spring_compressed_length : spring_length
-                        + e,
-                    $fn = 12
+                    d = height,
+                    h = diameter + e
                 );
+
+                translate([0, 0, diameter]) {
+                    cylinder(
+                        d1 = height,
+                        d2 = height * .67,
+                        h = contact_length - diameter
+                    );
+                }
             }
         }
+    }
 
-        translate([side_width + valley_width + side_width / 2, e, contact_z]) {
-            rotate([90,0,0]) {
+    module _connector() {
+        translate([contact_x, diameter / 2, height - diameter / 2]) {
+            rotate([0, 90, 0]) {
                 cylinder(
-                    d1 = button_diameter,
-                    d2 = button_diameter * .67,
-                    h = button_length + e,
-                    $fn = 12
+                    d = diameter,
+                    h = cadence
                 );
             }
         }
     }
 
-    translate(flip ? [-length, 0, contact_z * 2] : [length, 0, 0]) {
-        rotate(flip ? [180, 0, 90] : [0, 0, 90]) {
-            _plate();
-            _bottom_tabs();
-            _contacts();
+    translate([0, 0, flip ? KEYSTONE_181_HEIGHT / -2 : KEYSTONE_181_HEIGHT / 2]) {
+        rotate(flip ? [0, 0, 90] : [0, 180, -90]) {
+            _contact(
+                compressed ? spring_compressed_length : spring_length, contact_x
+            );
+            _contact(button_length, width - contact_x);
+            _connector();
         }
     }
 }
