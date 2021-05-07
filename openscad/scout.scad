@@ -45,6 +45,8 @@ module scout(
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
 
+    nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
+
     tolerance = 0,
     quick_preview = true
 ) {
@@ -101,8 +103,16 @@ module scout(
     batteries_y = ENCLOSURE_WALL + tolerance;
     batteries_z = ENCLOSURE_FLOOR_CEILING;
 
+    nut_z = keys_z + cantilever_height + nut_lock_floor;
+    screw_top_clearance = enclosure_height
+        - ENCLOSURE_FLOOR_CEILING - (nut_z + NUT_HEIGHT);
+    screw_head_clearance =
+        nut_z - SCREW_HEAD_HEIGHT - SCREW_LENGTH + NUT_HEIGHT
+        + screw_top_clearance / 2;
+
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
+    echo("Screw head clearance", screw_head_clearance);
 
     module _accoutrements() {
         lightpipe_z = pcb_z + PCB_HEIGHT;
@@ -151,7 +161,12 @@ module scout(
 
         % nuts(
             pcb_position = [pcb_x, pcb_y, pcb_z],
-            z = keys_z + cantilever_height
+            z = nut_z
+        );
+
+        % screws(
+            pcb_position = [pcb_x, pcb_y, pcb_z],
+            z = screw_head_clearance
         );
     }
 
@@ -237,6 +252,9 @@ module scout(
                 batteries_z
             ],
 
+            screw_head_clearance = screw_head_clearance,
+            nut_lock_floor = nut_lock_floor,
+
             show_dfm = show_dfm,
 
             tolerance = tolerance,
@@ -282,7 +300,7 @@ intersection() {
     /* translate([10, -10, -10]) { cube([200, 100, 100]); } */
 
     // screw mount
-    /* translate([44, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([10.3, -10, -10]) { cube([200, 100, 100]); } */
 
     // speaker
     /* translate([130, -10, -10]) { cube([200, 100, 100]); } */

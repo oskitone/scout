@@ -4,6 +4,8 @@ SCREW_HEAD_HEIGHT = 2.1;
 NUT_DIAMETER = 6.4;
 NUT_HEIGHT = 2.4;
 
+SCREW_LENGTH = 3/4 * 25.4;
+
 module nuts(
     pcb_position = [],
     z = 0,
@@ -17,7 +19,7 @@ module nuts(
         translate([
             pcb_position.x + xy.x - diameter / 2,
             pcb_position.y + xy.y - diameter / 2,
-            z + nut_lock_floor
+            z
         ]) {
             cube([diameter, diameter, height]);
 
@@ -32,6 +34,35 @@ module nuts(
                         );
                     }
                 }
+            }
+        }
+    }
+}
+
+module screws(
+    pcb_position = [],
+    diameter = PCB_HOLE_DIAMETER - .2,
+    length = SCREW_LENGTH,
+    z = 0
+) {
+    e = .03;
+
+    for (xy = PCB_HOLE_POSITIONS) {
+        translate([
+            pcb_position.x + xy.x,
+            pcb_position.y + xy.y,
+            z
+        ]) {
+            cylinder(
+                d = SCREW_HEAD_DIAMETER,
+                h = SCREW_HEAD_HEIGHT
+            );
+
+            translate([0, 0, SCREW_HEAD_HEIGHT - e]) {
+                cylinder(
+                    d = diameter,
+                    h = length + e
+                );
             }
         }
     }

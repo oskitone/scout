@@ -22,8 +22,6 @@ ENCLOSURE_FILLET = 2;
 DEFAULT_ROUNDING = $preview ? undef : 24;
 HIDEF_ROUNDING = $preview ? undef : 120;
 
-nut_lock_floor = ENCLOSURE_FLOOR_CEILING;
-
 module enclosure(
     show_top = true,
     show_bottom = true,
@@ -55,6 +53,9 @@ module enclosure(
 
     label_text_size = 3.2,
     label_length = 5,
+
+    screw_head_clearance = 0,
+    nut_lock_floor = 0,
 
     show_dfm = false,
 
@@ -280,7 +281,7 @@ module enclosure(
             translate([pcb_position.x + p.x, pcb_position.y + p.y, 0]) {
                 screw_head_exposure(
                     tolerance = tolerance,
-                    clearance = 0
+                    clearance = screw_head_clearance
                 );
 
                 translate([0, 0, -e]) {
@@ -387,7 +388,7 @@ module enclosure(
         module _nut_locks() {
             nuts(
                 pcb_position = pcb_position,
-                z = keys_position.z + cantilever_height,
+                z = keys_position.z + cantilever_height + nut_lock_floor,
                 diameter = nut_cavity_size,
                 height = nut_cavity_height
             );
@@ -438,7 +439,10 @@ module enclosure(
                     _half(top_height, lip = true);
 
                     _switch_exposure(false);
-                    pcb_fixtures(pcb_position = pcb_position);
+                    pcb_fixtures(
+                        pcb_position = pcb_position,
+                        screw_head_clearance = screw_head_clearance
+                    );
                     _speaker_fixture();
                     _battery_fixture();
                     _keys_mount_alignment_fixture(true);

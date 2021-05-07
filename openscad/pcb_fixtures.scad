@@ -1,5 +1,6 @@
 module pcb_fixtures(
     pcb_position = [0, 0, 0],
+    screw_head_clearance = 0,
     wall = ENCLOSURE_INNER_WALL,
     clearance = DEFAULT_TOLERANCE
 ) {
@@ -68,7 +69,8 @@ module pcb_fixtures(
     }
 
     module _mounting_columns() {
-        head_column_height = SCREW_HEAD_HEIGHT + ENCLOSURE_FLOOR_CEILING;
+        head_column_height = SCREW_HEAD_HEIGHT + ENCLOSURE_FLOOR_CEILING
+            + screw_head_clearance;
         head_column_z = z;
 
         shaft_column_height = pcb_position.z - head_column_height;
