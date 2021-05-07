@@ -117,7 +117,7 @@ module enclosure(
             size = make_length,
             center = false,
             position = [
-                branding_position.x,
+                branding_position.x - make_length * .075, // HACK: fix alignment
                 branding_position.y
             ],
             quick_preview = quick_preview,
