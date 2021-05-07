@@ -143,8 +143,8 @@ module scout(
                 spokes_count = 0,
                 brodie_knob_count = 0,
                 dimple_count = 1,
-                color = "#444",
-                cavity_color = "#333",
+                color = "#fff",
+                cavity_color = "#eee",
                 tolerance = tolerance,
                 $fn = quick_preview ? 0 : DEFAULT_ROUNDING
             );
