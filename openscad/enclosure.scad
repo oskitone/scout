@@ -281,7 +281,8 @@ module enclosure(
             translate([pcb_position.x + p.x, pcb_position.y + p.y, 0]) {
                 screw_head_exposure(
                     tolerance = tolerance,
-                    clearance = screw_head_clearance
+                    clearance = screw_head_clearance,
+                    show_dfm = show_dfm
                 );
 
                 translate([0, 0, -e]) {
