@@ -1,6 +1,7 @@
 /* TODO: extract into common parts repo */
 use <../../apc/openscad/wheels.scad>;
 use <../../poly555/openscad/lib/basic_shapes.scad>;
+use <../../poly555/openscad/lib/pencil_stand.scad>;
 
 include <batteries.scad>;
 include <scout_pcb.scad>;
@@ -99,7 +100,14 @@ module scout(
     speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
     speaker_z = pcb_z - SPEAKER_HEIGHT - PCB_PIN_CLEARANCE;
 
-    batteries_x = pcb_x;
+    // NOTE: these are eyeballed instead of derived and that's okay!!
+    pencil_stand_x = 20;
+    pencil_stand_y = ENCLOSURE_WALL + (pcb_y - ENCLOSURE_WALL) / 2;
+    pencil_stand_angle_x = -52;
+    pencil_stand_angle_y = 10;
+    pencil_stand_depth = 15;
+
+    batteries_x = pencil_stand_x + 10;
     batteries_y = ENCLOSURE_WALL + tolerance;
     batteries_z = ENCLOSURE_FLOOR_CEILING;
 
@@ -168,6 +176,15 @@ module scout(
             pcb_position = [pcb_x, pcb_y, pcb_z],
             z = screw_head_clearance
         );
+
+        translate([pencil_stand_x, pencil_stand_y, 0]) {
+            * % pencil_stand_pencil(
+                wall = ENCLOSURE_INNER_WALL,
+                depth = pencil_stand_depth,
+                angle_x = pencil_stand_angle_x,
+                angle_y = pencil_stand_angle_y
+            );
+        }
     }
 
     if (show_keys) {
@@ -240,17 +257,14 @@ module scout(
             ],
             knob_vertical_clearance = knob_vertical_clearance,
 
-            speaker_position = [
-                speaker_x,
-                speaker_y,
-                speaker_z
-            ],
+            speaker_position = [speaker_x, speaker_y, speaker_z],
 
-            batteries_position = [
-                batteries_x,
-                batteries_y,
-                batteries_z
-            ],
+            pencil_stand_position = [pencil_stand_x, pencil_stand_y],
+            pencil_stand_angle_x = pencil_stand_angle_x,
+            pencil_stand_angle_y = pencil_stand_angle_y,
+            pencil_stand_depth = pencil_stand_depth,
+
+            batteries_position = [batteries_x, batteries_y, batteries_z],
 
             screw_head_clearance = screw_head_clearance,
             nut_lock_floor = nut_lock_floor,
@@ -307,4 +321,7 @@ intersection() {
 
     // knob
     /* translate([-10, -10, -10]) { cube([155, 100, 100]); } */
+
+    // pencil stand
+    /* translate([-10, 20, -10]) { cube([200, 100, 100]); } */
 }

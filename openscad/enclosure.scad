@@ -1,5 +1,6 @@
 // TODO: extract parts to common repo
 use <../../poly555/openscad/lib/enclosure.scad>;
+use <../../poly555/openscad/lib/pencil_stand.scad>;
 use <../../poly555/openscad/lib/screw_head_exposures.scad>;
 use <../../poly555/openscad/lib/switch.scad>;
 
@@ -48,6 +49,11 @@ module enclosure(
     knob_vertical_clearance = 0,
 
     speaker_position = [],
+
+    pencil_stand_position = [],
+    pencil_stand_angle_x,
+    pencil_stand_angle_y,
+    pencil_stand_depth,
 
     batteries_position = [],
 
@@ -433,6 +439,35 @@ module enclosure(
         }
     }
 
+    module _pencil_stand(
+        cavity,
+
+        x = pencil_stand_position.x,
+        y = pencil_stand_position.y
+    ) {
+        e = .17; // HACK: prevent it from sticking out of enclosure w/ low $fn
+
+        if (cavity) {
+            translate([x, y, 0]) {
+                pencil_stand_cavity(
+                    wall = ENCLOSURE_INNER_WALL,
+                    depth = pencil_stand_depth + e,
+                    angle_x = pencil_stand_angle_x,
+                    angle_y = pencil_stand_angle_y
+                );
+            }
+        } else {
+            translate([x, y, e]) {
+                pencil_stand(
+                    wall = ENCLOSURE_INNER_WALL,
+                    depth = pencil_stand_depth,
+                    angle_x = pencil_stand_angle_x,
+                    angle_y = pencil_stand_angle_y
+                );
+            }
+        }
+    }
+
     if (show_top || show_bottom) {
         difference() {
             color(outer_color) {
@@ -447,6 +482,7 @@ module enclosure(
                     _speaker_fixture();
                     _battery_fixture();
                     _keys_mount_alignment_fixture(true);
+                    _pencil_stand(false);
                 }
 
                 if (show_top) {
@@ -471,6 +507,7 @@ module enclosure(
                 _screw_cavities();
                 _ftdi_header_exposure();
                 _headphone_jack_cavity();
+                _pencil_stand(true);
             }
         }
     }
