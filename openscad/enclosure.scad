@@ -92,6 +92,8 @@ module enclosure(
             remove_lip = !lip,
             fillet = ENCLOSURE_FILLET,
             tolerance = DEFAULT_TOLERANCE,
+            outer_color = outer_color,
+            cavity_color = cavity_color,
             $fn = DEFAULT_ROUNDING
         );
     }
@@ -470,19 +472,21 @@ module enclosure(
 
     if (show_top || show_bottom) {
         difference() {
-            color(outer_color) {
+            union() {
                 if (show_bottom) {
                     _half(top_height, lip = true);
 
-                    _switch_exposure(false);
-                    pcb_fixtures(
-                        pcb_position = pcb_position,
-                        screw_head_clearance = screw_head_clearance
-                    );
-                    _speaker_fixture();
-                    _battery_fixture();
-                    _keys_mount_alignment_fixture(true);
-                    _pencil_stand(false);
+                    color(outer_color) {
+                        _switch_exposure(false);
+                        pcb_fixtures(
+                            pcb_position = pcb_position,
+                            screw_head_clearance = screw_head_clearance
+                        );
+                        _speaker_fixture();
+                        _battery_fixture();
+                        _keys_mount_alignment_fixture(true);
+                        _pencil_stand(false);
+                    }
                 }
 
                 if (show_top) {
@@ -492,9 +496,11 @@ module enclosure(
                         }
                     }
 
-                    _knob_exposure(false);
-                    _keys_mount_alignment_fixture(false);
-                    _keys_mount_nut_lock_rail();
+                    color(outer_color) {
+                        _knob_exposure(false);
+                        _keys_mount_alignment_fixture(false);
+                        _keys_mount_nut_lock_rail();
+                    }
                 }
             }
 
