@@ -98,7 +98,7 @@ module scout_pcb(
     show_switch = true,
     show_pcb_ftdi_header = true,
     show_headphone_jack = true,
-    show_circuitry_clearance = false
+    show_circuitry_clearance = true
 ) {
     e = .0143;
     silkscreen_height = e;
@@ -204,5 +204,10 @@ module scout_pcb(
         translate([0, PCB_LENGTH - length, PCB_HEIGHT - e]) {
             % cube([PCB_WIDTH, length, PCB_CIRCUITRY_CLEARANCE + e]);
         }
+
+        translate([0, 0, -PCB_PIN_CLEARANCE]) {
+            % cube([PCB_WIDTH, PCB_LENGTH, PCB_PIN_CLEARANCE]);
+        }
+
     }
 }
