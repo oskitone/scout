@@ -7,6 +7,7 @@ use <../../poly555/openscad/lib/switch.scad>;
 use <../../apc/openscad/floating_hole_cavity.scad>;
 
 use <enclosure_engraving.scad>;
+include <key_lip_endstop.scad>;
 include <keys.scad>;
 include <pcb_fixtures.scad>;
 
@@ -500,6 +501,7 @@ module enclosure(
                         _knob_exposure(false);
                         _keys_mount_alignment_fixture(false);
                         _keys_mount_nut_lock_rail();
+                        key_lip_endstop(dimensions.z - keys_cavity_height);
                     }
                 }
             }

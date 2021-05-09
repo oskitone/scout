@@ -120,6 +120,13 @@ module keys(
     keys_position = [],
     pcb_position = [],
 
+    keys_cavity_height_z,
+    travel = 2,
+
+    accidental_color = "#444",
+    natural_color = "#fff",
+    natural_color_cavity = "#eee",
+
     quick_preview = true
 ) {
     e = .0234;
@@ -141,7 +148,7 @@ module keys(
             accidental_length = key_length * 3/5,
             accidental_height = key_height + accidental_height,
 
-            front_fillet = quick_preview ? 0 : 2,
+            front_fillet = quick_preview ? 0 : 1.5,
             sides_fillet = quick_preview ? 0 : 1,
 
             gutter = key_gutter,
@@ -160,7 +167,7 @@ module keys(
     difference() {
         union() {
             e_translate(keys_position, [0, 1, -1]) {
-                color("#444") {
+                color(accidental_color) {
                     _keys(
                         include_natural = false,
                         include_accidental = true,
@@ -169,7 +176,7 @@ module keys(
                 }
             }
 
-            color("white") {
+            color(natural_color) {
                 translate(keys_position) {
                     _keys(
                         include_natural = true,
@@ -186,12 +193,20 @@ module keys(
             }
         }
 
-        nuts(
-            pcb_position = pcb_position,
-            z = keys_position.z + cantilever_height,
-            diameter = NUT_DIAMETER + tolerance * 2,
-            height = NUT_HEIGHT,
-            chamfer_top = true
-        );
+        color(natural_color_cavity) {
+            nuts(
+                pcb_position = pcb_position,
+                z = keys_position.z + cantilever_height,
+                diameter = NUT_DIAMETER + tolerance * 2,
+                height = NUT_HEIGHT,
+                chamfer_top = true
+            );
+
+            key_lip_endstop(
+                keys_cavity_height_z,
+                distance_into_keys_bleed = tolerance * 4,
+                travel = travel
+            );
+        }
     }
 }

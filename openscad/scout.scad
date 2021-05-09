@@ -33,8 +33,8 @@ module scout(
     show_accoutrements = true,
     show_dfm = false,
 
-    accidental_key_recession = 2,
-    key_lip_exposure = 4, // should be comfortably over ~2 travel
+    accidental_key_recession = .2,
+    key_lip_exposure = 3,
 
     knob_top_exposure = 10,
     knob_radius = 10,
@@ -118,6 +118,11 @@ module scout(
         nut_z - SCREW_HEAD_HEIGHT - SCREW_LENGTH + NUT_HEIGHT
         + screw_top_clearance / 2;
 
+    keys_cavity_height = min(
+        accidental_key_recession + accidental_height + key_lip_exposure,
+        enclosure_height - keys_z
+    );
+
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
     echo("Screw head clearance", screw_head_clearance);
@@ -198,6 +203,8 @@ module scout(
             keys_position = [keys_x, keys_y, keys_z],
             pcb_position = [pcb_x, pcb_y, pcb_z],
 
+            keys_cavity_height_z = enclosure_height - keys_cavity_height,
+
             quick_preview = quick_preview
         );
     }
@@ -233,10 +240,7 @@ module scout(
 
             pcb_position = [pcb_x, pcb_y, pcb_z],
 
-            keys_cavity_height = min(
-                accidental_key_recession + accidental_height + key_lip_exposure,
-                enclosure_height - keys_z
-            ),
+            keys_cavity_height = keys_cavity_height,
             keys_position = [keys_x, keys_y, keys_z],
             key_gutter = key_gutter,
             keys_full_width = keys_full_width,
