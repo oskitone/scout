@@ -324,8 +324,11 @@ intersection() {
         quick_preview = $preview
     );
 
-    // switch and batteries
+    // switch
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
+
+    // batteries
+    translate([40, -10, -10]) { cube([200, 100, 100]); }
 
     // lightpipe
     /* translate([10, -10, -10]) { cube([200, 100, 100]); } */

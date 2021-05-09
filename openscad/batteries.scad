@@ -229,7 +229,7 @@ module battery_fixture(
     battery_contact_fixtures(
         tolerance = tolerance,
         gutter = gutter,
-        height = height,
+        height = height - floor,
         count = count
     );
 
