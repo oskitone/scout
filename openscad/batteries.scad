@@ -198,7 +198,33 @@ module battery_fixture(
     height = AAA_BATTERY_DIAMETER + floor + wall_height_extension;
 
     // TODO: inner alignment rails
-    // TODO: output pin cavities
+
+    module _output_pin_cavities(
+        _length = KEYSTONE_181_DIAMETER + tolerance * 2
+    ) {
+        _height = (height - KEYSTONE_181_HEIGHT) / 2;
+        z = height - _height;
+
+        for (xy = [
+            [
+                -(wall + tolerance + e),
+                (AAA_BATTERY_DIAMETER + gutter) * (count - 1)
+                    + (AAA_BATTERY_DIAMETER - _length) / 2
+            ],
+            [
+                cavity_width - tolerance - e,
+                (AAA_BATTERY_DIAMETER - _length) / 2
+            ]
+        ]) {
+            translate([xy.x, xy.y, z]) {
+                cube([
+                    wall + e * 2,
+                    _length,
+                    _height + e
+                ]);
+            }
+        }
+    }
 
     battery_contact_fixtures(
         tolerance = tolerance,
@@ -219,6 +245,8 @@ module battery_fixture(
                 AAA_BATTERY_DIAMETER + wall_height_extension + e * 2
             ]);
         }
+
+        _output_pin_cavities();
     }
 }
 
