@@ -1,8 +1,7 @@
 use <../../poly555/openscad/lib/basic_shapes.scad>;
 
-// TODO: measure
-SPEAKER_DIAMETER = 40;
-SPEAKER_HEIGHT = 5;
+SPEAKER_DIAMETER = 39.7;
+SPEAKER_HEIGHT = 5.4;
 
 module speaker() {
     cylinder(
