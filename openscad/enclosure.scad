@@ -42,7 +42,6 @@ module enclosure(
 
     label_distance,
 
-    lightpipe_position = [],
     lightpipe_dimensions = [],
 
     knob_radius,
@@ -160,15 +159,22 @@ module enclosure(
         }
     }
 
-    module _lightpipe_exposure() {
-        translate([
-            lightpipe_position.x - tolerance,
-            lightpipe_position.y,
-            dimensions.z - ENCLOSURE_FLOOR_CEILING - e
-        ]) {
+    module _lightpipe_exposure(
+        tolerance = 0 // Intentionally snug
+    ) {
+        // TODO: if keeping lightpipe, rethink how it fits into enclosure.
+        // Its width/length could extend beyond exposure, allowing it to be
+        // sandwiched into place when enclosure is assembled.
+
+        x = pcb_position.x + PCB_LED_POSITION.x - lightpipe_dimensions.x / 2
+            - tolerance;
+        y = pcb_position.y + PCB_LED_POSITION.y - lightpipe_dimensions.y / 2
+            - tolerance;
+
+        translate([x, y, dimensions.z - ENCLOSURE_FLOOR_CEILING - e]) {
             cube([
                 lightpipe_dimensions.x + tolerance * 2,
-                lightpipe_dimensions.y,
+                lightpipe_dimensions.y + tolerance * 2,
                 ENCLOSURE_FLOOR_CEILING + e * 2
             ]);
         }

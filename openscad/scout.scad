@@ -7,6 +7,7 @@ include <batteries.scad>;
 include <scout_pcb.scad>;
 include <enclosure.scad>;
 include <keys.scad>;
+include <lightpipe.scad>;
 include <nuts_and_bolts.scad>;
 include <speaker.scad>;
 use <utils.scad>;
@@ -40,7 +41,7 @@ module scout(
     knob_radius = 10,
     knob_vertical_clearance = 1,
 
-    lightpipe_recession = 2,
+    lightpipe_recession = 1, // TODO: if kept, match engraving depth
     exposed_switch_clearance = 1,
 
     enclosure_outer_color = "#FF69B4",
@@ -90,11 +91,13 @@ module scout(
     knob_height = enclosure_height - knob_z + knob_top_exposure;
 
     lightpipe_width = (pcb_x + PCB_LED_POSITION.x - default_gutter) * 2;
-    lightpipe_x = default_gutter;
+    lightpipe_height = enclosure_height - lightpipe_recession -
+        (pcb_z + PCB_HEIGHT);
 
     branding_x = default_gutter * 2 + lightpipe_width;
     branding_y = keys_y + key_length + default_gutter;
     branding_length = enclosure_length - branding_y - default_gutter;
+    lightpipe_length = branding_length;
 
     speaker_x = pcb_x + PCB_WIDTH - SPEAKER_DIAMETER / 2;
     speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
@@ -127,21 +130,32 @@ module scout(
     echo("Knob", [knob_radius * 2, knob_height]);
     echo("Screw head clearance", screw_head_clearance);
 
-    module _accoutrements() {
-        lightpipe_z = pcb_z + PCB_HEIGHT;
-
-        // TODO: fix obstruction with keys_mount_rail
+    module _accoutrements(
+        lightpipe_xy_tolerance = 0 // Intentionally snug
+    ) {
         translate([
-            lightpipe_x + tolerance,
-            branding_y + tolerance,
+            pcb_x + PCB_LED_POSITION.x,
+            pcb_y + PCB_LED_POSITION.y,
             pcb_z + PCB_HEIGHT
         ]) {
             color([0, 1, round($t)]) {
-                cube([
-                    lightpipe_width - tolerance * 2,
-                    branding_length - tolerance * 2,
-                    enclosure_height - lightpipe_z - lightpipe_recession
-                ]);
+                lightpipe(
+                    [
+                        lightpipe_width - lightpipe_xy_tolerance * 2,
+                        branding_length - lightpipe_xy_tolerance * 2,
+                        lightpipe_height
+                    ],
+
+                    tolerance = tolerance,
+
+                    // TODO: obviate
+                    keys_mount_rail_and_nut_cavity_length =
+                        (pcb_y + PCB_HOLE_POSITIONS[0][1] + NUT_DIAMETER / 2)
+                        - branding_y + tolerance,
+                    keys_mount_rail_and_nut_cavity_height =
+                        lightpipe_height + lightpipe_recession
+                        - ENCLOSURE_FLOOR_CEILING
+                );
             }
         }
 
@@ -250,8 +264,7 @@ module scout(
 
             label_distance = default_gutter / 2,
 
-            lightpipe_position = [lightpipe_x, branding_y],
-            lightpipe_dimensions = [lightpipe_width, branding_length],
+            lightpipe_dimensions = [lightpipe_width, lightpipe_length],
 
             knob_radius = knob_radius,
             knob_position = [
