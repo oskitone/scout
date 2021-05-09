@@ -74,8 +74,12 @@ module enclosure(
 ) {
     e = .0345;
 
-    top_height = dimensions.z / 2;
-    bottom_height = dimensions.z / 2;
+    // This obviates DFM for front key exposure on enclosure top, but I worry
+    // the side parts will be too flimsy. If so, other ideas are to address DFM
+    // or ditch front exposure and have keys extend beyond top.
+    // TODO: confirm/address
+    top_height = keys_cavity_height + LIP_BOX_DEFAULT_LIP_HEIGHT - e;
+    bottom_height = dimensions.z - top_height;
 
     module _half(
         _height,
@@ -92,6 +96,7 @@ module enclosure(
             remove_lip = !lip,
             fillet = ENCLOSURE_FILLET,
             tolerance = DEFAULT_TOLERANCE,
+            include_tongue_and_groove = true,
             outer_color = outer_color,
             cavity_color = cavity_color,
             $fn = DEFAULT_ROUNDING
@@ -481,7 +486,7 @@ module enclosure(
         difference() {
             union() {
                 if (show_bottom) {
-                    _half(top_height, lip = true);
+                    _half(bottom_height, lip = true);
 
                     color(outer_color) {
                         _switch_exposure(false);
@@ -493,13 +498,14 @@ module enclosure(
                         _battery_fixture();
                         _keys_mount_alignment_fixture(true);
                         _pencil_stand(false);
+                        key_lip_endstop(dimensions.z - keys_cavity_height);
                     }
                 }
 
                 if (show_top) {
                     translate([0, 0, dimensions.z]) {
                         mirror([0, 0, 1]) {
-                            _half(bottom_height, lip = false);
+                            _half(top_height, lip = false);
                         }
                     }
 
@@ -507,7 +513,6 @@ module enclosure(
                         _knob_exposure(false);
                         _keys_mount_alignment_fixture(false);
                         _keys_mount_nut_lock_rail();
-                        key_lip_endstop(dimensions.z - keys_cavity_height);
                     }
                 }
             }
