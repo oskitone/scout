@@ -53,7 +53,7 @@ Examples:
 function export_stl() {
     stub="$1"
     override="$2"
-    # flip_vertically="$3"
+    flip_vertically="$3"
 
     function _run() {
         ascii_filename="$dir/$prefix-$timestamp-$commit_hash-$stub-ascii.stl"
@@ -61,16 +61,19 @@ function export_stl() {
 
         echo "Exporting $filename..."
 
-        # -D "FLIP_VERTICALLY=$flip_vertically" \
-
-        $openscad "openscad/assembly.scad" \
+        $openscad "openscad/scout.scad" \
             --quiet \
             -o "$ascii_filename" \
             --export-format "asciistl" \
-            -D 'SHOW_KEYS=false '\
-            -D 'SHOW_MOUNTING_RAIL=false '\
-            -D 'SHOW_PCB=false '\
             -D 'SHOW_ENCLOSURE_BOTTOM=false '\
+            -D 'SHOW_BATTERY_HOLDER=false '\
+            -D 'SHOW_PCB=false '\
+            -D 'SHOW_KEYS_MOUNT_RAIL=false '\
+            -D 'SHOW_KEYS=false '\
+            -D 'SHOW_ENCLOSURE_TOP=false '\
+            -D 'SHOW_ACCOUTREMENTS=false '\
+            -D 'SHOW_DFM=true '\
+            -D "FLIP_VERTICALLY=$flip_vertically" \
             -D "$override=true" \
 
         echo "Compressing $filename..."
@@ -116,9 +119,11 @@ function run() {
     start=`date +%s`
 
     # The "& \" at the end runs everything in parallel!
-    export_stl 'keys' 'SHOW_KEYS' & \
-    export_stl 'mounting_rail' 'SHOW_MOUNTING_RAIL' & \
-    export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' & \
+    export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' 'false' & \
+    export_stl 'battery_holder' 'SHOW_BATTERY_HOLDER' 'false' & \
+    export_stl 'keys_mount_rail' 'SHOW_KEYS_MOUNT_RAIL' 'false' & \
+    export_stl 'keys' 'SHOW_KEYS' 'false' & \
+    export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' & \
     wait
 
     end=`date +%s`

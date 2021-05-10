@@ -323,8 +323,11 @@ SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_KEYS = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ACCOUTREMENTS = true;
-SHOW_DFM = false;
 
+SHOW_DFM = false;
+FLIP_VERTICALLY = false;
+
+rotate(FLIP_VERTICALLY ? [0, 180, 0] : [0, 0, 0])
 intersection() {
     scout(
         show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
