@@ -29,7 +29,9 @@ module battery_contact_fixture(
 
     diameter = KEYSTONE_181_HEIGHT,
     depth = KEYSTONE_181_DIAMETER,
-    wall = 1
+
+    wall = 2,
+    contact_wall = .8
 ) {
     e = .048;
 
@@ -40,12 +42,12 @@ module battery_contact_fixture(
     cavity_depth = depth + tolerance;
     cavity_height = height - cavity_z + e;
 
-    exposure_width = cavity_width - wall * 2;
-    exposure_height = cavity_height - wall;
-    exposure_z = cavity_z + wall;
+    exposure_width = cavity_width - contact_wall * 2;
+    exposure_height = cavity_height - contact_wall;
+    exposure_z = cavity_z + contact_wall;
 
     outer_width = cavity_width + wall * 2;
-    outer_length = cavity_depth + wall;
+    outer_length = cavity_depth + contact_wall;
 
     y = -(tolerance + wall);
 
@@ -54,12 +56,12 @@ module battery_contact_fixture(
             difference() {
                 cube([outer_width, outer_length, height]);
 
-                translate([wall, wall, cavity_z]) {
+                translate([wall, contact_wall, cavity_z]) {
                     cube([cavity_width, cavity_depth + e, cavity_height]);
                 }
 
-                translate([wall * 2, -e, exposure_z]) {
-                    cube([exposure_width, wall + e * 2, exposure_height]);
+                translate([wall + contact_wall, -e, exposure_z]) {
+                    cube([exposure_width, contact_wall + e * 2, exposure_height]);
                 }
             }
         }
