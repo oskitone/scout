@@ -55,8 +55,6 @@ module enclosure(
     pencil_stand_angle_y,
     pencil_stand_depth,
 
-    batteries_position = [],
-
     label_text_size = 3.2,
     label_length = 5,
 
@@ -330,15 +328,6 @@ module enclosure(
         }
     }
 
-    module _battery_fixture() {
-        translate(batteries_position) {
-            battery_fixture(
-                wall = ENCLOSURE_INNER_WALL,
-                tolerance = tolerance + e
-            );
-        }
-    }
-
     module _ftdi_header_exposure(
         x_bleed = 1,
         z_clearance = 1,
@@ -495,7 +484,6 @@ module enclosure(
                             screw_head_clearance = screw_head_clearance
                         );
                         _speaker_fixture();
-                        _battery_fixture();
                         _keys_mount_alignment_fixture(true);
                         _pencil_stand(false);
                         key_lip_endstop(dimensions.z - keys_cavity_height);

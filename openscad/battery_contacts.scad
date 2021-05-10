@@ -125,46 +125,45 @@ module keystone_181_dual_battery_contact(
     }
 }
 
-module battery_contact_fixture(
-    height = KEYSTONE_181_HEIGHT,
+module battery_contacts(
     tolerance = 0,
-    contact_z = undef,
-
-    flip = false,
-
-    diameter = KEYSTONE_181_HEIGHT,
-    depth = KEYSTONE_181_DIAMETER,
-    wall = 1
+    gutter = KEYSTONE_181_GUTTER,
+    count = 3
 ) {
-    e = .048;
+    e = .091;
 
-    contact_z = contact_z ? contact_z : height - AAA_BATTERY_DIAMETER / 2;
-    cavity_z = contact_z - KEYSTONE_181_HEIGHT / 2 - e;
+    cavity_width = get_battery_holder_cavity_width(tolerance);
 
-    cavity_width = diameter + tolerance * 2;
-    cavity_depth = depth + tolerance;
-    cavity_height = height - cavity_z + e;
+    if (floor(count) > 1) {
+        for (i = [0 : floor(count)]) {
+            is_even = i % 2 == 0;
 
-    exposure_width = cavity_width - wall * 2;
-    exposure_height = cavity_height - wall;
-    exposure_z = cavity_z + wall;
+            left_x = e;
+            right_x = cavity_width - tolerance * 2 - e;
 
-    outer_width = cavity_width + wall * 2;
-    outer_length = cavity_depth + wall;
+            y = (AAA_BATTERY_DIAMETER + gutter) * i
+                + (AAA_BATTERY_DIAMETER * 2 - KEYSTONE_181_WIDTH) / 2;
+            z = AAA_BATTERY_DIAMETER / 2;
 
-    y = -(tolerance + wall);
-
-    translate(flip ? [outer_length, y, 0] : [-outer_length, y + outer_width, 0]) {
-        rotate(flip ? [0, 0, 90] : [0, 0, -90]) {
-            difference() {
-                cube([outer_width, outer_length, height]);
-
-                translate([wall, wall, cavity_z]) {
-                    cube([cavity_width, cavity_depth + e, cavity_height]);
+            if (i <= count - 2) {
+                translate([is_even ? left_x : right_x, y, z]) {
+                    keystone_181_dual_battery_contact(flip = !is_even);
                 }
+            }
 
-                translate([wall * 2, -e, exposure_z]) {
-                    cube([exposure_width, wall + e * 2, exposure_height]);
+            if (i == 0) {
+                translate([right_x, 0, z]) {
+                    keystone_181_dual_battery_contact(
+                        flip = true,
+                        type = BUTTON
+                    );
+                }
+            } else if (i == count - 1) {
+                translate([left_x, y, z]) {
+                    keystone_181_dual_battery_contact(
+                        flip = false,
+                        type = SPRING
+                    );
                 }
             }
         }

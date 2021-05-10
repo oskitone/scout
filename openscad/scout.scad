@@ -4,6 +4,7 @@ use <../../poly555/openscad/lib/basic_shapes.scad>;
 use <../../poly555/openscad/lib/pencil_stand.scad>;
 
 include <batteries.scad>;
+include <battery_holder.scad>;
 include <scout_pcb.scad>;
 include <enclosure.scad>;
 include <keys.scad>;
@@ -27,6 +28,7 @@ SWITCH_ORIGIN = [SWITCH_BASE_WIDTH / 2, 6.36];
 
 module scout(
     show_enclosure_bottom = true,
+    show_battery_holder = true,
     show_pcb = true,
     show_keys_mount_rail = true,
     show_keys = true,
@@ -46,6 +48,8 @@ module scout(
 
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
+
+    battery_holder_floor = 1,
 
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
 
@@ -112,7 +116,7 @@ module scout(
 
     batteries_x = pencil_stand_x + 10;
     batteries_y = ENCLOSURE_WALL + tolerance;
-    batteries_z = ENCLOSURE_FLOOR_CEILING - e;
+    batteries_z = ENCLOSURE_FLOOR_CEILING + battery_holder_floor;
 
     nut_z = keys_z + cantilever_height + nut_lock_floor;
     screw_top_clearance = enclosure_height
@@ -281,8 +285,6 @@ module scout(
             pencil_stand_angle_y = pencil_stand_angle_y,
             pencil_stand_depth = pencil_stand_depth,
 
-            batteries_position = [batteries_x, batteries_y, batteries_z],
-
             screw_head_clearance = screw_head_clearance,
             nut_lock_floor = nut_lock_floor,
 
@@ -297,12 +299,25 @@ module scout(
         );
     }
 
+    if (show_battery_holder) {
+        color(enclosure_outer_color) {
+            translate([batteries_x, batteries_y, batteries_z]) {
+                battery_holder(
+                    wall = ENCLOSURE_INNER_WALL,
+                    floor = battery_holder_floor,
+                    tolerance = tolerance + e
+                );
+            }
+        }
+    }
+
     if (show_accoutrements) {
         _accoutrements();
     }
 }
 
 SHOW_ENCLOSURE_BOTTOM = true;
+SHOW_BATTERY_HOLDER = true;
 SHOW_PCB = true;
 SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_KEYS = true;
@@ -313,6 +328,7 @@ SHOW_DFM = false;
 intersection() {
     scout(
         show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
+        show_battery_holder = SHOW_BATTERY_HOLDER,
         show_pcb = SHOW_PCB,
         show_keys_mount_rail = SHOW_KEYS_MOUNT_RAIL,
         show_keys = SHOW_KEYS,
@@ -328,7 +344,7 @@ intersection() {
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
 
     // batteries
-    translate([40, -10, -10]) { cube([200, 100, 100]); }
+    /* translate([40, -10, -10]) { cube([200, 100, 100]); } */
 
     // lightpipe
     /* translate([10, -10, -10]) { cube([200, 100, 100]); } */
