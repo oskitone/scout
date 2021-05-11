@@ -1,4 +1,5 @@
 // TODO: extract parts to common repo
+use <../../poly555/openscad/lib/basic_shapes.scad>;
 use <../../poly555/openscad/lib/enclosure.scad>;
 use <../../poly555/openscad/lib/pencil_stand.scad>;
 use <../../poly555/openscad/lib/screw_head_exposures.scad>;
@@ -58,6 +59,9 @@ module enclosure(
     label_text_size = 3.2,
     label_length = 5,
 
+    fillet = ENCLOSURE_FILLET,
+    key_exposure_lip_fillet = ENCLOSURE_FILLET,
+
     screw_head_clearance = 0,
     nut_lock_floor = 0,
 
@@ -72,11 +76,7 @@ module enclosure(
 ) {
     e = .0345;
 
-    // This obviates DFM for front key exposure on enclosure top, but I worry
-    // the side parts will be too flimsy. If so, other ideas are to address DFM
-    // or ditch front exposure and have keys extend beyond top.
-    // TODO: confirm/address
-    top_height = keys_cavity_height + LIP_BOX_DEFAULT_LIP_HEIGHT - e;
+    top_height = dimensions.z / 2;
     bottom_height = dimensions.z - top_height;
 
     module _half(
@@ -94,7 +94,6 @@ module enclosure(
             remove_lip = !lip,
             fillet = ENCLOSURE_FILLET,
             tolerance = DEFAULT_TOLERANCE,
-            include_tongue_and_groove = true,
             outer_color = outer_color,
             cavity_color = cavity_color,
             $fn = DEFAULT_ROUNDING
@@ -102,16 +101,49 @@ module enclosure(
     }
 
     module _keys_exposure() {
-        translate([
-            keys_position.x - key_gutter + e,
-            -e,
-            dimensions.z - keys_cavity_height
-        ]) {
+        width = keys_full_width + key_gutter * 2 - e * 2;
+
+        x = keys_position.x - key_gutter + e;
+        z = dimensions.z - keys_cavity_height;
+
+        translate([x, -e, z]) {
             cube([
-                keys_full_width + key_gutter * 2 - e * 2,
+                width,
                 keys_position.y + key_length + tolerance * 2,
                 keys_cavity_height + e
             ]);
+        }
+
+        translate([x, key_exposure_lip_fillet, z - key_exposure_lip_fillet]) {
+            rotate([0, 90, 0]) {
+                rounded_corner_cutoff(
+                    height = width,
+                    radius = key_exposure_lip_fillet,
+                    angle = 180,
+                    $fn = DEFAULT_ROUNDING
+                );
+            }
+        }
+    }
+
+    module key_exposure_lip_support() {
+        BREAKAWAY_SUPPORT_DISTANCE = 10;
+        BREAKAWAY_SUPPORT_DEPTH = .5;
+        DEFAULT_DFM_LAYER_HEIGHT = .2;
+
+        width = keys_full_width + key_gutter * 2
+            - BREAKAWAY_SUPPORT_DISTANCE * 2;
+        length = max(
+            BREAKAWAY_SUPPORT_DEPTH,
+            ENCLOSURE_WALL - key_exposure_lip_fillet
+        );
+
+        x = (dimensions.x - width) / 2;
+        y = key_exposure_lip_fillet;
+        z = dimensions.z - keys_cavity_height + DEFAULT_DFM_LAYER_HEIGHT;
+
+        translate([x, y, z]) {
+            cube([width, length, dimensions.z - z]);
         }
     }
 
@@ -472,6 +504,12 @@ module enclosure(
     }
 
     if (show_top || show_bottom) {
+        if (show_top && show_dfm) {
+            color(outer_color) {
+                key_exposure_lip_support();
+            }
+        }
+
         difference() {
             union() {
                 if (show_bottom) {
@@ -486,7 +524,6 @@ module enclosure(
                         _speaker_fixture();
                         _keys_mount_alignment_fixture(true);
                         _pencil_stand(false);
-                        key_lip_endstop(dimensions.z - keys_cavity_height);
                     }
                 }
 
@@ -501,6 +538,7 @@ module enclosure(
                         _knob_exposure(false);
                         _keys_mount_alignment_fixture(false);
                         _keys_mount_nut_lock_rail();
+                        key_lip_endstop(dimensions.z - keys_cavity_height);
                     }
                 }
             }
