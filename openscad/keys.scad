@@ -48,10 +48,10 @@ module keys_mount_alignment_fixture(
 
     fixture_width = cavity
         ? fixture_width + tolerance
-        : fixture_width + x_bleed;
+        : fixture_width + x_bleed - tolerance;
     fixture_length = cavity
         ? fixture_length + tolerance
-        : fixture_length;
+        : fixture_length - tolerance * 2;
 
     xs = [
         -e - x_bleed,
@@ -59,10 +59,9 @@ module keys_mount_alignment_fixture(
     ];
 
     for (x = xs) {
-        for (y = [(keys_mount_length - fixture_length) / 2]) {
-            translate([x, y, -e]) {
-                cube([fixture_width + e, fixture_length, height + e * 2]);
-            }
+        y = (keys_mount_length - fixture_length) / 2;
+        translate([x, y, -e]) {
+            cube([fixture_width + e, fixture_length, height + e * 2]);
         }
     }
 }
