@@ -78,6 +78,11 @@ module battery_contact_fixtures(
 
     cavity_width = get_battery_holder_cavity_width(tolerance);
 
+    function get_y(contact_width, i, is_dual = false) = (
+        (AAA_BATTERY_DIAMETER + gutter) * i
+        + (AAA_BATTERY_DIAMETER * (is_dual ? 2 : 1) - contact_width) / 2
+    );
+
     if (floor(count) > 1) {
         for (i = [0 : floor(count)]) {
             is_even = i % 2 == 0;
@@ -85,11 +90,9 @@ module battery_contact_fixtures(
             left_x = -e - tolerance;
             right_x = cavity_width - tolerance + e;
 
-            y = (AAA_BATTERY_DIAMETER + gutter) * i
-                + (AAA_BATTERY_DIAMETER * 2 - KEYSTONE_181_WIDTH) / 2;
-
             if (i <= count - 2) {
-                translate([is_even ? left_x : right_x, y, 0]) {
+                x = is_even ? left_x : right_x;
+                translate([x, get_y(KEYSTONE_181_WIDTH, i, true), 0]) {
                     battery_contact_fixture(
                         flip = is_even,
                         diameter = KEYSTONE_181_WIDTH,
@@ -101,19 +104,20 @@ module battery_contact_fixtures(
             }
 
             if (i == 0) {
-                translate([right_x, y, 0]) {
+                translate([right_x, get_y(KEYSTONE_5204_5226_WIDTH, i), 0]) {
                     battery_contact_fixture(
                         flip = false,
-                        diameter = KEYSTONE_181_HEIGHT,
+                        diameter = KEYSTONE_5204_5226_WIDTH,
                         depth = KEYSTONE_181_DIAMETER + e,
                         tolerance = tolerance,
                         height = height - e
                     );
                 }
             } else if (i == count - 1) {
-                translate([left_x, y, 0]) {
+                translate([left_x, get_y(KEYSTONE_5204_5226_WIDTH, i), 0]) {
                     battery_contact_fixture(
                         flip = true,
+                        diameter = KEYSTONE_5204_5226_WIDTH,
                         depth = KEYSTONE_181_DIAMETER + e,
                         tolerance = tolerance,
                         height = height - e
@@ -127,10 +131,17 @@ module battery_contact_fixtures(
 module battery_holder(
     wall = 2,
     wall_height_extension = 0,
-    floor = 0,
+    floor = 1,
     tolerance = 0,
     count = 3,
-    gutter = KEYSTONE_181_GUTTER
+    gutter = KEYSTONE_181_GUTTER,
+
+    contact_width = KEYSTONE_5204_5226_WIDTH,
+    contact_length = KEYSTONE_5204_5226_LENGTH,
+    contact_z = KEYSTONE_5204_5226_CONTACT_Z,
+    contact_tab_width = KEYSTONE_5204_5226_TAB_WIDTH,
+    contact_tab_cavity_length =
+        KEYSTONE_5204_5226_LENGTH + KEYSTONE_5204_5226_DIMPLE_LENGTH
 ) {
     e = .0837;
 
@@ -143,59 +154,88 @@ module battery_holder(
 
     // TODO: inner alignment rails
 
-    module _output_pin_cavities(
-        _length = KEYSTONE_181_DIAMETER + tolerance * 2
+    // This is the worst!
+    // TODO: rewrite if keeping
+    module _contact_tab_cavities(
+        _length = contact_tab_width + tolerance * 2
     ) {
-        _height = (height - KEYSTONE_181_HEIGHT) / 2;
-        z = height - _height;
+        _width = wall + contact_tab_cavity_length;
+        _height = floor + e * 2 + 2; // TODO: no!
+        floor_cavity_height = (contact_z) - AAA_BATTERY_DIAMETER / 2;
 
         for (xy = [
             [
                 -(wall + tolerance + e),
                 (AAA_BATTERY_DIAMETER + gutter) * (count - 1)
-                    + (AAA_BATTERY_DIAMETER - _length) / 2
+                    + AAA_BATTERY_DIAMETER / 2
             ],
             [
-                cavity_width - tolerance - e,
-                (AAA_BATTERY_DIAMETER - _length) / 2
+                cavity_width - tolerance - contact_tab_cavity_length,
+                AAA_BATTERY_DIAMETER / 2
             ]
         ]) {
-            translate([xy.x, xy.y, z]) {
+            translate([xy.x, xy.y - _length / 2, -(floor + e)]) {
                 cube([
-                    wall + e * 2,
+                    _width + e,
                     _length,
                     _height + e
                 ]);
             }
         }
+
+        for (xy = [
+            [
+                0,
+                (AAA_BATTERY_DIAMETER + gutter) * (count - 1)
+                    + AAA_BATTERY_DIAMETER / 2
+            ],
+            [
+                cavity_width - tolerance * 2 - contact_length - e * 2,
+                AAA_BATTERY_DIAMETER / 2
+            ]
+        ]) {
+            * translate([xy.x, xy.y - contact_width / 2, -floor_cavity_height]) {
+                cube([
+                    contact_length + e * 2,
+                    contact_width,
+                    floor_cavity_height
+                ]);
+            }
+        }
+
+
     }
 
-    battery_contact_fixtures(
-        tolerance = tolerance,
-        gutter = gutter,
-        height = height - floor,
-        count = count
-    );
-
     difference() {
-        translate([-(wall + tolerance), -(wall + tolerance), -floor]) {
-            cube([width, length, height]);
+        union() {
+            battery_contact_fixtures(
+                tolerance = tolerance,
+                gutter = gutter,
+                height = height - floor,
+                count = count
+            );
+
+            difference() {
+                translate([-(wall + tolerance), -(wall + tolerance), -floor]) {
+                    cube([width, length, height]);
+                }
+
+                translate([-tolerance, -tolerance, -e]) {
+                    cube([
+                        cavity_width,
+                        cavity_length,
+                        AAA_BATTERY_DIAMETER + wall_height_extension + e * 2
+                    ]);
+                }
+            }
         }
 
-        translate([-tolerance, -tolerance, -e]) {
-            cube([
-                cavity_width,
-                cavity_length,
-                AAA_BATTERY_DIAMETER + wall_height_extension + e * 2
-            ]);
-        }
-
-        _output_pin_cavities();
+        _contact_tab_cavities();
     }
 }
 
-/* translate([0, -40, 0]) {
-    % battery_array();
+translate([0, -40, 0]) {
+    /* % battery_array(); */
     battery_holder(tolerance = .3);
-    % battery_contacts(tolerance = .3);
-} */
+    /* % battery_contacts(tolerance = .3); */
+}
