@@ -20,18 +20,22 @@ module enclosure_engraving(
     quick_preview = true,
     enclosure_height = 0
 ) {
-    e = .0835;
+    e = .0135;
+
+    depth = placard
+        ? ENCLOSURE_ENGRAVING_DEPTH + e * 2
+        : ENCLOSURE_ENGRAVING_DEPTH;
 
     translate([
         position.x,
         position.y,
         bottom
-            ? -e
-            : enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
+            ? depth
+            : enclosure_height - depth
     ]) {
         OSKITONE_LENGTH_WIDTH_RATIO = 4.6 / 28; // TODO: extract
 
-        mirror([bottom ? 1 : 0, 0, 0]) {
+        rotate([0, bottom ? 180 : 0, 0]) {
             difference() {
                 if (placard) {
                     translate(
@@ -53,9 +57,7 @@ module enclosure_engraving(
                             ? undef
                             : [size / OSKITONE_LENGTH_WIDTH_RATIO, size],
                         bleed = quick_preview ? 0 : bleed,
-                        height = placard
-                            ? ENCLOSURE_ENGRAVING_DEPTH + e * 2
-                            : ENCLOSURE_ENGRAVING_DEPTH + e,
+                        height = depth,
                         center = center,
                         chamfer =  quick_preview ? 0 : (placard ? 0 : .1)
                     );
