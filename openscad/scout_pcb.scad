@@ -206,7 +206,7 @@ module scout_pcb(
         }
 
         translate([0, 0, -PCB_PIN_CLEARANCE]) {
-            % cube([PCB_WIDTH, PCB_LENGTH, PCB_PIN_CLEARANCE]);
+            % cube([PCB_WIDTH, PCB_LENGTH, PCB_PIN_CLEARANCE + e]);
         }
 
     }
