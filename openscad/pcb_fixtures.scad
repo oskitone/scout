@@ -2,7 +2,8 @@ module pcb_fixtures(
     pcb_position = [0, 0, 0],
     screw_head_clearance = 0,
     wall = ENCLOSURE_INNER_WALL,
-    clearance = DEFAULT_TOLERANCE
+    corner_clearance = DEFAULT_TOLERANCE + .2,
+    tolerance = DEFAULT_TOLERANCE
 ) {
     e = .09876;
 
@@ -13,12 +14,12 @@ module pcb_fixtures(
 
         difference() {
             for (x = [
-                pcb_position.x - wall,
-                pcb_position.x + PCB_WIDTH - size + wall
+                pcb_position.x - wall - corner_clearance,
+                pcb_position.x + PCB_WIDTH - size + wall + corner_clearance
             ]) {
                 for (y = [
-                    pcb_position.y - wall,
-                    pcb_position.y + PCB_LENGTH - size + wall
+                    pcb_position.y - wall - corner_clearance,
+                    pcb_position.y + PCB_LENGTH - size + wall + corner_clearance
                 ]) {
                     translate([x, y, z]) {
                         cube([size, size, height]);
@@ -27,13 +28,13 @@ module pcb_fixtures(
             }
 
             translate([
-                pcb_position.x - clearance,
-                pcb_position.y - clearance,
+                pcb_position.x - corner_clearance,
+                pcb_position.y - corner_clearance,
                 z - e
             ]) {
                 cube([
-                    PCB_WIDTH + clearance * 2,
-                    PCB_LENGTH + clearance * 2,
+                    PCB_WIDTH + corner_clearance * 2,
+                    PCB_LENGTH + corner_clearance * 2,
                     height + e * 2
                 ]);
             }
@@ -82,7 +83,7 @@ module pcb_fixtures(
                     cylinder(
                         h = head_column_height - head_column_z,
                         d = SCREW_HEAD_DIAMETER
-                            + clearance * 2
+                            + tolerance * 2
                             + ENCLOSURE_INNER_WALL * 2
                     );
                 }
@@ -91,7 +92,7 @@ module pcb_fixtures(
                     cylinder(
                         h = pcb_position.z - shaft_column_z,
                         d = PCB_HOLE_DIAMETER
-                            + clearance * 2
+                            + tolerance * 2
                             + ENCLOSURE_INNER_WALL * 2
                     );
                 }
