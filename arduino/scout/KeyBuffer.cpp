@@ -11,10 +11,10 @@
 const byte ROWS = 4;
 const byte COLS = 5;
 byte key_indexes[ROWS][COLS] = {
-  {1, 5, 9, 13, 17},
-  {2, 6, 10, 14, 18},
-  {3, 7, 11, 15, 19},
-  {4, 8, 12, 16, 20}
+  {1, 5, 9, 12, 15},
+  {2, 6, 10, 13, 16},
+  {3, 7, 11, 14, 17},
+  {4, 8}
 };
 byte rowPins[ROWS] = {7, 8, 9, 10};
 byte colPins[COLS] = {2, 3, 4, 5, 6};

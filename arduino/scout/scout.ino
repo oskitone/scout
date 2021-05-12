@@ -6,29 +6,40 @@
 
 bool printToSerial = false;
 
-int OCTAVE_RANGE = 6;
-int CYCLES_PER_GLIDE_MAX = printToSerial ? 100 : 1000;
+int OCTAVE = 3;
+float GLIDE = .25;
 
-int octaveControlPin = A0;
-int glideControlPin = A1;
+int CYCLES_PER_GLIDE_MAX = printToSerial ? 25 : 250;
+
 int speakerPin = 11;
 
-float notes[] = {174.61, 185.00, 196.00, 207.65, 220.00, 233.08, 246.94, 261.63, 277.18, 293.66, 311.13, 329.63, 349.23, 369.99, 392.00, 415.30, 440.00, 466.16, 493.88, 523.25};
+float notes[] = {
+    261.63, // C4
+    277.18, // C#4/Db4
+    293.66, // D4
+    311.13, // D#4/Eb4
+    329.63, // E4
+    349.23, // F4
+    369.99, // F#4/Gb4
+    392.00, // G4
+    415.30, // G#4/Ab4
+    440.00, // A4
+    466.16, // A#4/Bb4
+    493.88, // B4
+    523.25, // C5
+    554.37, // C#5/Db5
+    587.33, // D5
+    622.25, // D#5/Eb5
+    659.25, // E5
+};
 
 KeyBuffer buffer;
-
-int octave = OCTAVE_RANGE / 2;
-float glide = .5;
-
-float POT_TOLERANCE = .01;
-
-long settingsThrottle = 500;
 
 float frequency = 0;
 float glideStep;
 
 float getFrequency(long key) {
-  return notes[key] / 2 * octave;
+  return notes[key] / 4 * pow(2, OCTAVE);
 }
 
 float getTargetFrequency() {
@@ -41,12 +52,12 @@ void updateFrequency() {
   bool needsUpdate = frequency != target;
 
   if (needsUpdate) {
-    if ((frequency == 0) || (glide <= POT_TOLERANCE)) {
+    if ((frequency == 0) || (GLIDE == 0)) {
       frequency = target;
     } else {
       if (target != previousTargetFrequency) {
         glideStep = abs(target - previousTargetFrequency)
-          / (glide * CYCLES_PER_GLIDE_MAX);
+          / (GLIDE * CYCLES_PER_GLIDE_MAX);
       }
 
       frequency = (target > frequency)
@@ -60,34 +71,13 @@ void updateFrequency() {
   }
 }
 
-float getVoltage(int pin) {
-  return analogRead(pin) * (5.0 / 1023.0) / 5;
-}
-
-unsigned long settingsPreviousMillis = 0;
-void updateSettings(bool skipPoll = false) {
-  bool pollPasses =
-    (unsigned long)(millis() - settingsPreviousMillis) >= settingsThrottle;
-
-  if (skipPoll || pollPasses) {
-    octave = round(getVoltage(octaveControlPin) * (OCTAVE_RANGE - 1)) + 1;
-    glide = getVoltage(glideControlPin);
-
-    settingsPreviousMillis = millis();
-  }
-}
-
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
-
-  updateSettings(true);
 }
 
 void loop() {
   buffer.populate();
-
-  updateSettings();
 
   if (printToSerial) {
     Serial.println(
