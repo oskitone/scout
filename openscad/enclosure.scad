@@ -47,8 +47,6 @@ module enclosure(
 
     label_distance,
 
-    lightpipe_dimensions = [],
-
     knob_radius,
     knob_position = [],
     knob_vertical_clearance = 0,
@@ -250,27 +248,6 @@ module enclosure(
             ]) {
                 # cube([width, branding_length, ENCLOSURE_FLOOR_CEILING + 1]);
             }
-        }
-    }
-
-    module _lightpipe_exposure(
-        tolerance = 0 // Intentionally snug
-    ) {
-        // TODO: if keeping lightpipe, rethink how it fits into enclosure.
-        // Its width/length could extend beyond exposure, allowing it to be
-        // sandwiched into place when enclosure is assembled.
-
-        x = pcb_position.x + PCB_LED_POSITION.x - lightpipe_dimensions.x / 2
-            - tolerance;
-        y = pcb_position.y + PCB_LED_POSITION.y - lightpipe_dimensions.y / 2
-            - tolerance;
-
-        translate([x, y, dimensions.z - ENCLOSURE_FLOOR_CEILING - e]) {
-            cube([
-                lightpipe_dimensions.x + tolerance * 2,
-                lightpipe_dimensions.y + tolerance * 2,
-                ENCLOSURE_FLOOR_CEILING + e * 2
-            ]);
         }
     }
 
@@ -604,7 +581,6 @@ module enclosure(
             color(cavity_color) {
                 _keys_exposure();
                 _branding();
-                _lightpipe_exposure();
                 _knob_exposure(true);
                 _switch_exposure(true);
                 _screw_cavities();
