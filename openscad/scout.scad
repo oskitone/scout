@@ -117,7 +117,7 @@ module scout(
     pencil_stand_depth = 15;
 
     batteries_x = pencil_stand_x + 10;
-    batteries_y = ENCLOSURE_WALL + tolerance;
+    batteries_y = ENCLOSURE_WALL + ENCLOSURE_INNER_WALL + tolerance * 2;
     batteries_z = ENCLOSURE_FLOOR_CEILING + battery_holder_floor;
 
     nut_z = keys_z + cantilever_height + nut_lock_floor;
