@@ -25,6 +25,10 @@ ENCLOSURE_FILLET = 2;
 DEFAULT_ROUNDING = $preview ? undef : 24;
 HIDEF_ROUNDING = $preview ? undef : 120;
 
+DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
+BREAKAWAY_SUPPORT_DISTANCE = 10;
+BREAKAWAY_SUPPORT_DEPTH = .5;
+
 module enclosure(
     show_top = true,
     show_bottom = true,
@@ -127,23 +131,78 @@ module enclosure(
     }
 
     module key_exposure_lip_support() {
-        BREAKAWAY_SUPPORT_DISTANCE = 10;
-        BREAKAWAY_SUPPORT_DEPTH = .5;
-        DEFAULT_DFM_LAYER_HEIGHT = .2;
+        print_bed_length = BREAKAWAY_SUPPORT_DEPTH;
+        connection_length = ENCLOSURE_WALL;
+        connection_gap = DEFAULT_DFM_LAYER_HEIGHT;
 
         width = keys_full_width + key_gutter * 2
             - BREAKAWAY_SUPPORT_DISTANCE * 2;
-        length = max(
-            BREAKAWAY_SUPPORT_DEPTH,
-            ENCLOSURE_WALL - key_exposure_lip_fillet
-        );
 
         x = (dimensions.x - width) / 2;
-        y = key_exposure_lip_fillet;
-        z = dimensions.z - keys_cavity_height + DEFAULT_DFM_LAYER_HEIGHT;
+        z = dimensions.z - keys_cavity_height - key_exposure_lip_fillet;
+        inner_cavity_z = z + key_exposure_lip_fillet + connection_gap
+            + DEFAULT_DFM_LAYER_HEIGHT;
 
-        translate([x, y, z]) {
-            cube([width, length, dimensions.z - z]);
+        module _hull(
+            height = dimensions.z - z,
+
+            bottom_length = connection_length,
+            bottom_height = key_exposure_lip_fillet,
+
+            top_length = print_bed_length,
+
+            x_bleed = 0
+        ) {
+            top_y = (top_length - bottom_length) / -2;
+
+            hull() {
+                translate([-x_bleed, 0, 0]) {
+                    cube([width + x_bleed * 2, bottom_length, bottom_height]);
+                }
+
+                translate([-x_bleed, top_y, height - e]) {
+                    cube([width + x_bleed * 2, top_length, e]);
+                }
+            }
+        }
+
+        module _inner_cavity() {
+            _hull(
+                height = dimensions.z - inner_cavity_z
+                    - BREAKAWAY_SUPPORT_DEPTH,
+                bottom_length = connection_length - BREAKAWAY_SUPPORT_DEPTH,
+                bottom_height = e,
+                top_length = BREAKAWAY_SUPPORT_DEPTH,
+                x_bleed = e
+            );
+        }
+
+        difference() {
+            translate([x, 0, z]) {
+                _hull();
+            }
+
+            translate([x, BREAKAWAY_SUPPORT_DEPTH / 2, inner_cavity_z]) {
+                _inner_cavity();
+            }
+
+            translate([x - e, key_exposure_lip_fillet, z]) {
+                cube([
+                    width + e * 2,
+                    connection_length / 2 + connection_gap,
+                    key_exposure_lip_fillet + connection_gap
+                ]);
+            }
+
+            translate([x - e, key_exposure_lip_fillet, z]) {
+                rotate([0, 90, 0]) {
+                    cylinder(
+                        h = width + e * 2,
+                        r = key_exposure_lip_fillet + connection_gap,
+                        $fn = DEFAULT_ROUNDING
+                    );
+                }
+            }
         }
     }
 
@@ -436,7 +495,6 @@ module enclosure(
             );
 
             if (show_dfm) {
-                DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
                 dfm_length = PCB_HOLE_DIAMETER;
 
                 for (xy = PCB_HOLE_POSITIONS) {
