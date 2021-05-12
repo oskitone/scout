@@ -35,6 +35,7 @@ module scout(
     show_enclosure_top = true,
     show_accoutrements = true,
     show_lightpipe = true,
+    show_knob = true,
 
     show_dfm = false,
 
@@ -166,7 +167,7 @@ module scout(
         }
     }
 
-    module _accoutrements() {
+    module _knob() {
         translate([
             pcb_x + PCB_POT_POSITION.x,
             pcb_y + PCB_POT_POSITION.y,
@@ -184,7 +185,9 @@ module scout(
                 $fn = quick_preview ? 0 : DEFAULT_ROUNDING
             );
         }
+    }
 
+    module _accoutrements() {
         translate([speaker_x, speaker_y, speaker_z - e]) {
             % speaker();
         }
@@ -322,6 +325,10 @@ module scout(
     if (show_lightpipe) {
         _lightpipe();
     }
+
+    if (show_knob) {
+        _knob();
+    }
 }
 
 SHOW_ENCLOSURE_BOTTOM = true;
@@ -332,6 +339,7 @@ SHOW_KEYS = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ACCOUTREMENTS = true;
 SHOW_LIGHTPIPE = true;
+SHOW_KNOB = true;
 
 SHOW_DFM = false;
 FLIP_VERTICALLY = false;
@@ -347,6 +355,7 @@ intersection() {
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
         show_accoutrements = SHOW_ACCOUTREMENTS,
         show_lightpipe = SHOW_LIGHTPIPE,
+        show_knob = SHOW_KNOB,
 
         show_dfm = SHOW_DFM,
 

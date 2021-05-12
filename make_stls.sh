@@ -73,6 +73,7 @@ function export_stl() {
             -D 'SHOW_ENCLOSURE_TOP=false '\
             -D 'SHOW_ACCOUTREMENTS=false '\
             -D 'SHOW_LIGHTPIPE=false '\
+            -D 'SHOW_KNOB=false '\
             -D 'SHOW_DFM=true '\
             -D "FLIP_VERTICALLY=$flip_vertically" \
             -D "$override=true" \
@@ -126,6 +127,7 @@ function run() {
     export_stl 'keys' 'SHOW_KEYS' 'false' & \
     export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' & \
     export_stl 'lightpipe' 'SHOW_LIGHTPIPE' 'true' & \
+    export_stl 'knob' 'SHOW_KNOB' 'false' & \
     wait
 
     end=`date +%s`
