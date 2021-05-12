@@ -33,6 +33,8 @@ module enclosure(
     show_top = true,
     show_bottom = true,
 
+    default_gutter = 0,
+
     dimensions = [],
 
     pcb_position = [],
@@ -42,7 +44,6 @@ module enclosure(
     key_gutter,
     keys_full_width,
 
-    branding_length,
     branding_position = [],
 
     label_distance,
@@ -205,12 +206,14 @@ module enclosure(
     }
 
     module _branding(
-        make_to_model_ration = .25,
+        make_to_model_ratio = .4,
         gutter = label_distance,
         debug = false
     ) {
-        make_length = (branding_length - gutter) * (1 - make_to_model_ration);
-        model_length = branding_length - make_length - gutter;
+        available_length = dimensions.y - branding_position.y - default_gutter;
+
+        make_length = (available_length - gutter) * (1 - make_to_model_ratio);
+        model_length = (available_length - gutter) * make_to_model_ratio;
 
         enclosure_engraving(
             string = "SCOUT",
@@ -239,14 +242,14 @@ module enclosure(
             width = dimensions.x
                 - branding_position.x
                 - knob_radius * 2
-                - 3.4 * 2; // TODO: expose default_gutter
+                - default_gutter * 2;
 
             translate([
                 branding_position.x,
                 branding_position.y,
                 dimensions.z - ENCLOSURE_FLOOR_CEILING
             ]) {
-                # cube([width, branding_length, ENCLOSURE_FLOOR_CEILING + 1]);
+                # cube([width, available_length, ENCLOSURE_FLOOR_CEILING + 1]);
             }
         }
     }
