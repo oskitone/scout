@@ -42,7 +42,6 @@ module enclosure(
     key_gutter,
     keys_full_width,
 
-    branding_length,
     branding_position = [],
 
     label_distance,
@@ -205,12 +204,13 @@ module enclosure(
     }
 
     module _branding(
-        make_to_model_ration = .25,
+        make_to_model_ratio = .25,
         gutter = label_distance,
         debug = false
     ) {
-        make_length = (branding_length - gutter) * (1 - make_to_model_ration);
-        model_length = branding_length - make_length - gutter;
+        make_length = knob_position.y - branding_position.y
+            - label_distance / 2;
+        model_length = make_length * make_to_model_ratio;
 
         enclosure_engraving(
             string = "SCOUT",

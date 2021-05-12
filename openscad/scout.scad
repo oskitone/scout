@@ -96,7 +96,6 @@ module scout(
 
     branding_x = default_gutter;
     branding_y = keys_y + key_length + default_gutter;
-    branding_length = enclosure_length - branding_y - default_gutter;
 
     speaker_x = pcb_x + PCB_WIDTH - SPEAKER_DIAMETER / 2;
     speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
@@ -232,7 +231,6 @@ module scout(
             key_gutter = key_gutter,
             keys_full_width = keys_full_width,
 
-            branding_length = branding_length,
             branding_position = [branding_x, branding_y],
 
             label_distance = default_gutter / 2,
