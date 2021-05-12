@@ -29,11 +29,12 @@ module lightpipe(
         }
     }
 
-    module _bottom(diameter) {
-        translate([width / 2, length / 2, 0]) {
+    module _bottom(diameter, z = 0) {
+        translate([width / 2, length / 2, z]) {
             cylinder(
                 d = diameter,
-                h = e
+                h = e,
+                $fn = DEFAULT_ROUNDING
             );
         }
     }
@@ -48,7 +49,7 @@ module lightpipe(
     module _inner_cavity() {
         hull() {
             _top(height - 1);
-            _bottom(LED_DIAMETER + tolerance * 2);
+            _bottom(LED_DIAMETER + tolerance * 2, -e);
         }
     }
 
