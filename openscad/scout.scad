@@ -34,6 +34,8 @@ module scout(
     show_keys = true,
     show_enclosure_top = true,
     show_accoutrements = true,
+    show_lightpipe = true,
+
     show_dfm = false,
 
     accidental_key_recession = .2,
@@ -134,7 +136,7 @@ module scout(
     echo("Knob", [knob_radius * 2, knob_height]);
     echo("Screw head clearance", screw_head_clearance);
 
-    module _accoutrements(
+    module _lightpipe(
         lightpipe_xy_tolerance = 0 // Intentionally snug
     ) {
         translate([
@@ -162,7 +164,9 @@ module scout(
                 );
             }
         }
+    }
 
+    module _accoutrements() {
         translate([
             pcb_x + PCB_POT_POSITION.x,
             pcb_y + PCB_POT_POSITION.y,
@@ -314,6 +318,10 @@ module scout(
     if (show_accoutrements) {
         _accoutrements();
     }
+
+    if (show_lightpipe) {
+        _lightpipe();
+    }
 }
 
 SHOW_ENCLOSURE_BOTTOM = true;
@@ -323,6 +331,7 @@ SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_KEYS = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ACCOUTREMENTS = true;
+SHOW_LIGHTPIPE = true;
 
 SHOW_DFM = false;
 FLIP_VERTICALLY = false;
@@ -337,6 +346,8 @@ intersection() {
         show_keys = SHOW_KEYS,
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
         show_accoutrements = SHOW_ACCOUTREMENTS,
+        show_lightpipe = SHOW_LIGHTPIPE,
+
         show_dfm = SHOW_DFM,
 
         tolerance = DEFAULT_TOLERANCE,
