@@ -218,6 +218,8 @@ module scout(
             show_top = show_enclosure_top,
             show_bottom = show_enclosure_bottom,
 
+            default_gutter = default_gutter,
+
             dimensions = [
                 enclosure_width,
                 enclosure_length,
