@@ -621,7 +621,9 @@ module enclosure(
                             }
                         }
 
-                        _speaker_fixture_cavity();
+                        color(cavity_color) {
+                            _speaker_fixture_cavity();
+                        }
                     }
 
                     color(outer_color) {
