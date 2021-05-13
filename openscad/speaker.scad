@@ -10,18 +10,25 @@ module speaker() {
     );
 }
 
+function get_speaker_fixture_diameter(
+    wall = 1,
+    tolerance = 0,
+    speaker_diameter = SPEAKER_DIAMETER
+) = (
+    SPEAKER_DIAMETER + wall * 2 + tolerance * 2
+);
+
 module speaker_fixture(
     height = SPEAKER_HEIGHT,
-
+    wall = 1,
     tab_cavity_rotation = 90,
     tab_cavity_size = 15,
-
     tolerance = 0
 ) {
     e = .053;
 
     ring_z = height - SPEAKER_HEIGHT;
-    diameter = SPEAKER_DIAMETER + ENCLOSURE_INNER_WALL * 2 + tolerance * 2;
+    diameter = get_speaker_fixture_diameter(wall, tolerance);
 
     // TODO: experiment with extra height speaker enclosure on sound
 
@@ -29,7 +36,7 @@ module speaker_fixture(
         ring(
             diameter = SPEAKER_DIAMETER + tolerance * 2 + e * 2,
             height = ring_z,
-            thickness = ENCLOSURE_INNER_WALL + e * 2
+            thickness = wall + e * 2
         );
     }
 
@@ -38,7 +45,7 @@ module speaker_fixture(
             ring(
                 diameter = diameter,
                 height = height,
-                thickness = ENCLOSURE_INNER_WALL
+                thickness = wall
             );
 
             rotate([0, 0, tab_cavity_rotation]) {
