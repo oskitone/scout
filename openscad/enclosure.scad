@@ -79,7 +79,7 @@ module enclosure(
 ) {
     e = .0345;
 
-    top_height = dimensions.z / 2;
+    top_height = dimensions.z - pcb_position.z;
     bottom_height = dimensions.z - top_height;
 
     module _half(
@@ -541,6 +541,40 @@ module enclosure(
         }
     }
 
+    module _led_exposure(
+        cavity = true,
+        z_clearance = 1,
+        wall = ENCLOSURE_INNER_WALL
+    ) {
+        z = cavity
+            ? pcb_position.z + PCB_HEIGHT - e
+            : pcb_position.z + PCB_HEIGHT;
+
+        cavity_width = LED_DIAMETER + tolerance * 2;
+
+        width = cavity ? cavity_width : cavity_width + wall * 2;
+        height = cavity
+            ? LED_HEIGHT + z_clearance
+            : dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
+
+        led_x = pcb_position.x + PCB_LED_POSITION.x;
+        led_y = pcb_position.y + PCB_LED_POSITION.y;
+
+        exit_y = cavity
+            ? dimensions.y + e
+            : dimensions.y - ENCLOSURE_WALL + e;
+
+        hull() {
+            translate([led_x, led_y, z]) {
+                cylinder(d = width, h = height, $fn = 12);
+            }
+
+            translate([led_x - width / 2, exit_y, z]) {
+                cube([width, e, height]);
+            }
+        }
+    }
+
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
             color(outer_color) {
@@ -577,6 +611,7 @@ module enclosure(
                         _keys_mount_alignment_fixture(false);
                         _keys_mount_nut_lock_rail();
                         key_lip_endstop(dimensions.z - keys_cavity_height);
+                        _led_exposure(cavity = false);
                     }
                 }
             }
@@ -590,6 +625,7 @@ module enclosure(
                 _ftdi_header_exposure();
                 _headphone_jack_cavity();
                 _pencil_stand(true);
+                _led_exposure(cavity = true);
             }
         }
     }
