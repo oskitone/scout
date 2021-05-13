@@ -103,7 +103,9 @@ module enclosure(
         );
     }
 
-    module _keys_exposure() {
+    module _keys_exposure(
+        y_tolerance_against_enclosure = 0 // intentionally snug
+    ) {
         width = keys_full_width + key_gutter * 2 - e * 2;
 
         x = keys_position.x - key_gutter + e;
@@ -112,7 +114,7 @@ module enclosure(
         translate([x, -e, z]) {
             cube([
                 width,
-                keys_position.y + key_length + tolerance * 2,
+                keys_position.y + key_length + y_tolerance_against_enclosure,
                 keys_cavity_height + e
             ]);
         }

@@ -1,3 +1,9 @@
+// TODO: rethink? A rail, anchored to enc top's sides and supported throughout
+// the middle on enclosure bottom, would have more room to work and probably
+// be less susceptible to deformations on thinner outer walls.
+// It could also connect to the mounting rail, like an "O" or "C" that circles
+// the buttons and extends into the keys.
+
 module key_lip_endstop(
     keys_cavity_height_z,
 

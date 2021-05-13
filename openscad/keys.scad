@@ -120,7 +120,7 @@ module keys(
     pcb_position = [],
 
     keys_cavity_height_z,
-    travel = 2,
+    travel = 3,
 
     accidental_color = "#444",
     natural_color = "#fff",
