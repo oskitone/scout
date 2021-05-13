@@ -394,7 +394,22 @@ module enclosure(
             speaker_fixture(
                 height = speaker_position.z + SPEAKER_HEIGHT
                     - ENCLOSURE_FLOOR_CEILING + e,
+                wall = ENCLOSURE_INNER_WALL,
                 tolerance = tolerance
+            );
+        }
+    }
+
+    module _speaker_fixture_cavity() {
+        z = bottom_height - LIP_BOX_DEFAULT_LIP_HEIGHT - e;
+        height = speaker_position.z + SPEAKER_HEIGHT - z + e;
+        diameter = get_speaker_fixture_diameter(ENCLOSURE_INNER_WALL, tolerance)
+            + tolerance * 2;
+
+        translate([speaker_position.x, speaker_position.y, z]) {
+            cylinder(
+                d = diameter,
+                h = height
             );
         }
     }
@@ -419,14 +434,10 @@ module enclosure(
         }
     }
 
-    module _keys_mount_alignment_fixture(bottom) {
+    module _keys_mount_alignment_fixture() {
         keys_to_enclosure_distance = get_keys_to_enclosure_distance(tolerance);
-        z = bottom
-            ? ENCLOSURE_FLOOR_CEILING - e
-            : bottom_height + LIP_BOX_DEFAULT_LIP_HEIGHT;
-        height = bottom
-            ? bottom_height + LIP_BOX_DEFAULT_LIP_HEIGHT - z
-            : keys_position.z - z + cantilever_height;
+        z = bottom_height - LIP_BOX_DEFAULT_LIP_HEIGHT;
+        height = keys_position.z - z + cantilever_height;
 
         translate([
             keys_position.x - keys_to_enclosure_distance,
@@ -585,7 +596,7 @@ module enclosure(
         difference() {
             union() {
                 if (show_bottom) {
-                    _half(bottom_height, lip = true);
+                    _half(bottom_height, lip = false);
 
                     color(outer_color) {
                         _switch_exposure(false);
@@ -594,21 +605,24 @@ module enclosure(
                             screw_head_clearance = screw_head_clearance
                         );
                         _speaker_fixture();
-                        _keys_mount_alignment_fixture(true);
                         _pencil_stand(false);
                     }
                 }
 
                 if (show_top) {
-                    translate([0, 0, dimensions.z]) {
-                        mirror([0, 0, 1]) {
-                            _half(top_height, lip = false);
+                    difference() {
+                        translate([0, 0, dimensions.z]) {
+                            mirror([0, 0, 1]) {
+                                _half(top_height, lip = true);
+                            }
                         }
+
+                        _speaker_fixture_cavity();
                     }
 
                     color(outer_color) {
                         _knob_exposure(false);
-                        _keys_mount_alignment_fixture(false);
+                        _keys_mount_alignment_fixture();
                         _keys_mount_nut_lock_rail();
                         key_lip_endstop(dimensions.z - keys_cavity_height);
                         _led_exposure(cavity = false);
