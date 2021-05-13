@@ -73,7 +73,7 @@ bleeds = [-.1, 0];
 plot_width = 22;
 plot_length = 7;
 
-* difference() {
+difference() {
     cube([
         plot_width * len(sizes),
         plot_length * len(bleeds),

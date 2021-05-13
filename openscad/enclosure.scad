@@ -1,6 +1,5 @@
 // TODO: extract parts to common repo
 use <../../poly555/openscad/lib/basic_shapes.scad>;
-use <../../poly555/openscad/lib/diagonal_grill.scad>;
 use <../../poly555/openscad/lib/enclosure.scad>;
 use <../../poly555/openscad/lib/pencil_stand.scad>;
 use <../../poly555/openscad/lib/screw_head_exposures.scad>;
@@ -8,7 +7,7 @@ use <../../poly555/openscad/lib/switch.scad>;
 
 use <../../apc/openscad/floating_hole_cavity.scad>;
 
-include <enclosure_engraving.scad>;
+use <enclosure_engraving.scad>;
 include <key_lip_endstop.scad>;
 include <keys.scad>;
 include <pcb_fixtures.scad>;
@@ -33,8 +32,6 @@ BREAKAWAY_SUPPORT_DEPTH = .5;
 module enclosure(
     show_top = true,
     show_bottom = true,
-
-    default_gutter = 0,
 
     dimensions = [],
 
@@ -207,38 +204,20 @@ module enclosure(
     }
 
     module _branding(
-        make_to_model_ratio = .333,
+        make_to_model_ratio = .25,
         gutter = label_distance,
         debug = false
     ) {
-        branding_available_length = dimensions.y - branding_position.y
-            - default_gutter;
-        false_grill_width = branding_available_length * 1;
-
-        make_length = branding_available_length / 2;
+        make_length = knob_position.y - branding_position.y
+            - label_distance / 2;
         model_length = make_length * make_to_model_ratio;
-
-        translate([
-            branding_position.x,
-            branding_position.y,
-            dimensions.z - ENCLOSURE_ENGRAVING_DEPTH
-        ]) {
-            diagonal_grill(
-                false_grill_width,
-                branding_available_length,
-                ENCLOSURE_ENGRAVING_DEPTH + e,
-                size = 2,
-                angle = 45
-            );
-        }
 
         enclosure_engraving(
             string = "SCOUT",
             size = make_length,
             center = false,
             position = [
-                false_grill_width + default_gutter + branding_position.x
-                    - make_length * .075, // HACK: fix alignment
+                branding_position.x - make_length * .075, // HACK: fix alignment
                 branding_position.y
             ],
             quick_preview = quick_preview,
@@ -249,7 +228,7 @@ module enclosure(
             size = model_length,
             center = false,
             position = [
-                false_grill_width + default_gutter + branding_position.x,
+                branding_position.x,
                 branding_position.y + make_length + gutter
             ],
             quick_preview = quick_preview,
@@ -260,18 +239,14 @@ module enclosure(
             width = dimensions.x
                 - branding_position.x
                 - knob_radius * 2
-                - default_gutter * 2;
+                - 3.4 * 2; // TODO: expose default_gutter
 
             translate([
                 branding_position.x,
                 branding_position.y,
                 dimensions.z - ENCLOSURE_FLOOR_CEILING
             ]) {
-                # cube([
-                    width,
-                    branding_available_length,
-                    ENCLOSURE_FLOOR_CEILING + 1
-                ]);
+                # cube([width, branding_length, ENCLOSURE_FLOOR_CEILING + 1]);
             }
         }
     }
@@ -563,22 +538,6 @@ module enclosure(
         }
     }
 
-    module _led_exposure(
-        z = pcb_position.z
-    ) {
-        translate([
-            pcb_position.x + PCB_LED_POSITION.x,
-            pcb_position.y + PCB_LED_POSITION.y,
-            z
-        ]) {
-            cylinder(
-                d = LED_DIAMETER + tolerance * 2,
-                h = dimensions.z - z + e,
-                $fn = 12
-            );
-        }
-    }
-
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
             color(outer_color) {
@@ -628,7 +587,6 @@ module enclosure(
                 _ftdi_header_exposure();
                 _headphone_jack_cavity();
                 _pencil_stand(true);
-                * _led_exposure();
             }
         }
     }
