@@ -559,7 +559,7 @@ module enclosure(
     module _led_exposure(
         cavity = true,
         z_clearance = 1,
-        wall = ENCLOSURE_WALL
+        wall = ENCLOSURE_INNER_WALL
     ) {
         z = cavity
             ? pcb_position.z + PCB_HEIGHT - e

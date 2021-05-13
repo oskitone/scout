@@ -317,6 +317,9 @@ intersection() {
         quick_preview = $preview
     );
 
+    // LED
+    /* translate([10, -10, -10]) { cube([200, 100, 100]); } */
+
     // switch
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
 
