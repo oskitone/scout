@@ -79,7 +79,7 @@ module enclosure(
 ) {
     e = .0345;
 
-    top_height = dimensions.z / 2;
+    top_height = dimensions.z - pcb_position.z;
     bottom_height = dimensions.z - top_height;
 
     module _half(
@@ -542,18 +542,36 @@ module enclosure(
     }
 
     module _led_exposure(
-        z = pcb_position.z
+        cavity = true,
+        z_clearance = 1,
+        wall = ENCLOSURE_WALL
     ) {
-        translate([
-            pcb_position.x + PCB_LED_POSITION.x,
-            pcb_position.y + PCB_LED_POSITION.y,
-            z
-        ]) {
-            cylinder(
-                d = LED_DIAMETER + tolerance * 2,
-                h = dimensions.z - z + e,
-                $fn = 12
-            );
+        z = cavity
+            ? pcb_position.z + PCB_HEIGHT - e
+            : pcb_position.z + PCB_HEIGHT;
+
+        cavity_width = LED_DIAMETER + tolerance * 2;
+
+        width = cavity ? cavity_width : cavity_width + wall * 2;
+        height = cavity
+            ? LED_HEIGHT + z_clearance
+            : dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
+
+        led_x = pcb_position.x + PCB_LED_POSITION.x;
+        led_y = pcb_position.y + PCB_LED_POSITION.y;
+
+        exit_y = cavity
+            ? dimensions.y + e
+            : dimensions.y - ENCLOSURE_WALL + e;
+
+        hull() {
+            translate([led_x, led_y, z]) {
+                cylinder(d = width, h = height, $fn = 12);
+            }
+
+            translate([led_x - width / 2, exit_y, z]) {
+                cube([width, e, height]);
+            }
         }
     }
 
@@ -593,6 +611,7 @@ module enclosure(
                         _keys_mount_alignment_fixture(false);
                         _keys_mount_nut_lock_rail();
                         key_lip_endstop(dimensions.z - keys_cavity_height);
+                        _led_exposure(cavity = false);
                     }
                 }
             }
@@ -606,7 +625,7 @@ module enclosure(
                 _ftdi_header_exposure();
                 _headphone_jack_cavity();
                 _pencil_stand(true);
-                * _led_exposure();
+                _led_exposure(cavity = true);
             }
         }
     }
