@@ -541,6 +541,22 @@ module enclosure(
         }
     }
 
+    module _led_exposure(
+        z = pcb_position.z
+    ) {
+        translate([
+            pcb_position.x + PCB_LED_POSITION.x,
+            pcb_position.y + PCB_LED_POSITION.y,
+            z
+        ]) {
+            cylinder(
+                d = LED_DIAMETER + tolerance * 2,
+                h = dimensions.z - z + e,
+                $fn = 12
+            );
+        }
+    }
+
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
             color(outer_color) {
@@ -590,6 +606,7 @@ module enclosure(
                 _ftdi_header_exposure();
                 _headphone_jack_cavity();
                 _pencil_stand(true);
+                * _led_exposure();
             }
         }
     }
