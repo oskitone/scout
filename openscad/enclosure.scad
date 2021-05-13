@@ -27,7 +27,7 @@ HIDEF_ROUNDING = $preview ? undef : 120;
 
 DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
 BREAKAWAY_SUPPORT_DISTANCE = 10;
-BREAKAWAY_SUPPORT_DEPTH = .5;
+BREAKAWAY_SUPPORT_DEPTH = .6;
 
 module enclosure(
     show_top = true,
@@ -131,7 +131,9 @@ module enclosure(
         }
     }
 
-    module key_exposure_lip_support() {
+    module key_exposure_lip_support(
+        wall = BREAKAWAY_SUPPORT_DEPTH
+    ) {
         print_bed_length = BREAKAWAY_SUPPORT_DEPTH;
         connection_length = ENCLOSURE_WALL;
         connection_gap = DEFAULT_DFM_LAYER_HEIGHT;
@@ -169,11 +171,10 @@ module enclosure(
 
         module _inner_cavity() {
             _hull(
-                height = dimensions.z - inner_cavity_z
-                    - BREAKAWAY_SUPPORT_DEPTH,
-                bottom_length = connection_length - BREAKAWAY_SUPPORT_DEPTH,
+                height = dimensions.z - inner_cavity_z - wall * 2,
+                bottom_length = connection_length - wall * 2,
                 bottom_height = e,
-                top_length = BREAKAWAY_SUPPORT_DEPTH,
+                top_length = e,
                 x_bleed = e
             );
         }
@@ -183,7 +184,7 @@ module enclosure(
                 _hull();
             }
 
-            translate([x, BREAKAWAY_SUPPORT_DEPTH / 2, inner_cavity_z]) {
+            translate([x, wall, inner_cavity_z]) {
                 _inner_cavity();
             }
 
