@@ -256,11 +256,12 @@ module enclosure(
 
     module _knob_exposure(
         cavity,
-        xy_clearance = 1
+        well_clearance = 1,
+        shaft_clearance = .5
     ) {
         cavity_z = knob_position.z - knob_vertical_clearance;
         cavity_height = dimensions.z - cavity_z + e;
-        cavity_diameter = (knob_radius + xy_clearance + tolerance) * 2;
+        cavity_diameter = (knob_radius + well_clearance + tolerance) * 2;
 
         well_z = cavity_z - ENCLOSURE_FLOOR_CEILING;
         well_height = dimensions.z - well_z - ENCLOSURE_FLOOR_CEILING + e;
@@ -275,7 +276,9 @@ module enclosure(
             }
 
             if (cavity) {
-                diameter = PTV09A_POT_ACTUATOR_DIAMETER + tolerance * 2;
+                diameter = PTV09A_POT_ACTUATOR_DIAMETER
+                    + tolerance * 2
+                    + shaft_clearance * 2;
 
                 if (show_dfm) {
                     translate([0, 0, well_z + ENCLOSURE_FLOOR_CEILING]) {
@@ -289,7 +292,8 @@ module enclosure(
                 translate([0, 0, well_z - e]) {
                     cylinder(
                         d = diameter,
-                        h = ENCLOSURE_FLOOR_CEILING + e * 2
+                        h = ENCLOSURE_FLOOR_CEILING + e * 2,
+                        $fn = DEFAULT_ROUNDING
                     );
                 }
 
