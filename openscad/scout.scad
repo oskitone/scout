@@ -51,6 +51,7 @@ module scout(
 
     battery_holder_floor = 1,
 
+    min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
 
     tolerance = 0,
@@ -83,6 +84,8 @@ module scout(
     );
     enclosure_height = max(
         keys_z + key_min_height + accidental_height + accidental_key_recession,
+        keys_z + cantilever_height + nut_lock_floor + NUT_HEIGHT
+            + min_screw_top_clearance + ENCLOSURE_FLOOR_CEILING,
         pcb_z + PCB_HEIGHT + PCB_CIRCUITRY_CLEARANCE + ENCLOSURE_FLOOR_CEILING
     );
 
@@ -126,7 +129,7 @@ module scout(
 
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
-    echo("Screw head clearance", screw_head_clearance);
+    echo("Screw clearance", screw_top_clearance, screw_head_clearance);
 
     module _knob() {
         translate([
@@ -180,11 +183,17 @@ module scout(
     }
 
     if (show_keys) {
+        // TODO: experiment with arbitrary lengths:
+        POLY555_CANTILEVER_LENGTH = 3;
+        20_KEY_MATRIX_CANTILEVER_LENGTH = 4;
+        unexposed_cantilever_length = key_height - cantilever_height;
+        cantilever_length = unexposed_cantilever_length;
+
         keys(
             key_height = key_height,
             tolerance = tolerance,
 
-            cantilever_length = key_height - cantilever_height,
+            cantilever_length = cantilever_length,
             cantilever_height = cantilever_height,
             nut_lock_floor = nut_lock_floor,
 
