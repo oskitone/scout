@@ -37,6 +37,8 @@ module scout(
 
     show_dfm = false,
 
+    standalone_battery_holder = true,
+
     accidental_key_recession = .2,
     key_lip_exposure = 3,
 
@@ -49,7 +51,7 @@ module scout(
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
 
-    battery_holder_floor = 1,
+    battery_holder_floor = STANDALONE_BATTERY_HOLDER ? 1 : 0,
 
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
@@ -277,7 +279,10 @@ module scout(
         );
     }
 
-    if (show_battery_holder) {
+    if (
+        show_battery_holder ||
+        (show_enclosure_bottom && !standalone_battery_holder)
+    ) {
         color(enclosure_outer_color) {
             translate([batteries_x, batteries_y, batteries_z]) {
                 battery_holder(
@@ -297,6 +302,8 @@ module scout(
         _knob();
     }
 }
+
+STANDALONE_BATTERY_HOLDER = false;
 
 SHOW_ENCLOSURE_BOTTOM = true;
 SHOW_BATTERY_HOLDER = true;
@@ -323,6 +330,8 @@ intersection() {
         show_knob = SHOW_KNOB,
 
         show_dfm = SHOW_DFM,
+
+        standalone_battery_holder = STANDALONE_BATTERY_HOLDER,
 
         tolerance = DEFAULT_TOLERANCE,
         quick_preview = $preview
