@@ -6,7 +6,6 @@ include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
 // NOTE: this is knowingly less than NUT_DIAMETER
-// TODO: Provide cavities on the keys ensure there's no obstruction
 keys_mount_length = 5;
 
 key_plot = 2.54 * 3;
@@ -112,6 +111,7 @@ module keys(
 
     cantilever_length = 0,
     cantilever_height = 0,
+    nut_lock_floor = 0,
 
     keys_count = 17,
     starting_natural_key_index = 0,
@@ -195,7 +195,7 @@ module keys(
         color(natural_color_cavity) {
             nuts(
                 pcb_position = pcb_position,
-                z = keys_position.z + cantilever_height,
+                z = keys_position.z + cantilever_height + nut_lock_floor,
                 diameter = NUT_DIAMETER + tolerance * 2,
                 height = NUT_HEIGHT,
                 chamfer_top = true

@@ -185,6 +185,7 @@ module scout(
 
             cantilever_length = key_height - cantilever_height,
             cantilever_height = cantilever_height,
+            nut_lock_floor = nut_lock_floor,
 
             keys_position = [keys_x, keys_y, keys_z],
             pcb_position = [pcb_x, pcb_y, pcb_z],
