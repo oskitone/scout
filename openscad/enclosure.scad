@@ -7,7 +7,7 @@ use <../../poly555/openscad/lib/switch.scad>;
 
 use <../../apc/openscad/floating_hole_cavity.scad>;
 
-use <enclosure_engraving.scad>;
+include <enclosure_engraving.scad>;
 include <key_lip_endstop.scad>;
 include <keys.scad>;
 include <pcb_fixtures.scad>;
@@ -45,6 +45,7 @@ module enclosure(
     keys_full_width,
 
     branding_position = [],
+    branding_make_to_model_ratio = .4,
 
     label_distance,
 
@@ -81,6 +82,10 @@ module enclosure(
 
     top_height = dimensions.z - pcb_position.z;
     bottom_height = dimensions.z - top_height;
+
+    branding_available_length = dimensions.y - branding_position.y
+        - default_gutter;
+    branding_gutter = label_distance;
 
     module _half(
         _height,
@@ -208,22 +213,29 @@ module enclosure(
         }
     }
 
-    module _branding(
-        make_to_model_ratio = .4,
-        gutter = label_distance,
-        debug = false
-    ) {
-        available_length = dimensions.y - branding_position.y - default_gutter;
-
-        make_length = (available_length - gutter) * (1 - make_to_model_ratio);
-        model_length = (available_length - gutter) * make_to_model_ratio;
+    module _branding(debug = false) {
+        model_length = get_branding_model_length(
+            branding_gutter,
+            branding_make_to_model_ratio,
+            branding_available_length
+        );
+        make_length = get_branding_make_length(
+            branding_gutter,
+            branding_make_to_model_ratio,
+            branding_available_length
+        );
+        make_width = get_branding_make_width(
+            branding_gutter,
+            branding_make_to_model_ratio,
+            branding_available_length
+        );
 
         enclosure_engraving(
             string = "SCOUT",
-            size = make_length,
+            size = model_length,
             center = false,
             position = [
-                branding_position.x - make_length * .075, // HACK: fix alignment
+                branding_position.x - model_length * .075, // HACK: fix alignment
                 branding_position.y
             ],
             quick_preview = quick_preview,
@@ -231,11 +243,11 @@ module enclosure(
         );
 
         enclosure_engraving(
-            size = model_length,
+            size = make_length,
             center = false,
             position = [
                 branding_position.x,
-                branding_position.y + make_length + gutter
+                branding_position.y + model_length + branding_gutter
             ],
             quick_preview = quick_preview,
             enclosure_height = dimensions.z
@@ -252,7 +264,11 @@ module enclosure(
                 branding_position.y,
                 dimensions.z - ENCLOSURE_FLOOR_CEILING
             ]) {
-                # cube([width, available_length, ENCLOSURE_FLOOR_CEILING + 1]);
+                # cube([
+                    width,
+                    branding_available_length,
+                    ENCLOSURE_FLOOR_CEILING + 1
+                ]);
             }
         }
     }

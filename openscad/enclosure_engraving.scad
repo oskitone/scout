@@ -3,6 +3,30 @@ use <../../poly555/openscad/lib/basic_shapes.scad>;
 use <../../poly555/openscad/lib/engraving.scad>;
 
 ENCLOSURE_ENGRAVING_DEPTH = 1.2;
+OSKITONE_LENGTH_WIDTH_RATIO = 4.6 / 28; // TODO: extract
+
+function get_branding_model_length(
+    gutter = 0,
+    make_to_model_ratio = .5,
+    available_length = 10
+) = (
+    (available_length - gutter) * (1 - make_to_model_ratio)
+);
+function get_branding_make_width(
+    gutter = 0,
+    make_to_model_ratio = .5,
+    available_length = 10
+) = (
+    get_branding_make_length(gutter, make_to_model_ratio, available_length)
+    / OSKITONE_LENGTH_WIDTH_RATIO
+);
+function get_branding_make_length(
+    gutter = 0,
+    make_to_model_ratio = .5,
+    available_length = 10
+) = (
+    (available_length - gutter) * make_to_model_ratio
+);
 
 module enclosure_engraving(
     string,
@@ -34,8 +58,6 @@ module enclosure_engraving(
             ? depth
             : enclosure_height - depth
     ]) {
-        OSKITONE_LENGTH_WIDTH_RATIO = 4.6 / 28; // TODO: extract
-
         rotate([0, bottom ? 180 : 0, 0]) {
             difference() {
                 if (placard) {
