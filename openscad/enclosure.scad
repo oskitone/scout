@@ -440,7 +440,7 @@ module enclosure(
     module _ftdi_header_exposure(
         x_bleed = 1,
         z_clearance = 1,
-        height = 6
+        height = 8
     ) {
         translate([
             pcb_position.x + PCB_FTDI_HEADER_POSITION.x - x_bleed,
