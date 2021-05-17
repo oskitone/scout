@@ -80,8 +80,8 @@ module enclosure(
 ) {
     e = .0345;
 
-    top_height = dimensions.z - pcb_position.z;
-    bottom_height = dimensions.z - top_height;
+    bottom_height = ENCLOSURE_FLOOR_CEILING + LIP_BOX_DEFAULT_LIP_HEIGHT;
+    top_height = dimensions.z - bottom_height;
 
     branding_available_length = dimensions.y - branding_position.y
         - default_gutter;
