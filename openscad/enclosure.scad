@@ -351,61 +351,21 @@ module enclosure(
         }
     }
 
-    module _switch_exposure(
-        cavity = false,
-
+    module _bottom_engraving(
         bottom_engraving_length = 8,
         bottom_engraving_corner = 10
     ) {
-        exposure_height = pcb_position.z - SWITCH_BASE_HEIGHT;
-
-        if (cavity) {
-            enclosure_engraving(
-                string = "POW",
-                size = label_text_size,
-                position = [
-                    pcb_position.x + PCB_SWITCH_POSITION.x,
-                    pcb_position.y + PCB_SWITCH_POSITION.y
-                        - label_length / 2
-                        - (SWITCH_BASE_LENGTH - SWITCH_ORIGIN.y)
-                        - exposure_height
-                        - label_distance
-                ],
-                placard = [
-                    exposure_height * 2 + SWITCH_BASE_WIDTH,
-                    label_length
-                ],
-                bottom = true,
-                quick_preview = quick_preview,
-                enclosure_height = dimensions.z
-            );
-
-            enclosure_engraving(
-                size = bottom_engraving_length,
-                center = false,
-                position = [
-                    dimensions.x - bottom_engraving_corner,
-                    bottom_engraving_corner
-                ],
-                bottom = true,
-                quick_preview = quick_preview,
-                enclosure_height = dimensions.z
-            );
-        }
-
-        translate([
-            pcb_position.x + PCB_SWITCH_POSITION.x,
-            pcb_position.y + PCB_SWITCH_POSITION.y
-                - SWITCH_BASE_LENGTH + SWITCH_ORIGIN.y * 2, // TODO: really?
-            cavity ? 0 : e
-        ]) {
-            switch_exposure(
-                exposure_height = exposure_height,
-                xy_bleed = cavity ? tolerance : ENCLOSURE_INNER_WALL,
-                include_switch_cavity = true,
-                z_bleed = cavity ? e * 2 : 0
-            );
-        }
+        enclosure_engraving(
+            size = bottom_engraving_length,
+            center = false,
+            position = [
+                dimensions.x - bottom_engraving_corner,
+                bottom_engraving_corner
+            ],
+            bottom = true,
+            quick_preview = quick_preview,
+            enclosure_height = dimensions.z
+        );
     }
 
     module _screw_cavities() {
@@ -513,6 +473,49 @@ module enclosure(
         }
     }
 
+    // HACK: change if/when PCB has this kind of switch
+    // TODO: add POW label too
+    module _right_angle_switch_cavity_stub() {
+        width = 20;
+        height = 8;
+
+        x = 10;
+        z = pcb_position.z + PCB_HEIGHT;
+
+        translate([
+            x + width / 2,
+            dimensions.y,
+            z - label_length / 2 - label_distance
+        ]) {
+            // TODO: support sides in enclosure_engraving
+            rotate([90, 0, 0]) {
+                enclosure_engraving(
+                    string = "POW",
+                    size = label_text_size,
+                    placard = [
+                        width,
+                        label_length
+                    ],
+                    bottom = true,
+                    quick_preview = quick_preview,
+                    enclosure_height = dimensions.z
+                );
+            }
+        }
+
+        translate([
+            x,
+            dimensions.y - ENCLOSURE_WALL - e,
+            z
+        ]) {
+            cube([
+                width,
+                ENCLOSURE_WALL + e * 2,
+                height
+            ]);
+        }
+    }
+
     module _keys_mount_nut_lock_rail(
         nut_cavity_size = NUT_DIAMETER + tolerance * 2,
         nut_cavity_height = NUT_HEIGHT
@@ -597,35 +600,47 @@ module enclosure(
 
     module _led_exposure(
         cavity = true,
-        z_clearance = 1,
+
+        // TODO: when PCB has LED in the right place...
+        // dimensions.z - (pcb_position.z + PCB_HEIGHT)
+        depth = LED_HEIGHT + 1,
         wall = ENCLOSURE_INNER_WALL
     ) {
         z = cavity
-            ? pcb_position.z + PCB_HEIGHT - e
-            : pcb_position.z + PCB_HEIGHT;
+            ? dimensions.z - depth - e
+            : dimensions.z - depth;
 
         cavity_width = LED_DIAMETER + tolerance * 2;
 
         width = cavity ? cavity_width : cavity_width + wall * 2;
         height = cavity
-            ? LED_HEIGHT + z_clearance
+            ? dimensions.z - z + e
             : dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
 
-        led_x = pcb_position.x + PCB_LED_POSITION.x;
-        led_y = pcb_position.y + PCB_LED_POSITION.y;
+        // TODO: ditch when PCB has LED in the right place
+        make_length = get_branding_make_length(
+            branding_gutter,
+            branding_make_to_model_ratio,
+            branding_available_length
+        );
+        make_width = get_branding_make_width(
+            branding_gutter,
+            branding_make_to_model_ratio,
+            branding_available_length
+        );
+        model_length = get_branding_model_length(
+            branding_gutter,
+            branding_make_to_model_ratio,
+            branding_available_length
+        );
 
-        exit_y = cavity
-            ? dimensions.y + e
-            : dimensions.y - ENCLOSURE_WALL + e;
+        led_x = branding_position.x + make_width + cavity_width / 2
+            + default_gutter;
+        led_y = branding_position.y + model_length + label_distance
+            + make_length / 2;
 
-        hull() {
-            translate([led_x, led_y, z]) {
-                cylinder(d = width, h = height, $fn = 12);
-            }
-
-            translate([led_x - width / 2, exit_y, z]) {
-                cube([width, e, height]);
-            }
+        translate([led_x, led_y, z]) {
+            cylinder(d = width, h = height, $fn = DEFAULT_ROUNDING);
         }
     }
 
@@ -642,7 +657,6 @@ module enclosure(
                     _half(bottom_height, lip = false);
 
                     color(outer_color) {
-                        _switch_exposure(false);
                         pcb_fixtures(
                             pcb_position = pcb_position,
                             screw_head_clearance = screw_head_clearance
@@ -679,12 +693,13 @@ module enclosure(
                 _keys_exposure();
                 _branding();
                 _knob_exposure(true);
-                _switch_exposure(true);
+                _bottom_engraving();
                 _screw_cavities();
                 _ftdi_header_exposure();
                 _headphone_jack_cavity();
                 _pencil_stand(true);
                 _led_exposure(cavity = true);
+                _right_angle_switch_cavity_stub();
             }
         }
     }

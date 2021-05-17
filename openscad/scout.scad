@@ -68,8 +68,7 @@ module scout(
 
     pcb_x = keys_x + key_to_pcb_x_offset;
     pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y;
-    pcb_z = SWITCH_BASE_HEIGHT + SWITCH_ACTUATOR_HEIGHT
-        + exposed_switch_clearance;
+    pcb_z = 9.3; // TODO: reduce to minimum
 
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
@@ -338,7 +337,7 @@ intersection() {
     );
 
     // LED
-    /* translate([10, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([71, -10, -10]) { cube([200, 100, 100]); } */
 
     // switch
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
