@@ -140,6 +140,7 @@ module scout(
                 spokes_count = 0,
                 brodie_knob_count = 0,
                 dimple_count = 1,
+                dimple_depth = ENCLOSURE_ENGRAVING_DEPTH,
                 color = "#fff",
                 cavity_color = "#eee",
                 tolerance = tolerance,
