@@ -51,10 +51,10 @@ PCB_HEADPHONE_JACK_POSITION = _([129.54, 86.868], [-6, 2.9 - 7.49]);
 
 HEADPHONE_JACK_WIDTH = 12;
 HEADPHONE_JACK_LENGTH = 11;
-HEADPHONE_JACK_HEIGHT = 1 + 5;
+HEADPHONE_JACK_HEIGHT = 5;
 HEADPHONE_JACK_BARREL_LENGTH = 3;
 HEADPHONE_JACK_BARREL_DIAMETER = 6;
-HEADPHONE_JACK_BARREL_Z = 1 + 5 / 2;
+HEADPHONE_JACK_BARREL_Z = HEADPHONE_JACK_BARREL_DIAMETER / 2;
 
 LED_DIAMETER = 5.9;
 LED_HEIGHT = 8.6;
@@ -164,11 +164,12 @@ module scout_pcb(
 
     if (show_pcb_ftdi_header) {
         pin_size = .8;
-        xz = 2.54 / 2 - pin_size / 2;
+        x = 2.54 / 2 - pin_size / 2;
+        z = 6;
 
         _translate(PCB_FTDI_HEADER_POSITION) {
             for (i = [0 : 5]) {
-                translate([xz + i * 2.54, 0, xz]) {
+                translate([x + i * 2.54, 0, z]) {
                     % cube([pin_size, 10, pin_size]);
                 }
             }
