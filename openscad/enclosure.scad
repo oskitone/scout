@@ -419,22 +419,31 @@ module enclosure(
 
     module _ftdi_header_exposure(
         x_bleed = 1,
-        z_clearance = 1,
         height = 8
     ) {
-        translate([
-            pcb_position.x + PCB_FTDI_HEADER_POSITION.x - x_bleed,
-            dimensions.y - ENCLOSURE_WALL - e,
-            pcb_position.z + PCB_HEIGHT + 2.54 / 2
-                - height / 2
-                - z_clearance
-        ]) {
+        pin_z = pcb_position.z + PCB_HEIGHT + 6;
+        x = pcb_position.x + PCB_FTDI_HEADER_POSITION.x - x_bleed;
+        width = PCB_FTDI_HEADER_WIDTH + x_bleed * 2;
+
+        translate([ x, dimensions.y - ENCLOSURE_WALL - e, pin_z - height / 2]) {
             cube([
-                PCB_FTDI_HEADER_WIDTH + x_bleed * 2,
+                width,
                 ENCLOSURE_WALL + e * 2,
-                height + z_clearance * 2
+                height
             ]);
         }
+
+        _side_engraving(
+            x = x + width / 2,
+            string = "FTDI"
+        );
+
+        _side_engraving(
+            x = x + width / 2,
+            string = "G               B",
+            placard = false,
+            z = pin_z
+        );
     }
 
     module _keys_mount_alignment_fixture() {
@@ -458,12 +467,11 @@ module enclosure(
     module _headphone_jack_cavity(
         plug_diameter = 10
     ) {
-        translate([
-            pcb_position.x + PCB_HEADPHONE_JACK_POSITION.x
-                + HEADPHONE_JACK_WIDTH / 2,
-            dimensions.y - ENCLOSURE_WALL - e,
-            pcb_position.z + PCB_HEIGHT + HEADPHONE_JACK_BARREL_Z
-        ]) {
+        x = pcb_position.x + PCB_HEADPHONE_JACK_POSITION.x
+            + HEADPHONE_JACK_WIDTH / 2;
+        z = pcb_position.z + PCB_HEIGHT + HEADPHONE_JACK_BARREL_Z;
+
+        translate([x, dimensions.y - ENCLOSURE_WALL - e, z]) {
             rotate([-90, 0, 0]) {
                 cylinder(
                     d = plug_diameter + tolerance * 2,
@@ -471,37 +479,51 @@ module enclosure(
                 );
             }
         }
+
+        _side_engraving(
+            x = x,
+            string = "LINE"
+        );
     }
 
-    // HACK: change if/when PCB has this kind of switch
-    // TODO: add POW label too
-    module _right_angle_switch_cavity_stub() {
-        width = 20;
-        height = 8;
-
-        x = 10;
-        z = pcb_position.z + PCB_HEIGHT;
-
+    module _side_engraving(
+        x,
+        string,
+        width = 15,
+        z = bottom_height + label_length / 2 - e,
+        placard = true
+    ) {
         translate([
-            x + width / 2,
+            x,
             dimensions.y,
-            z - label_length / 2 - label_distance
+            z
         ]) {
             // TODO: support sides in enclosure_engraving
             rotate([90, 0, 0]) {
                 enclosure_engraving(
-                    string = "POW",
+                    string = string,
                     size = label_text_size,
-                    placard = [
-                        width,
-                        label_length
-                    ],
+                    placard = placard ? [width, label_length] : undef,
                     bottom = true,
                     quick_preview = quick_preview,
                     enclosure_height = dimensions.z
                 );
             }
         }
+    }
+
+    // TODO: change when PCB has this kind of switch
+    module _right_angle_switch_cavity_stub() {
+        width = 10;
+        height = 6;
+
+        x = 13;
+        z = pcb_position.z;
+
+        _side_engraving(
+            x = x + width / 2,
+            string = "POW"
+        );
 
         translate([
             x,
