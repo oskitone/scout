@@ -337,7 +337,7 @@ intersection() {
     );
 
     // LED
-    /* translate([71, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([69, -10, -10]) { cube([200, 100, 100]); } */
 
     // switch
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */

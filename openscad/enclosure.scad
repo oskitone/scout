@@ -623,6 +623,8 @@ module enclosure(
     module _led_exposure(
         cavity = true,
 
+        shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 2,
+
         // TODO: when PCB has LED in the right place...
         // dimensions.z - (pcb_position.z + PCB_HEIGHT)
         depth = LED_HEIGHT + 1,
@@ -632,11 +634,13 @@ module enclosure(
             ? dimensions.z - depth - e
             : dimensions.z - depth;
 
-        cavity_width = LED_DIAMETER + tolerance * 2;
+        // intentionally snug!
+        // TODO: loosen when LED is PCB-mounted again
+        cavity_width = LED_DIAMETER;
 
         width = cavity ? cavity_width : cavity_width + wall * 2;
         height = cavity
-            ? dimensions.z - z + e
+            ? dimensions.z - z - shade_depth
             : dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
 
         // TODO: ditch when PCB has LED in the right place
@@ -657,9 +661,9 @@ module enclosure(
         );
 
         led_x = branding_position.x + make_width + cavity_width / 2
-            + default_gutter;
+            + label_distance;
         led_y = branding_position.y + model_length + label_distance
-            + make_length / 2;
+            + cavity_width / 2;
 
         translate([led_x, led_y, z]) {
             cylinder(d = width, h = height, $fn = DEFAULT_ROUNDING);
