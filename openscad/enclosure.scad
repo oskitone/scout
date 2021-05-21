@@ -711,6 +711,10 @@ module enclosure(
                         _keys_mount_nut_lock_rail();
                         key_lip_endstop(dimensions.z - keys_cavity_height);
                         _led_exposure(cavity = false);
+                        pcb_enclosure_top_fixture(
+                            pcb_position = pcb_position,
+                            enclosure_dimensions = dimensions
+                        );
                     }
                 }
             }

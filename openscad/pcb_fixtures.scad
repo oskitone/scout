@@ -1,11 +1,71 @@
+PCB_FIXTURE_CLEARANCE = .3;
+
+module _fixture_pcb_difference(
+    pcb_position = [0, 0, 0],
+
+    height = PCB_HEIGHT,
+    wall = ENCLOSURE_INNER_WALL,
+    clearance = PCB_FIXTURE_CLEARANCE,
+    tolerance = DEFAULT_TOLERANCE
+) {
+    e = .031;
+    offset = clearance + tolerance;
+
+    translate([
+        pcb_position.x - offset,
+        pcb_position.y - offset,
+        pcb_position.z - e
+    ]) {
+        cube([
+            PCB_WIDTH + offset * 2,
+            PCB_LENGTH + offset * 2,
+            height + e * 2
+        ]);
+    }
+}
+
+module pcb_enclosure_top_fixture(
+    pcb_position = [0, 0, 0],
+    enclosure_dimensions = [0, 0, 0],
+
+    coverage = 2,
+
+    // NOTE: these are eyeballed, and that's okay!
+    xs = [PCB_WIDTH * .4, PCB_WIDTH * .6],
+
+    wall = ENCLOSURE_INNER_WALL,
+    clearance = PCB_FIXTURE_CLEARANCE,
+    tolerance = DEFAULT_TOLERANCE
+) {
+    e = .0876;
+
+    end_y = enclosure_dimensions.y - ENCLOSURE_WALL + e;
+    y = pcb_position.y + PCB_LENGTH - coverage;
+    z = pcb_position.z;
+
+    length = end_y - y;
+    height = enclosure_dimensions.z - ENCLOSURE_FLOOR_CEILING + e - z;
+
+    difference() {
+        for (x = xs) {
+            translate([pcb_position.x + x - wall / 2, y, z]) {
+                cube([wall, length, height]);
+            }
+        }
+
+        _fixture_pcb_difference(pcb_position);
+    }
+}
+
 module pcb_fixtures(
     pcb_position = [0, 0, 0],
     screw_head_clearance = 0,
     wall = ENCLOSURE_INNER_WALL,
-    corner_clearance = DEFAULT_TOLERANCE + .2,
+    clearance = PCB_FIXTURE_CLEARANCE,
     tolerance = DEFAULT_TOLERANCE
 ) {
     e = .09876;
+    offset = clearance + tolerance;
 
     z = ENCLOSURE_FLOOR_CEILING - e;
 
@@ -14,12 +74,12 @@ module pcb_fixtures(
 
         difference() {
             for (x = [
-                pcb_position.x - wall - corner_clearance,
-                pcb_position.x + PCB_WIDTH - size + wall + corner_clearance
+                pcb_position.x - wall - offset,
+                pcb_position.x + PCB_WIDTH - size + wall + offset
             ]) {
                 for (y = [
-                    pcb_position.y - wall - corner_clearance,
-                    pcb_position.y + PCB_LENGTH - size + wall + corner_clearance
+                    pcb_position.y - wall - offset,
+                    pcb_position.y + PCB_LENGTH - size + wall + offset
                 ]) {
                     translate([x, y, z]) {
                         cube([size, size, height]);
@@ -27,17 +87,7 @@ module pcb_fixtures(
                 }
             }
 
-            translate([
-                pcb_position.x - corner_clearance,
-                pcb_position.y - corner_clearance,
-                z - e
-            ]) {
-                cube([
-                    PCB_WIDTH + corner_clearance * 2,
-                    PCB_LENGTH + corner_clearance * 2,
-                    height + e * 2
-                ]);
-            }
+            _fixture_pcb_difference(pcb_position);
         }
     }
 
