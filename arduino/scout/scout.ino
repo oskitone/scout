@@ -4,17 +4,19 @@
 
 #include "KeyBuffer.h"
 
+// SETTINGS
+int octave = 3;
+float glide = .25;
 bool printToSerial = false;
+bool glideOnFreshKeyPresses = true;
 
-int OCTAVE = 3;
-float GLIDE = .25;
-int CYCLES_PER_GLIDE_MAX = printToSerial ? 25 : 250;
+const int CYCLES_PER_GLIDE_MAX = printToSerial ? 25 : 250;
 
 const float MIDDLE_A = 440;
 const int NOTES_COUNT = 17;
 const int STARTING_NOTE_DISTANCE_FROM_MIDDLE_A = -9;
 
-int speakerPin = 11;
+const int SPEAKER_PIN = 11;
 
 float getNoteFrequency(int distance, float origin = MIDDLE_A) {
   float frequency_ratio = 1.059463; // pow(2, 1/12)
@@ -34,7 +36,7 @@ float frequency = 0;
 float glideStep;
 
 float getFrequency(long key) {
-  return notes[key] / 4 * pow(2, OCTAVE);
+  return notes[key] / 4 * pow(2, octave);
 }
 
 float getTargetFrequency() {
@@ -47,12 +49,12 @@ void updateFrequency() {
   bool needsUpdate = frequency != target;
 
   if (needsUpdate) {
-    if ((frequency == 0) || (GLIDE == 0)) {
+    if ((frequency == 0) || (glide == 0)) {
       frequency = target;
     } else {
       if (target != previousTargetFrequency) {
         glideStep = abs(target - previousTargetFrequency)
-          / (GLIDE * CYCLES_PER_GLIDE_MAX);
+          / (glide * CYCLES_PER_GLIDE_MAX);
       }
 
       frequency = (target > frequency)
@@ -84,14 +86,16 @@ void loop() {
   }
 
   if (buffer.isEmpty()) {
-    frequency = 0;
+    if (!glideOnFreshKeyPresses) {
+      frequency = 0;
+    }
 
-    noTone(speakerPin);
+    noTone(SPEAKER_PIN);
     digitalWrite(LED_BUILTIN, LOW);
   } else {
     updateFrequency();
 
-    tone(speakerPin, frequency);
+    tone(SPEAKER_PIN, frequency);
     digitalWrite(LED_BUILTIN, HIGH);
   }
 }
