@@ -100,7 +100,7 @@ module enclosure(
             floor_ceiling = ENCLOSURE_FLOOR_CEILING,
             add_lip = lip,
             remove_lip = !lip,
-            fillet = ENCLOSURE_FILLET,
+            fillet = fillet,
             tolerance = DEFAULT_TOLERANCE,
             outer_color = outer_color,
             cavity_color = cavity_color,
