@@ -417,13 +417,13 @@ module enclosure(
         }
     }
 
-    module _ftdi_header_exposure(
+    module _uart_header_exposure(
         x_bleed = 1,
         height = 8
     ) {
         pin_z = pcb_position.z + PCB_HEIGHT + 6;
-        x = pcb_position.x + PCB_FTDI_HEADER_POSITION.x - x_bleed;
-        width = PCB_FTDI_HEADER_WIDTH + x_bleed * 2;
+        x = pcb_position.x + PCB_UART_HEADER_POSITION.x - x_bleed;
+        width = PCB_UART_HEADER_WIDTH + x_bleed * 2;
 
         translate([ x, dimensions.y - ENCLOSURE_WALL - e, pin_z - height / 2]) {
             cube([
@@ -435,7 +435,8 @@ module enclosure(
 
         _side_engraving(
             x = x + width / 2,
-            string = "FTDI"
+            string = "UART",
+            width = width
         );
 
         _side_engraving(
@@ -725,7 +726,7 @@ module enclosure(
                 _knob_exposure(true);
                 _bottom_engraving();
                 _screw_cavities();
-                _ftdi_header_exposure();
+                _uart_header_exposure();
                 _headphone_jack_cavity();
                 _pencil_stand(true);
                 _led_exposure(cavity = true);

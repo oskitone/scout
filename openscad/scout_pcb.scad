@@ -44,8 +44,8 @@ PCB_POT_POSITION = _([172.824 - 2.54, 97.096 - 7], [-.104, 2.9]);
 
 PCB_SWITCH_POSITION = _([44.45, 97.345], [0, 2.9]);
 
-PCB_FTDI_HEADER_POSITION = _([67.056, 92.71], [- 2.54 / 2, 2.9]);
-PCB_FTDI_HEADER_WIDTH = 2.54 * 6;
+PCB_UART_HEADER_POSITION = _([67.056, 92.71], [- 2.54 / 2, 2.9]);
+PCB_UART_HEADER_WIDTH = 2.54 * 6;
 
 PCB_HEADPHONE_JACK_POSITION = _([129.54, 86.868], [-6, 2.9 - 7.49]);
 
@@ -96,7 +96,7 @@ module scout_pcb(
     show_led = true,
     show_pot = true,
     show_switch = true,
-    show_pcb_ftdi_header = true,
+    show_pcb_uart_header = true,
     show_headphone_jack = true,
     show_circuitry_clearance = true
 ) {
@@ -162,12 +162,12 @@ module scout_pcb(
         }
     }
 
-    if (show_pcb_ftdi_header) {
+    if (show_pcb_uart_header) {
         pin_size = .8;
         x = 2.54 / 2 - pin_size / 2;
         z = 6;
 
-        _translate(PCB_FTDI_HEADER_POSITION) {
+        _translate(PCB_UART_HEADER_POSITION) {
             for (i = [0 : 5]) {
                 translate([x + i * 2.54, 0, z]) {
                     % cube([pin_size, 10, pin_size]);
