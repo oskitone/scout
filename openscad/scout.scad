@@ -97,6 +97,7 @@ module scout(
         + PTV09A_POT_BASE_HEIGHT + PTV09A_POT_ACTUATOR_BASE_HEIGHT
         + knob_vertical_clearance + ENCLOSURE_FLOOR_CEILING;
     knob_height = enclosure_height - knob_z + knob_top_exposure;
+    knob_dimple_y = knob_radius / 2;
 
     branding_x = default_gutter;
     branding_y = keys_y + key_length + default_gutter;
@@ -145,6 +146,7 @@ module scout(
                 brodie_knob_count = 0,
                 dimple_count = 1,
                 dimple_depth = ENCLOSURE_ENGRAVING_DEPTH,
+                dimple_y = knob_dimple_y,
                 color = "#fff",
                 cavity_color = "#eee",
                 tolerance = tolerance,
@@ -250,6 +252,7 @@ module scout(
             label_distance = default_gutter / 2,
 
             knob_radius = knob_radius,
+            knob_dimple_y = knob_dimple_y,
             knob_position = [
                 pcb_x + PCB_POT_POSITION.x,
                 pcb_y + PCB_POT_POSITION.y,
@@ -337,7 +340,7 @@ intersection() {
     );
 
     // LED
-    /* translate([69, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([-10, -10, -10]) { cube([138, 100, 100]); } */
 
     // switch
     /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */

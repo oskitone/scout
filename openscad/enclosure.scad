@@ -50,6 +50,7 @@ module enclosure(
     label_distance,
 
     knob_radius,
+    knob_dimple_y = 0,
     knob_position = [],
     knob_vertical_clearance = 0,
 
@@ -83,6 +84,10 @@ module enclosure(
     bottom_height = ENCLOSURE_FLOOR_CEILING + LIP_BOX_DEFAULT_LIP_HEIGHT;
     top_height = dimensions.z - bottom_height;
 
+    branding_available_width = dimensions.x
+        - branding_position.x
+        - knob_radius * 2
+        - default_gutter * 2;
     branding_available_length = dimensions.y - branding_position.y
         - default_gutter;
     branding_gutter = label_distance;
@@ -274,18 +279,13 @@ module enclosure(
         );
 
         if (debug) {
-            width = dimensions.x
-                - branding_position.x
-                - knob_radius * 2
-                - default_gutter * 2;
-
             translate([
                 branding_position.x,
                 branding_position.y,
                 dimensions.z - ENCLOSURE_FLOOR_CEILING
             ]) {
                 # cube([
-                    width,
+                    branding_available_width,
                     branding_available_length,
                     ENCLOSURE_FLOOR_CEILING + 1
                 ]);
@@ -624,50 +624,70 @@ module enclosure(
     module _led_exposure(
         cavity = true,
 
-        shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 2,
+        chamfer_shroud = 2,
 
-        // TODO: when PCB has LED in the right place...
-        // dimensions.z - (pcb_position.z + PCB_HEIGHT)
-        depth = LED_HEIGHT + 1,
-        wall = ENCLOSURE_INNER_WALL
-    ) {
-        z = cavity
-            ? dimensions.z - depth - e
-            : dimensions.z - depth;
+        recession = ENCLOSURE_ENGRAVING_DEPTH,
+        shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 2,
 
         // intentionally snug!
         // TODO: loosen when LED is PCB-mounted again
-        cavity_width = LED_DIAMETER;
+        cavity_diameter = LED_DIAMETER,
 
-        width = cavity ? cavity_width : cavity_width + wall * 2;
-        height = cavity
-            ? dimensions.z - z - shade_depth
-            : dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
+        // TODO: rewrite when PCB has LED in the right place...
+        cavity_depth = LED_HEIGHT + 2,
+        wall = ENCLOSURE_INNER_WALL,
 
-        // TODO: ditch when PCB has LED in the right place
-        make_length = get_branding_make_length(
-            branding_gutter,
-            branding_make_to_model_ratio,
-            branding_available_length
-        );
-        make_width = get_branding_make_width(
-            branding_gutter,
-            branding_make_to_model_ratio,
-            branding_available_length
-        );
-        model_length = get_branding_model_length(
-            branding_gutter,
-            branding_make_to_model_ratio,
-            branding_available_length
-        );
+        $fn = DEFAULT_ROUNDING
+    ) {
+        x = branding_position.x + branding_available_width
+            - cavity_diameter / 2;
+        y = knob_position.y + knob_dimple_y;
+        z = dimensions.z - recession - cavity_depth;
+        shroud_z = dimensions.z - ENCLOSURE_FLOOR_CEILING - chamfer_shroud;
 
-        led_x = branding_position.x + make_width + cavity_width / 2
-            + label_distance;
-        led_y = branding_position.y + model_length + label_distance
-            + cavity_width / 2;
+        wall_diameter = cavity_diameter + wall * 2;
 
-        translate([led_x, led_y, z]) {
-            cylinder(d = width, h = height, $fn = DEFAULT_ROUNDING);
+        diameter = cavity ? cavity_diameter : wall_diameter;
+        wall_height = dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
+
+        if (cavity) {
+            translate([x, y, z - e]) {
+                cylinder(
+                    d = cavity_diameter,
+                    h = LED_HEIGHT + e
+                );
+            }
+
+            translate([x, y, z + LED_HEIGHT - e]) {
+                linear_extrude(cavity_depth - LED_HEIGHT + e - shade_depth) {
+                    offset(tolerance) {
+                        import("assets/heart.svg");
+                    }
+                }
+            }
+
+            translate([x, y, dimensions.z - recession]) {
+                linear_extrude(recession + e) {
+                    offset(tolerance) {
+                        import("assets/heart.svg");
+                    }
+                }
+            }
+        } else {
+            translate([x, y, z]) {
+                cylinder(
+                    d = wall_diameter,
+                    h = wall_height
+                );
+            }
+
+            translate([x, y, shroud_z]) {
+                cylinder(
+                    d1 = wall_diameter,
+                    d2 = wall_diameter + chamfer_shroud * 2,
+                    h = chamfer_shroud + e
+                );
+            }
         }
     }
 
