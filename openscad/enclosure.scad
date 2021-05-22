@@ -352,15 +352,32 @@ module enclosure(
     }
 
     module _bottom_engraving(
-        bottom_engraving_length = 8,
-        bottom_engraving_corner = 10
+        brand_length = 8,
+        brand_corner = 10,
+
+        battery_label_size = 4
     ) {
+        brand_width = brand_length / OSKITONE_LENGTH_WIDTH_RATIO;
+
         enclosure_engraving(
-            size = bottom_engraving_length,
+            size = brand_length,
             center = false,
             position = [
-                dimensions.x - bottom_engraving_corner,
-                bottom_engraving_corner
+                dimensions.x - brand_corner,
+                brand_corner
+            ],
+            bottom = true,
+            quick_preview = quick_preview,
+            enclosure_height = dimensions.z
+        );
+
+        enclosure_engraving(
+            string = "AAA*3",
+            size = battery_label_size,
+            center = false,
+            position = [
+                dimensions.x - brand_corner - brand_width - default_gutter * 8,
+                brand_corner
             ],
             bottom = true,
             quick_preview = quick_preview,
