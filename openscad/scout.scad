@@ -47,6 +47,7 @@ module scout(
 
     battery_holder_floor = STANDALONE_BATTERY_HOLDER ? 1 : 0,
 
+    min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
 
@@ -60,14 +61,23 @@ module scout(
     keys_x = ENCLOSURE_WALL + key_gutter;
     default_gutter = keys_x;
 
+    speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
+
     key_width = PCB_KEY_PLOT * 2 - key_gutter;
-    key_length = 50;
     key_min_height = 4;
 
     pcb_x = keys_x + get_key_to_pcb_x_offset(key_width, key_gutter);
-    pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y;
-    pcb_z = 9.3; // TODO: reduce to minimum
+    pcb_y = speaker_y
+        + get_speaker_fixture_diameter(ENCLOSURE_INNER_WALL, tolerance) / 2
+        + tolerance;
+    pcb_z = max(
+        ENCLOSURE_FLOOR_CEILING + battery_holder_floor + AAA_BATTERY_DIAMETER
+            + key_travel - PCB_HEIGHT - BUTTON_HEIGHT,
+        min_screw_bottom_clearance + SCREW_HEAD_HEIGHT
+            + ENCLOSURE_FLOOR_CEILING + PCB_PIN_CLEARANCE
+    );
 
+    key_length = pcb_y + pcb_key_mount_y - (ENCLOSURE_WALL + key_gutter);
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
 
@@ -83,7 +93,9 @@ module scout(
         keys_z + key_min_height + accidental_height + accidental_key_recession,
         keys_z + cantilever_height + nut_lock_floor + NUT_HEIGHT
             + min_screw_top_clearance + ENCLOSURE_FLOOR_CEILING,
-        pcb_z + PCB_HEIGHT + PCB_CIRCUITRY_CLEARANCE + ENCLOSURE_FLOOR_CEILING
+        pcb_z + PCB_HEIGHT + PCB_CIRCUITRY_CLEARANCE + ENCLOSURE_FLOOR_CEILING,
+        SCREW_LENGTH + min_screw_top_clearance + min_screw_bottom_clearance
+            + ENCLOSURE_FLOOR_CEILING * 2
     );
 
     key_height = enclosure_height - keys_z - accidental_height
@@ -99,15 +111,14 @@ module scout(
     branding_y = keys_y + key_length + default_gutter;
 
     speaker_x = pcb_x + PCB_WIDTH - SPEAKER_DIAMETER / 2;
-    speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
-    speaker_z = pcb_z - SPEAKER_HEIGHT - PCB_PIN_CLEARANCE;
+    speaker_z = ENCLOSURE_FLOOR_CEILING;
 
     // NOTE: these are eyeballed instead of derived and that's okay!!
     pencil_stand_x = 20;
     pencil_stand_y = ENCLOSURE_WALL + (pcb_y - ENCLOSURE_WALL) / 2;
     pencil_stand_angle_x = -52;
     pencil_stand_angle_y = 10;
-    pencil_stand_depth = 15;
+    pencil_stand_depth = 12.8;
 
     batteries_x = pencil_stand_x + 10;
     batteries_y = ENCLOSURE_WALL + ENCLOSURE_INNER_WALL + tolerance * 2;
@@ -116,9 +127,11 @@ module scout(
     nut_z = keys_z + cantilever_height + nut_lock_floor;
     screw_top_clearance = enclosure_height
         - ENCLOSURE_FLOOR_CEILING - (nut_z + NUT_HEIGHT);
-    screw_head_clearance =
+    screw_head_clearance = max(
+        min_screw_bottom_clearance,
         nut_z - SCREW_HEAD_HEIGHT - SCREW_LENGTH + NUT_HEIGHT
-        + screw_top_clearance / 2;
+            + screw_top_clearance / 2
+    );
 
     keys_cavity_height = min(
         accidental_key_recession + accidental_height + key_lip_exposure,
@@ -126,6 +139,7 @@ module scout(
     );
 
     echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
+    echo("Keys", [key_width, key_length, key_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
     echo("Screw clearance", screw_top_clearance, screw_head_clearance);
 
@@ -356,23 +370,23 @@ intersection() {
     );
 
     // LED
-    /* translate([-10, -10, -10]) { cube([138, 100, 100]); } */
+    /* translate([-10, -10, -10]) { cube([138, 120, 100]); } */
 
     // switch
-    /* translate([18.5, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([18.5, -10, -10]) { cube([200, 120, 100]); } */
 
     // batteries
-    /* translate([40, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([40, -10, -10]) { cube([200, 120, 100]); } */
 
     // screw mount
-    /* translate([10.3, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([10.3, -10, -10]) { cube([200, 120, 100]); } */
 
     // speaker
-    /* translate([130, -10, -10]) { cube([200, 100, 100]); } */
+    /* translate([130, -10, -10]) { cube([200, 120, 100]); } */
 
     // knob
-    /* translate([-10, -10, -10]) { cube([155, 100, 100]); } */
+    /* translate([-10, -10, -10]) { cube([155, 120, 100]); } */
 
     // pencil stand
-    /* translate([-10, 20, -10]) { cube([200, 100, 100]); } */
+    /* translate([-10, 20, -10]) { cube([200, 120, 100]); } */
 }
