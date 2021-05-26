@@ -68,6 +68,7 @@ PTV09A_POT_ACTUATOR_HEIGHT = 20 - PTV09A_POT_BASE_HEIGHT;
 PTV09A_POT_ACTUATOR_D_SHAFT_HEIGHT = 7;
 PTV09A_POT_ACTUATOR_D_SHAFT_DEPTH = PTV09A_POT_ACTUATOR_DIAMETER - 4.5;
 
+BUTTON_DIAMETER = 6;
 BUTTON_HEIGHT = 6;
 
 PCB_CIRCUITRY_CLEARANCE = 12;
@@ -125,8 +126,8 @@ module scout_pcb(
         for (xy = PCB_BUTTON_POSITIONS) {
             translate([xy.x, xy.y, PCB_HEIGHT - e]) {
                 % cylinder(
-                    h = 6 + e,
-                    d = BUTTON_HEIGHT
+                    h = BUTTON_HEIGHT + e,
+                    d = BUTTON_DIAMETER
                 );
             }
         }

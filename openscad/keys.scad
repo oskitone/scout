@@ -18,7 +18,7 @@ cantilever_height = 2;
 function get_key_to_pcb_x_offset(
     key_width,
     key_gutter = key_gutter
-) = ((key_width - 6) / 2 - key_gutter);
+) = ((key_width - BUTTON_DIAMETER) / 2 - key_gutter);
 
 function get_keys_full_width(
     key_width,
