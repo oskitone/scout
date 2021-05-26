@@ -126,7 +126,8 @@ module keys(
     natural_color = "#fff",
     natural_color_cavity = "#eee",
 
-    quick_preview = true
+    quick_preview = true,
+    show_clearance = false
 ) {
     e = .0234;
 
@@ -206,6 +207,16 @@ module keys(
                 distance_into_keys_bleed = tolerance * 4,
                 travel = travel
             );
+        }
+    }
+
+    if (show_clearance) {
+        translate([
+            keys_position.x,
+            keys_position.y,
+            keys_position.z - travel
+        ]) {
+            % cube([keys_full_width, key_length + e, travel + e]);
         }
     }
 }

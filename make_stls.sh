@@ -74,6 +74,7 @@ function export_stl() {
             -D 'SHOW_ACCOUTREMENTS=false '\
             -D 'SHOW_KNOB=false '\
             -D 'SHOW_DFM=true '\
+            -D 'SHOW_CLEARANCES=false' \
             -D "FLIP_VERTICALLY=$flip_vertically" \
             -D "$override=true" \
 

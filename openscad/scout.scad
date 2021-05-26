@@ -36,6 +36,7 @@ module scout(
     show_knob = true,
 
     show_dfm = false,
+    show_clearances = true,
 
     standalone_battery_holder = true,
 
@@ -205,13 +206,14 @@ module scout(
 
             keys_cavity_height_z = enclosure_height - keys_cavity_height,
 
-            quick_preview = quick_preview
+            quick_preview = quick_preview,
+            show_clearance = show_clearances
         );
     }
 
     if (show_pcb) {
         e_translate([pcb_x, pcb_y, pcb_z]) {
-            scout_pcb();
+            scout_pcb(show_circuitry_clearance = show_clearances);
         }
     }
 
@@ -317,6 +319,7 @@ SHOW_ACCOUTREMENTS = true;
 SHOW_KNOB = true;
 
 SHOW_DFM = false;
+SHOW_CLEARANCES = true;
 FLIP_VERTICALLY = false;
 
 rotate(FLIP_VERTICALLY ? [0, 180, 0] : [0, 0, 0])
@@ -332,6 +335,7 @@ intersection() {
         show_knob = SHOW_KNOB,
 
         show_dfm = SHOW_DFM,
+        show_clearances = SHOW_CLEARANCES,
 
         standalone_battery_holder = STANDALONE_BATTERY_HOLDER,
 
