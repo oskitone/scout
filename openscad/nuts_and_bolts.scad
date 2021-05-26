@@ -10,8 +10,7 @@ module nuts(
     pcb_position = [],
     z = 0,
     diameter = NUT_DIAMETER,
-    height = NUT_HEIGHT,
-    chamfer_top = false
+    height = NUT_HEIGHT
 ) {
     e = .019;
 
@@ -22,19 +21,6 @@ module nuts(
             z
         ]) {
             cube([diameter, diameter, height]);
-
-            if (chamfer_top) {
-                translate([diameter / 2, diameter / 2, height - e]) {
-                    rotate([0, 0, 45]) {
-                        cylinder(
-                            d1 = sqrt(pow(diameter, 2) * 2),
-                            d2 = 0,
-                            h = diameter / 2 + e,
-                            $fn = 4
-                        );
-                    }
-                }
-            }
         }
     }
 }

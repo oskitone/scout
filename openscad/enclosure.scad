@@ -17,8 +17,6 @@ ENCLOSURE_WALL = 2.4;
 ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
 
-ENCLOSURE_TO_PCB_CLEARANCE = 2;
-
 ENCLOSURE_FILLET = 2;
 
 DEFAULT_ROUNDING = 24;
@@ -503,7 +501,7 @@ module enclosure(
     }
 
     module _headphone_jack_cavity(
-        plug_diameter = 10,
+        plug_diameter = HEADPHONE_JACK_BARREL_DIAMETER + tolerance * 2,
         engraving_width = 16
     ) {
         x = pcb_position.x + PCB_HEADPHONE_JACK_POSITION.x
@@ -553,30 +551,22 @@ module enclosure(
         }
     }
 
-    // TODO: change when PCB has this kind of switch
-    module _right_angle_switch_cavity_stub() {
-        width = 10;
-        height = 6;
-
-        x = 13;
-        z = pcb_position.z;
-
-        _side_engraving(
-            x = x + width / 2,
-            z = z + height + label_length / 2 + label_distance,
-            string = "POW"
-        );
-
+    // TODO: expand for inner wall vs cavity
+    // TODO: engraving label
+    module _switch_exposure(
+        bleed = 2
+    ) {
         translate([
-            x,
-            dimensions.y - ENCLOSURE_WALL - e,
-            z - e
+            -e,
+            pcb_position.y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
+                - SWITCH_BASE_LENGTH - bleed,
+            pcb_position.z + PCB_HEIGHT - bleed
         ]) {
-            cube([width, ENCLOSURE_WALL + e * 2, height + e]);
-
-            translate([0, 0, -lip_height]) {
-                cube([width, ENCLOSURE_WALL * .67, lip_height + e]);
-            }
+            cube([
+                ENCLOSURE_WALL + e * 2,
+                SWITCH_BASE_LENGTH + bleed * 2,
+                SWITCH_BASE_HEIGHT + bleed * 2
+            ]);
         }
     }
 
@@ -681,9 +671,8 @@ module enclosure(
 
         $fn = quick_preview ? undef : DEFAULT_ROUNDING
     ) {
-        x = branding_position.x + branding_available_width
-            - cavity_diameter / 2;
-        y = knob_position.y + knob_dimple_y;
+        x = pcb_position.x + PCB_LED_POSITION.x;
+        y = pcb_position.y + PCB_LED_POSITION.y;
         z = dimensions.z - recession - cavity_depth;
         shroud_z = dimensions.z - ENCLOSURE_FLOOR_CEILING - chamfer_shroud;
 
@@ -790,7 +779,7 @@ module enclosure(
                 _headphone_jack_cavity();
                 _pencil_stand(true);
                 _led_exposure(cavity = true);
-                _right_angle_switch_cavity_stub();
+                _switch_exposure();
             }
         }
     }

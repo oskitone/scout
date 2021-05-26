@@ -14,17 +14,6 @@ use <utils.scad>;
 
 DEFAULT_TOLERANCE = .1;
 
-/* TODO: extract into common parts repo */
-/* https://www.ckswitches.com/media/1428/os.pdf */
-SWITCH_BASE_WIDTH = 4.4;
-SWITCH_BASE_LENGTH = 8.7;
-SWITCH_BASE_HEIGHT = 4.5;
-SWITCH_ACTUATOR_WIDTH = 2;
-SWITCH_ACTUATOR_LENGTH = 2.1;
-SWITCH_ACTUATOR_HEIGHT = 3.8;
-SWITCH_ACTUATOR_TRAVEL = 1.5;
-SWITCH_ORIGIN = [SWITCH_BASE_WIDTH / 2, 6.36];
-
 module scout(
     show_enclosure_bottom = true,
     show_battery_holder = true,
@@ -87,7 +76,6 @@ module scout(
     enclosure_length = max(
         keys_y + key_length
             + PCB_LENGTH - pcb_key_mount_y
-            + ENCLOSURE_TO_PCB_CLEARANCE
             + ENCLOSURE_WALL,
         pcb_y + PCB_POT_POSITION.y + knob_radius + default_gutter
     );

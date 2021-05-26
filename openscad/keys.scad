@@ -5,7 +5,6 @@ use <../../poly555/openscad/lib/utils.scad>;
 include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
-// NOTE: this is knowingly less than NUT_DIAMETER
 KEYS_MOUNT_LENGTH = 5;
 
 function get_key_to_pcb_x_offset(
@@ -216,14 +215,6 @@ module keys(
         }
 
         color(natural_color_cavity) {
-            nuts(
-                pcb_position = pcb_position,
-                z = keys_position.z + cantilever_height + nut_lock_floor,
-                diameter = NUT_DIAMETER + tolerance * 2,
-                height = NUT_HEIGHT,
-                chamfer_top = true
-            );
-
             key_lip_endstop(
                 keys_cavity_height_z,
                 keys_full_width = get_keys_full_width(key_width, key_gutter),
