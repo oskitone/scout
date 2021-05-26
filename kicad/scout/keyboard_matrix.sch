@@ -394,7 +394,7 @@ Wire Wire Line
 	7000 3850 7200 3850
 Connection ~ 7000 3850
 Wire Wire Line
-	4750 4400 7200 4400
+	4750 4400 7000 4400
 Connection ~ 4750 4400
 Wire Wire Line
 	3400 4750 3400 5000
@@ -403,14 +403,44 @@ Wire Wire Line
 	4150 4750 4150 5000
 Connection ~ 4150 4750
 Wire Wire Line
-	4900 4200 4900 5000
+	4900 4200 4900 4750
 Connection ~ 4900 4200
 Wire Wire Line
-	5650 4200 5650 5000
+	5650 4200 5650 4750
 Connection ~ 5650 4200
 Wire Wire Line
-	6400 4200 6400 5000
+	6400 4200 6400 4750
 Connection ~ 6400 4200
 Text HLabel 6400 5000 3    50   Input ~ 0
 C5
+Text HLabel 5100 4750 2    50   Output Italic 0
+SW1
+Text HLabel 5850 4750 2    50   Output Italic 0
+SW2
+Text HLabel 6600 4750 2    50   Output Italic 0
+SW3
+Wire Wire Line
+	4900 4750 5100 4750
+Connection ~ 4900 4750
+Wire Wire Line
+	4900 4750 4900 5000
+Wire Wire Line
+	5650 4750 5850 4750
+Connection ~ 5650 4750
+Wire Wire Line
+	5650 4750 5650 5000
+Wire Wire Line
+	6600 4750 6400 4750
+Connection ~ 6400 4750
+Wire Wire Line
+	6400 4750 6400 5000
+Text HLabel 7200 4600 2    50   Output Italic 0
+SWC
+Wire Wire Line
+	7000 4400 7000 4600
+Wire Wire Line
+	7000 4600 7200 4600
+Connection ~ 7000 4400
+Wire Wire Line
+	7000 4400 7200 4400
 $EndSCHEMATC
