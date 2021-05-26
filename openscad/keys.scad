@@ -96,7 +96,8 @@ module keys_mount_rail(
             ]) {
                 scout_pcb_holes(
                     y = 0,
-                    height = height
+                    height = height,
+                    include_relief_holes = false
                 );
             }
 

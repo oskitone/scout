@@ -32,11 +32,17 @@ PCB_BUTTON_POSITIONS = [
 
 PCB_HOLE_DIAMETER = 3.2;
 PCB_HOLE_POSITIONS = [
-    _([138.938, 107.696 - 2.9]),
-    _([104.648, 107.696 - 2.9]),
-    _([173.228, 107.696 - 2.9]),
-    _([36.068, 107.696 - 2.9]),
-    _([70.358, 107.696 - 2.9]),
+    _([138.938, 107.696], [0, 2.9]),
+    _([104.648, 107.696], [0, 2.9]),
+    _([173.228, 107.696], [0, 2.9]),
+    _([36.068, 107.696], [0, 2.9]),
+    _([70.358, 107.696], [0, 2.9]),
+];
+
+PCB_RELIEF_HOLE_DIAMETER = 3.5;
+PCB_RELIEF_HOLE_POSITIONS = [
+    _([135.128, 122.555], [0, 2.9]),
+    _([74.168, 122.555], [0, 2.9]),
 ];
 
 PCB_LED_POSITION = _([37.338 - 2.54 * .75, 93.446], [0, 2.9]);
@@ -76,18 +82,33 @@ PCB_PIN_CLEARANCE = 2;
 
 module scout_pcb_holes(
     y,
-    height = PCB_HEIGHT
+    height = PCB_HEIGHT,
+    diameter = PCB_HOLE_DIAMETER,
+    diameter_bleed = 0,
+    positions = PCB_HOLE_POSITIONS,
+    include_relief_holes = true
 ) {
     e = .0343;
 
-    for (xy = PCB_HOLE_POSITIONS) {
+    for (xy = positions) {
         translate([xy.x, y != undef ? y : xy.y, -e]) {
             cylinder(
-                d = PCB_HOLE_DIAMETER,
+                d = diameter + diameter_bleed * 2,
                 h = height + e * 2 + 3,
                 $fn = 12
             );
         }
+    }
+
+    if (include_relief_holes) {
+        scout_pcb_holes(
+            y = y,
+            height = height,
+            diameter = PCB_RELIEF_HOLE_DIAMETER,
+            diameter_bleed = diameter_bleed,
+            positions = PCB_RELIEF_HOLE_POSITIONS,
+            include_relief_holes = false
+        );
     }
 }
 
