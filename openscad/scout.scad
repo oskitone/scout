@@ -42,6 +42,7 @@ module scout(
 
     accidental_key_recession = .2,
     key_lip_exposure = 3,
+    key_travel = 3,
 
     knob_top_exposure = 10,
     knob_radius = 10,
@@ -67,16 +68,18 @@ module scout(
     keys_x = ENCLOSURE_WALL + key_gutter;
     default_gutter = keys_x;
 
-    pcb_x = keys_x + key_to_pcb_x_offset;
+    key_width = key_plot * 2 - key_gutter;
+    key_length = 50;
+    key_min_height = 4;
+
+    pcb_x = keys_x + get_key_to_pcb_x_offset(key_width);
     pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y;
     pcb_z = 9.3; // TODO: reduce to minimum
 
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
 
-    key_min_height = 4;
-
-    enclosure_width = default_gutter * 2 + keys_full_width;
+    enclosure_width = default_gutter * 2 + get_keys_full_width(key_width);
     enclosure_length = max(
         keys_y + key_length
             + PCB_LENGTH - pcb_key_mount_y
@@ -205,6 +208,9 @@ module scout(
             pcb_position = [pcb_x, pcb_y, pcb_z],
 
             keys_cavity_height_z = enclosure_height - keys_cavity_height,
+            key_width = key_width,
+            key_length = key_length,
+            travel = key_travel,
 
             quick_preview = quick_preview,
             show_clearance = show_clearances
@@ -222,6 +228,8 @@ module scout(
             color(enclosure_outer_color) {
                 keys_mount_rail(
                     height = BUTTON_HEIGHT,
+                    key_width = key_width,
+                    key_length = key_length,
                     front_y_bleed = 0,
                     tolerance = tolerance
                 );
@@ -247,7 +255,9 @@ module scout(
             keys_cavity_height = keys_cavity_height,
             keys_position = [keys_x, keys_y, keys_z],
             key_gutter = key_gutter,
-            keys_full_width = keys_full_width,
+            keys_full_width = get_keys_full_width(key_width),
+            key_width = key_width,
+            key_length = key_length,
 
             branding_position = [branding_x, branding_y],
 

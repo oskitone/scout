@@ -43,6 +43,8 @@ module enclosure(
     keys_position = [],
     key_gutter,
     keys_full_width,
+    key_width,
+    key_length,
 
     branding_position = [],
     branding_make_to_model_ratio = .4,
@@ -476,6 +478,7 @@ module enclosure(
         ]) {
             keys_mount_alignment_fixture(
                 height,
+                key_width = key_width,
                 cavity = false,
                 tolerance = tolerance
             );
@@ -600,6 +603,8 @@ module enclosure(
             translate([keys_position.x, keys_position.y, z]) {
                 keys_mount_rail(
                     height = height,
+                    key_width = key_width,
+                    key_length = key_length,
                     include_alignment_fixture = false,
                     tolerance = -e
                 );
@@ -747,7 +752,11 @@ module enclosure(
                         _knob_exposure(false);
                         _keys_mount_alignment_fixture();
                         _keys_mount_nut_lock_rail();
-                        key_lip_endstop(dimensions.z - keys_cavity_height);
+                        key_lip_endstop(
+                            keys_cavity_height_z
+                                = dimensions.z - keys_cavity_height,
+                            keys_full_width = keys_full_width
+                        );
                         _led_exposure(cavity = false);
                         pcb_enclosure_top_fixture(
                             pcb_position = pcb_position,

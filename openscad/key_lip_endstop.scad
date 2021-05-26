@@ -6,6 +6,7 @@
 
 module key_lip_endstop(
     keys_cavity_height_z,
+    keys_full_width,
 
     distance_into_keys_bleed = 0,
     travel = 0,
