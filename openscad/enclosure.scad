@@ -74,6 +74,9 @@ module enclosure(
     screw_head_clearance = 0,
     nut_lock_floor = 0,
 
+    tray_height,
+    tray_z,
+
     show_dfm = false,
 
     tolerance = 0,
@@ -687,6 +690,45 @@ module enclosure(
         }
     }
 
+    module _tray_fixtures(
+        extension = 1,
+        z_clearance = DEFAULT_DFM_LAYER_HEIGHT,
+        height = 1
+    ) {
+        zs = [
+            tray_z - height - z_clearance,
+            tray_z + tray_height + z_clearance
+        ];
+
+        module _front(width = 12) {
+            x = (dimensions.x - width) / 2;
+
+            for (z = zs) {
+                translate([x, ENCLOSURE_WALL - e, z]) {
+                    cube([width, extension + e, height]);
+                }
+            }
+        }
+
+        module _sides(length = 6) {
+            y = keys_position.y + (key_length - length) / 2;
+
+            for (x = [
+                ENCLOSURE_WALL - e,
+                dimensions.x - ENCLOSURE_WALL - extension
+            ]) {
+                for (z = zs) {
+                    translate([x, y, z]) {
+                        cube([extension + e, length, height]);
+                    }
+                }
+            }
+        }
+
+        _front();
+        _sides();
+    }
+
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
             color(outer_color) {
@@ -730,6 +772,7 @@ module enclosure(
                             pcb_position = pcb_position,
                             enclosure_dimensions = dimensions
                         );
+                        _tray_fixtures();
                     }
                 }
             }

@@ -4,8 +4,6 @@ include <scout_pcb.scad>;
 
 TRAY_TO_COMPONENT_CLEARANCE = 1;
 
-// TODO: fixtures for enclosure
-
 function get_speaker_fixture_diameter(
     wall = 1,
     tolerance = 0,

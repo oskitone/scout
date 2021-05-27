@@ -338,6 +338,9 @@ module scout(
             screw_head_clearance = screw_head_clearance,
             nut_lock_floor = nut_lock_floor,
 
+            tray_height = tray_height,
+            tray_z = pcb_z + PCB_HEIGHT,
+
             show_dfm = show_dfm,
 
             tolerance = tolerance,
@@ -410,4 +413,7 @@ intersection() {
 
     // pencil stand
     /* translate([-10, 20, -10]) { cube([200, 120, 100]); } */
+
+    // tray Y
+    /* translate([-10, 20, -10]) { cube([200, 20, 100]); } */
 }
