@@ -20,6 +20,19 @@ function get_battery_holder_cavity_length(
         + tolerance * 2
 );
 
+function get_battery_holder_length(
+    count,
+    tolerance,
+    gutter = KEYSTONE_181_GUTTER,
+    wall = 1
+) = (
+    get_battery_holder_cavity_length(
+        count,
+        tolerance,
+        gutter
+    ) + wall * 2
+);
+
 module battery_contact_fixture(
     height = KEYSTONE_181_HEIGHT,
     tolerance = 0,
@@ -138,7 +151,7 @@ module battery_holder(
     cavity_length = get_battery_holder_cavity_length(count, tolerance, gutter);
 
     width = cavity_width + wall * 2;
-    length = cavity_length + wall * 2;
+    length = get_battery_holder_length(count, tolerance, gutter, wall);
     height = AAA_BATTERY_DIAMETER + floor + wall_height_extension;
 
     // TODO: inner alignment rails

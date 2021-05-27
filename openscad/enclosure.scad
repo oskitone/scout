@@ -409,35 +409,6 @@ module enclosure(
         }
     }
 
-    module _speaker_fixture() {
-        translate([
-            speaker_position.x,
-            speaker_position.y,
-            ENCLOSURE_FLOOR_CEILING - e
-        ]) {
-            speaker_fixture(
-                height = speaker_position.z + SPEAKER_HEIGHT
-                    - ENCLOSURE_FLOOR_CEILING + e,
-                wall = ENCLOSURE_INNER_WALL,
-                tolerance = tolerance
-            );
-        }
-    }
-
-    module _speaker_fixture_cavity() {
-        z = bottom_height - LIP_BOX_DEFAULT_LIP_HEIGHT - e;
-        height = speaker_position.z + SPEAKER_HEIGHT - z + e;
-        diameter = get_speaker_fixture_diameter(ENCLOSURE_INNER_WALL, tolerance)
-            + tolerance * 2;
-
-        translate([speaker_position.x, speaker_position.y, z]) {
-            cylinder(
-                d = diameter,
-                h = height
-            );
-        }
-    }
-
     module _uart_header_exposure(
         x_bleed = 1,
         height = 8
@@ -733,21 +704,14 @@ module enclosure(
                             pcb_position = pcb_position,
                             screw_head_clearance = screw_head_clearance
                         );
-                        _speaker_fixture();
                         _pencil_stand(false);
                     }
                 }
 
                 if (show_top) {
-                    difference() {
-                        translate([0, 0, dimensions.z]) {
-                            mirror([0, 0, 1]) {
-                                _half(top_height, lip = true);
-                            }
-                        }
-
-                        color(cavity_color) {
-                            _speaker_fixture_cavity();
+                    translate([0, 0, dimensions.z]) {
+                        mirror([0, 0, 1]) {
+                            _half(top_height, lip = true);
                         }
                     }
 

@@ -65,15 +65,15 @@ function export_stl() {
             --quiet \
             -o "$ascii_filename" \
             --export-format "asciistl" \
-            -D 'SHOW_ENCLOSURE_BOTTOM=false '\
-            -D 'SHOW_BATTERY_HOLDER=false '\
-            -D 'SHOW_PCB=false '\
-            -D 'SHOW_KEYS_MOUNT_RAIL=false '\
-            -D 'SHOW_KEYS=false '\
-            -D 'SHOW_ENCLOSURE_TOP=false '\
-            -D 'SHOW_ACCOUTREMENTS=false '\
-            -D 'SHOW_KNOB=false '\
-            -D 'SHOW_DFM=true '\
+            -D 'SHOW_ENCLOSURE_BOTTOM=false ' \
+            -D 'SHOW_PCB=false ' \
+            -D 'SHOW_TRAY=false' \
+            -D 'SHOW_KEYS_MOUNT_RAIL=false ' \
+            -D 'SHOW_KEYS=false ' \
+            -D 'SHOW_ENCLOSURE_TOP=false ' \
+            -D 'SHOW_ACCOUTREMENTS=false ' \
+            -D 'SHOW_KNOB=false ' \
+            -D 'SHOW_DFM=true ' \
             -D 'SHOW_CLEARANCES=false' \
             -D "FLIP_VERTICALLY=$flip_vertically" \
             -D "$override=true" \
@@ -122,7 +122,7 @@ function run() {
 
     # The "& \" at the end runs everything in parallel!
     export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' 'false' & \
-    export_stl 'battery_holder' 'SHOW_BATTERY_HOLDER' 'false' & \
+    export_stl 'tray' 'SHOW_TRAY' 'false' & \
     export_stl 'keys_mount_rail' 'SHOW_KEYS_MOUNT_RAIL' 'false' & \
     export_stl 'keys' 'SHOW_KEYS' 'false' & \
     export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' & \

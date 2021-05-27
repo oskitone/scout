@@ -4,12 +4,12 @@ use <../../poly555/openscad/lib/basic_shapes.scad>;
 use <../../poly555/openscad/lib/pencil_stand.scad>;
 
 include <batteries.scad>;
-include <battery_holder.scad>;
 include <scout_pcb.scad>;
 include <enclosure.scad>;
 include <keys.scad>;
 include <nuts_and_bolts.scad>;
 include <speaker.scad>;
+include <tray.scad>;
 use <utils.scad>;
 
 DEFAULT_TOLERANCE = .1;
@@ -27,8 +27,8 @@ SWITCH_ORIGIN = [SWITCH_BASE_WIDTH / 2, 6.36];
 
 module scout(
     show_enclosure_bottom = true,
-    show_battery_holder = true,
     show_pcb = true,
+    show_tray = true,
     show_keys_mount_rail = true,
     show_keys = true,
     show_enclosure_top = true,
@@ -38,7 +38,7 @@ module scout(
     show_dfm = false,
     show_clearances = true,
 
-    standalone_battery_holder = true,
+    tray_min_floor = 1,
 
     cantilever_height = 2,
     accidental_height = 2,
@@ -56,8 +56,6 @@ module scout(
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
 
-    battery_holder_floor = STANDALONE_BATTERY_HOLDER ? 1 : 0,
-
     min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
@@ -72,7 +70,10 @@ module scout(
     keys_x = ENCLOSURE_WALL + key_gutter;
     default_gutter = keys_x;
 
-    speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
+    speaker_y = ENCLOSURE_WALL
+        + tolerance // enclosure to fixture
+        + ENCLOSURE_INNER_WALL // fixture
+        + SPEAKER_DIAMETER / 2;
 
     key_width = PCB_KEY_PLOT * 2 - key_gutter;
     key_min_height = 4;
@@ -82,7 +83,7 @@ module scout(
         + get_speaker_fixture_diameter(ENCLOSURE_INNER_WALL, tolerance) / 2
         + tolerance;
     pcb_z = max(
-        ENCLOSURE_FLOOR_CEILING + battery_holder_floor + AAA_BATTERY_DIAMETER
+        ENCLOSURE_FLOOR_CEILING + AAA_BATTERY_DIAMETER + tray_min_floor
             + key_travel - PCB_HEIGHT - BUTTON_HEIGHT,
         min_screw_bottom_clearance + SCREW_HEAD_HEIGHT
             + ENCLOSURE_FLOOR_CEILING + PCB_PIN_CLEARANCE
@@ -122,8 +123,12 @@ module scout(
     branding_x = default_gutter;
     branding_y = keys_y + key_length + default_gutter;
 
+    tray_height = BUTTON_HEIGHT - key_travel;
+
+    speaker_rim_height = tray_min_floor;
+    speaker_rim_depth = 2;
     speaker_x = pcb_x + PCB_WIDTH - SPEAKER_DIAMETER / 2;
-    speaker_z = ENCLOSURE_FLOOR_CEILING;
+    speaker_z = keys_z - key_travel - SPEAKER_HEIGHT - speaker_rim_height;
 
     // NOTE: these are eyeballed instead of derived and that's okay!!
     pencil_stand_x = 20;
@@ -133,8 +138,13 @@ module scout(
     pencil_stand_depth = 12.8;
 
     batteries_x = pencil_stand_x + 10;
-    batteries_y = ENCLOSURE_WALL + ENCLOSURE_INNER_WALL + tolerance * 2;
-    batteries_z = ENCLOSURE_FLOOR_CEILING + battery_holder_floor;
+    batteries_y = ENCLOSURE_WALL
+        + (pcb_y - get_battery_holder_length(
+            count = 3,
+            tolerance = tolerance,
+            wall = ENCLOSURE_INNER_WALL
+        )) / 2;
+    batteries_z = ENCLOSURE_FLOOR_CEILING;
 
     nut_z = keys_z + cantilever_height + nut_lock_floor;
     screw_top_clearance = enclosure_height
@@ -258,6 +268,29 @@ module scout(
         }
     }
 
+    if (show_tray) {
+        color(enclosure_outer_color) {
+            tray(
+                height = tray_height,
+                enclosure_dimensions = [
+                    enclosure_width,
+                    enclosure_length,
+                    enclosure_height
+                ],
+                keys_position = [keys_x, keys_y, keys_z],
+                pcb_position = [pcb_x, pcb_y, pcb_z],
+                speaker_position = [speaker_x, speaker_y, speaker_z],
+                batteries_position = [batteries_x, batteries_y, batteries_z],
+                speaker_rim_height = speaker_rim_height,
+                speaker_rim_depth = speaker_rim_depth,
+                key_width = key_width,
+                key_length = key_length,
+                key_travel = key_travel,
+                tolerance = tolerance
+            );
+        }
+    }
+
     if (show_enclosure_top || show_enclosure_bottom) {
         enclosure(
             show_top = show_enclosure_top,
@@ -316,21 +349,6 @@ module scout(
         );
     }
 
-    if (
-        show_battery_holder ||
-        (show_enclosure_bottom && !standalone_battery_holder)
-    ) {
-        color(enclosure_outer_color) {
-            translate([batteries_x, batteries_y, batteries_z]) {
-                battery_holder(
-                    wall = ENCLOSURE_INNER_WALL,
-                    floor = battery_holder_floor,
-                    tolerance = tolerance + e
-                );
-            }
-        }
-    }
-
     if (show_accoutrements) {
         _accoutrements();
     }
@@ -340,11 +358,9 @@ module scout(
     }
 }
 
-STANDALONE_BATTERY_HOLDER = false;
-
 SHOW_ENCLOSURE_BOTTOM = true;
-SHOW_BATTERY_HOLDER = true;
 SHOW_PCB = true;
+SHOW_TRAY = true;
 SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_KEYS = true;
 SHOW_ENCLOSURE_TOP = true;
@@ -359,8 +375,8 @@ rotate(FLIP_VERTICALLY ? [0, 180, 0] : [0, 0, 0])
 intersection() {
     scout(
         show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
-        show_battery_holder = SHOW_BATTERY_HOLDER,
         show_pcb = SHOW_PCB,
+        show_tray = SHOW_TRAY,
         show_keys_mount_rail = SHOW_KEYS_MOUNT_RAIL,
         show_keys = SHOW_KEYS,
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
@@ -369,8 +385,6 @@ intersection() {
 
         show_dfm = SHOW_DFM,
         show_clearances = SHOW_CLEARANCES,
-
-        standalone_battery_holder = STANDALONE_BATTERY_HOLDER,
 
         tolerance = DEFAULT_TOLERANCE,
         quick_preview = $preview
