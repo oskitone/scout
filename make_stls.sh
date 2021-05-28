@@ -122,7 +122,7 @@ function run() {
 
     # The "& \" at the end runs everything in parallel!
     export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' 'false' & \
-    export_stl 'tray' 'SHOW_TRAY' 'false' & \
+    export_stl 'tray' 'SHOW_TRAY' 'true' & \
     export_stl 'keys_mount_rail' 'SHOW_KEYS_MOUNT_RAIL' 'false' & \
     export_stl 'keys' 'SHOW_KEYS' 'false' & \
     export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' & \
