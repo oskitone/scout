@@ -653,24 +653,15 @@ module enclosure(
             translate([x, y, z - e]) {
                 cylinder(
                     d = cavity_diameter,
-                    h = LED_HEIGHT + e
+                    h = cavity_depth - shade_depth + e
                 );
             }
 
-            translate([x, y, z + LED_HEIGHT - e]) {
-                linear_extrude(cavity_depth - LED_HEIGHT + e - shade_depth) {
-                    offset(tolerance) {
-                        import("assets/heart.svg");
-                    }
-                }
-            }
-
             translate([x, y, dimensions.z - recession]) {
-                linear_extrude(recession + e) {
-                    offset(tolerance) {
-                        import("assets/heart.svg");
-                    }
-                }
+                cylinder(
+                    d = cavity_diameter,
+                    h = recession + e
+                );
             }
         } else {
             translate([x, y, z]) {
