@@ -69,28 +69,6 @@ module pcb_fixtures(
 
     z = ENCLOSURE_FLOOR_CEILING - e;
 
-    module _corners(size = 6) {
-        height = pcb_position.z + PCB_HEIGHT - z;
-
-        difference() {
-            for (x = [
-                pcb_position.x - wall - offset,
-                pcb_position.x + PCB_WIDTH - size + wall + offset
-            ]) {
-                for (y = [
-                    pcb_position.y - wall - offset,
-                    pcb_position.y + PCB_LENGTH - size + wall + offset
-                ]) {
-                    translate([x, y, z]) {
-                        cube([size, size, height]);
-                    }
-                }
-            }
-
-            _fixture_pcb_difference(pcb_position);
-        }
-    }
-
     module _back_stools(size = 4) {
         x_offset = 15; // NOTE: this is eye-balled!
         y = PCB_LENGTH - size / 2;
@@ -150,7 +128,6 @@ module pcb_fixtures(
         }
     }
 
-    _corners();
     _back_stools();
     _button_rail();
     _mounting_columns();
