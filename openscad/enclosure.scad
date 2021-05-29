@@ -599,8 +599,10 @@ module enclosure(
         x = pencil_stand_position.x,
         y = pencil_stand_position.y
     ) {
+        // TODO: ditch or integrate with tray
+
         if (cavity) {
-            translate([x, y, -e]) {
+            * translate([x, y, -e]) {
                 pencil_stand_cavity(
                     wall = ENCLOSURE_INNER_WALL,
                     depth = pencil_stand_depth + e,
@@ -609,7 +611,7 @@ module enclosure(
                 );
             }
         } else {
-            translate([x, y, e]) {
+            * translate([x, y, e]) {
                 pencil_stand(
                     wall = ENCLOSURE_INNER_WALL,
                     depth = pencil_stand_depth,
