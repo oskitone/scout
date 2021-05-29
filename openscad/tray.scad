@@ -2,7 +2,10 @@ include <battery_holder.scad>;
 include <keys.scad>;
 include <scout_pcb.scad>;
 
+DEFAULT_TOLERANCE = .1;
+
 TRAY_TO_COMPONENT_CLEARANCE = 1;
+TRAY_XY = ENCLOSURE_WALL + DEFAULT_TOLERANCE * 2;
 
 function get_speaker_fixture_diameter(
     wall = 1,
@@ -10,6 +13,23 @@ function get_speaker_fixture_diameter(
     speaker_diameter = SPEAKER_DIAMETER
 ) = (
     SPEAKER_DIAMETER + wall * 2 + tolerance * 2
+);
+
+function get_tray_length(
+    pcb_position = [],
+
+    tolerance = DEFAULT_TOLERANCE,
+    y = TRAY_XY,
+    include_keys_mount_rail = false
+) = (
+    include_keys_mount_rail
+        ? pcb_position.y + PCB_HOLE_POSITIONS[0].y
+            - keys_mount_length / 2
+            - y // TODO: + e if keeping
+        : pcb_position.y + PCB_BUTTON_POSITIONS[0].y
+            - BUTTON_DIAMETER / 2
+            - (tolerance + TRAY_TO_COMPONENT_CLEARANCE)
+            - y
 );
 
 module tray(
@@ -51,20 +71,10 @@ module tray(
 
 
     module _plate() {
-        x = ENCLOSURE_WALL + tolerance * 2;
-        y = ENCLOSURE_WALL + tolerance;
+        width = enclosure_dimensions.x - TRAY_XY * 2;
+        length = get_tray_length(pcb_position);
 
-        width = enclosure_dimensions.x - x * 2;
-        length = include_keys_mount_rail
-            ? pcb_position.y + PCB_HOLE_POSITIONS[0].y
-                - keys_mount_length / 2
-                - y + e
-            : pcb_position.y + PCB_BUTTON_POSITIONS[0].y
-                - BUTTON_DIAMETER / 2
-                - (tolerance + TRAY_TO_COMPONENT_CLEARANCE)
-                - y;
-
-        translate([x, y, z]) {
+        translate([TRAY_XY, TRAY_XY, z]) {
             cube([width, length, height]);
         }
     }

@@ -682,7 +682,7 @@ module enclosure(
     }
 
     module _tray_fixtures(
-        extension = 1,
+        extension = 2,
         z_clearance = DEFAULT_DFM_LAYER_HEIGHT,
         height = 1
     ) {
@@ -691,7 +691,7 @@ module enclosure(
             tray_z + tray_height + z_clearance
         ];
 
-        module _front(width = 12) {
+        module _front(width = 15) {
             x = (dimensions.x - width) / 2;
 
             for (z = zs) {
@@ -701,8 +701,12 @@ module enclosure(
             }
         }
 
-        module _sides(length = 6) {
+        module _sides(
+            length = 10,
+            endstop_length = ENCLOSURE_INNER_WALL
+        ) {
             y = keys_position.y + (key_length - length) / 2;
+            endstop_y = TRAY_XY + get_tray_length(pcb_position) + tolerance * 2;
 
             for (x = [
                 ENCLOSURE_WALL - e,
@@ -712,6 +716,10 @@ module enclosure(
                     translate([x, y, z]) {
                         cube([extension + e, length, height]);
                     }
+                }
+
+                translate([x, endstop_y, zs[0]]) {
+                    cube([extension + e, endstop_length, height * 2 + tray_height]);
                 }
             }
         }
