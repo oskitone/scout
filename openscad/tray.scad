@@ -180,6 +180,7 @@ module tray(
         width = 10,
         length = 5,
         wall = ENCLOSURE_INNER_WALL,
+        height = PCB_HEIGHT + PCB_FIXTURE_VERTICAL_ALLOWANCE,
         clearance = PCB_FIXTURE_CLEARANCE
     ) {
         offset = wall + clearance + tolerance;
@@ -190,15 +191,16 @@ module tray(
                 pcb_position.x - offset,
                 pcb_position.x + PCB_WIDTH - width + offset
             ]) {
-                translate([x, y, z - PCB_HEIGHT]) {
-                    cube([width, length, PCB_HEIGHT + e]);
+                translate([x, y, z - height]) {
+                    cube([width, length, height + e]);
                 }
             }
 
             _fixture_pcb_difference(
                 pcb_position = pcb_position,
                 clearance = clearance,
-                tolerance = tolerance
+                tolerance = tolerance,
+                vertical_bleed = PCB_FIXTURE_VERTICAL_ALLOWANCE
             );
         }
     }

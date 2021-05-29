@@ -1,4 +1,5 @@
 PCB_FIXTURE_CLEARANCE = .3;
+PCB_FIXTURE_VERTICAL_ALLOWANCE = 1;
 
 module _fixture_pcb_difference(
     pcb_position = [0, 0, 0],
@@ -6,6 +7,7 @@ module _fixture_pcb_difference(
     height = PCB_HEIGHT,
     wall = ENCLOSURE_INNER_WALL,
     clearance = PCB_FIXTURE_CLEARANCE,
+    vertical_bleed = 0,
     tolerance = DEFAULT_TOLERANCE
 ) {
     e = .031;
@@ -14,12 +16,12 @@ module _fixture_pcb_difference(
     translate([
         pcb_position.x - offset,
         pcb_position.y - offset,
-        pcb_position.z - e
+        pcb_position.z - vertical_bleed - e
     ]) {
         cube([
             PCB_WIDTH + offset * 2,
             PCB_LENGTH + offset * 2,
-            height + e * 2
+            height + vertical_bleed + e * 2
         ]);
     }
 }
@@ -41,10 +43,12 @@ module pcb_enclosure_top_fixture(
 
     end_y = enclosure_dimensions.y - ENCLOSURE_WALL + e;
     y = pcb_position.y + PCB_LENGTH - coverage;
-    z = pcb_position.z;
+    z = pcb_position.z - PCB_FIXTURE_VERTICAL_ALLOWANCE;
 
     length = end_y - y;
-    height = enclosure_dimensions.z - ENCLOSURE_FLOOR_CEILING + e - z;
+    height = enclosure_dimensions.z - ENCLOSURE_FLOOR_CEILING
+        + PCB_FIXTURE_VERTICAL_ALLOWANCE
+        + e - z;
 
     difference() {
         for (x = xs) {
@@ -53,7 +57,10 @@ module pcb_enclosure_top_fixture(
             }
         }
 
-        _fixture_pcb_difference(pcb_position);
+        _fixture_pcb_difference(
+            pcb_position,
+            vertical_bleed = PCB_FIXTURE_VERTICAL_ALLOWANCE
+        );
     }
 }
 
