@@ -88,7 +88,7 @@ module enclosure(
 ) {
     e = .0345;
 
-    bottom_height = ENCLOSURE_FLOOR_CEILING + LIP_BOX_DEFAULT_LIP_HEIGHT;
+    bottom_height = pcb_position.z;
     top_height = dimensions.z - bottom_height;
 
     branding_available_width = dimensions.x
@@ -113,7 +113,7 @@ module enclosure(
             add_lip = lip,
             remove_lip = !lip,
             fillet = quick_preview ? 0 : fillet,
-            tolerance = DEFAULT_TOLERANCE,
+            tolerance = DEFAULT_TOLERANCE * 2, // intentionally loose
             outer_color = outer_color,
             cavity_color = cavity_color,
             $fn = DEFAULT_ROUNDING
@@ -489,7 +489,7 @@ module enclosure(
         x,
         string,
         width = 15,
-        z = bottom_height + label_length / 2 - e,
+        z = pcb_position.z - label_length / 2 - e,
         placard = true
     ) {
         translate([
