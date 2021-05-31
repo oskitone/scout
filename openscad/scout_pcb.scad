@@ -6,6 +6,8 @@ PCB_WIDTH = 177.292 - 32.004;
 PCB_LENGTH = 126.365 - 83.566;
 PCB_HEIGHT = 1.6;
 
+PCB_KEY_PLOT = 2.54 * 3;
+
 function _(xy, nudge = [0, 0]) = (
     [(xy.x + nudge.x - 32.004), -(xy.y - 123.444) + nudge.y]
 );
@@ -222,7 +224,7 @@ module scout_pcb(
     }
 
     if (show_circuitry_clearance) {
-        length = PCB_LENGTH - PCB_HOLE_POSITIONS[0].y - keys_mount_length / 2;
+        length = PCB_LENGTH - PCB_HOLE_POSITIONS[0].y - KEYS_MOUNT_LENGTH / 2;
 
         translate([0, PCB_LENGTH - length, PCB_HEIGHT - e]) {
             % cube([PCB_WIDTH, length, PCB_CIRCUITRY_CLEARANCE + e]);

@@ -40,9 +40,12 @@ module scout(
 
     standalone_battery_holder = true,
 
+    cantilever_height = 2,
+    accidental_height = 2,
     accidental_key_recession = .2,
     key_lip_exposure = 3,
     key_travel = 3,
+    key_gutter = 1,
 
     knob_top_exposure = 10,
     knob_radius = 10,
@@ -63,23 +66,24 @@ module scout(
 ) {
     e = .0432;
 
-    pcb_key_mount_y = PCB_HOLE_POSITIONS[0][1] - keys_mount_length / 2;
+    pcb_key_mount_y = PCB_HOLE_POSITIONS[0][1] - KEYS_MOUNT_LENGTH / 2;
 
     keys_x = ENCLOSURE_WALL + key_gutter;
     default_gutter = keys_x;
 
-    key_width = key_plot * 2 - key_gutter;
+    key_width = PCB_KEY_PLOT * 2 - key_gutter;
     key_length = 50;
     key_min_height = 4;
 
-    pcb_x = keys_x + get_key_to_pcb_x_offset(key_width);
+    pcb_x = keys_x + get_key_to_pcb_x_offset(key_width, key_gutter);
     pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y;
     pcb_z = 9.3; // TODO: reduce to minimum
 
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
 
-    enclosure_width = default_gutter * 2 + get_keys_full_width(key_width);
+    enclosure_width = default_gutter * 2
+        + get_keys_full_width(key_width, key_gutter);
     enclosure_length = max(
         keys_y + key_length
             + PCB_LENGTH - pcb_key_mount_y
@@ -198,6 +202,7 @@ module scout(
 
         keys(
             key_height = key_height,
+            accidental_height = accidental_height,
             tolerance = tolerance,
 
             cantilever_length = cantilever_length,
@@ -211,6 +216,7 @@ module scout(
             key_width = key_width,
             key_length = key_length,
             travel = key_travel,
+            key_gutter = key_gutter,
 
             quick_preview = quick_preview,
             show_clearance = show_clearances
@@ -230,6 +236,7 @@ module scout(
                     height = BUTTON_HEIGHT,
                     key_width = key_width,
                     key_length = key_length,
+                    key_gutter = key_gutter,
                     front_y_bleed = 0,
                     tolerance = tolerance
                 );
@@ -255,9 +262,11 @@ module scout(
             keys_cavity_height = keys_cavity_height,
             keys_position = [keys_x, keys_y, keys_z],
             key_gutter = key_gutter,
-            keys_full_width = get_keys_full_width(key_width),
+            keys_full_width = get_keys_full_width(key_width, key_gutter),
             key_width = key_width,
             key_length = key_length,
+
+            cantilever_height = cantilever_height,
 
             branding_position = [branding_x, branding_y],
 

@@ -11,6 +11,8 @@ module key_lip_endstop(
     distance_into_keys_bleed = 0,
     travel = 0,
 
+    key_gutter,
+
     // HEY! These values are eyeballed and that's okay, I guess. What we want
     // is for the keys to have a good bottom lip and for their fillets to not
     // get messed up too much.

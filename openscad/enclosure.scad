@@ -46,6 +46,8 @@ module enclosure(
     key_width,
     key_length,
 
+    cantilever_height = 0,
+
     branding_position = [],
     branding_make_to_model_ratio = .4,
 
@@ -467,7 +469,8 @@ module enclosure(
     }
 
     module _keys_mount_alignment_fixture() {
-        keys_to_enclosure_distance = get_keys_to_enclosure_distance(tolerance);
+        keys_to_enclosure_distance =
+            get_keys_to_enclosure_distance(tolerance, key_gutter);
         z = bottom_height - LIP_BOX_DEFAULT_LIP_HEIGHT;
         height = keys_position.z - z + cantilever_height;
 
@@ -479,6 +482,7 @@ module enclosure(
             keys_mount_alignment_fixture(
                 height,
                 key_width = key_width,
+                key_gutter = key_gutter,
                 cavity = false,
                 tolerance = tolerance
             );
@@ -605,6 +609,7 @@ module enclosure(
                     height = height,
                     key_width = key_width,
                     key_length = key_length,
+                    key_gutter = key_gutter,
                     include_alignment_fixture = false,
                     tolerance = -e
                 );
@@ -755,7 +760,8 @@ module enclosure(
                         key_lip_endstop(
                             keys_cavity_height_z
                                 = dimensions.z - keys_cavity_height,
-                            keys_full_width = keys_full_width
+                            keys_full_width = keys_full_width,
+                            key_gutter = key_gutter
                         );
                         _led_exposure(cavity = false);
                         pcb_enclosure_top_fixture(

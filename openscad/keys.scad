@@ -6,41 +6,42 @@ include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
 // NOTE: this is knowingly less than NUT_DIAMETER
-keys_mount_length = 5;
-
-key_plot = 2.54 * 3;
-key_gutter = 1;
-
-accidental_height = 2;
-
-cantilever_height = 2;
+KEYS_MOUNT_LENGTH = 5;
 
 function get_key_to_pcb_x_offset(
     key_width,
-    key_gutter = key_gutter
+    key_gutter
 ) = ((key_width - BUTTON_DIAMETER) / 2 - key_gutter);
 
 function get_keys_full_width(
     key_width,
-    key_gutter = key_gutter
+    key_gutter
 ) = (
     10 * key_width // TODO: derive natural key count
     + 9 * key_gutter // TODO: derive natural key count - 1
 );
 
-function get_keys_to_enclosure_distance(tolerance = 0) = (
+function get_keys_to_enclosure_distance(
+    tolerance = 0,
+    key_gutter
+) = (
     key_gutter - tolerance * 2
 );
 
-function get_keys_mount_rail_width(tolerance, key_width) = (
-    get_keys_full_width(key_width)
-    + get_keys_to_enclosure_distance(tolerance) * 2
+function get_keys_mount_rail_width(
+    tolerance,
+    key_width,
+    key_gutter
+) = (
+    get_keys_full_width(key_width, key_gutter)
+    + get_keys_to_enclosure_distance(tolerance, key_gutter) * 2
 );
 
 module keys_mount_alignment_fixture(
     height,
     cavity,
     key_width,
+    key_gutter,
     tolerance = 0,
 
     fixture_width = 1,
@@ -59,12 +60,12 @@ module keys_mount_alignment_fixture(
 
     xs = [
         -e - x_bleed,
-        get_keys_mount_rail_width(tolerance, key_width)
+        get_keys_mount_rail_width(tolerance, key_width, key_gutter)
             - fixture_width + x_bleed
     ];
 
     for (x = xs) {
-        y = (keys_mount_length - fixture_length) / 2;
+        y = (KEYS_MOUNT_LENGTH - fixture_length) / 2;
         translate([x, y, -e]) {
             cube([fixture_width + e, fixture_length, height + e * 2]);
         }
@@ -75,23 +76,26 @@ module keys_mount_rail(
     height,
     key_width,
     key_length,
+    key_gutter,
     front_y_bleed = 0,
     include_alignment_fixture = true,
     tolerance = 0
 ) {
-    keys_to_enclosure_distance = get_keys_to_enclosure_distance(tolerance);
+    keys_to_enclosure_distance =
+        get_keys_to_enclosure_distance(tolerance, key_gutter);
 
     translate([-keys_to_enclosure_distance, key_length - front_y_bleed, 0]) {
         difference() {
             cube([
-                get_keys_mount_rail_width(tolerance, key_width),
-                keys_mount_length + front_y_bleed,
+                get_keys_mount_rail_width(tolerance, key_width, key_gutter),
+                KEYS_MOUNT_LENGTH + front_y_bleed,
                 height
             ]);
 
             translate([
-                get_key_to_pcb_x_offset(key_width) + keys_to_enclosure_distance,
-                keys_mount_length / 2 + front_y_bleed,
+                get_key_to_pcb_x_offset(key_width, key_gutter)
+                    + keys_to_enclosure_distance,
+                KEYS_MOUNT_LENGTH / 2 + front_y_bleed,
                 0
             ]) {
                 scout_pcb_holes(
@@ -106,6 +110,7 @@ module keys_mount_rail(
                     keys_mount_alignment_fixture(
                         height = height,
                         key_width = key_width,
+                        key_gutter = key_gutter,
                         cavity = true,
                         tolerance = tolerance
                     );
@@ -117,6 +122,7 @@ module keys_mount_rail(
 
 module keys(
     key_height = 7,
+    accidental_height = 0,
     tolerance = 0,
 
     cantilever_length = 0,
@@ -133,6 +139,7 @@ module keys(
     key_width,
     key_length,
     travel = 0,
+    key_gutter,
 
     accidental_color = "#444",
     natural_color = "#fff",
@@ -156,7 +163,7 @@ module keys(
             natural_width = key_width,
             natural_height = key_height,
 
-            accidental_width = key_plot * 2 * .5,
+            accidental_width = PCB_KEY_PLOT * 2 * .5,
             accidental_length = key_length * 3/5,
             accidental_height = key_height + accidental_height,
 
@@ -200,6 +207,7 @@ module keys(
                         height = cantilever_height,
                         key_width = key_width,
                         key_length = key_length,
+                        key_gutter = key_gutter,
                         front_y_bleed = e,
                         tolerance = tolerance
                     );
@@ -218,9 +226,10 @@ module keys(
 
             key_lip_endstop(
                 keys_cavity_height_z,
-                keys_full_width = get_keys_full_width(key_width),
+                keys_full_width = get_keys_full_width(key_width, key_gutter),
                 distance_into_keys_bleed = tolerance * 4,
-                travel = travel
+                travel = travel,
+                key_gutter = key_gutter
             );
         }
     }
@@ -232,7 +241,7 @@ module keys(
             keys_position.z - travel
         ]) {
             % cube([
-                get_keys_full_width(key_width),
+                get_keys_full_width(key_width, key_gutter),
                 key_length + e,
                 travel + e
             ]);
