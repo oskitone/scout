@@ -448,10 +448,13 @@ module enclosure(
         height = 8
     ) {
         pin_z = pcb_position.z + PCB_HEIGHT + 6;
+
         x = pcb_position.x + PCB_UART_HEADER_POSITION.x - x_bleed;
+        z = pin_z - height / 2;
+
         width = PCB_UART_HEADER_WIDTH + x_bleed * 2;
 
-        translate([ x, dimensions.y - ENCLOSURE_WALL - e, pin_z - height / 2]) {
+        translate([x, dimensions.y - ENCLOSURE_WALL - e, z]) {
             cube([
                 width,
                 ENCLOSURE_WALL + e * 2,
@@ -462,7 +465,10 @@ module enclosure(
         _side_engraving(
             x = x + width / 2,
             string = "UART",
-            width = width
+            width = width,
+            z = bottom_height + label_length / 2
+                - (label_length - label_text_size) / 2
+                + e
         );
 
         _side_engraving(
@@ -495,7 +501,8 @@ module enclosure(
     }
 
     module _headphone_jack_cavity(
-        plug_diameter = 10
+        plug_diameter = 10,
+        engraving_width = 16
     ) {
         x = pcb_position.x + PCB_HEADPHONE_JACK_POSITION.x
             + HEADPHONE_JACK_WIDTH / 2;
@@ -511,8 +518,10 @@ module enclosure(
         }
 
         _side_engraving(
-            x = x,
-            string = "LINE"
+            x = x + engraving_width / 2 + plug_diameter / 2 - 1,
+            width = engraving_width,
+            string = "LINE",
+            z = z
         );
     }
 
@@ -525,7 +534,7 @@ module enclosure(
     ) {
         translate([
             x,
-            dimensions.y,
+            dimensions.y + e,
             z
         ]) {
             // TODO: support sides in enclosure_engraving
@@ -545,25 +554,26 @@ module enclosure(
     // TODO: change when PCB has this kind of switch
     module _right_angle_switch_cavity_stub() {
         width = 10;
-        height = 6;
+        height = 6 + LIP_BOX_DEFAULT_LIP_HEIGHT;
 
         x = 13;
-        z = pcb_position.z;
+        z = pcb_position.z - LIP_BOX_DEFAULT_LIP_HEIGHT;
 
         _side_engraving(
             x = x + width / 2,
+            z = z + height + label_length / 2 - e,
             string = "POW"
         );
 
         translate([
             x,
             dimensions.y - ENCLOSURE_WALL - e,
-            z
+            z - e
         ]) {
             cube([
                 width,
                 ENCLOSURE_WALL + e * 2,
-                height
+                height + e
             ]);
         }
     }
