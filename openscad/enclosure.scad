@@ -11,6 +11,7 @@ include <enclosure_engraving.scad>;
 include <key_lip_endstop.scad>;
 include <keys.scad>;
 include <pcb_fixtures.scad>;
+include <tray_fixtures.scad>;
 
 /* TODO: extract */
 ENCLOSURE_WALL = 2.4;
@@ -688,53 +689,6 @@ module enclosure(
         }
     }
 
-    module _tray_fixtures(
-        extension = 2,
-        z_clearance = DEFAULT_DFM_LAYER_HEIGHT,
-        height = 1
-    ) {
-        zs = [
-            tray_z - height - z_clearance,
-            tray_z + tray_height + z_clearance
-        ];
-
-        module _front(width = 15) {
-            x = (dimensions.x - width) / 2;
-
-            for (z = zs) {
-                translate([x, ENCLOSURE_WALL - e, z]) {
-                    cube([width, extension + e, height]);
-                }
-            }
-        }
-
-        module _sides(
-            length = 10,
-            endstop_length = ENCLOSURE_INNER_WALL
-        ) {
-            y = keys_position.y + (key_length - length) / 2;
-            endstop_y = TRAY_XY + get_tray_length(pcb_position) + tolerance * 2;
-
-            for (x = [
-                ENCLOSURE_WALL - e,
-                dimensions.x - ENCLOSURE_WALL - extension
-            ]) {
-                for (z = zs) {
-                    translate([x, y, z]) {
-                        cube([extension + e, length, height]);
-                    }
-                }
-
-                translate([x, endstop_y, zs[0]]) {
-                    cube([extension + e, endstop_length, height * 2 + tray_height]);
-                }
-            }
-        }
-
-        _front();
-        _sides();
-    }
-
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
             color(outer_color) {
@@ -778,7 +732,15 @@ module enclosure(
                             pcb_position = pcb_position,
                             enclosure_dimensions = dimensions
                         );
-                        _tray_fixtures();
+                        tray_fixtures(
+                            enclosure_dimensions = dimensions,
+                            tray_dimensions = [
+                                get_tray_width(dimensions),
+                                get_tray_length(pcb_position),
+                                tray_height,
+                            ],
+                            tray_z = tray_z
+                        );
                     }
                 }
             }

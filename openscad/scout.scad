@@ -416,4 +416,7 @@ intersection() {
 
     // tray Y
     /* translate([-10, 20, -10]) { cube([200, 20, 100]); } */
+
+    // tray X
+    /* translate([80, -10, -10]) { cube([200, 120, 100]); } */
 }

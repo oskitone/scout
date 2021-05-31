@@ -1,6 +1,7 @@
 include <battery_holder.scad>;
 include <keys.scad>;
 include <scout_pcb.scad>;
+include <tray_fixtures.scad>;
 
 DEFAULT_TOLERANCE = .1;
 
@@ -13,6 +14,10 @@ function get_speaker_fixture_diameter(
     speaker_diameter = SPEAKER_DIAMETER
 ) = (
     SPEAKER_DIAMETER + wall * 2 + tolerance * 2
+);
+
+function get_tray_width(enclosure_dimensions = []) = (
+    enclosure_dimensions.x - TRAY_XY * 2
 );
 
 function get_tray_length(
@@ -53,6 +58,9 @@ module tray(
 
     z = pcb_position.z + PCB_HEIGHT;
 
+    width = get_tray_width(enclosure_dimensions);
+    length = get_tray_length(pcb_position);
+
     module _keys_mount_rail() {
         translate([
             keys_position.x,
@@ -71,9 +79,6 @@ module tray(
 
 
     module _plate() {
-        width = enclosure_dimensions.x - TRAY_XY * 2;
-        length = get_tray_length(pcb_position);
-
         translate([TRAY_XY, TRAY_XY, z]) {
             cube([width, length, height]);
         }
@@ -228,5 +233,12 @@ module tray(
         }
         _speaker_cavity();
         _battery_well_cavity();
+
+        tray_fixtures(
+            enclosure_dimensions = enclosure_dimensions,
+            tray_dimensions = [width, length, height],
+            tray_z = z,
+            bleed = tolerance * 2
+        );
     }
 }
