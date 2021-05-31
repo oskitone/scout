@@ -42,7 +42,7 @@ module scout(
 
     cantilever_height = 2,
     accidental_height = 2,
-    accidental_key_recession = .2,
+    accidental_key_recession = 0,
     key_lip_exposure = 3,
     key_travel = 3,
     key_gutter = 1,
