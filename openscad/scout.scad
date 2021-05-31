@@ -182,7 +182,7 @@ module scout(
                 color = "#fff",
                 cavity_color = "#eee",
                 tolerance = tolerance,
-                $fn = quick_preview ? 0 : DEFAULT_ROUNDING
+                $fn = quick_preview ? undef : DEFAULT_ROUNDING
             );
         }
     }

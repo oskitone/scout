@@ -23,8 +23,8 @@ ENCLOSURE_TO_PCB_CLEARANCE = 2;
 
 ENCLOSURE_FILLET = 2;
 
-DEFAULT_ROUNDING = $preview ? undef : 24;
-HIDEF_ROUNDING = $preview ? undef : 120;
+DEFAULT_ROUNDING = 24;
+HIDEF_ROUNDING = 120;
 
 DEFAULT_DFM_LAYER_HEIGHT = .2; // TODO: extract
 BREAKAWAY_SUPPORT_DISTANCE = 10;
@@ -103,7 +103,7 @@ module enclosure(
     module _half(
         _height,
         lip,
-        quick_preview = true
+        quick_preview = quick_preview
     ) {
         enclosure_half(
             width = dimensions.x,
@@ -117,7 +117,7 @@ module enclosure(
             tolerance = DEFAULT_TOLERANCE * 2, // intentionally loose
             outer_color = outer_color,
             cavity_color = cavity_color,
-            $fn = DEFAULT_ROUNDING
+            $fn = quick_preview ? undef : DEFAULT_ROUNDING
         );
     }
 
@@ -163,7 +163,7 @@ module enclosure(
                     height = width,
                     radius = key_exposure_lip_fillet,
                     angle = 180,
-                    $fn = DEFAULT_ROUNDING
+                    $fn = quick_preview ? undef : DEFAULT_ROUNDING
                 );
             }
         }
@@ -239,7 +239,7 @@ module enclosure(
                     cylinder(
                         h = width + e * 2,
                         r = key_exposure_lip_fillet + connection_gap,
-                        $fn = DEFAULT_ROUNDING
+                        $fn = quick_preview ? undef : DEFAULT_ROUNDING
                     );
                 }
             }
@@ -340,7 +340,7 @@ module enclosure(
                     cylinder(
                         d = diameter,
                         h = ENCLOSURE_FLOOR_CEILING + e * 2,
-                        $fn = DEFAULT_ROUNDING
+                        $fn = quick_preview ? undef : DEFAULT_ROUNDING
                     );
                 }
 
@@ -411,7 +411,7 @@ module enclosure(
                     cylinder(
                         d = PCB_HOLE_DIAMETER,
                         h = pcb_position.z + e * 2,
-                        $fn = HIDEF_ROUNDING
+                        $fn = quick_preview ? undef : HIDEF_ROUNDING
                     );
                 }
             }
@@ -654,7 +654,7 @@ module enclosure(
         cavity_depth = LED_HEIGHT + 2,
         wall = ENCLOSURE_INNER_WALL,
 
-        $fn = DEFAULT_ROUNDING
+        $fn = quick_preview ? undef : DEFAULT_ROUNDING
     ) {
         x = branding_position.x + branding_available_width
             - cavity_diameter / 2;
