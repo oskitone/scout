@@ -16,7 +16,6 @@ include <pcb_fixtures.scad>;
 ENCLOSURE_WALL = 2.4;
 ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
-LIP_BOX_DEFAULT_LIP_HEIGHT = 3;
 
 ENCLOSURE_TO_PCB_CLEARANCE = 2;
 
@@ -68,6 +67,8 @@ module enclosure(
     label_text_size = 3.2,
     label_length = 5,
 
+    lip_height = 3,
+
     fillet = ENCLOSURE_FILLET,
     key_exposure_lip_fillet = ENCLOSURE_FILLET,
 
@@ -85,7 +86,7 @@ module enclosure(
 ) {
     e = .0345;
 
-    bottom_height = pcb_position.z;
+    bottom_height = pcb_position.z + lip_height;
     top_height = dimensions.z - bottom_height;
 
     branding_available_width = dimensions.x
@@ -109,6 +110,7 @@ module enclosure(
             floor_ceiling = ENCLOSURE_FLOOR_CEILING,
             add_lip = lip,
             remove_lip = !lip,
+            lip_height = lip_height,
             fillet = quick_preview ? 0 : fillet,
             tolerance = DEFAULT_TOLERANCE * 2, // intentionally loose
             outer_color = outer_color,
@@ -430,7 +432,7 @@ module enclosure(
     }
 
     module _speaker_fixture_cavity() {
-        z = bottom_height - LIP_BOX_DEFAULT_LIP_HEIGHT - e;
+        z = bottom_height - lip_height - e;
         height = speaker_position.z + SPEAKER_HEIGHT - z + e;
         diameter = get_speaker_fixture_diameter(ENCLOSURE_INNER_WALL, tolerance)
             + tolerance * 2;
@@ -482,7 +484,7 @@ module enclosure(
     module _keys_mount_alignment_fixture() {
         keys_to_enclosure_distance =
             get_keys_to_enclosure_distance(tolerance, key_gutter);
-        z = bottom_height - LIP_BOX_DEFAULT_LIP_HEIGHT;
+        z = bottom_height + lip_height;
         height = keys_position.z - z + cantilever_height;
 
         translate([
@@ -554,10 +556,10 @@ module enclosure(
     // TODO: change when PCB has this kind of switch
     module _right_angle_switch_cavity_stub() {
         width = 10;
-        height = 6 + LIP_BOX_DEFAULT_LIP_HEIGHT;
+        height = 6 + lip_height;
 
         x = 13;
-        z = pcb_position.z - LIP_BOX_DEFAULT_LIP_HEIGHT;
+        z = pcb_position.z - lip_height;
 
         _side_engraving(
             x = x + width / 2,
