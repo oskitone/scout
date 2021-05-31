@@ -80,7 +80,7 @@ module enclosure_engraving(
                             ? undef
                             : [size / OSKITONE_LENGTH_WIDTH_RATIO, size],
                         bleed = quick_preview ? 0 : bleed,
-                        height = depth,
+                        height = depth + e,
                         center = center,
                         chamfer =  quick_preview ? 0 : (placard ? 0 : chamfer)
                     );

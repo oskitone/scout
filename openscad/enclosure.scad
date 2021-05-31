@@ -109,7 +109,7 @@ module enclosure(
             floor_ceiling = ENCLOSURE_FLOOR_CEILING,
             add_lip = lip,
             remove_lip = !lip,
-            fillet = fillet,
+            fillet = quick_preview ? 0 : fillet,
             tolerance = DEFAULT_TOLERANCE,
             outer_color = outer_color,
             cavity_color = cavity_color,
@@ -625,10 +625,8 @@ module enclosure(
         x = pencil_stand_position.x,
         y = pencil_stand_position.y
     ) {
-        e = .17; // HACK: prevent it from sticking out of enclosure w/ low $fn
-
         if (cavity) {
-            translate([x, y, 0]) {
+            translate([x, y, -e]) {
                 pencil_stand_cavity(
                     wall = ENCLOSURE_INNER_WALL,
                     depth = pencil_stand_depth + e,
