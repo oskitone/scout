@@ -86,6 +86,8 @@ module battery_contact_fixture(
     }
 }
 
+// TODO: battery_direction_engravings
+
 module battery_contact_fixtures(
     tolerance = 0,
     gutter = KEYSTONE_181_GUTTER,
@@ -167,7 +169,21 @@ module battery_holder(
     length = cavity_length + wall * 2;
     height = AAA_BATTERY_DIAMETER + floor + wall_height_extension;
 
-    // TODO: inner alignment rails
+    module _alignment_rails(
+        _width = AAA_BATTERY_LENGTH * .33,
+        _length = ENCLOSURE_INNER_WALL,
+        _height = AAA_BATTERY_DIAMETER * .25
+    ) {
+        x = (cavity_width - _width) / 2 - tolerance;
+
+        for (i = [1 : count - 1]) {
+            y = i * (AAA_BATTERY_DIAMETER + gutter) - _length / 2;
+
+            translate([x, y, -e]) {
+                cube([_width, _length, _height + e]);
+            }
+        }
+    }
 
     module _contact_tab_cavities(
         _length = contact_tab_width + tolerance * 2,
@@ -216,14 +232,16 @@ module battery_holder(
                     ]);
                 }
             }
+
+            _alignment_rails();
         }
 
         _contact_tab_cavities();
     }
 }
 
-translate([0, -40, 0]) {
+* translate([0, -40, 0]) {
     % battery_array();
-    battery_holder(tolerance = .3);
+    battery_holder(tolerance = .3, floor = 1);
     % battery_contacts(tolerance = .3);
 }
