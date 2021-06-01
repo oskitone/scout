@@ -47,9 +47,9 @@ module scout(
     key_travel = 3,
     key_gutter = 1,
 
-    knob_top_exposure = 10,
+    knob_top_exposure = 7,
     knob_radius = 10,
-    knob_vertical_clearance = 1,
+    knob_vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT * 2,
 
     exposed_switch_clearance = 1,
 
@@ -142,6 +142,10 @@ module scout(
     echo("Screw clearance", screw_top_clearance, screw_head_clearance);
 
     module _knob() {
+        top_of_knob = (knob_z + knob_height);
+        top_of_pot_actuator = pcb_z + PCB_HEIGHT
+            + PTV09A_POT_BASE_HEIGHT + PTV09A_POT_ACTUATOR_HEIGHT;
+
         translate([
             pcb_x + PCB_POT_POSITION.x,
             pcb_y + PCB_POT_POSITION.y,
@@ -150,6 +154,7 @@ module scout(
             wheel(
                 diameter = knob_radius * 2,
                 height = knob_height,
+                hub_ceiling = top_of_knob - top_of_pot_actuator,
                 spokes_count = 0,
                 brodie_knob_count = 0,
                 dimple_count = 1,
