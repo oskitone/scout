@@ -90,7 +90,8 @@ module enclosure(
 ) {
     e = .0345;
 
-    bottom_height = pcb_position.z + lip_height;
+    bottom_height = pcb_position.z + lip_height
+        - max(PCB_FIXTURE_VERTICAL_ALLOWANCE, PCB_PIN_CLEARANCE);
     top_height = dimensions.z - bottom_height;
 
     branding_available_width = dimensions.x
@@ -101,12 +102,19 @@ module enclosure(
         - default_gutter;
     branding_gutter = label_distance;
 
+    button_rail_length = 3;
+
     module _half(
         _height,
         lip,
         quick_preview = quick_preview
     ) {
         enclosure_half(
+            include_tongue_and_groove = true,
+            tongue_and_groove_endstop_height = bottom_height
+                - lip_height - ENCLOSURE_FLOOR_CEILING,
+            side_tongue_and_groove_entry = true,
+
             width = dimensions.x,
             length = dimensions.y,
             height = _height,
@@ -701,6 +709,25 @@ module enclosure(
         }
     }
 
+    module _pcb_fixture_lip_cavity(clearance = 1) {
+        y = pcb_position.y + PCB_BUTTON_POSITIONS[0].y
+            - button_rail_length / 2
+            - (tolerance + clearance);
+
+        length = PCB_HOLE_POSITIONS[0].y - PCB_BUTTON_POSITIONS[0].y
+            + button_rail_length / 2
+            + get_mounting_column_top_diameter(tolerance) / 2
+            + (tolerance + clearance) * 2;
+
+        translate([-e, y, bottom_height - lip_height - e]) {
+            cube([
+                ENCLOSURE_WALL + e * 2,
+                length,
+                lip_height + e * 2
+            ]);
+        }
+    }
+
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
             color(outer_color) {
@@ -716,16 +743,23 @@ module enclosure(
                     color(outer_color) {
                         pcb_fixtures(
                             pcb_position = pcb_position,
-                            screw_head_clearance = screw_head_clearance
+                            screw_head_clearance = screw_head_clearance,
+                            button_rail_length = button_rail_length
                         );
                         _pencil_stand(false);
                     }
                 }
 
                 if (show_top) {
-                    translate([0, 0, dimensions.z]) {
-                        mirror([0, 0, 1]) {
-                            _half(top_height, lip = true);
+                    difference() {
+                        translate([0, 0, dimensions.z]) {
+                            mirror([0, 0, 1]) {
+                                _half(top_height, lip = true);
+                            }
+                        }
+
+                        color(cavity_color) {
+                            _pcb_fixture_lip_cavity();
                         }
                     }
 

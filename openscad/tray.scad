@@ -205,7 +205,7 @@ module tray(
                 pcb_position = pcb_position,
                 clearance = clearance,
                 tolerance = tolerance,
-                vertical_bleed = PCB_FIXTURE_VERTICAL_ALLOWANCE
+                bottom_bleed = PCB_FIXTURE_VERTICAL_ALLOWANCE
             );
         }
     }
