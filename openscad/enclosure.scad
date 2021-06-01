@@ -465,7 +465,7 @@ module enclosure(
         }
 
         _side_engraving(
-            x = x + width / 2,
+            x = x + width * 1.5 + label_distance,
             string = "UART",
             width = width,
             z = bottom_height + label_length / 2
@@ -520,7 +520,7 @@ module enclosure(
         }
 
         _side_engraving(
-            x = x + engraving_width / 2 + plug_diameter / 2 - 1,
+            x = x + engraving_width / 2 + plug_diameter / 2 + label_distance,
             width = engraving_width,
             string = "LINE",
             z = z
@@ -556,14 +556,14 @@ module enclosure(
     // TODO: change when PCB has this kind of switch
     module _right_angle_switch_cavity_stub() {
         width = 10;
-        height = 6 + lip_height;
+        height = 6;
 
         x = 13;
-        z = pcb_position.z - lip_height;
+        z = pcb_position.z;
 
         _side_engraving(
             x = x + width / 2,
-            z = z + height + label_length / 2 - e,
+            z = z + height + label_length / 2 + label_distance,
             string = "POW"
         );
 
@@ -572,11 +572,11 @@ module enclosure(
             dimensions.y - ENCLOSURE_WALL - e,
             z - e
         ]) {
-            cube([
-                width,
-                ENCLOSURE_WALL + e * 2,
-                height + e
-            ]);
+            cube([width, ENCLOSURE_WALL + e * 2, height + e]);
+
+            translate([0, 0, -lip_height]) {
+                cube([width, ENCLOSURE_WALL * .67, lip_height + e]);
+            }
         }
     }
 
