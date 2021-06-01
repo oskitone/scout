@@ -668,8 +668,8 @@ module enclosure(
 
         chamfer_shroud = 2,
 
-        recession = ENCLOSURE_ENGRAVING_DEPTH,
-        shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 2,
+        recession = 0,
+        shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 3,
 
         // intentionally snug!
         // TODO: loosen when LED is PCB-mounted again
@@ -700,11 +700,13 @@ module enclosure(
                 );
             }
 
-            translate([x, y, dimensions.z - recession]) {
-                cylinder(
-                    d = cavity_diameter,
-                    h = recession + e
-                );
+            if (recession > 0) {
+                translate([x, y, dimensions.z - recession]) {
+                    cylinder(
+                        d = cavity_diameter,
+                        h = recession + e
+                    );
+                }
             }
         } else {
             translate([x, y, z]) {
