@@ -13,11 +13,21 @@ KEYSTONE_181_GUTTER = 0; // TODO: measure or derive
 
 KEYSTONE_180_CUT_LEAD_HEIGHT = 5;
 
+// 5204: NEGATIVE SPRING WITH TAB
+// 5226: POSITIVE BUTTON WITH TAB
+KEYSTONE_5204_5226_WIDTH = 9.2;
+KEYSTONE_5204_5226_LENGTH = .51;
+KEYSTONE_5204_5226_HEIGHT = 10.4;
+KEYSTONE_5204_5226_CONTACT_Z = 5.5;
+KEYSTONE_5204_5226_TAB_WIDTH = 3;
+KEYSTONE_5204_5226_TAB_HEIGHT = 17 - KEYSTONE_5204_5226_HEIGHT;
+KEYSTONE_5204_5226_DIMPLE_LENGTH = 1;
+
 DUAL = "dual";
 BUTTON = "button";
 SPRING = "spring";
 
-module keystone_181_dual_battery_contact(
+module keystone_wire_contact(
     type = DUAL,
     flip = false,
 
@@ -125,6 +135,59 @@ module keystone_181_dual_battery_contact(
     }
 }
 
+module keystone_tabbed_contact(
+    type = BUTTON,
+    flip = false,
+
+    width = KEYSTONE_5204_5226_WIDTH,
+    length = KEYSTONE_5204_5226_LENGTH,
+    height = KEYSTONE_5204_5226_HEIGHT,
+
+    contact_diameter = 6,
+    contact_button_length = 1,
+    contact_spring_length = KEYSTONE_181_SPRING_COMPRESSED_LENGTH,
+    contact_z = KEYSTONE_5204_5226_CONTACT_Z,
+
+    tab_width = KEYSTONE_5204_5226_TAB_WIDTH,
+    tab_height = KEYSTONE_5204_5226_TAB_HEIGHT
+) {
+    e = .072;
+
+    module _output() {
+        cube([width, length, height]);
+
+        translate([(width - tab_width) / 2, 0, height - e]) {
+            cube([tab_width, length, tab_height + e]);
+        }
+
+        translate([width / 2, length - e, contact_z]) {
+            rotate([-90, 0, 0]) {
+                cylinder(
+                    d1 = contact_diameter,
+                    d2 = contact_diameter * .67,
+                    h = type == SPRING
+                        ? contact_spring_length + e
+                        : contact_button_length + e
+                );
+            }
+        }
+    }
+
+    if (flip) {
+        translate([0, 0, -contact_z]) {
+            rotate([0, 0, 90]) {
+                _output();
+            }
+        }
+    } else {
+        translate([0, width, -contact_z]) {
+            rotate([0, 0, -90]) {
+                _output();
+            }
+        }
+    }
+}
+
 module battery_contacts(
     tolerance = 0,
     gutter = KEYSTONE_181_GUTTER,
@@ -134,6 +197,11 @@ module battery_contacts(
 
     cavity_width = get_battery_holder_cavity_width(tolerance);
 
+    function get_y(contact_width, i, is_dual = false) = (
+        (AAA_BATTERY_DIAMETER + gutter) * i
+        + (AAA_BATTERY_DIAMETER * (is_dual ? 2 : 1) - contact_width) / 2
+    );
+
     if (floor(count) > 1) {
         for (i = [0 : floor(count)]) {
             is_even = i % 2 == 0;
@@ -141,26 +209,25 @@ module battery_contacts(
             left_x = e;
             right_x = cavity_width - tolerance * 2 - e;
 
-            y = (AAA_BATTERY_DIAMETER + gutter) * i
-                + (AAA_BATTERY_DIAMETER * 2 - KEYSTONE_181_WIDTH) / 2;
             z = AAA_BATTERY_DIAMETER / 2;
 
             if (i <= count - 2) {
-                translate([is_even ? left_x : right_x, y, z]) {
-                    keystone_181_dual_battery_contact(flip = !is_even);
+                x = is_even ? left_x : right_x;
+                translate([x, get_y(KEYSTONE_181_WIDTH, i, true), z]) {
+                    keystone_wire_contact(flip = !is_even);
                 }
             }
 
             if (i == 0) {
-                translate([right_x, 0, z]) {
-                    keystone_181_dual_battery_contact(
+                translate([right_x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
+                    keystone_tabbed_contact(
                         flip = true,
                         type = BUTTON
                     );
                 }
             } else if (i == count - 1) {
-                translate([left_x, y, z]) {
-                    keystone_181_dual_battery_contact(
+                translate([left_x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
+                    keystone_tabbed_contact(
                         flip = false,
                         type = SPRING
                     );
