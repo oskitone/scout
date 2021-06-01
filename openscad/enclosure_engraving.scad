@@ -41,22 +41,17 @@ module enclosure_engraving(
 
     bottom = false,
 
-    // TODO: de-arg
     quick_preview = true,
     enclosure_height = 0
 ) {
     e = .0135;
 
-    depth = placard
-        ? ENCLOSURE_ENGRAVING_DEPTH + e * 2
-        : ENCLOSURE_ENGRAVING_DEPTH;
-
     translate([
         position.x,
         position.y,
         bottom
-            ? depth
-            : enclosure_height - depth
+            ? ENCLOSURE_ENGRAVING_DEPTH
+            : enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
     ]) {
         rotate([0, bottom ? 180 : 0, 0]) {
             difference() {
@@ -66,7 +61,11 @@ module enclosure_engraving(
                             ? [placard.x / -2, placard.y / -2]
                             : [placard.x, placard.y, 0]
                     ) {
-                        cube([placard.x, placard.y, ENCLOSURE_ENGRAVING_DEPTH]);
+                        cube([
+                            placard.x,
+                            placard.y,
+                            ENCLOSURE_ENGRAVING_DEPTH + e
+                        ]);
                     }
                 }
 
@@ -80,7 +79,9 @@ module enclosure_engraving(
                             ? undef
                             : [size / OSKITONE_LENGTH_WIDTH_RATIO, size],
                         bleed = quick_preview ? 0 : bleed,
-                        height = depth + e,
+                        height = placard
+                            ? ENCLOSURE_ENGRAVING_DEPTH + e * 2
+                            : ENCLOSURE_ENGRAVING_DEPTH + e,
                         center = center,
                         chamfer =  quick_preview ? 0 : (placard ? 0 : chamfer)
                     );
