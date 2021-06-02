@@ -26,6 +26,7 @@ module battery_contact_fixture(
     contact_z = undef,
 
     flip = false,
+    floor_cavity_height,
 
     diameter = KEYSTONE_181_HEIGHT,
     depth = KEYSTONE_181_DIAMETER,
@@ -65,22 +66,40 @@ module battery_contact_fixture(
         }
     }
 
-    translate(flip ? [outer_length, y, 0] : [-outer_length, y + outer_width, 0]) {
-        rotate(flip ? [0, 0, 90] : [0, 0, -90]) {
-            difference() {
-                cube([outer_width, outer_length, height]);
+    module _cavity() {
+        translate([wall, contact_wall, -(floor_cavity_height + e)]) {
+            cube([
+                cavity_width,
+                cavity_depth + e,
+                floor_cavity_height + cavity_z + e * 2
+            ]);
+        }
+    }
 
-                translate([wall, contact_wall, cavity_z]) {
-                    cube([cavity_width, cavity_depth + e, cavity_height]);
-                }
+    module _output() {
+        difference() {
+            cube([outer_width, outer_length, height]);
 
-                translate([wall + contact_wall, -e, exposure_z]) {
-                    cube([exposure_width, contact_wall + e * 2, exposure_height]);
-                }
+            translate([wall, contact_wall, cavity_z]) {
+                cube([cavity_width, cavity_depth + e, cavity_height]);
             }
 
-            if (include_wire_tabs) {
-                _wire_tabs();
+            translate([wall + contact_wall, -e, exposure_z]) {
+                cube([exposure_width, contact_wall + e * 2, exposure_height]);
+            }
+        }
+
+        if (include_wire_tabs) {
+            _wire_tabs();
+        }
+    }
+
+    translate(flip ? [outer_length, y, 0] : [-outer_length, y + outer_width, 0]) {
+        rotate(flip ? [0, 0, 90] : [0, 0, -90]) {
+            if (floor_cavity_height) {
+                _cavity();
+            } else {
+                _output();
             }
         }
     }
@@ -127,11 +146,13 @@ module battery_contact_fixtures(
     tolerance = 0,
     gutter = KEYSTONE_181_GUTTER,
     height = AAA_BATTERY_DIAMETER,
+    floor_cavity_height,
     count = 3
 ) {
     e = .091;
 
     cavity_width = get_battery_holder_cavity_width(tolerance);
+    tab_contact_fixture_wall = AAA_BATTERY_DIAMETER - KEYSTONE_5204_5226_WIDTH;
 
     function get_y(contact_width, i, is_dual = false) = (
         (AAA_BATTERY_DIAMETER + gutter) * i
@@ -145,8 +166,9 @@ module battery_contact_fixtures(
             left_x = -e - tolerance;
             right_x = cavity_width - tolerance + e;
 
-            if (i <= count - 2) {
+            if (i <= count - 2 && !floor_cavity_height) {
                 x = is_even ? left_x : right_x;
+
                 translate([x, get_y(KEYSTONE_181_WIDTH, i, true), 0]) {
                     battery_contact_fixture(
                         flip = is_even,
@@ -163,8 +185,10 @@ module battery_contact_fixtures(
                 translate([right_x, get_y(KEYSTONE_5204_5226_WIDTH, i), 0]) {
                     battery_contact_fixture(
                         flip = false,
+                        floor_cavity_height = floor_cavity_height,
                         diameter = KEYSTONE_5204_5226_WIDTH,
-                        depth = KEYSTONE_181_DIAMETER + e,
+                        depth = KEYSTONE_5204_5226_FULL_LENGTH + e,
+                        wall = tab_contact_fixture_wall,
                         tolerance = tolerance,
                         height = height - e
                     );
@@ -173,8 +197,10 @@ module battery_contact_fixtures(
                 translate([left_x, get_y(KEYSTONE_5204_5226_WIDTH, i), 0]) {
                     battery_contact_fixture(
                         flip = true,
+                        floor_cavity_height = floor_cavity_height,
                         diameter = KEYSTONE_5204_5226_WIDTH,
-                        depth = KEYSTONE_181_DIAMETER + e,
+                        depth = KEYSTONE_5204_5226_FULL_LENGTH + e,
+                        wall = tab_contact_fixture_wall,
                         tolerance = tolerance,
                         height = height - e
                     );
@@ -269,6 +295,13 @@ module battery_holder(
 
             _alignment_rails();
         }
+
+        battery_contact_fixtures(
+            tolerance = tolerance,
+            gutter = gutter,
+            floor_cavity_height = floor,
+            count = count
+        );
 
         _contact_tab_cavities();
 
