@@ -86,7 +86,42 @@ module battery_contact_fixture(
     }
 }
 
-// TODO: battery_direction_engravings
+module battery_direction_engravings(
+    tolerance = 0,
+    z = 0,
+    gutter = KEYSTONE_181_GUTTER,
+    height = AAA_BATTERY_DIAMETER,
+    count = 3
+) {
+    e = .0351;
+
+    function get_label(battery_i, contact_i) = (
+        battery_i % 2
+            ? contact_i ? "-" : "+"
+            : contact_i ? "+" : "-"
+    );
+
+    for (battery_i = [0 : count - 1]) {
+        for (contact_i = [0 : 1]) {
+            x = get_battery_holder_cavity_width(tolerance) / 2 - tolerance
+                + AAA_BATTERY_LENGTH * .33 * (contact_i ? -1 : 1);
+            y = battery_i * (AAA_BATTERY_DIAMETER + gutter) - tolerance
+                + AAA_BATTERY_DIAMETER / 2;
+
+            translate([x, y, -(z + e)]) {
+                // TODO: refine depth
+                enclosure_engraving(
+                    string = get_label(battery_i, contact_i),
+                    size = AAA_BATTERY_DIAMETER * .5,
+                    bleed = tolerance,
+                    chamfer = 0,
+                    enclosure_height = z,
+                    quick_preview = false
+                );
+            }
+        }
+    }
+}
 
 module battery_contact_fixtures(
     tolerance = 0,
@@ -207,7 +242,6 @@ module battery_holder(
                 cube([_width + e, _length, _height + e]);
             }
         }
-
     }
 
     difference() {
@@ -237,6 +271,13 @@ module battery_holder(
         }
 
         _contact_tab_cavities();
+
+        if (floor > 0) {
+            battery_direction_engravings(
+                tolerance = tolerance,
+                z = floor
+            );
+        }
     }
 }
 
