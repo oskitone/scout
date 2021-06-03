@@ -5,7 +5,7 @@ KEYSTONE_181_WIDTH = KEYSTONE_181_CADENCE + KEYSTONE_181_CONTACT_X * 2;
 KEYSTONE_181_DIAMETER = .5;
 
 KEYSTONE_181_SPRING_LENGTH = 7.2;
-KEYSTONE_181_SPRING_COMPRESSED_LENGTH = KEYSTONE_181_SPRING_LENGTH * .3;
+KEYSTONE_181_SPRING_COMPRESSED_LENGTH = KEYSTONE_181_SPRING_LENGTH * .25;
 
 KEYSTONE_181_BUTTON_LENGTH = 1.4;
 
@@ -17,7 +17,7 @@ KEYSTONE_180_CUT_LEAD_HEIGHT = 5;
 // 5226: POSITIVE BUTTON WITH TAB
 KEYSTONE_5204_5226_WIDTH = 9.2;
 KEYSTONE_5204_5226_LENGTH = .51;
-KEYSTONE_5204_5226_FULL_LENGTH = 1.4; // includes lil tabs
+KEYSTONE_5204_5226_FULL_LENGTH = 1; // includes lil tabs
 KEYSTONE_5204_5226_HEIGHT = 10.4;
 KEYSTONE_5204_5226_CONTACT_Z = 5.5;
 KEYSTONE_5204_5226_TAB_WIDTH = 3;
@@ -157,7 +157,7 @@ module keystone_tabbed_contact(
     module _output() {
         cube([width, length, height]);
 
-        translate([(width - tab_width) / 2, 0, height - e]) {
+        translate([(width - tab_width) / 2, 0, -tab_height]) {
             cube([tab_width, length, tab_height + e]);
         }
 
