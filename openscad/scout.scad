@@ -10,6 +10,7 @@ include <enclosure.scad>;
 include <keys.scad>;
 include <nuts_and_bolts.scad>;
 include <speaker.scad>;
+include <switch_clutch.scad>;
 use <utils.scad>;
 
 DEFAULT_TOLERANCE = .1;
@@ -203,6 +204,26 @@ module scout(
         }
     }
 
+    module _switch_clutch() {
+        x = pcb_x + SWITCH_ORIGIN.x;
+
+        translate([
+            /* pcb_x + PCB_SWITCH_POSITION.x, */
+            x,
+            /* pcb_y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y, */
+            pcb_y + PCB_SWITCH_POSITION.y + SWITCH_BASE_LENGTH -
+            ((SWITCH_BASE_LENGTH - SWITCH_ACTUATOR_LENGTH) / 2
+                - SWITCH_ACTUATOR_TRAVEL / 2
+                + SWITCH_ACTUATOR_TRAVEL * 0)
+            - tolerance * 2,
+            pcb_z
+        ]) {
+            switch_clutch(
+                web_width = pcb_x - ENCLOSURE_WALL
+            );
+        }
+    }
+
     if (show_keys) {
         // TODO: experiment with arbitrary lengths:
         POLY555_CANTILEVER_LENGTH = 3;
@@ -337,6 +358,9 @@ module scout(
     if (show_knob) {
         _knob();
     }
+
+    // TODO: show_...
+    _switch_clutch();
 }
 
 SHOW_ENCLOSURE_BOTTOM = true;
