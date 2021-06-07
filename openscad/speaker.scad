@@ -1,3 +1,6 @@
+/* Arndt AZ40R 1.6" */
+/* https://www.jameco.com/Jameco/Products/ProdDS/2227516.pdf */
+
 use <../../poly555/openscad/lib/basic_shapes.scad>;
 
 SPEAKER_DIAMETER = 39.7;
