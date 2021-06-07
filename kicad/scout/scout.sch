@@ -592,7 +592,7 @@ L Device:R_Small_US R4
 U 1 1 608C9015
 P 3200 6100
 F 0 "R4" V 3450 6050 50  0000 L CNN
-F 1 "220" V 3350 6050 50  0000 L CNN
+F 1 "1k" V 3350 6050 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 3200 6100 50  0001 C CNN
 F 3 "~" H 3200 6100 50  0001 C CNN
 	1    3200 6100
@@ -671,8 +671,6 @@ Wire Wire Line
 	5550 5850 5250 5850
 Wire Wire Line
 	5850 5850 6100 5850
-Text Notes 2950 5650 0    50   ~ 0
-TODO: confirm value\nfor safe headphone out
 Wire Wire Line
 	3800 6400 3700 6400
 Connection ~ 3700 6400
