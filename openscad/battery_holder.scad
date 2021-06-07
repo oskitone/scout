@@ -127,14 +127,14 @@ module battery_direction_engravings(
     for (battery_i = [0 : count - 1]) {
         for (contact_i = [0 : 1]) {
             x = get_battery_holder_cavity_width(tolerance) / 2 - tolerance
-                + AAA_BATTERY_LENGTH * .33 * (contact_i ? -1 : 1);
+                + AAA_BATTERY_LENGTH * .25 * (contact_i ? -1 : 1);
             y = battery_i * (AAA_BATTERY_DIAMETER + gutter) - tolerance
                 + AAA_BATTERY_DIAMETER / 2;
 
             translate([x, y, -(z + e)]) {
                 enclosure_engraving(
                     string = get_label(battery_i, contact_i),
-                    size = AAA_BATTERY_DIAMETER * .5,
+                    size = AAA_BATTERY_DIAMETER * .75,
                     bottom = true,
                     enclosure_height = z,
                     quick_preview = false
