@@ -29,6 +29,7 @@ module battery_contact_fixture(
     contact_z = undef,
 
     flip = false,
+    floor_cavity_height,
 
     diameter = KEYSTONE_181_HEIGHT,
     depth = max(KEYSTONE_5204_5226_FULL_LENGTH, KEYSTONE_181_DIAMETER),
@@ -40,7 +41,9 @@ module battery_contact_fixture(
 ) {
     e = .048;
 
-    contact_z = contact_z ? contact_z : height - AAA_BATTERY_DIAMETER / 2;
+    contact_z = contact_z != undef
+        ? contact_z
+        : height - AAA_BATTERY_DIAMETER / 2;
     cavity_z = contact_z - KEYSTONE_181_HEIGHT / 2 - e;
 
     cavity_width = diameter + tolerance * 2;
@@ -71,22 +74,36 @@ module battery_contact_fixture(
         }
     }
 
-    translate(flip ? [outer_length, y, 0] : [-outer_length, y + outer_width, 0]) {
-        rotate(flip ? [0, 0, 90] : [0, 0, -90]) {
-            difference() {
-                cube([outer_width, outer_length, height]);
+    module _floor_cavity() {
+        translate([wall, contact_wall, -floor_cavity_height]) {
+            cube([cavity_width, cavity_depth + e, floor_cavity_height + e]);
+        }
+    }
 
-                translate([wall, contact_wall, cavity_z]) {
-                    cube([cavity_width, cavity_depth + e, cavity_height]);
-                }
+    module _output() {
+        difference() {
+            cube([outer_width, outer_length, height]);
 
-                translate([wall + contact_wall, -e, exposure_z]) {
-                    cube([exposure_width, contact_wall + e * 2, exposure_height]);
-                }
+            translate([wall, contact_wall, cavity_z]) {
+                cube([cavity_width, cavity_depth + e, cavity_height]);
             }
 
-            if (include_wire_tabs) {
-                _wire_tabs();
+            translate([wall + contact_wall, -e, exposure_z]) {
+                cube([exposure_width, contact_wall + e * 2, exposure_height]);
+            }
+        }
+
+        if (include_wire_tabs) {
+            _wire_tabs();
+        }
+    }
+
+    translate(flip ? [outer_length, y, 0] : [-outer_length, y + outer_width, 0]) {
+        rotate(flip ? [0, 0, 90] : [0, 0, -90]) {
+            if (floor_cavity_height) {
+                _floor_cavity();
+            } else {
+                _output();
             }
         }
     }
@@ -131,6 +148,7 @@ module battery_contact_fixtures(
     tolerance = 0,
     gutter = KEYSTONE_181_GUTTER,
     height = AAA_BATTERY_DIAMETER,
+    floor_cavity_height,
     count = 3
 ) {
     e = .091;
@@ -150,7 +168,7 @@ module battery_contact_fixtures(
             left_x = -e - tolerance;
             right_x = cavity_width - tolerance + e;
 
-            if (i <= count - 2) {
+            if (i <= count - 2 && !floor_cavity_height) {
                 x = is_even ? left_x : right_x;
 
                 translate([x, get_y(KEYSTONE_181_WIDTH, i, true), 0]) {
@@ -168,9 +186,11 @@ module battery_contact_fixtures(
                 translate([right_x, get_y(KEYSTONE_5204_5226_WIDTH, i), 0]) {
                     battery_contact_fixture(
                         flip = false,
+                        floor_cavity_height = floor_cavity_height,
                         diameter = KEYSTONE_5204_5226_WIDTH,
                         wall = tab_contact_fixture_wall,
                         tolerance = tolerance,
+                        contact_z = 0,
                         height = height - e
                     );
                 }
@@ -178,9 +198,11 @@ module battery_contact_fixtures(
                 translate([left_x, get_y(KEYSTONE_5204_5226_WIDTH, i), 0]) {
                     battery_contact_fixture(
                         flip = true,
+                        floor_cavity_height = floor_cavity_height,
                         diameter = KEYSTONE_5204_5226_WIDTH,
                         wall = tab_contact_fixture_wall,
                         tolerance = tolerance,
+                        contact_z = 0,
                         height = height - e
                     );
                 }
@@ -228,25 +250,26 @@ module battery_holder(
         }
     }
 
-    module _contact_tab_cavities(
-        _length = contact_tab_width + tolerance * 2,
-        _height = floor + height * .25
-    ) {
+    module _contact_tab_cavities() {
+        x = -(wall + tolerance);
+
         _width = wall + contact_tab_cavity_length;
+        _length = contact_tab_width + tolerance * 2;
+        _height = floor + height * .25;
 
         for (xy = [
             [
-                -(wall + tolerance + e),
+                -(wall + tolerance) - e,
                 (AAA_BATTERY_DIAMETER + gutter) * (count - 1)
                     + AAA_BATTERY_DIAMETER / 2
             ],
             [
-                cavity_width - tolerance - contact_tab_cavity_length,
+                width - _width + x + e,
                 AAA_BATTERY_DIAMETER / 2
             ]
         ]) {
             translate([xy.x, xy.y - _length / 2, -(e + floor)]) {
-                cube([_width + e, _length, _height + e]);
+                cube([_width, _length, _height]);
             }
         }
     }
@@ -290,7 +313,7 @@ module battery_holder(
                     );
                 }
 
-                translate([-tolerance, -tolerance, -e]) {
+                translate([-tolerance, -tolerance, 0]) {
                     cube([
                         cavity_width,
                         cavity_length,
@@ -303,6 +326,14 @@ module battery_holder(
         }
 
         if (floor > 0) {
+            battery_contact_fixtures(
+                tolerance = tolerance,
+                gutter = gutter,
+                floor_cavity_height = KEYSTONE_5204_5226_CONTACT_Z
+                    - (AAA_BATTERY_DIAMETER / 2),
+                count = count
+            );
+
             _contact_tab_cavities();
 
             _wire_relief_holes();
