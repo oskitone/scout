@@ -33,11 +33,12 @@ module battery_contact_fixture(
 
     diameter = KEYSTONE_181_HEIGHT,
     depth = max(KEYSTONE_5204_5226_FULL_LENGTH, KEYSTONE_181_DIAMETER),
+    back_shunt = 0,
 
     wall = 2,
     contact_wall = .8,
 
-    include_wire_tabs = false
+    include_wire_nubs = false
 ) {
     e = .048;
 
@@ -59,14 +60,14 @@ module battery_contact_fixture(
 
     y = -(tolerance + wall);
 
-    module _wire_tabs(
+    module _wire_nubs(
         _width = 2,
-        _length = 1.5,
-        _height = 1.25
+        _length = cavity_depth - KEYSTONE_181_DIAMETER, // intentionally tight, no tolerance
+        _height = 1.6
     ) {
         for (z = [
-            height - exposure_height + KEYSTONE_181_DIAMETER,
-            height - _height
+            contact_z - KEYSTONE_181_HEIGHT / 2 + KEYSTONE_181_DIAMETER,
+            contact_z + KEYSTONE_181_HEIGHT / 2
         ]) {
             translate([(outer_width - _width) / 2, outer_length - _length, z]) {
                 cube([_width, _length + e, _height]);
@@ -85,7 +86,11 @@ module battery_contact_fixture(
             cube([outer_width, outer_length, height]);
 
             translate([wall, contact_wall, cavity_z]) {
-                cube([cavity_width, cavity_depth + e, cavity_height]);
+                cube([
+                    cavity_width,
+                    cavity_depth - back_shunt + e,
+                    cavity_height
+                ]);
             }
 
             translate([wall + contact_wall, -e, exposure_z]) {
@@ -93,8 +98,8 @@ module battery_contact_fixture(
             }
         }
 
-        if (include_wire_tabs) {
-            _wire_tabs();
+        if (include_wire_nubs) {
+            _wire_nubs();
         }
     }
 
@@ -175,9 +180,11 @@ module battery_contact_fixtures(
                     battery_contact_fixture(
                         flip = is_even,
                         diameter = KEYSTONE_181_WIDTH,
+                        back_shunt = KEYSTONE_5204_5226_FULL_LENGTH
+                            - KEYSTONE_181_DIAMETER,
                         tolerance = tolerance,
                         height = height - e,
-                        include_wire_tabs = true
+                        include_wire_nubs = true
                     );
                 }
             }
