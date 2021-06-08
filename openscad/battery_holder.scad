@@ -219,11 +219,12 @@ module battery_contact_fixtures(
 }
 
 module battery_holder(
-    wall = 2,
+    wall = ENCLOSURE_INNER_WALL,
     wall_height_extension = 0,
     floor = 0,
     tolerance = 0,
     count = 3,
+    fillet = ENCLOSURE_INNER_FILLET,
     gutter = KEYSTONE_181_GUTTER,
     contact_tab_width = KEYSTONE_5204_5226_TAB_WIDTH,
     contact_tab_cavity_length =
@@ -281,22 +282,42 @@ module battery_holder(
         }
     }
 
-    module _wire_relief_holes(
-        diameter = 4 + tolerance * 2,
+    module _wire_relief_hitches(
+        _width = wall,
+        _length = 4,
+        end_gutter = wall,
+        ring = 2,
+        hole_diameter = 2 + tolerance * 2,
         gutter = 8
     ) {
         center_x = width / 2 + wall_xy;
-        y = wall_xy + length - wall - e;
-        z = diameter / 2 + e;
+        y = wall_xy + length - fillet - e;
+        z = hole_diameter / 2 + e;
 
-        for (x = [center_x - gutter, center_x, center_x + gutter]) {
-            translate([x, y, z]) {
-                rotate([-90, 0, 0]) {
+        module _c(diameter = hole_diameter, bleed = 0) {
+            translate([-bleed, wall + hole_diameter / 2, height / 2]) {
+                rotate([0, 90, 0]) {
                     cylinder(
                         d = diameter,
-                        h = wall + e * 2,
-                        $fn = quick_preview ? 0 : LOFI_ROUNDING
+                        h = _width + bleed * 2,
+                        $fn = quick_preview ? undef : LOFI_ROUNDING
                     );
+                }
+            }
+        }
+
+        for (x = [
+            wall_xy + end_gutter,
+            wall_xy + width - _width - end_gutter
+        ]) {
+            translate([x, y, -floor]) {
+                difference() {
+                    hull() {
+                        cube([_width, e, height]);
+                        _c(diameter = hole_diameter + ring);
+                    }
+
+                    _c(bleed = e);
                 }
             }
         }
@@ -315,7 +336,7 @@ module battery_holder(
                 translate([wall_xy, wall_xy, -floor]) {
                     rounded_cube(
                         [width, length, height],
-                        radius = ENCLOSURE_INNER_FILLET,
+                        radius = fillet,
                         $fn = quick_preview ? undef : LOFI_ROUNDING
                     );
                 }
@@ -330,6 +351,8 @@ module battery_holder(
             }
 
             _alignment_rails();
+
+            _wire_relief_hitches();
         }
 
         if (floor > 0) {
@@ -342,8 +365,6 @@ module battery_holder(
             );
 
             _contact_tab_cavities();
-
-            _wire_relief_holes();
 
             battery_direction_engravings(
                 tolerance = tolerance,
