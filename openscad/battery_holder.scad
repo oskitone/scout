@@ -38,7 +38,7 @@ module battery_contact_fixture(
     wall = 2,
     contact_wall = .8,
 
-    include_wire_nubs = false
+    include_wire_contact_fins = false
 ) {
     e = .048;
 
@@ -60,18 +60,18 @@ module battery_contact_fixture(
 
     y = -(tolerance + wall);
 
-    module _wire_nubs(
-        _width = 2,
-        _length = cavity_depth - KEYSTONE_181_DIAMETER, // intentionally tight, no tolerance
-        _height = 1.6
-    ) {
-        for (z = [
-            contact_z - KEYSTONE_181_HEIGHT / 2 + KEYSTONE_181_DIAMETER,
-            contact_z + KEYSTONE_181_HEIGHT / 2
-        ]) {
-            translate([(outer_width - _width) / 2, outer_length - _length, z]) {
-                cube([_width, _length + e, _height]);
-            }
+    module _wire_contact_fin(_length = outer_length, clearance = 1) {
+        _width = KEYSTONE_181_CADENCE - KEYSTONE_181_CONTACT_X - clearance * 2;
+        _height = KEYSTONE_181_HEIGHT / 2 - KEYSTONE_181_DIAMETER;
+
+        translate([outer_width/ 2, outer_length - _length, contact_z]) {
+            flat_top_rectangular_pyramid(
+                top_width = _width,
+                top_length = _length + e,
+                bottom_width = 0,
+                bottom_length = _length + e,
+                height = _height
+            );
         }
     }
 
@@ -98,8 +98,8 @@ module battery_contact_fixture(
             }
         }
 
-        if (include_wire_nubs) {
-            _wire_nubs();
+        if (include_wire_contact_fins) {
+            _wire_contact_fin();
         }
     }
 
@@ -184,7 +184,7 @@ module battery_contact_fixtures(
                             - KEYSTONE_181_DIAMETER,
                         tolerance = tolerance,
                         height = height - e,
-                        include_wire_nubs = true
+                        include_wire_contact_fins = true
                     );
                 }
             }
