@@ -192,11 +192,13 @@ module keystone_tabbed_contact(
 module battery_contacts(
     tolerance = 0,
     gutter = KEYSTONE_181_GUTTER,
-    count = 3
+    count = 3,
+    end_terminal_bottom_right = false
 ) {
     e = .091;
 
     cavity_width = get_battery_holder_cavity_width(tolerance);
+    start_on_right = end_terminal_bottom_right;
 
     function get_y(contact_width, i, is_dual = false) = (
         (AAA_BATTERY_DIAMETER + gutter) * i
@@ -213,23 +215,32 @@ module battery_contacts(
             z = AAA_BATTERY_DIAMETER / 2;
 
             if (i <= count - 2) {
-                x = is_even ? left_x : right_x;
+                x = is_even
+                    ? start_on_right ? right_x : left_x
+                    : start_on_right ? left_x : right_x;
+
                 translate([x, get_y(KEYSTONE_181_WIDTH, i, true), z]) {
-                    keystone_wire_contact(flip = !is_even);
+                    keystone_wire_contact(
+                        flip = start_on_right ? is_even : !is_even
+                    );
                 }
             }
 
             if (i == 0) {
-                translate([right_x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
+                x = start_on_right ? left_x : right_x;
+
+                translate([x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
                     keystone_tabbed_contact(
-                        flip = true,
+                        flip = !start_on_right,
                         type = BUTTON
                     );
                 }
             } else if (i == count - 1) {
-                translate([left_x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
+                x = start_on_right ? right_x : left_x;
+
+                translate([x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
                     keystone_tabbed_contact(
-                        flip = false,
+                        flip = start_on_right,
                         type = SPRING
                     );
                 }
