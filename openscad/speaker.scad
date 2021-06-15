@@ -14,8 +14,8 @@ module speaker() {
 }
 
 function get_speaker_fixture_diameter(
-    wall = 1,
     tolerance = 0,
+    wall = ENCLOSURE_INNER_WALL,
     speaker_diameter = SPEAKER_DIAMETER
 ) = (
     SPEAKER_DIAMETER + wall * 2 + tolerance * 2
@@ -31,7 +31,7 @@ module speaker_fixture(
     e = .053;
 
     ring_z = height - SPEAKER_HEIGHT;
-    diameter = get_speaker_fixture_diameter(wall, tolerance);
+    diameter = get_speaker_fixture_diameter(tolerance, wall);
 
     // TODO: experiment with extra height speaker enclosure on sound
 
