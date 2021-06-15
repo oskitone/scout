@@ -193,7 +193,7 @@ module battery_contacts(
     tolerance = 0,
     gutter = KEYSTONE_181_GUTTER,
     count = 3,
-    end_terminal_bottom_right = false
+    end_terminal_bottom_right = true
 ) {
     e = .091;
 
