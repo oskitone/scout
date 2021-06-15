@@ -5,7 +5,7 @@ use <../../poly555/openscad/lib/utils.scad>;
 include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
-KEYS_MOUNT_LENGTH = 5;
+KEYS_MOUNT_LENGTH = NUT_DIAMETER;
 
 function get_key_to_pcb_x_offset(
     key_width,
