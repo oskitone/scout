@@ -470,7 +470,7 @@ module enclosure(
     module _keys_mount_alignment_fixture() {
         keys_to_enclosure_distance =
             get_keys_to_enclosure_distance(tolerance, key_gutter);
-        z = bottom_height + lip_height;
+        z = bottom_height - lip_height;
         height = keys_position.z - z + cantilever_height;
 
         translate([
