@@ -196,7 +196,7 @@ module scout_pcb(
     if (show_pcb_uart_header) {
         pin_size = .8;
         x = 2.54 / 2 - pin_size / 2;
-        z = 6;
+        z = 2.54 / 2;
 
         _translate(PCB_UART_HEADER_POSITION) {
             for (i = [0 : 5]) {

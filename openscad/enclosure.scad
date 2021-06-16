@@ -431,40 +431,60 @@ module enclosure(
         }
     }
 
-    module _uart_header_exposure(
-        x_bleed = 1,
-        height = 8
+    module _assembly_valley_cavity(
+        x = -e,
+        y = dimensions.y - ENCLOSURE_WALL - e,
+        top_z = 0,
+        width = ENCLOSURE_WALL + e * 2,
+        length = ENCLOSURE_WALL + e * 2
     ) {
-        pin_z = pcb_position.z + PCB_HEIGHT + 6;
+        height = top_z - bottom_height + lip_height + e;
+
+        translate([x, y, top_z - height]) {
+            cube([width, length, height]);
+        }
+    }
+
+    module _uart_header_exposure(
+        just_assembly_valley = false,
+        x_bleed = 1,
+        height = 4
+    ) {
+        pin_z = pcb_position.z + PCB_HEIGHT + 2.54 / 2;
 
         x = pcb_position.x + PCB_UART_HEADER_POSITION.x - x_bleed;
         z = pin_z - height / 2;
 
-        width = PCB_UART_HEADER_WIDTH + x_bleed * 2;
+        width = PCB_UART_HEADER_WIDTH + x_bleed * 2 + tolerance * 2;
 
-        translate([x, dimensions.y - ENCLOSURE_WALL - e, z]) {
-            cube([
-                width,
-                ENCLOSURE_WALL + e * 2,
-                height
-            ]);
+        if (just_assembly_valley) {
+            _assembly_valley_cavity(
+                x = x,
+                top_z = z,
+                width = width
+            );
+        } else {
+            translate([x, dimensions.y - ENCLOSURE_WALL - e, z - tolerance]) {
+                cube([
+                    width,
+                    ENCLOSURE_WALL + e * 2,
+                    height + tolerance * 2
+                ]);
+            }
+
+            _side_engraving(
+                x = x + width / 2,
+                string = "UART",
+                width = width
+            );
+
+            _side_engraving(
+                x = x + width / 2,
+                string = "G               B",
+                placard = false,
+                z = pin_z
+            );
         }
-
-        _side_engraving(
-            x = x + width * 1.5 + label_distance,
-            string = "UART",
-            width = width,
-            z = bottom_height + label_length / 2
-                - (label_length - label_text_size) / 2
-                + e
-        );
-
-        _side_engraving(
-            x = x + width / 2,
-            string = "G               B",
-            placard = false,
-            z = pin_z
-        );
     }
 
     module _keys_mount_alignment_fixture() {
@@ -491,7 +511,7 @@ module enclosure(
     module _headphone_jack_cavity(
         just_assembly_valley = false,
         cavity_diameter = HEADPHONE_JACK_BARREL_DIAMETER + tolerance * 2,
-        plug_clearance_depth = 1,
+        plug_clearance_depth = ENCLOSURE_ENGRAVING_DEPTH,
         plug_clearance_diameter = 10 + tolerance * 2,
         plug_diameter = 10,
         engraving_width = 16
@@ -513,70 +533,81 @@ module enclosure(
         }
 
         if (just_assembly_valley) {
-            valley_height = z - bottom_height + lip_height + e;
-            translate([
-                x - cavity_diameter / 2,
-                dimensions.y - ENCLOSURE_WALL - e,
-                z - valley_height
-            ]) {
-                cube([cavity_diameter, ENCLOSURE_WALL + e * 2, valley_height]);
-            }
+            _assembly_valley_cavity(
+                x = x - cavity_diameter / 2,
+                top_z = z,
+                width = cavity_diameter
+            );
         } else {
             _c(cavity_diameter, ENCLOSURE_WALL);
             _c(plug_clearance_diameter, plug_clearance_depth);
 
             _side_engraving(
-                x = x + engraving_width / 2 + plug_clearance_diameter / 2
-                    + label_distance,
+                x = x,
                 width = engraving_width,
-                string = "LINE",
-                z = z
+                string = "LINE"
             );
         }
     }
 
+    SIDE_ENGRAVING_DEFAULT_WIDTH = 15;
     module _side_engraving(
-        x,
+        x = undef,
+        y = undef,
         string,
-        width = 15,
-        z = pcb_position.z - label_length / 2 - e,
+        width = SIDE_ENGRAVING_DEFAULT_WIDTH,
+        z = pcb_position.z - label_length / 2 - label_distance,
         placard = true
     ) {
+        is_left = y != undef;
+
         translate([
-            x,
-            dimensions.y + e,
+            is_left ? ENCLOSURE_ENGRAVING_DEPTH - e : x,
+            is_left ? y : dimensions.y + e,
             z
         ]) {
-            // TODO: support sides in enclosure_engraving
-            rotate([90, 0, 0]) {
-                enclosure_engraving(
-                    string = string,
-                    size = label_text_size,
-                    placard = placard ? [width, label_length] : undef,
-                    bottom = true,
-                    quick_preview = quick_preview,
-                    enclosure_height = dimensions.z
-                );
+            rotate([90, 0, is_left ? -90 : 0]) {
+                mirror([is_left ? 1 : 0, 0, 0]) {
+                    enclosure_engraving(
+                        string = string,
+                        size = label_text_size,
+                        placard = placard ? [width, label_length] : undef,
+                        bottom = true,
+                        quick_preview = quick_preview,
+                        enclosure_height = dimensions.z
+                    );
+                }
             }
         }
     }
 
     // TODO: expand for inner wall vs cavity
-    // TODO: engraving label
     module _switch_exposure(
-        bleed = 2
+        just_assembly_valley = false,
+        bleed = 0
     ) {
-        translate([
-            -e,
-            pcb_position.y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
-                - SWITCH_BASE_LENGTH - bleed,
-            pcb_position.z + PCB_HEIGHT - bleed
-        ]) {
-            cube([
-                ENCLOSURE_WALL + e * 2,
-                SWITCH_BASE_LENGTH + bleed * 2,
-                SWITCH_BASE_HEIGHT + bleed * 2
-            ]);
+        y = pcb_position.y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
+            - SWITCH_BASE_LENGTH - bleed;
+        z = pcb_position.z + PCB_HEIGHT - bleed;
+
+        length = SWITCH_BASE_LENGTH + bleed * 2;
+        height = SWITCH_BASE_HEIGHT + bleed * 2;
+
+        if (just_assembly_valley) {
+            _assembly_valley_cavity(
+                y = y,
+                top_z = z + e,
+                length = length
+            );
+        } else {
+            translate([-e, y, z]) {
+                cube([ENCLOSURE_WALL + e * 2, length, height]);
+            }
+
+            _side_engraving(
+                string = "POW",
+                y = y + length / 2
+            );
         }
     }
 
@@ -741,7 +772,9 @@ module enclosure(
                         }
 
                         color(cavity_color) {
+                            _uart_header_exposure(just_assembly_valley = true);
                             _headphone_jack_cavity(just_assembly_valley = true);
+                            _switch_exposure(just_assembly_valley = true);
                         }
                     }
 
