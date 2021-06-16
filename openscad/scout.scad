@@ -313,6 +313,7 @@ module scout(
                 battery_holder(
                     wall = ENCLOSURE_INNER_WALL,
                     floor = battery_holder_floor,
+                    fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
                     tolerance = tolerance + e
                 );
             }

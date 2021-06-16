@@ -294,24 +294,21 @@ module battery_holder(
     }
 
     module _wire_relief_hitches(
-        _width = wall,
+        _width = 3,
         _length = 4,
         end_gutter = wall,
         ring = 2,
         hole_diameter = 2 + tolerance * 2,
         gutter = 8
     ) {
-        center_x = width / 2 + wall_xy;
-        y = wall_xy + length - fillet - e;
-        z = hole_diameter / 2 + e;
-
         module _c(diameter = hole_diameter, bleed = 0) {
-            translate([-bleed, wall + hole_diameter / 2, height / 2]) {
+            z = (hole_diameter + ring) / 2;
+            translate([-bleed, hole_diameter / 2, z]) {
                 rotate([0, 90, 0]) {
                     cylinder(
                         d = diameter,
                         h = _width + bleed * 2,
-                        $fn = quick_preview ? undef : LOFI_ROUNDING
+                        $fn = 12
                     );
                 }
             }
@@ -321,10 +318,12 @@ module battery_holder(
             wall_xy + end_gutter,
             wall_xy + width - _width - end_gutter
         ]) {
-            translate([x, y, -floor]) {
+            translate([x, length + wall_xy, -floor]) {
                 difference() {
                     hull() {
-                        cube([_width, e, height]);
+                        translate([0, -fillet, 0]) {
+                            cube([_width, e, hole_diameter + ring]);
+                        }
                         _c(diameter = hole_diameter + ring);
                     }
 
@@ -388,7 +387,7 @@ module battery_holder(
 }
 
 * translate([0, -40, 0]) {
-    % battery_array();
-    battery_holder(tolerance = .3, floor = 1, end_terminal_bottom_right = 1);
+    # % battery_array();
+    battery_holder(wall = 3, tolerance = .3, floor = 1, end_terminal_bottom_right = 1);
     % battery_contacts(tolerance = .3, end_terminal_bottom_right = 1);
 }
