@@ -489,28 +489,50 @@ module enclosure(
     }
 
     module _headphone_jack_cavity(
-        plug_diameter = HEADPHONE_JACK_BARREL_DIAMETER + tolerance * 2,
+        just_assembly_valley = false,
+        cavity_diameter = HEADPHONE_JACK_BARREL_DIAMETER + tolerance * 2,
+        plug_clearance_depth = 1,
+        plug_clearance_diameter = 10 + tolerance * 2,
+        plug_diameter = 10,
         engraving_width = 16
     ) {
         x = pcb_position.x + PCB_HEADPHONE_JACK_POSITION.x
             + HEADPHONE_JACK_WIDTH / 2;
         z = pcb_position.z + PCB_HEIGHT + HEADPHONE_JACK_BARREL_Z;
 
-        translate([x, dimensions.y - ENCLOSURE_WALL - e, z]) {
-            rotate([-90, 0, 0]) {
-                cylinder(
-                    d = plug_diameter + tolerance * 2,
-                    h = ENCLOSURE_WALL + e * 2
-                );
+        module _c(diameter, depth) {
+            translate([x, dimensions.y + e, z]) {
+                rotate([90, 0, 0]) {
+                    cylinder(
+                        d = diameter,
+                        h = depth + e * 2,
+                        $fn = quick_preview ? undef : DEFAULT_ROUNDING
+                    );
+                }
             }
         }
 
-        _side_engraving(
-            x = x + engraving_width / 2 + plug_diameter / 2 + label_distance,
-            width = engraving_width,
-            string = "LINE",
-            z = z
-        );
+        if (just_assembly_valley) {
+            valley_height = z - bottom_height + lip_height + e;
+            translate([
+                x - cavity_diameter / 2,
+                dimensions.y - ENCLOSURE_WALL - e,
+                z - valley_height
+            ]) {
+                cube([cavity_diameter, ENCLOSURE_WALL + e * 2, valley_height]);
+            }
+        } else {
+            _c(cavity_diameter, ENCLOSURE_WALL);
+            _c(plug_clearance_diameter, plug_clearance_depth);
+
+            _side_engraving(
+                x = x + engraving_width / 2 + plug_clearance_diameter / 2
+                    + label_distance,
+                width = engraving_width,
+                string = "LINE",
+                z = z
+            );
+        }
     }
 
     module _side_engraving(
@@ -731,6 +753,10 @@ module enclosure(
                             mirror([0, 0, 1]) {
                                 _half(top_height, lip = true);
                             }
+                        }
+
+                        color(cavity_color) {
+                            _headphone_jack_cavity(just_assembly_valley = true);
                         }
                     }
 

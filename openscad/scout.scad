@@ -378,6 +378,9 @@ intersection() {
     // knob
     /* translate([-10, -10, -10]) { cube([155, 120, 100]); } */
 
+    // line out
+    /* translate([-10, -10, -10]) { cube([122, 120, 100]); } */
+
     // pencil stand
     /* translate([-10, 20, -10]) { cube([200, 120, 100]); } */
 }
