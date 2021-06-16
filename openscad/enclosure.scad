@@ -387,7 +387,7 @@ module enclosure(
             size = battery_label_size,
             position = [
                 brand_corner + battery_label_width / 2,
-                brand_corner + battery_label_length / 2
+                dimensions.y - brand_corner - battery_label_length / 2
             ],
             placard = [battery_label_width, battery_label_length],
             bottom = true,
