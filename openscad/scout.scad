@@ -61,28 +61,31 @@ module scout(
     keys_x = ENCLOSURE_WALL + key_gutter;
     default_gutter = keys_x;
 
-    speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
-
     key_width = PCB_KEY_PLOT * 2 - key_gutter;
+    key_length = 50;
     key_min_height = 4;
 
+    enclosure_width = default_gutter * 2
+        + get_keys_full_width(key_width, key_gutter);
+
+    speaker_x = enclosure_width - ENCLOSURE_WALL
+        - tolerance - SPEAKER_DIAMETER / 2;
+    speaker_y = ENCLOSURE_WALL + SPEAKER_DIAMETER / 2 + tolerance;
+    speaker_z = ENCLOSURE_FLOOR_CEILING;
+
     pcb_x = keys_x + get_key_to_pcb_x_offset(key_width, key_gutter);
-    pcb_y = speaker_y
-        + get_speaker_fixture_diameter(ENCLOSURE_INNER_WALL, tolerance) / 2
-        + tolerance;
+    pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y;
     pcb_z = max(
         ENCLOSURE_FLOOR_CEILING + battery_holder_floor + AAA_BATTERY_DIAMETER
             + key_travel - PCB_HEIGHT - BUTTON_HEIGHT,
         min_screw_bottom_clearance + SCREW_HEAD_HEIGHT
-            + ENCLOSURE_FLOOR_CEILING + PCB_PIN_CLEARANCE
+            + ENCLOSURE_FLOOR_CEILING + PCB_PIN_CLEARANCE,
+        speaker_z + SPEAKER_HEIGHT + PCB_PIN_CLEARANCE
     );
 
-    key_length = pcb_y + pcb_key_mount_y - (ENCLOSURE_WALL + key_gutter);
     keys_y = pcb_y - key_length + pcb_key_mount_y;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
 
-    enclosure_width = default_gutter * 2
-        + get_keys_full_width(key_width, key_gutter);
     enclosure_length = max(
         keys_y + key_length
             + PCB_LENGTH - pcb_key_mount_y
@@ -109,9 +112,6 @@ module scout(
 
     branding_x = default_gutter;
     branding_y = keys_y + key_length + default_gutter;
-
-    speaker_x = pcb_x + PCB_WIDTH - SPEAKER_DIAMETER / 2;
-    speaker_z = ENCLOSURE_FLOOR_CEILING;
 
     // NOTE: these are eyeballed instead of derived and that's okay!!
     pencil_stand_x = 20;

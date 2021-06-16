@@ -431,20 +431,6 @@ module enclosure(
         }
     }
 
-    module _speaker_fixture_cavity() {
-        z = bottom_height - lip_height - e;
-        height = speaker_position.z + SPEAKER_HEIGHT - z + e;
-        diameter = get_speaker_fixture_diameter(tolerance)
-            + tolerance * 2;
-
-        translate([speaker_position.x, speaker_position.y, z]) {
-            cylinder(
-                d = diameter,
-                h = height
-            );
-        }
-    }
-
     module _uart_header_exposure(
         x_bleed = 1,
         height = 8
@@ -745,10 +731,6 @@ module enclosure(
                             mirror([0, 0, 1]) {
                                 _half(top_height, lip = true);
                             }
-                        }
-
-                        color(cavity_color) {
-                            _speaker_fixture_cavity();
                         }
                     }
 
