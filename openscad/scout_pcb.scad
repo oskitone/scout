@@ -52,6 +52,7 @@ PCB_RELIEF_HOLE_POSITIONS = [
     _([74.168, 122.555], [0, 2.54 / 2 + MAGIC]),
 ];
 
+PCB_LED_Z = 3; // RGB LED pin footprint prevents it from resting directly on PCB
 PCB_LED_POSITION = _([156.474, 86.706], [-2.54, 2.54 - MAGIC]);
 PCB_POT_POSITION = _([172.824, 97.796], [-2.54, 7 + 2.54 / 2 + MAGIC]);
 PCB_SWITCH_POSITION = _([34.544, 93.98], [0, -2.54]);
@@ -169,7 +170,7 @@ module scout_pcb(
     }
 
     if (show_led) {
-        _translate(PCB_LED_POSITION) {
+        _translate(PCB_LED_POSITION, PCB_LED_Z) {
             % cylinder(
                 d = LED_DIAMETER,
                 h = LED_HEIGHT + e,

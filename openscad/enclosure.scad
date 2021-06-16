@@ -665,26 +665,20 @@ module enclosure(
 
     module _led_exposure(
         cavity = true,
-
-        chamfer_shroud = 2,
-
-        recession = 0,
+        chamfer_shroud_wall = 3,
+        chamfer_shroud_height = 6,
         shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 3,
-
-        // intentionally snug!
-        // TODO: loosen when LED is PCB-mounted again
-        cavity_diameter = LED_DIAMETER,
-
-        // TODO: rewrite when PCB has LED in the right place...
-        cavity_depth = LED_HEIGHT + 2,
+        cavity_diameter = LED_DIAMETER + tolerance * 4, // intentionally loose
         wall = ENCLOSURE_INNER_WALL,
-
         $fn = quick_preview ? undef : DEFAULT_ROUNDING
     ) {
         x = pcb_position.x + PCB_LED_POSITION.x;
         y = pcb_position.y + PCB_LED_POSITION.y;
-        z = dimensions.z - recession - cavity_depth;
-        shroud_z = dimensions.z - ENCLOSURE_FLOOR_CEILING - chamfer_shroud;
+        z = pcb_position.z + PCB_HEIGHT;
+
+        cavity_depth = dimensions.z - z;
+        shroud_z = dimensions.z - ENCLOSURE_FLOOR_CEILING
+            - chamfer_shroud_height;
 
         wall_diameter = cavity_diameter + wall * 2;
 
@@ -698,15 +692,6 @@ module enclosure(
                     h = cavity_depth - shade_depth + e
                 );
             }
-
-            if (recession > 0) {
-                translate([x, y, dimensions.z - recession]) {
-                    cylinder(
-                        d = cavity_diameter,
-                        h = recession + e
-                    );
-                }
-            }
         } else {
             translate([x, y, z]) {
                 cylinder(
@@ -718,8 +703,8 @@ module enclosure(
             translate([x, y, shroud_z]) {
                 cylinder(
                     d1 = wall_diameter,
-                    d2 = wall_diameter + chamfer_shroud * 2,
-                    h = chamfer_shroud + e
+                    d2 = wall_diameter + chamfer_shroud_wall * 2,
+                    h = chamfer_shroud_height + e
                 );
             }
         }
