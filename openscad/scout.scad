@@ -43,7 +43,7 @@ module scout(
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
 
-    battery_holder_floor = 1, // TODO: reduce
+    battery_holder_floor = 1,
 
     min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
     min_screw_top_clearance = .8,
