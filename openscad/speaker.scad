@@ -26,39 +26,26 @@ module speaker_fixture(
     wall = 1,
     tab_cavity_rotation = 90,
     tab_cavity_size = 15,
-    tolerance = 0
+    tolerance = 0,
+    quick_preview = true
 ) {
     e = .053;
 
     ring_z = height - SPEAKER_HEIGHT;
     diameter = get_speaker_fixture_diameter(tolerance, wall);
 
-    // TODO: experiment with extra height speaker enclosure on sound
-
-    module _stool() {
+    difference() {
         ring(
-            diameter = SPEAKER_DIAMETER + tolerance * 2 + e * 2,
-            height = ring_z,
-            thickness = wall + e * 2
+            diameter = diameter,
+            height = height,
+            thickness = wall,
+            $fn = quick_preview ? undef : HIDEF_ROUNDING
         );
-    }
 
-    module _outer_ring() {
-        difference() {
-            ring(
-                diameter = diameter,
-                height = height,
-                thickness = wall
-            );
-
-            rotate([0, 0, tab_cavity_rotation]) {
-                translate([tab_cavity_size / -2, 0, ring_z]) {
-                    cube([tab_cavity_size, diameter / 2, height + e]);
-                }
+        rotate([0, 0, tab_cavity_rotation]) {
+            translate([tab_cavity_size / -2, 0, ring_z - e]) {
+                cube([tab_cavity_size, diameter / 2, height + e * 2]);
             }
         }
     }
-
-    _outer_ring();
-    _stool();
 }

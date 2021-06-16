@@ -426,7 +426,8 @@ module enclosure(
                 height = speaker_position.z + SPEAKER_HEIGHT
                     - ENCLOSURE_FLOOR_CEILING + e,
                 wall = ENCLOSURE_INNER_WALL,
-                tolerance = tolerance
+                tolerance = tolerance,
+                quick_preview = quick_preview
             );
         }
     }
