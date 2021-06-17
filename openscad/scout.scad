@@ -43,6 +43,7 @@ module scout(
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
 
+    battery_holder_wall = ENCLOSURE_INNER_WALL,
     battery_holder_floor = 1,
 
     min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
@@ -118,7 +119,10 @@ module scout(
     pencil_stand_angle_y = 10;
     pencil_stand_depth = 12.8;
 
-    batteries_x = pencil_stand_x + 10;
+    batteries_x = (
+        enclosure_width -
+        get_battery_holder_width(tolerance, battery_holder_wall)
+    ) / 2;
     batteries_y = ENCLOSURE_WALL + ENCLOSURE_INNER_WALL + tolerance * 2;
     batteries_z = ENCLOSURE_FLOOR_CEILING + battery_holder_floor;
 
@@ -311,7 +315,7 @@ module scout(
         color(enclosure_outer_color) {
             translate([batteries_x, batteries_y, batteries_z]) {
                 battery_holder(
-                    wall = ENCLOSURE_INNER_WALL,
+                    wall = battery_holder_wall,
                     floor = battery_holder_floor,
                     fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
                     tolerance = tolerance + e

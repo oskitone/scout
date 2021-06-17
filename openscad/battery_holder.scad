@@ -13,6 +13,14 @@ function get_battery_holder_cavity_width(
         + tolerance * 2
 );
 
+function get_battery_holder_width(
+    tolerance = 0,
+    wall = ENCLOSURE_INNER_WALL
+) = (
+    get_battery_holder_cavity_width(tolerance)
+    + wall * 2
+);
+
 function get_battery_holder_cavity_length(
     count,
     tolerance,
@@ -244,7 +252,7 @@ module battery_holder(
     cavity_width = get_battery_holder_cavity_width(tolerance);
     cavity_length = get_battery_holder_cavity_length(count, tolerance, gutter);
 
-    width = cavity_width + wall * 2;
+    width = get_battery_holder_width(tolerance, wall);
     length = cavity_length + wall * 2;
     height = AAA_BATTERY_DIAMETER + floor + wall_height_extension;
 
