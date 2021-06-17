@@ -28,6 +28,7 @@ module scout(
     show_clearances = true,
 
     cantilever_height = 2,
+    cantilver_mount_height = 2,
     accidental_height = 2,
     accidental_key_recession = 0,
     key_lip_exposure = 3,
@@ -93,7 +94,7 @@ module scout(
     );
     enclosure_height = max(
         keys_z + key_min_height + accidental_height + accidental_key_recession,
-        keys_z + cantilever_height + nut_lock_floor + NUT_HEIGHT
+        keys_z + cantilver_mount_height + nut_lock_floor + NUT_HEIGHT
             + min_screw_top_clearance + ENCLOSURE_FLOOR_CEILING,
         pcb_z + PCB_HEIGHT + PCB_CIRCUITRY_CLEARANCE + ENCLOSURE_FLOOR_CEILING,
         SCREW_LENGTH + min_screw_top_clearance + min_screw_bottom_clearance
@@ -126,7 +127,7 @@ module scout(
     batteries_y = ENCLOSURE_WALL + ENCLOSURE_INNER_WALL + tolerance * 2;
     batteries_z = ENCLOSURE_FLOOR_CEILING + battery_holder_floor;
 
-    nut_z = keys_z + cantilever_height + nut_lock_floor;
+    nut_z = keys_z + cantilver_mount_height + nut_lock_floor;
     screw_top_clearance = enclosure_height
         - ENCLOSURE_FLOOR_CEILING - (nut_z + NUT_HEIGHT);
     screw_head_clearance = max(
@@ -206,7 +207,7 @@ module scout(
         // TODO: experiment with arbitrary lengths:
         POLY555_CANTILEVER_LENGTH = 3;
         20_KEY_MATRIX_CANTILEVER_LENGTH = 4;
-        unexposed_cantilever_length = key_height - cantilever_height;
+        unexposed_cantilever_length = key_height - cantilver_mount_height;
         cantilever_length = unexposed_cantilever_length;
 
         keys(
@@ -216,6 +217,7 @@ module scout(
 
             cantilever_length = cantilever_length,
             cantilever_height = cantilever_height,
+            cantilver_mount_height = cantilver_mount_height,
             nut_lock_floor = nut_lock_floor,
 
             keys_position = [keys_x, keys_y, keys_z],
@@ -275,7 +277,7 @@ module scout(
             key_width = key_width,
             key_length = key_length,
 
-            cantilever_height = cantilever_height,
+            cantilver_mount_height = cantilver_mount_height,
 
             branding_position = [branding_x, branding_y],
 

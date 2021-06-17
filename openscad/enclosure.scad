@@ -45,7 +45,7 @@ module enclosure(
     key_width,
     key_length,
 
-    cantilever_height = 0,
+    cantilver_mount_height = 0,
 
     branding_position = [],
     branding_make_to_model_ratio = .4,
@@ -500,7 +500,7 @@ module enclosure(
         keys_to_enclosure_distance =
             get_keys_to_enclosure_distance(tolerance, key_gutter);
         z = bottom_height - lip_height;
-        height = keys_position.z - z + cantilever_height;
+        height = keys_position.z - z + cantilver_mount_height;
 
         translate([
             keys_position.x - keys_to_enclosure_distance,
@@ -624,13 +624,13 @@ module enclosure(
         nut_cavity_size = NUT_DIAMETER + tolerance * 2,
         nut_cavity_height = NUT_HEIGHT
     ) {
-        z = keys_position.z + cantilever_height;
+        z = keys_position.z + cantilver_mount_height;
         height = dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
 
         module _nut_locks() {
             nuts(
                 pcb_position = pcb_position,
-                z = keys_position.z + cantilever_height + nut_lock_floor,
+                z = keys_position.z + cantilver_mount_height + nut_lock_floor,
                 diameter = nut_cavity_size,
                 height = nut_cavity_height
             );

@@ -126,6 +126,7 @@ module keys(
 
     cantilever_length = 0,
     cantilever_height = 0,
+    cantilver_mount_height = 0,
     nut_lock_floor = 0,
 
     keys_count = 17,
@@ -203,7 +204,7 @@ module keys(
                     );
 
                     keys_mount_rail(
-                        height = cantilever_height,
+                        height = cantilver_mount_height,
                         key_width = key_width,
                         key_length = key_length,
                         key_gutter = key_gutter,
