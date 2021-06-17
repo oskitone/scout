@@ -86,6 +86,11 @@ module enclosure(
 ) {
     e = .0345;
 
+    /* NOTES:
+        * Top needs to be sturdy enough to enforce key_lip_endstop
+        * Division cut should go through back/side cavities w/o looking too
+          awkward or inhibiting assembly
+     */
     bottom_height = pcb_position.z + lip_height;
     top_height = dimensions.z - bottom_height;
 
