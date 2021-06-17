@@ -386,7 +386,7 @@ module battery_holder(
                     rounded_cube(
                         [width, length, height],
                         radius = fillet,
-                        $fn = quick_preview ? undef : LOFI_ROUNDING
+                        $fn = quick_preview ? undef : DEFAULT_ROUNDING
                     );
                 }
 

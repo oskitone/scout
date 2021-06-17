@@ -321,7 +321,8 @@ module scout(
                     wall = battery_holder_wall,
                     floor = battery_holder_floor,
                     fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
-                    tolerance = tolerance + e
+                    tolerance = tolerance + e,
+                    quick_preview = quick_preview
                 );
             }
         }
