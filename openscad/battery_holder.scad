@@ -4,6 +4,10 @@ use <../../poly555/openscad/lib/basic_shapes.scad>;
 include <batteries.scad>;
 include <battery_contacts.scad>;
 
+BATTERY_HOLDER_ARM_FIXTURE_WIDTH = 10;
+BATTERY_HOLDER_ARM_FIXTURE_DEPTH = 1;
+BATTERY_HOLDER_ARM_FIXTURE_Z = 4;
+
 function get_battery_holder_cavity_width(
     tolerance = 0
 ) = (
@@ -29,6 +33,14 @@ function get_battery_holder_cavity_length(
     AAA_BATTERY_DIAMETER * count
         + gutter * (count - 1)
         + tolerance * 2
+);
+
+function get_battery_holder_length(
+    tolerance = 0,
+    wall = ENCLOSURE_INNER_WALL
+) = (
+    get_battery_holder_cavity_length(3, tolerance)
+    + wall * 2
 );
 
 module battery_contact_fixture(
@@ -301,6 +313,24 @@ module battery_holder(
         }
     }
 
+    module _arm_fixture_cavities(clearance = .1) {
+        cavity_width = BATTERY_HOLDER_ARM_FIXTURE_WIDTH
+            + (clearance + tolerance) * 2;
+        cavity_length = BATTERY_HOLDER_ARM_FIXTURE_DEPTH
+            + (clearance + tolerance);
+        cavity_height = BATTERY_HOLDER_ARM_FIXTURE_DEPTH
+            + (clearance + tolerance) * 2;
+
+        x = wall_xy + (width - cavity_width) / 2;
+        z = BATTERY_HOLDER_ARM_FIXTURE_Z - (clearance + tolerance) - floor;
+
+        for (y = [wall_xy - e, wall_xy + length - cavity_length]) {
+            translate([x, y, z]) {
+                cube([cavity_width, cavity_length + e, cavity_height]);
+            }
+        }
+    }
+
     module _wire_relief_hitches(
         _width = 3,
         _length = 4,
@@ -391,6 +421,8 @@ module battery_holder(
                 z = floor
             );
         }
+
+        _arm_fixture_cavities();
     }
 }
 

@@ -292,6 +292,9 @@ module scout(
 
             speaker_position = [speaker_x, speaker_y, speaker_z],
 
+            battery_holder_wall = battery_holder_wall,
+            batteries_position = [batteries_x, batteries_y, batteries_z],
+
             pencil_stand_position = [pencil_stand_x, pencil_stand_y],
             pencil_stand_angle_x = pencil_stand_angle_x,
             pencil_stand_angle_y = pencil_stand_angle_y,
