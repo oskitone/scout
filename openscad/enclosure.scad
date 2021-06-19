@@ -686,10 +686,12 @@ module enclosure(
         chamfer_shroud_wall = 3,
         chamfer_shroud_height = 6,
         shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 3,
-        cavity_diameter = LED_DIAMETER + tolerance * 4, // intentionally loose
+        led_clearance = .4,
         wall = ENCLOSURE_INNER_WALL,
         $fn = quick_preview ? undef : DEFAULT_ROUNDING
     ) {
+        cavity_diameter = LED_DIAMETER + tolerance * 2 + led_clearance * 2;
+
         x = pcb_position.x + PCB_LED_POSITION.x;
         y = pcb_position.y + PCB_LED_POSITION.y;
         z = pcb_position.z + PCB_HEIGHT;
