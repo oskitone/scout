@@ -545,27 +545,26 @@ module enclosure(
         y = undef,
         string,
         width = SIDE_ENGRAVING_DEFAULT_WIDTH,
-        z = pcb_position.z - label_length / 2 - label_distance,
+        z = pcb_position.z - label_length / 2,
         placard = true
     ) {
         is_left = y != undef;
 
         translate([
-            is_left ? ENCLOSURE_ENGRAVING_DEPTH - e : x,
+            is_left ? -e : x,
             is_left ? y : dimensions.y + e,
             z
         ]) {
-            rotate([90, 0, is_left ? -90 : 0]) {
-                mirror([is_left ? 1 : 0, 0, 0]) {
-                    enclosure_engraving(
-                        string = string,
-                        size = label_text_size,
-                        placard = placard ? [width, label_length] : undef,
-                        bottom = true,
-                        quick_preview = quick_preview,
-                        enclosure_height = dimensions.z
-                    );
-                }
+            rotate([90, 0, is_left ? 90 : 0]) {
+                enclosure_engraving(
+                    string = string,
+                    size = label_text_size,
+                    placard = placard ? [width, label_length] : undef,
+                    chamfer_placard = true,
+                    bottom = true,
+                    quick_preview = quick_preview,
+                    enclosure_height = dimensions.z
+                );
             }
         }
     }
