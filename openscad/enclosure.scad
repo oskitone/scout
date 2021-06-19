@@ -442,7 +442,7 @@ module enclosure(
         pin_z = pcb_position.z + PCB_HEIGHT + 2.54 / 2;
 
         x = pcb_position.x + PCB_UART_HEADER_POSITION.x - x_bleed;
-        z = pin_z - height / 2;
+        z = pin_z + UART_HEADER_PIN_SIZE / 2 - height / 2;
 
         width = PCB_UART_HEADER_WIDTH + x_bleed * 2 + tolerance * 2;
 

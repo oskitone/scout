@@ -59,6 +59,7 @@ PCB_SWITCH_POSITION = _([34.544, 93.98], [0, -2.54]);
 
 PCB_UART_HEADER_POSITION = _([39.116, 88.773], [2.54 / -2, 2.54 / 2]);
 PCB_UART_HEADER_WIDTH = 2.54 * 6;
+UART_HEADER_PIN_SIZE = .8;
 
 HEADPHONE_JACK_WIDTH = 12;
 HEADPHONE_JACK_LENGTH = 11;
@@ -194,14 +195,13 @@ module scout_pcb(
     }
 
     if (show_pcb_uart_header) {
-        pin_size = .8;
-        x = 2.54 / 2 - pin_size / 2;
+        x = 2.54 / 2 - UART_HEADER_PIN_SIZE / 2;
         z = 2.54 / 2;
 
         _translate(PCB_UART_HEADER_POSITION) {
             for (i = [0 : 5]) {
                 translate([x + i * 2.54, 0, z]) {
-                    % cube([pin_size, 10, pin_size]);
+                    % cube([UART_HEADER_PIN_SIZE, 10, UART_HEADER_PIN_SIZE]);
                 }
             }
         }
