@@ -251,12 +251,17 @@ module battery_holder(
     floor = 0,
     tolerance = 0,
     count = 3,
+
     fillet = ENCLOSURE_INNER_FILLET,
     gutter = KEYSTONE_181_GUTTER,
     contact_tab_width = KEYSTONE_5204_5226_TAB_WIDTH,
     contact_tab_cavity_length =
         KEYSTONE_5204_5226_LENGTH + KEYSTONE_5204_5226_DIMPLE_LENGTH,
     end_terminal_bottom_right = true,
+
+    outer_color = undef,
+    cavity_color = undef,
+
     quick_preview = true
 ) {
     e = .0837;
@@ -372,57 +377,61 @@ module battery_holder(
     }
 
     difference() {
-        union() {
-            battery_contact_fixtures(
-                tolerance = tolerance,
-                gutter = gutter,
-                height = height - floor,
-                start_on_right = end_terminal_bottom_right,
-                count = count
-            );
+        color(outer_color) {
+            union() {
+                battery_contact_fixtures(
+                    tolerance = tolerance,
+                    gutter = gutter,
+                    height = height - floor,
+                    start_on_right = end_terminal_bottom_right,
+                    count = count
+                );
 
-            difference() {
-                translate([wall_xy, wall_xy, -floor]) {
-                    rounded_cube(
-                        [width, length, height],
-                        radius = fillet,
-                        $fn = quick_preview ? undef : DEFAULT_ROUNDING
-                    );
+                difference() {
+                    translate([wall_xy, wall_xy, -floor]) {
+                        rounded_cube(
+                            [width, length, height],
+                            radius = fillet,
+                            $fn = quick_preview ? undef : DEFAULT_ROUNDING
+                        );
+                    }
+
+                    translate([-tolerance, -tolerance, 0]) {
+                        cube([
+                            cavity_width,
+                            cavity_length,
+                            AAA_BATTERY_DIAMETER + wall_height_extension + e * 2
+                        ]);
+                    }
                 }
 
-                translate([-tolerance, -tolerance, 0]) {
-                    cube([
-                        cavity_width,
-                        cavity_length,
-                        AAA_BATTERY_DIAMETER + wall_height_extension + e * 2
-                    ]);
-                }
+                _alignment_rails();
+
+                _wire_relief_hitches();
+            }
+        }
+
+        color(cavity_color) {
+            if (floor > 0) {
+                battery_contact_fixtures(
+                    tolerance = tolerance,
+                    gutter = gutter,
+                    floor_cavity_height = KEYSTONE_5204_5226_CONTACT_Z
+                        - (AAA_BATTERY_DIAMETER / 2),
+                    start_on_right = end_terminal_bottom_right,
+                    count = count
+                );
+
+                _contact_tab_cavities();
+
+                battery_direction_engravings(
+                    tolerance = tolerance,
+                    z = floor
+                );
             }
 
-            _alignment_rails();
-
-            _wire_relief_hitches();
+            _arm_fixture_cavities();
         }
-
-        if (floor > 0) {
-            battery_contact_fixtures(
-                tolerance = tolerance,
-                gutter = gutter,
-                floor_cavity_height = KEYSTONE_5204_5226_CONTACT_Z
-                    - (AAA_BATTERY_DIAMETER / 2),
-                start_on_right = end_terminal_bottom_right,
-                count = count
-            );
-
-            _contact_tab_cavities();
-
-            battery_direction_engravings(
-                tolerance = tolerance,
-                z = floor
-            );
-        }
-
-        _arm_fixture_cavities();
     }
 }
 

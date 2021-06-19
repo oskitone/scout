@@ -317,16 +317,16 @@ module scout(
     }
 
     if (show_battery_holder) {
-        color(enclosure_outer_color) {
-            translate([batteries_x, batteries_y, batteries_z]) {
-                battery_holder(
-                    wall = battery_holder_wall,
-                    floor = battery_holder_floor,
-                    fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
-                    tolerance = tolerance + e,
-                    quick_preview = quick_preview
-                );
-            }
+        e_translate([batteries_x, batteries_y, batteries_z]) {
+            battery_holder(
+                wall = battery_holder_wall,
+                floor = battery_holder_floor,
+                fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
+                tolerance = tolerance + e,
+                outer_color = enclosure_outer_color,
+                cavity_color = enclosure_cavity_color,
+                quick_preview = quick_preview
+            );
         }
     }
 
