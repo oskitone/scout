@@ -368,16 +368,7 @@ module enclosure(
     module _bottom_engraving(
         brand_length = 8,
         brand_corner = 10,
-
-        battery_label_string = "AAA*3",
-        battery_label_size = label_text_size
     ) {
-        brand_width = brand_length / OSKITONE_LENGTH_WIDTH_RATIO;
-
-        battery_label_width = battery_label_size
-            * len(battery_label_string) + label_distance * 2;
-        battery_label_length = label_length;
-
         enclosure_engraving(
             size = brand_length,
             center = false,
@@ -385,19 +376,6 @@ module enclosure(
                 dimensions.x - brand_corner,
                 brand_corner
             ],
-            bottom = true,
-            quick_preview = quick_preview,
-            enclosure_height = dimensions.z
-        );
-
-        enclosure_engraving(
-            string = battery_label_string,
-            size = battery_label_size,
-            position = [
-                brand_corner + battery_label_width / 2,
-                dimensions.y - brand_corner - battery_label_length / 2
-            ],
-            placard = [battery_label_width, battery_label_length],
             bottom = true,
             quick_preview = quick_preview,
             enclosure_height = dimensions.z
