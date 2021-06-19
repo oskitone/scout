@@ -756,12 +756,12 @@ module enclosure(
         }
 
         module _arm(
-            arm_length = ENCLOSURE_WALL,
-            support_depth = 4,
-            wire_clearance = 1
+            arm_length = ENCLOSURE_INNER_WALL,
+            support_depth = BATTERY_HOLDER_ARM_FIXTURE_Z * 2
         ) {
+            y_gap = tolerance * 2;
             y = batteries_position.y - battery_holder_wall - tolerance
-                + wire_clearance + battery_holder_length;
+                + y_gap + battery_holder_length;
             z = ENCLOSURE_FLOOR_CEILING - e;
 
             arm_height = nib_z - z + _height;
@@ -769,19 +769,19 @@ module enclosure(
             translate([x, y, z]) {
                 cube([_width, arm_length, arm_height]);
 
-                translate([0, -e, arm_height - wire_clearance - _height]) {
+                translate([0, -e, arm_height - y_gap - _height]) {
                     flat_top_rectangular_pyramid(
                         top_width = _width,
-                        top_length = wire_clearance + e * 2,
+                        top_length = y_gap + e * 2,
                         bottom_width = _width,
                         bottom_length = e * 2,
-                        height = wire_clearance,
+                        height = y_gap,
                         top_weight_y = 1
                     );
                 }
 
-                translate([0, -_length - tolerance - e, arm_height - _height]) {
-                    cube([_width, _length + e * 2 + tolerance, _height]);
+                translate([0, -y_gap - tolerance - e, arm_height - _height]) {
+                    cube([_width, y_gap + e * 2 + tolerance, _height]);
                 }
 
                 for (x = [0, _width - ENCLOSURE_INNER_WALL]) {

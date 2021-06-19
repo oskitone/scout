@@ -5,8 +5,8 @@ include <batteries.scad>;
 include <battery_contacts.scad>;
 
 BATTERY_HOLDER_ARM_FIXTURE_WIDTH = 10;
-BATTERY_HOLDER_ARM_FIXTURE_DEPTH = 1;
-BATTERY_HOLDER_ARM_FIXTURE_Z = 4;
+BATTERY_HOLDER_ARM_FIXTURE_DEPTH = .6;
+BATTERY_HOLDER_ARM_FIXTURE_Z = 2;
 
 function get_battery_holder_cavity_width(
     tolerance = 0
