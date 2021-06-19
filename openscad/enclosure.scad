@@ -886,7 +886,9 @@ module enclosure(
                         _led_exposure(cavity = false);
                         pcb_enclosure_top_fixture(
                             pcb_position = pcb_position,
-                            enclosure_dimensions = dimensions
+                            enclosure_dimensions = dimensions,
+                            height_extension =
+                                abs(bottom_height - lip_height - pcb_position.z)
                         );
                     }
                 }
