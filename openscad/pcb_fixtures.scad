@@ -24,12 +24,11 @@ module _fixture_pcb_difference(
     }
 }
 
-module pcb_enclosure_top_fixture(
+module pcb_enclosure_top_fixtures(
     pcb_position = [0, 0, 0],
     enclosure_dimensions = [0, 0, 0],
 
     back_coverage = 4,
-    corner_coverage = 1,
     height_extension = 2,
 
     // NOTE: these are eyeballed, and that's okay!
@@ -41,45 +40,19 @@ module pcb_enclosure_top_fixture(
 ) {
     e = .0876;
 
-    corner_size = pcb_position.x + corner_coverage - (ENCLOSURE_WALL - e);
-    corner_xs = [-wall, PCB_WIDTH + wall - corner_size];
-
     z = pcb_position.z - height_extension;
 
     height = enclosure_dimensions.z - ENCLOSURE_FLOOR_CEILING + e - z;
 
-    module _back_corners() {
-        y = PCB_LENGTH + pcb_position.y + wall - corner_size;
-
-        difference() {
-            for (x = corner_xs) {
-                translate([pcb_position.x + x, y, z]) {
-                    cube([corner_size, corner_size, height]);
-                }
-            }
-
-            _fixture_pcb_difference(
-                pcb_position,
-                height = enclosure_dimensions.z - z
-                    - ENCLOSURE_FLOOR_CEILING + e,
-                clearance = -corner_coverage
-            );
-        }
-    }
-
     difference() {
-        union() {
-            for (x = xs) {
-                y = pcb_position.y + PCB_LENGTH - back_coverage;
-                end_y = enclosure_dimensions.y - ENCLOSURE_WALL + e;
-                length = end_y - y;
+        for (x = xs) {
+            y = pcb_position.y + PCB_LENGTH - back_coverage;
+            end_y = enclosure_dimensions.y - ENCLOSURE_WALL + e;
+            length = end_y - y;
 
-                translate([pcb_position.x + x - wall / 2, y, z]) {
-                    cube([wall, length, height]);
-                }
+            translate([pcb_position.x + x - wall / 2, y, z]) {
+                cube([wall, length, height]);
             }
-
-            _back_corners();
         }
 
         translate([0, 0, -height_extension - e]) {
@@ -91,9 +64,12 @@ module pcb_enclosure_top_fixture(
     }
 }
 
-module pcb_fixtures(
+module pcb_bottom_fixtures(
     pcb_position = [0, 0, 0],
     screw_head_clearance = 0,
+
+    corner_coverage = 1,
+
     wall = ENCLOSURE_INNER_WALL,
     clearance = PCB_FIXTURE_CLEARANCE,
     tolerance = DEFAULT_TOLERANCE
@@ -162,7 +138,28 @@ module pcb_fixtures(
         }
     }
 
+    module _back_corners() {
+        corner_size = pcb_position.x + corner_coverage - (ENCLOSURE_WALL - e);
+        corner_xs = [-wall, PCB_WIDTH + wall - corner_size];
+
+        y = PCB_LENGTH + pcb_position.y + wall - corner_size;
+        z = ENCLOSURE_FLOOR_CEILING - e;
+
+        height = pcb_position.z - z + PCB_HEIGHT;
+
+        difference() {
+            for (x = corner_xs) {
+                translate([pcb_position.x + x, y, z]) {
+                    cube([corner_size, corner_size, height]);
+                }
+            }
+
+            _fixture_pcb_difference(pcb_position);
+        }
+    }
+
     _back_stools();
     _button_rail();
     _mounting_columns();
+    _back_corners();
 }

@@ -93,8 +93,10 @@ module enclosure(
         * Top needs to be sturdy enough to enforce key_lip_endstop
         * Division cut should go through back/side cavities w/o looking too
           awkward or inhibiting assembly
+        * Bottom matches to top of PCB, otherwise will need to account for
+          corner fixtures' cavity on enclosure top
      */
-    bottom_height = pcb_position.z + lip_height;
+    bottom_height = pcb_position.z + lip_height + PCB_HEIGHT;
     top_height = dimensions.z - bottom_height;
 
     branding_available_width = dimensions.x
@@ -847,7 +849,7 @@ module enclosure(
                     _half(bottom_height, lip = false);
 
                     color(outer_color) {
-                        pcb_fixtures(
+                        pcb_bottom_fixtures(
                             pcb_position = pcb_position,
                             screw_head_clearance = screw_head_clearance
                         );
@@ -884,7 +886,7 @@ module enclosure(
                             key_gutter = key_gutter
                         );
                         _led_exposure(cavity = false);
-                        pcb_enclosure_top_fixture(
+                        pcb_enclosure_top_fixtures(
                             pcb_position = pcb_position,
                             enclosure_dimensions = dimensions,
                             height_extension =
