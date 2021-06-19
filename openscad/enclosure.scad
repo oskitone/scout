@@ -310,7 +310,7 @@ module enclosure(
     module _knob_exposure(
         cavity,
         well_clearance = 1,
-        shaft_clearance = .5
+        shaft_clearance = 2 // TODO: reduce when correct pots are in stock
     ) {
         cavity_z = knob_position.z - knob_vertical_clearance;
         cavity_height = dimensions.z - cavity_z + e;
