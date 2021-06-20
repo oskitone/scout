@@ -130,7 +130,9 @@ module scout_pcb(
     show_switch = true,
     show_pcb_uart_header = true,
     show_headphone_jack = true,
-    show_circuitry_clearance = true
+    show_circuitry_clearance = true,
+
+    switch_position = 0
 ) {
     e = .0143;
     silkscreen_height = e;
@@ -189,7 +191,7 @@ module scout_pcb(
     if (show_switch) {
         _translate(PCB_SWITCH_POSITION) {
             mirror([0, 1, 0]) {
-                % switch();
+                % switch(switch_position);
             }
         }
     }

@@ -4,13 +4,19 @@ include <switch.scad>;
 ACCESSORY_FILLET = 1;
 DEFAULT_TOLERANCE = .1;
 
+SWITCH_CLUTCH_GRIP_LENGTH = SWITCH_BASE_LENGTH;
+SWITCH_CLUTCH_GRIP_HEIGHT = SWITCH_BASE_HEIGHT;
+
 module switch_clutch(
     position = 0,
 
-    grip_length = SWITCH_BASE_LENGTH,
+    grip_length = SWITCH_CLUTCH_GRIP_LENGTH,
+    grip_height = SWITCH_CLUTCH_GRIP_HEIGHT,
 
-    web_width = 2,
+    web_available_width = 2,
     web_length_extension = 2,
+
+    clearance = .2,
 
     fillet = ACCESSORY_FILLET,
     side_overexposure = ENCLOSURE_SIDE_OVEREXPOSURE,
@@ -20,18 +26,22 @@ module switch_clutch(
 ) {
     e = .0592;
 
+    web_gap = tolerance * 3 + clearance;
+
+    web_width = web_available_width - web_gap * 2;
     web_length = SWITCH_BASE_LENGTH
         + web_length_extension * 2 + SWITCH_ACTUATOR_TRAVEL;
     height = SWITCH_BASE_HEIGHT;
 
     // TODO: fillet and rib
     module _exposed_grip() {
-        width = ENCLOSURE_WALL + side_overexposure;
+        width = ENCLOSURE_WALL + side_overexposure
+            + (web_available_width - web_width);
         x = -web_width - width;
         y = SWITCH_ACTUATOR_TRAVEL / -2;
 
         translate([x, y, 0]) {
-            cube([width + e, grip_length, height]);
+            cube([width + e, grip_length, grip_height]);
         }
     }
 
@@ -62,7 +72,7 @@ module switch_clutch(
     module _skirt() {}
 
     translate([
-        -SWITCH_ORIGIN.x,
+        -SWITCH_ORIGIN.x - web_gap,
         -SWITCH_ORIGIN.y + position * SWITCH_ACTUATOR_TRAVEL,
         0
     ]) {

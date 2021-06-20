@@ -21,6 +21,7 @@ module scout(
     show_pcb = true,
     show_keys_mount_rail = true,
     show_keys = true,
+    show_switch_clutch = true,
     show_enclosure_top = true,
     show_accoutrements = true,
     show_knob = true,
@@ -51,6 +52,8 @@ module scout(
     min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
+
+    switch_position = 0,
 
     tolerance = 0,
     quick_preview = true
@@ -206,20 +209,18 @@ module scout(
 
     module _switch_clutch() {
         x = pcb_x + SWITCH_ORIGIN.x;
-
-        translate([
-            /* pcb_x + PCB_SWITCH_POSITION.x, */
-            x,
-            /* pcb_y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y, */
-            pcb_y + PCB_SWITCH_POSITION.y + SWITCH_BASE_LENGTH -
+        y = pcb_y + PCB_SWITCH_POSITION.y + SWITCH_BASE_LENGTH -
             ((SWITCH_BASE_LENGTH - SWITCH_ACTUATOR_LENGTH) / 2
                 - SWITCH_ACTUATOR_TRAVEL / 2
                 + SWITCH_ACTUATOR_TRAVEL * 0)
-            - tolerance * 2,
-            pcb_z
-        ]) {
+            - tolerance * 2;
+        z = pcb_z;
+
+        translate([x, y, z]) {
             switch_clutch(
-                web_width = pcb_x - ENCLOSURE_WALL
+                position = switch_position,
+                web_available_width = pcb_x - ENCLOSURE_WALL,
+                tolerance = tolerance
             );
         }
     }
@@ -257,7 +258,10 @@ module scout(
 
     if (show_pcb) {
         e_translate([pcb_x, pcb_y, pcb_z]) {
-            scout_pcb(show_circuitry_clearance = show_clearances);
+            scout_pcb(
+                show_circuitry_clearance = show_clearances,
+                switch_position = 1 - switch_position
+            );
         }
     }
 
@@ -359,8 +363,9 @@ module scout(
         _knob();
     }
 
-    // TODO: show_...
-    _switch_clutch();
+    if (show_switch_clutch) {
+        _switch_clutch();
+    }
 }
 
 SHOW_ENCLOSURE_BOTTOM = true;
@@ -387,6 +392,7 @@ intersection() {
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
         show_accoutrements = SHOW_ACCOUTREMENTS,
         show_knob = SHOW_KNOB,
+        show_switch_clutch = SHOW_SWITCH_CLUTCH,
 
         show_dfm = SHOW_DFM,
         show_clearances = SHOW_CLEARANCES,

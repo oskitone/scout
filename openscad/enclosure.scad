@@ -578,10 +578,14 @@ module enclosure(
         bleed = 0
     ) {
         y = pcb_position.y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
-            - SWITCH_BASE_LENGTH - bleed;
+            - SWITCH_BASE_LENGTH
+            + SWITCH_ACTUATOR_TRAVEL / 2
+            - bleed;
         z = pcb_position.z + PCB_HEIGHT - bleed;
 
-        length = SWITCH_BASE_LENGTH + bleed * 2;
+        length = SWITCH_CLUTCH_GRIP_LENGTH
+            + SWITCH_ACTUATOR_TRAVEL
+            + bleed * 2;
         height = SWITCH_BASE_HEIGHT + bleed * 2;
 
         if (just_assembly_valley) {
