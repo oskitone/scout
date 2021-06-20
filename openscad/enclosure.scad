@@ -122,6 +122,8 @@ module enclosure(
             remove_lip = !lip,
             lip_height = lip_height,
             fillet = quick_preview ? 0 : fillet,
+            include_tongue_and_groove = true,
+            tongue_and_groove_snap = [.75, .25],
             tolerance = DEFAULT_TOLERANCE * 2, // intentionally loose
             outer_color = outer_color,
             cavity_color = cavity_color,
