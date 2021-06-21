@@ -14,9 +14,9 @@ module switch_clutch(
     grip_height = SWITCH_CLUTCH_GRIP_HEIGHT,
 
     web_available_width = 2,
-    web_length_extension = 2, // TODO: fix this messing with Y
-    web_height_lower_extension = 0,
-    web_height_upper_extension = 0,
+    web_length_extension = 1,
+    web_height_lower_extension = 5,
+    web_height_upper_extension = 2,
 
     x_clearance = .2,
 
@@ -24,7 +24,8 @@ module switch_clutch(
     side_overexposure = ENCLOSURE_SIDE_OVEREXPOSURE,
     tolerance = DEFAULT_TOLERANCE,
     floor_ceiling = ENCLOSURE_FLOOR_CEILING,
-    show_dfm = true
+
+    show_dfm = true // TODO: use
 ) {
     e = .0592;
 
@@ -68,9 +69,10 @@ module switch_clutch(
 
     translate([
         -SWITCH_ORIGIN.x - web_gap,
-        -SWITCH_ORIGIN.y - SWITCH_ACTUATOR_LENGTH * 2
-            + position * SWITCH_ACTUATOR_TRAVEL,
-        -web_height_lower_extension
+        -SWITCH_ORIGIN.y - SWITCH_ACTUATOR_LENGTH
+            + position * SWITCH_ACTUATOR_TRAVEL
+            - web_length_extension,
+        -web_height_lower_extension - (grip_height - SWITCH_BASE_HEIGHT) / 2
     ]) {
         difference() {
             union() {
@@ -83,5 +85,7 @@ module switch_clutch(
     }
 }
 
-/* switch_clutch(abs($t - .5) * 2);
-% switch(abs($t - .5) * 2); */
+* group() {
+switch_clutch(abs($t - .5) * 2);
+% switch(abs($t - .5) * 2);
+}

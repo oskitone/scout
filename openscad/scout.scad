@@ -53,7 +53,7 @@ module scout(
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
 
-    switch_position = 0,
+    switch_position = 1,
 
     tolerance = 0,
     quick_preview = true
@@ -210,16 +210,15 @@ module scout(
     module _switch_clutch(
         vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT
     ) {
-        x = pcb_x + SWITCH_ORIGIN.x;
-        y = pcb_y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
-            - get_switch_actuator_y();
-        z = pcb_z + PCB_HEIGHT + SWITCH_BASE_HEIGHT / 2
-            - SWITCH_CLUTCH_GRIP_HEIGHT / 2;
+        x = pcb_x + PCB_SWITCH_POSITION.x;
+        y = pcb_y + PCB_SWITCH_POSITION.y;
+        z = pcb_z + PCB_HEIGHT;
 
         translate([x, y, z]) {
             switch_clutch(
                 position = switch_position,
                 web_available_width = pcb_x - ENCLOSURE_WALL,
+                web_length_extension = 2.1, // NOTE: eyeballed against mounting rail
                 web_height_lower_extension = z - ENCLOSURE_FLOOR_CEILING
                     - vertical_clearance - e,
                 web_height_upper_extension = enclosure_height
@@ -265,7 +264,7 @@ module scout(
         e_translate([pcb_x, pcb_y, pcb_z]) {
             scout_pcb(
                 show_circuitry_clearance = show_clearances,
-                switch_position = 1 - switch_position
+                switch_position = switch_position
             );
         }
     }

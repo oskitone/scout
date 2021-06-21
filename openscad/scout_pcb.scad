@@ -190,9 +190,7 @@ module scout_pcb(
 
     if (show_switch) {
         _translate(PCB_SWITCH_POSITION) {
-            mirror([0, 1, 0]) {
-                % switch(switch_position);
-            }
+            % switch(switch_position);
         }
     }
 
