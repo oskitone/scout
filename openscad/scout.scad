@@ -207,19 +207,24 @@ module scout(
         }
     }
 
-    module _switch_clutch() {
+    module _switch_clutch(
+        vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT
+    ) {
         x = pcb_x + SWITCH_ORIGIN.x;
-        y = pcb_y + PCB_SWITCH_POSITION.y + SWITCH_BASE_LENGTH -
-            ((SWITCH_BASE_LENGTH - SWITCH_ACTUATOR_LENGTH) / 2
-                - SWITCH_ACTUATOR_TRAVEL / 2
-                + SWITCH_ACTUATOR_TRAVEL * 0)
-            - tolerance * 2;
-        z = pcb_z;
+        y = pcb_y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
+            - get_switch_actuator_y();
+        z = pcb_z + PCB_HEIGHT + SWITCH_BASE_HEIGHT / 2
+            - SWITCH_CLUTCH_GRIP_HEIGHT / 2;
 
         translate([x, y, z]) {
             switch_clutch(
                 position = switch_position,
                 web_available_width = pcb_x - ENCLOSURE_WALL,
+                web_height_lower_extension = z - ENCLOSURE_FLOOR_CEILING
+                    - vertical_clearance - e,
+                web_height_upper_extension = enclosure_height
+                    - ENCLOSURE_FLOOR_CEILING - z - SWITCH_CLUTCH_GRIP_HEIGHT
+                    - vertical_clearance - e,
                 tolerance = tolerance
             );
         }
@@ -373,6 +378,7 @@ SHOW_BATTERY_HOLDER = true;
 SHOW_PCB = true;
 SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_KEYS = true;
+SHOW_SWITCH_CLUTCH = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ACCOUTREMENTS = true;
 SHOW_KNOB = true;
@@ -424,4 +430,7 @@ intersection() {
 
     // pencil stand
     /* translate([-10, 20, -10]) { cube([200, 120, 100]); } */
+
+    // switch_clutch
+    /* translate([-10, 65, -10]) { cube([200, 120, 100]); } */
 }

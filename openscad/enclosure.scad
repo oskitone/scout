@@ -575,18 +575,17 @@ module enclosure(
     // TODO: expand for inner wall vs cavity
     module _switch_exposure(
         just_assembly_valley = false,
-        bleed = 0
+        bleed = tolerance + .2 // intentionally loose
     ) {
-        y = pcb_position.y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
-            - SWITCH_BASE_LENGTH
-            + SWITCH_ACTUATOR_TRAVEL / 2
-            - bleed;
-        z = pcb_position.z + PCB_HEIGHT - bleed;
-
         length = SWITCH_CLUTCH_GRIP_LENGTH
             + SWITCH_ACTUATOR_TRAVEL
             + bleed * 2;
-        height = SWITCH_BASE_HEIGHT + bleed * 2;
+        height = SWITCH_CLUTCH_GRIP_HEIGHT + bleed * 2;
+
+        y = pcb_position.y + PCB_SWITCH_POSITION.y + SWITCH_ORIGIN.y
+            - (SWITCH_BASE_LENGTH / 2) - (length / 2)
+            - tolerance / 2; // TODO: understand whyyyyy
+        z = pcb_position.z + PCB_HEIGHT + SWITCH_BASE_HEIGHT / 2 - height / 2;
 
         if (just_assembly_valley) {
             _assembly_valley_cavity(

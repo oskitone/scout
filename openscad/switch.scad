@@ -35,7 +35,7 @@ module switch(position = 0) {
             cube([
                 SWITCH_ACTUATOR_WIDTH + e,
                 SWITCH_ACTUATOR_LENGTH,
-                SWITCH_ACTUATOR_HEIGHT + e
+                SWITCH_ACTUATOR_HEIGHT
             ]);
         }
     }
