@@ -70,6 +70,7 @@ function export_stl() {
             -D 'SHOW_PCB=false '\
             -D 'SHOW_KEYS_MOUNT_RAIL=false '\
             -D 'SHOW_KEYS=false '\
+            -D 'SHOW_SWITCH_CLUTCH=false '\
             -D 'SHOW_ENCLOSURE_TOP=false '\
             -D 'SHOW_ACCOUTREMENTS=false '\
             -D 'SHOW_KNOB=false '\
@@ -125,6 +126,7 @@ function run() {
     export_stl 'battery_holder' 'SHOW_BATTERY_HOLDER' 'false' & \
     export_stl 'keys_mount_rail' 'SHOW_KEYS_MOUNT_RAIL' 'false' & \
     export_stl 'keys' 'SHOW_KEYS' 'false' & \
+    export_stl 'switch_clutch' 'SHOW_SWITCH_CLUTCH' 'false' & \
     export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' & \
     export_stl 'knob' 'SHOW_KNOB' 'false' & \
     wait

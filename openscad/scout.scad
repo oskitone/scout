@@ -10,6 +10,7 @@ include <enclosure.scad>;
 include <keys.scad>;
 include <nuts_and_bolts.scad>;
 include <speaker.scad>;
+include <switch_clutch.scad>;
 use <utils.scad>;
 
 DEFAULT_TOLERANCE = .1;
@@ -20,6 +21,7 @@ module scout(
     show_pcb = true,
     show_keys_mount_rail = true,
     show_keys = true,
+    show_switch_clutch = true,
     show_enclosure_top = true,
     show_accoutrements = true,
     show_knob = true,
@@ -50,6 +52,8 @@ module scout(
     min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
+
+    switch_position = 1,
 
     tolerance = 0,
     quick_preview = true
@@ -203,6 +207,36 @@ module scout(
         }
     }
 
+    module _switch_clutch(
+        vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT
+    ) {
+        x = pcb_x + PCB_SWITCH_POSITION.x;
+        y = pcb_y + PCB_SWITCH_POSITION.y;
+        z = pcb_z + PCB_HEIGHT;
+
+        translate([x, y, z]) {
+            switch_clutch(
+                position = switch_position,
+
+                web_available_width = pcb_x - ENCLOSURE_WALL,
+                web_length_extension = 2.1, // NOTE: eyeballed!
+                web_height_lower_extension = z - ENCLOSURE_FLOOR_CEILING
+                    - vertical_clearance - e,
+                web_height_upper_extension = enclosure_height
+                    - ENCLOSURE_FLOOR_CEILING - z - SWITCH_CLUTCH_GRIP_HEIGHT
+                    - vertical_clearance - e,
+
+                tolerance = tolerance,
+
+                outer_color = "#fff",
+                cavity_color = "#eee",
+
+                show_dfm = show_dfm,
+                quick_preview = quick_preview
+            );
+        }
+    }
+
     if (show_keys) {
         // TODO: experiment with arbitrary lengths:
         POLY555_CANTILEVER_LENGTH = 3;
@@ -236,7 +270,10 @@ module scout(
 
     if (show_pcb) {
         e_translate([pcb_x, pcb_y, pcb_z]) {
-            scout_pcb(show_circuitry_clearance = show_clearances);
+            scout_pcb(
+                show_circuitry_clearance = show_clearances,
+                switch_position = switch_position
+            );
         }
     }
 
@@ -337,6 +374,10 @@ module scout(
     if (show_knob) {
         _knob();
     }
+
+    if (show_switch_clutch) {
+        _switch_clutch();
+    }
 }
 
 SHOW_ENCLOSURE_BOTTOM = true;
@@ -344,6 +385,7 @@ SHOW_BATTERY_HOLDER = true;
 SHOW_PCB = true;
 SHOW_KEYS_MOUNT_RAIL = true;
 SHOW_KEYS = true;
+SHOW_SWITCH_CLUTCH = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ACCOUTREMENTS = true;
 SHOW_KNOB = true;
@@ -363,6 +405,7 @@ intersection() {
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
         show_accoutrements = SHOW_ACCOUTREMENTS,
         show_knob = SHOW_KNOB,
+        show_switch_clutch = SHOW_SWITCH_CLUTCH,
 
         show_dfm = SHOW_DFM,
         show_clearances = SHOW_CLEARANCES,
@@ -394,4 +437,7 @@ intersection() {
 
     // pencil stand
     /* translate([-10, 20, -10]) { cube([200, 120, 100]); } */
+
+    // switch_clutch
+    /* translate([-10, 65, -10]) { cube([200, 120, 100]); } */
 }
