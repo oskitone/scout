@@ -138,18 +138,18 @@ module pcb_bottom_fixtures(
         }
     }
 
-    module _back_corners() {
+    module _corners() {
         corner_size = pcb_position.x + corner_coverage - (ENCLOSURE_WALL - e);
         corner_xs = [-wall, PCB_WIDTH + wall - corner_size];
+        corner_ys = [-wall, PCB_LENGTH + wall - corner_size];
 
-        y = PCB_LENGTH + pcb_position.y + wall - corner_size;
         z = ENCLOSURE_FLOOR_CEILING - e;
 
         height = pcb_position.z - z + PCB_HEIGHT;
 
         difference() {
-            for (x = corner_xs) {
-                translate([pcb_position.x + x, y, z]) {
+            for (x = corner_xs, y = corner_ys) {
+                translate([pcb_position.x + x, pcb_position.y + y, z]) {
                     cube([corner_size, corner_size, height]);
                 }
             }
@@ -161,5 +161,5 @@ module pcb_bottom_fixtures(
     _back_stools();
     _button_rail();
     _mounting_columns();
-    _back_corners();
+    _corners();
 }
