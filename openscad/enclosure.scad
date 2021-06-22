@@ -749,13 +749,11 @@ module enclosure(
         nib_z = ENCLOSURE_FLOOR_CEILING + BATTERY_HOLDER_ARM_FIXTURE_Z
             + tolerance;
 
-        module _nibs() {
-            for (y = [-e, battery_holder_length - _length]) {
-                y = batteries_position.y - battery_holder_wall - tolerance + y;
+        module _front_nib() {
+            y = batteries_position.y - battery_holder_wall - tolerance - e;
 
-                translate([x, y, nib_z]) {
-                    cube([_width, _length + e, _height]);
-                }
+            translate([x, y, nib_z]) {
+                cube([_width, _length + e, _height]);
             }
         }
 
@@ -769,23 +767,24 @@ module enclosure(
             z = ENCLOSURE_FLOOR_CEILING - e;
 
             arm_height = nib_z - z + _height;
+            nib_support = y_gap + _length + tolerance + e * 2;
 
             translate([x, y, z]) {
                 cube([_width, arm_length, arm_height]);
 
-                translate([0, -e, arm_height - y_gap - _height]) {
+                translate([0, e, arm_height - nib_support - _height + e]) {
                     flat_top_rectangular_pyramid(
                         top_width = _width,
-                        top_length = y_gap + e * 2,
+                        top_length = nib_support,
                         bottom_width = _width,
-                        bottom_length = e * 2,
-                        height = y_gap,
+                        bottom_length = 0,
+                        height = nib_support,
                         top_weight_y = 1
                     );
                 }
 
-                translate([0, -y_gap - tolerance - e, arm_height - _height]) {
-                    cube([_width, y_gap + e * 2 + tolerance, _height]);
+                translate([0, -_length - y_gap - tolerance - e, arm_height - _height]) {
+                    cube([_width, _length + y_gap + e * 2 + tolerance, _height]);
                 }
 
                 for (x = [0, _width - ENCLOSURE_INNER_WALL]) {
@@ -803,7 +802,7 @@ module enclosure(
             }
         }
 
-        _nibs();
+        _front_nib();
         _arm();
     }
 
