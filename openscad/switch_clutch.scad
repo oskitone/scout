@@ -15,8 +15,10 @@ module switch_clutch(
 
     web_available_width = 2,
     web_length_extension = 1,
-    web_height_lower_extension = 5,
-    web_height_upper_extension = 2,
+
+    switch_z = 0,
+    enclosure_height = 0,
+    vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT,
 
     x_clearance = .2,
 
@@ -35,9 +37,14 @@ module switch_clutch(
 ) {
     e = .0592;
 
-    web_gap = tolerance * 2 + x_clearance;
-
-    web_width = web_available_width - web_gap * 2;
+    switch_center_z = switch_z + SWITCH_BASE_HEIGHT / 2;
+    web_height_lower_extension = switch_center_z - grip_height / 2
+        - ENCLOSURE_FLOOR_CEILING - vertical_clearance;
+    web_height_upper_extension = enclosure_height - switch_center_z
+        - ENCLOSURE_FLOOR_CEILING * 2
+        - ENCLOSURE_FLOOR_CEILING - vertical_clearance;
+    web_x_gap = tolerance * 2 + x_clearance;
+    web_width = web_available_width - web_x_gap * 2;
     web_length = SWITCH_BASE_LENGTH
         + web_length_extension * 2 + SWITCH_ACTUATOR_TRAVEL;
     web_height = grip_height
@@ -81,7 +88,7 @@ module switch_clutch(
     }
 
     module _actuator_cavity() {
-        width = SWITCH_ACTUATOR_WIDTH - web_gap + tolerance;
+        width = SWITCH_ACTUATOR_WIDTH - web_x_gap + tolerance;
         length = SWITCH_ACTUATOR_LENGTH + tolerance * 2;
 
         translate([-width, (web_length - length) / 2, -e]) {
@@ -102,7 +109,7 @@ module switch_clutch(
     }
 
     translate([
-        -SWITCH_ORIGIN.x - web_gap,
+        -SWITCH_ORIGIN.x - web_x_gap,
         -SWITCH_ORIGIN.y - SWITCH_ACTUATOR_LENGTH
             + position * SWITCH_ACTUATOR_TRAVEL
             - web_length_extension,

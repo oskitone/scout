@@ -207,9 +207,7 @@ module scout(
         }
     }
 
-    module _switch_clutch(
-        vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT
-    ) {
+    module _switch_clutch() {
         x = pcb_x + PCB_SWITCH_POSITION.x;
         y = pcb_y + PCB_SWITCH_POSITION.y;
         z = pcb_z + PCB_HEIGHT;
@@ -220,11 +218,8 @@ module scout(
 
                 web_available_width = pcb_x - ENCLOSURE_WALL,
                 web_length_extension = 2.1, // NOTE: eyeballed!
-                web_height_lower_extension = z - ENCLOSURE_FLOOR_CEILING
-                    - vertical_clearance - e,
-                web_height_upper_extension = enclosure_height
-                    - ENCLOSURE_FLOOR_CEILING - z - SWITCH_CLUTCH_GRIP_HEIGHT
-                    - vertical_clearance - e,
+                switch_z = z,
+                enclosure_height = enclosure_height,
 
                 tolerance = tolerance,
 
