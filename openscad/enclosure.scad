@@ -81,7 +81,7 @@ module enclosure(
     nut_lock_floor = 0,
 
     show_dfm = false,
-    raft_height = DEFAULT_DFM_LAYER_HEIGHT,
+    brim_height = DEFAULT_DFM_LAYER_HEIGHT,
 
     tolerance = 0,
 
@@ -136,18 +136,18 @@ module enclosure(
 
     module _keys_exposure(
         y_tolerance_against_enclosure = 0, // intentionally snug
-        raft_radius = key_length * .5
+        brim_radius = key_length * .5
     ) {
         width = keys_full_width + key_gutter * 2 - e * 2;
 
         x = keys_position.x - key_gutter + e;
         z = dimensions.z - keys_cavity_height;
 
-        module _rafts() {
+        module _brims() {
             for (_x = [x, dimensions.x - x]) {
-                translate([_x, 0, dimensions.z - raft_height]) {
+                translate([_x, 0, dimensions.z - brim_height]) {
                     scale([1, .5, 1]) {
-                        cylinder(r = raft_radius, h = raft_height + e);
+                        cylinder(r = brim_radius, h = brim_height + e);
                     }
                 }
             }
@@ -163,7 +163,7 @@ module enclosure(
             }
 
             if (show_dfm) {
-                _rafts();
+                _brims();
             }
         }
 
@@ -181,7 +181,7 @@ module enclosure(
 
     module key_exposure_lip_support(
         wall = BREAKAWAY_SUPPORT_DEPTH,
-        raft_depth = 2
+        brim_depth = 2
     ) {
         print_bed_length = BREAKAWAY_SUPPORT_DEPTH;
         connection_length = ENCLOSURE_WALL;
@@ -229,11 +229,11 @@ module enclosure(
         }
 
         if (show_dfm) {
-            translate([x - raft_depth, -raft_depth, dimensions.z - raft_height]) {
+            translate([x - brim_depth, -brim_depth, dimensions.z - brim_height]) {
                 cube([
-                    width + raft_depth * 2,
-                    connection_length + raft_depth * 2,
-                    raft_height
+                    width + brim_depth * 2,
+                    connection_length + brim_depth * 2,
+                    brim_height
                 ]);
             }
         }
