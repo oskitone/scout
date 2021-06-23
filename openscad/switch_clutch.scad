@@ -53,6 +53,9 @@ module switch_clutch(
     exposed_grip_width = ENCLOSURE_WALL + side_overexposure
         + (web_available_width - web_width);
 
+    dfm_support_x = -web_width - exposed_grip_width + fillet;
+    dfm_support_y = (web_length - grip_length) / 2;
+
     module _exposed_grip() {
         x = -web_width - exposed_grip_width;
         y = (web_length - grip_length) / 2;
@@ -96,15 +99,24 @@ module switch_clutch(
         }
     }
 
-    module _support() {
+    module _dfm_support() {
         height = web_height_lower_extension - DEFAULT_DFM_LAYER_HEIGHT;
 
-        translate([
-            -web_width - exposed_grip_width + fillet,
-            web_length_extension,
-            0
-        ]) {
+        translate([dfm_support_x, dfm_support_y, 0]) {
             cube([BREAKAWAY_SUPPORT_DEPTH, grip_length, height]);
+        }
+    }
+
+    module _dfm_cavity() {
+        x = dfm_support_x + BREAKAWAY_SUPPORT_DEPTH;
+        y = dfm_support_y + BREAKAWAY_SUPPORT_DEPTH + fillet;
+        z = web_height_lower_extension;
+
+        width = exposed_grip_width - fillet - BREAKAWAY_SUPPORT_DEPTH + e;
+        length = grip_length - BREAKAWAY_SUPPORT_DEPTH * 2 - fillet * 2;
+
+        translate([x, y, z - e]) {
+            cube([width, length, DEFAULT_DFM_LAYER_HEIGHT + e]);
         }
     }
 
@@ -123,13 +135,17 @@ module switch_clutch(
                     _web();
 
                     if (show_dfm) {
-                        _support();
+                        _dfm_support();
                     }
                 }
             }
 
             color(cavity_color) {
                 _actuator_cavity();
+            }
+
+            if (show_dfm) {
+                _dfm_cavity();
             }
         }
     }
