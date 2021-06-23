@@ -574,7 +574,7 @@ module enclosure(
                     string = string,
                     size = label_text_size,
                     placard = placard ? [width, label_length] : undef,
-                    chamfer_placard = true,
+                    chamfer_placard_top = true,
                     bottom = true,
                     quick_preview = quick_preview,
                     enclosure_height = dimensions.z
