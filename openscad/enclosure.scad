@@ -848,10 +848,24 @@ module enclosure(
                     _half(bottom_height, lip = false);
 
                     color(outer_color) {
-                        pcb_bottom_fixtures(
-                            pcb_position = pcb_position,
-                            screw_head_clearance = screw_head_clearance
-                        );
+                        difference() {
+                            pcb_bottom_fixtures(
+                                pcb_position = pcb_position,
+                                screw_head_clearance = screw_head_clearance
+                            );
+
+                            translate([
+                                speaker_position.x,
+                                speaker_position.y,
+                                ENCLOSURE_FLOOR_CEILING - e
+                            ]) {
+                                cylinder(
+                                    d = SPEAKER_DIAMETER + tolerance * 2,
+                                    h = bottom_height,
+                                    $fn = quick_preview ? undef : HIDEF_ROUNDING
+                                );
+                            }
+                        }
                         _speaker_fixture();
                         _pencil_stand(false);
                         _battery_holder_arm_fixtures();
