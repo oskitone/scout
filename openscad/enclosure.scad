@@ -126,7 +126,7 @@ module enclosure(
             fillet = quick_preview ? 0 : fillet,
             include_tongue_and_groove = true,
             tongue_and_groove_snap = [.75, .25],
-            tolerance = DEFAULT_TOLERANCE * 2, // intentionally loose
+            tolerance = tolerance,
             outer_color = outer_color,
             cavity_color = cavity_color,
             $fn = quick_preview ? undef : DEFAULT_ROUNDING
