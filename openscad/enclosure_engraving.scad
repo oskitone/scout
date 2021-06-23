@@ -38,7 +38,7 @@ module enclosure_engraving(
     font = "Orbitron:style=Black",
 
     placard = undef,
-    chamfer_placard = false,
+    chamfer_placard_top = false,
 
     bottom = false,
 
@@ -46,12 +46,6 @@ module enclosure_engraving(
     enclosure_height = 0
 ) {
     e = .0135;
-
-    function get_placard_bottom_dimension(dimension) = (
-        chamfer_placard
-            ? dimension - ENCLOSURE_ENGRAVING_DEPTH * 2
-            : dimension
-    );
 
     translate([
         position.x,
@@ -64,17 +58,18 @@ module enclosure_engraving(
             difference() {
                 if (placard) {
                     translate([
-                        placard.x / (center ? -2 : 1)
-                            + (chamfer_placard ? ENCLOSURE_ENGRAVING_DEPTH : 0),
+                        placard.x / (center ? -2 : 1),
                         placard.y / (center ? -2 : 1)
-                            + (chamfer_placard ? ENCLOSURE_ENGRAVING_DEPTH : 0),
                     ]) {
                         flat_top_rectangular_pyramid(
                             top_width = placard.x,
                             top_length = placard.y,
-                            bottom_width = get_placard_bottom_dimension(placard.x),
-                            bottom_length = get_placard_bottom_dimension(placard.y),
-                            height = ENCLOSURE_ENGRAVING_DEPTH + e
+                            bottom_width = placard.x,
+                            bottom_length = chamfer_placard_top
+                                ? placard.y - ENCLOSURE_ENGRAVING_DEPTH
+                                : placard.y,
+                            height = ENCLOSURE_ENGRAVING_DEPTH + e,
+                            top_weight_y = 0
                         );
                     }
                 }
