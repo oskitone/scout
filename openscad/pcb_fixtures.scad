@@ -2,9 +2,8 @@ PCB_FIXTURE_CLEARANCE = .3;
 
 module _fixture_pcb_difference(
     pcb_position = [0, 0, 0],
-
+    z = undef,
     height = PCB_HEIGHT,
-    wall = ENCLOSURE_INNER_WALL,
     clearance = PCB_FIXTURE_CLEARANCE,
     tolerance = DEFAULT_TOLERANCE
 ) {
@@ -14,7 +13,7 @@ module _fixture_pcb_difference(
     translate([
         pcb_position.x - offset,
         pcb_position.y - offset,
-        pcb_position.z - e
+        (z != undef ? z : pcb_position.z) - e
     ]) {
         cube([
             PCB_WIDTH + offset * 2,
@@ -68,9 +67,10 @@ module pcb_bottom_fixtures(
     pcb_position = [0, 0, 0],
     screw_head_clearance = 0,
 
-    corner_coverage = 1,
+    corner_coverage = 4,
+    corner_fixture_wall = ENCLOSURE_INNER_WALL,
+    mounting_column_wall = ENCLOSURE_INNER_WALL,
 
-    wall = ENCLOSURE_INNER_WALL,
     clearance = PCB_FIXTURE_CLEARANCE,
     tolerance = DEFAULT_TOLERANCE
 ) {
@@ -121,8 +121,7 @@ module pcb_bottom_fixtures(
                     cylinder(
                         h = head_column_height - head_column_z,
                         d = SCREW_HEAD_DIAMETER
-                            + tolerance * 2
-                            + ENCLOSURE_INNER_WALL * 2
+                            + tolerance * 2 + mounting_column_wall * 2
                     );
                 }
 
@@ -130,22 +129,40 @@ module pcb_bottom_fixtures(
                     cylinder(
                         h = pcb_position.z - shaft_column_z,
                         d = PCB_HOLE_DIAMETER
-                            + tolerance * 2
-                            + ENCLOSURE_INNER_WALL * 2
+                            + tolerance * 2 + mounting_column_wall * 2
                     );
                 }
             }
         }
     }
 
-    module _corners() {
-        corner_size = pcb_position.x + corner_coverage - (ENCLOSURE_WALL - e);
-        corner_xs = [-wall, PCB_WIDTH + wall - corner_size];
-        corner_ys = [-wall, PCB_LENGTH + wall - corner_size];
+    module _corners(
+        wall = corner_fixture_wall,
+        height_extension = 1
+    ) {
+        offset = wall + tolerance;
+
+        corner_size = offset + corner_coverage;
+        corner_xs = [-offset, PCB_WIDTH + offset - corner_size];
+        corner_ys = [-offset, PCB_LENGTH + offset - corner_size];
 
         z = ENCLOSURE_FLOOR_CEILING - e;
 
-        height = pcb_position.z - z + PCB_HEIGHT;
+        height = pcb_position.z - z + PCB_HEIGHT + height_extension;
+
+        module _enclosure_lip_clearance() {
+            translate([
+                pcb_position.x - offset - e,
+                pcb_position.y + PCB_LENGTH + tolerance * 4 - e,
+                z + height - height_extension - e
+            ]) {
+                cube([
+                    PCB_WIDTH + offset * 2 + e * 2,
+                    wall + e * 2,
+                    height_extension + e * 2
+                ]);
+            }
+        }
 
         difference() {
             for (x = corner_xs, y = corner_ys) {
@@ -154,7 +171,13 @@ module pcb_bottom_fixtures(
                 }
             }
 
-            _fixture_pcb_difference(pcb_position);
+            _fixture_pcb_difference(
+                pcb_position,
+                z = z,
+                height = height
+            );
+
+            _enclosure_lip_clearance();
         }
     }
 
