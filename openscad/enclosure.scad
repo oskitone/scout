@@ -81,6 +81,7 @@ module enclosure(
     nut_lock_floor = 0,
 
     show_dfm = false,
+    raft_height = DEFAULT_DFM_LAYER_HEIGHT,
 
     tolerance = 0,
 
@@ -134,21 +135,19 @@ module enclosure(
     }
 
     module _keys_exposure(
-        y_tolerance_against_enclosure = 0 // intentionally snug
+        y_tolerance_against_enclosure = 0, // intentionally snug
+        raft_radius = key_length * .5
     ) {
         width = keys_full_width + key_gutter * 2 - e * 2;
 
         x = keys_position.x - key_gutter + e;
         z = dimensions.z - keys_cavity_height;
 
-        module _rafts(overlap = 10) {
-            radius = ENCLOSURE_WALL + BREAKAWAY_SUPPORT_DISTANCE + overlap;
-            height = DEFAULT_DFM_LAYER_HEIGHT;
-
-            for (_x = [0, dimensions.x]) {
-                translate([_x, 0, dimensions.z - height]) {
+        module _rafts() {
+            for (_x = [x, dimensions.x - x]) {
+                translate([_x, 0, dimensions.z - raft_height]) {
                     scale([1, .5, 1]) {
-                        cylinder(r = radius, h = height + e);
+                        cylinder(r = raft_radius, h = raft_height + e);
                     }
                 }
             }
@@ -181,7 +180,8 @@ module enclosure(
     }
 
     module key_exposure_lip_support(
-        wall = BREAKAWAY_SUPPORT_DEPTH
+        wall = BREAKAWAY_SUPPORT_DEPTH,
+        raft_depth = 2
     ) {
         print_bed_length = BREAKAWAY_SUPPORT_DEPTH;
         connection_length = ENCLOSURE_WALL;
@@ -226,6 +226,16 @@ module enclosure(
                 top_length = e,
                 x_bleed = e
             );
+        }
+
+        if (show_dfm) {
+            translate([x - raft_depth, -raft_depth, dimensions.z - raft_height]) {
+                cube([
+                    width + raft_depth * 2,
+                    connection_length + raft_depth * 2,
+                    raft_height
+                ]);
+            }
         }
 
         difference() {
