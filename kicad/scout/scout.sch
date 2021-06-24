@@ -776,32 +776,6 @@ F 3 "" H 7400 3400 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7500 4100 7400 4100
-Text GLabel 7350 1400 0    50   Input ~ 0
-D13
-$Comp
-L Connector_Generic:Conn_02x03_Odd_Even J4
-U 1 1 60BAC91C
-P 7650 1400
-F 0 "J4" H 7500 1100 50  0000 C CNN
-F 1 "Conn_02x03_Odd_Even" H 7400 1000 50  0000 C CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_2x03_P2.54mm_Vertical" H 7650 1400 50  0001 C CNN
-F 3 "~" H 7650 1400 50  0001 C CNN
-	1    7650 1400
-	1    0    0    -1  
-$EndComp
-$Comp
-L power:VCC #PWR019
-U 1 1 60BADCC6
-P 8050 1300
-F 0 "#PWR019" H 8050 1150 50  0001 C CNN
-F 1 "VCC" H 8065 1473 50  0000 C CNN
-F 2 "" H 8050 1300 50  0001 C CNN
-F 3 "" H 8050 1300 50  0001 C CNN
-	1    8050 1300
-	1    0    0    -1  
-$EndComp
-Text GLabel 7350 1300 0    50   Input ~ 0
-D12
 Wire Wire Line
 	4650 3250 4650 3300
 $Comp
@@ -815,33 +789,6 @@ F 3 "" H 4650 3250 50  0001 C CNN
 	1    4650 3250
 	1    0    0    -1  
 $EndComp
-Text GLabel 8050 1400 2    50   Input ~ 0
-D11
-Text GLabel 7350 1500 0    50   Input ~ 0
-RESET
-$Comp
-L power:GND #PWR020
-U 1 1 60BC4AC0
-P 8050 1500
-F 0 "#PWR020" H 8050 1250 50  0001 C CNN
-F 1 "GND" H 8055 1327 50  0000 C CNN
-F 2 "" H 8050 1500 50  0001 C CNN
-F 3 "" H 8050 1500 50  0001 C CNN
-	1    8050 1500
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7350 1300 7450 1300
-Wire Wire Line
-	7450 1400 7350 1400
-Wire Wire Line
-	7350 1500 7450 1500
-Wire Wire Line
-	7950 1300 8050 1300
-Wire Wire Line
-	8050 1400 7950 1400
-Wire Wire Line
-	7950 1500 8050 1500
 Wire Wire Line
 	7500 4600 7400 4600
 $Comp
