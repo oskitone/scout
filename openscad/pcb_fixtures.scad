@@ -122,7 +122,7 @@ module pcb_bottom_fixtures(
     enclosure_bottom_height,
     enclosure_lip_height,
 
-    corner_coverage = 4,
+    corner_coverage = 3, // eyeballed to not collide w/ switch_clutch
     corner_fixture_wall = 2,
     mounting_column_wall = ENCLOSURE_INNER_WALL,
 
