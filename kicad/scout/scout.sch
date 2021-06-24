@@ -20,10 +20,10 @@ Wire Wire Line
 Wire Wire Line
 	3550 1800 3550 1700
 $Comp
-L Connector:Conn_01x06_Male J3
+L Connector:Conn_01x06_Male J2
 U 1 1 60834ABB
 P 6000 1350
-F 0 "J3" H 5900 1000 50  0000 R CNN
+F 0 "J2" H 5900 1000 50  0000 R CNN
 F 1 "Conn_01x06_Male" H 5950 900 50  0000 R CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Horizontal" H 6000 1350 50  0001 C CNN
 F 3 "~" H 6000 1350 50  0001 C CNN
@@ -119,10 +119,10 @@ Wire Wire Line
 Text GLabel 4800 3600 2    50   Input ~ 0
 RESET
 $Comp
-L Device:R_Small_US R5
+L Device:R_Small_US R6
 U 1 1 60821C2F
 P 4650 3400
-F 0 "R5" H 4800 3400 50  0000 L CNN
+F 0 "R6" H 4800 3400 50  0000 L CNN
 F 1 "10k" H 4950 3400 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4650 3400 50  0001 C CNN
 F 3 "~" H 4650 3400 50  0001 C CNN
@@ -434,10 +434,10 @@ $EndComp
 Wire Wire Line
 	1500 2700 1500 2800
 $Comp
-L Device:C_Small C5
+L Device:C_Small C4
 U 1 1 6082438E
 P 5400 1650
-F 0 "C5" V 5250 1650 50  0000 C CNN
+F 0 "C4" V 5250 1650 50  0000 C CNN
 F 1 ".1uF" V 5150 1650 50  0000 C CNN
 F 2 "Capacitor_THT:C_Disc_D5.0mm_W2.5mm_P5.00mm" H 5438 1500 50  0001 C CNN
 F 3 "~" H 5400 1650 50  0001 C CNN
@@ -601,8 +601,6 @@ $EndComp
 Wire Wire Line
 	3100 6100 2950 6100
 Wire Wire Line
-	4650 5750 3650 5750
-Wire Wire Line
 	4850 6150 4850 6250
 Wire Wire Line
 	4850 6800 4050 6800
@@ -657,10 +655,10 @@ Wire Wire Line
 Wire Wire Line
 	5250 6150 5250 6400
 $Comp
-L Device:CP1 C4
+L Device:CP1 C5
 U 1 1 608927A0
 P 5700 5850
-F 0 "C4" V 5550 6000 50  0000 L CNN
+F 0 "C5" V 5550 6000 50  0000 L CNN
 F 1 "220uF" V 5450 5850 50  0000 L CNN
 F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 5700 5850 50  0001 C CNN
 F 3 "~" H 5700 5850 50  0001 C CNN
@@ -803,10 +801,10 @@ F 3 "" H 7400 4600 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Connector_Generic:Conn_01x13 J2
+L Connector_Generic:Conn_01x13 J3
 U 1 1 60B45309
 P 7700 4000
-F 0 "J2" H 7780 4042 50  0000 L CNN
+F 0 "J3" H 7780 4042 50  0000 L CNN
 F 1 "Conn_01x09" H 7780 3951 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x13_P2.54mm_Vertical" H 7700 4000 50  0001 C CNN
 F 3 "~" H 7700 4000 50  0001 C CNN
@@ -821,4 +819,19 @@ Wire Wire Line
 	7000 4400 7500 4400
 Wire Wire Line
 	7000 4500 7500 4500
+$Comp
+L Device:R_Small_US R5
+U 1 1 60D823A9
+P 4250 5750
+F 0 "R5" V 4500 5700 50  0000 L CNN
+F 1 "330k" V 4400 5650 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4250 5750 50  0001 C CNN
+F 3 "~" H 4250 5750 50  0001 C CNN
+	1    4250 5750
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	3650 5750 4150 5750
+Wire Wire Line
+	4350 5750 4650 5750
 $EndSCHEMATC
