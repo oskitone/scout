@@ -671,8 +671,6 @@ Wire Wire Line
 	5550 5850 5250 5850
 Wire Wire Line
 	5850 5850 6100 5850
-Text Notes 2950 5650 0    50   ~ 0
-TODO: confirm value\nfor safe headphone out
 Wire Wire Line
 	3800 6400 3700 6400
 Connection ~ 3700 6400
