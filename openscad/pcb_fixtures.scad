@@ -67,7 +67,7 @@ module pcb_bottom_fixtures(
     pcb_position = [0, 0, 0],
     screw_head_clearance = 0,
 
-    corner_coverage = 4,
+    corner_coverage = 3, // eyeballed to not collide w/ switch_clutch
     corner_fixture_wall = ENCLOSURE_INNER_WALL,
     mounting_column_wall = ENCLOSURE_INNER_WALL,
 

@@ -55,7 +55,7 @@ PCB_RELIEF_HOLE_POSITIONS = [
 PCB_LED_Z = 3; // RGB LED pin footprint prevents it from resting directly on PCB
 PCB_LED_POSITION = _([156.474, 86.706], [-2.54, 2.54 - MAGIC]);
 PCB_POT_POSITION = _([172.824, 97.796], [-2.54, 7 + 2.54 / 2 + MAGIC]);
-PCB_SWITCH_POSITION = _([34.544, 93.98], [0, -2.54]);
+PCB_SWITCH_POSITION = _([34.544, 91.98], [0, -2.54]);
 
 PCB_UART_HEADER_POSITION = _([39.116, 88.773], [2.54 / -2, 2.54 / 2]);
 PCB_UART_HEADER_WIDTH = 2.54 * 6;

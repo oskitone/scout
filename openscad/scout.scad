@@ -217,7 +217,7 @@ module scout(
                 position = switch_position,
 
                 web_available_width = pcb_x - ENCLOSURE_WALL,
-                web_length_extension = 2.1, // NOTE: eyeballed!
+                web_length_extension = 4, // NOTE: eyeballed!
                 switch_z = z,
                 enclosure_height = enclosure_height,
 
