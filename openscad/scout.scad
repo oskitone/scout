@@ -149,6 +149,7 @@ module scout(
     echo("Keys", [key_width, key_length, key_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
     echo("Screw clearance", screw_top_clearance, screw_head_clearance);
+    echo("PCB", [PCB_WIDTH, PCB_LENGTH], [pcb_x, pcb_y]);
 
     module _knob() {
         top_of_knob = (knob_z + knob_height);
