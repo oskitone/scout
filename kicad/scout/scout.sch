@@ -706,17 +706,17 @@ Wire Wire Line
 Wire Wire Line
 	2800 6250 2800 6400
 Text GLabel 4150 3000 2    50   Input ~ 0
-AI0
+A0
 Text GLabel 4150 3100 2    50   Input ~ 0
-AI1
+A1
 Text GLabel 4150 3200 2    50   Input ~ 0
-AI2
+A2
 Text GLabel 4150 3300 2    50   Input ~ 0
-AI3
+A3
 Text GLabel 4150 3400 2    50   Input ~ 0
-AI4
+A4
 Text GLabel 4150 3500 2    50   Input ~ 0
-AI5
+A5
 Text GLabel 4150 2500 2    50   Input ~ 0
 D12
 Wire Wire Line
@@ -734,17 +734,17 @@ Wire Wire Line
 Wire Wire Line
 	4150 3500 4050 3500
 Text GLabel 7400 3500 0    50   Input ~ 0
-AI0
+A0
 Text GLabel 7400 3600 0    50   Input ~ 0
-AI1
+A1
 Text GLabel 7400 3700 0    50   Input ~ 0
-AI2
+A2
 Text GLabel 7400 3800 0    50   Input ~ 0
-AI3
+A3
 Text GLabel 7400 3900 0    50   Input ~ 0
-AI4
+A4
 Text GLabel 7400 4000 0    50   Input ~ 0
-AI5
+A5
 Text GLabel 7400 4100 0    50   Input ~ 0
 D12
 Wire Wire Line
