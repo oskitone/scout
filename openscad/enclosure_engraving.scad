@@ -36,6 +36,7 @@ module enclosure_engraving(
     center = true,
     position = [0, 0],
     font = "Orbitron:style=Black",
+    depth = ENCLOSURE_ENGRAVING_DEPTH,
 
     placard = undef,
     chamfer_placard_top = false,
@@ -50,9 +51,7 @@ module enclosure_engraving(
     translate([
         position.x,
         position.y,
-        bottom
-            ? ENCLOSURE_ENGRAVING_DEPTH
-            : enclosure_height - ENCLOSURE_ENGRAVING_DEPTH
+        bottom ? depth : enclosure_height - depth
     ]) {
         rotate([0, bottom ? 180 : 0, 0]) {
             difference() {
@@ -66,9 +65,9 @@ module enclosure_engraving(
                             top_length = placard.y,
                             bottom_width = placard.x,
                             bottom_length = chamfer_placard_top
-                                ? placard.y - ENCLOSURE_ENGRAVING_DEPTH
+                                ? placard.y - depth
                                 : placard.y,
-                            height = ENCLOSURE_ENGRAVING_DEPTH + e,
+                            height = depth + e,
                             top_weight_y = 0
                         );
                     }
@@ -84,9 +83,7 @@ module enclosure_engraving(
                             ? undef
                             : [size / OSKITONE_LENGTH_WIDTH_RATIO, size],
                         bleed = quick_preview ? 0 : bleed,
-                        height = placard
-                            ? ENCLOSURE_ENGRAVING_DEPTH + e * 2
-                            : ENCLOSURE_ENGRAVING_DEPTH + e,
+                        height = placard ? depth + e * 2 : depth + e,
                         center = center,
                         chamfer =  quick_preview ? 0 : (placard ? 0 : chamfer)
                     );
