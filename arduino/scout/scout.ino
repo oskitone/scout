@@ -68,9 +68,22 @@ void updateFrequency() {
   }
 }
 
+void blink(int count = 2, int wait = 200) {
+    while (count >= 0) {
+        digitalWrite(LED_BUILTIN, HIGH);
+        delay(wait);
+        digitalWrite(LED_BUILTIN, LOW);
+        delay(wait);
+
+        count = count - 1;
+    }
+}
+
 void setup() {
   Serial.begin(9600);
   pinMode(LED_BUILTIN, OUTPUT);
+
+  blink();
   populateNotes();
 }
 
