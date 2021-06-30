@@ -438,10 +438,12 @@ module enclosure(
         width = ENCLOSURE_WALL + e * 2,
         length = ENCLOSURE_WALL + e * 2
     ) {
-        height = top_z - bottom_height + lip_height + e;
+        height = top_z - bottom_height + e;
 
-        translate([x, y, top_z - height]) {
-            cube([width, length, height]);
+        if (height > 0) {
+            translate([x, y, top_z - height]) {
+                cube([width, length, height]);
+            }
         }
     }
 
@@ -492,7 +494,7 @@ module enclosure(
             get_keys_to_enclosure_distance(tolerance, key_gutter);
 
         z = top
-            ? bottom_height - lip_height
+            ? bottom_height + lip_height
             : ENCLOSURE_FLOOR_CEILING - e;
         height = top
             ? keys_position.z - z + cantilver_mount_height
@@ -859,7 +861,7 @@ module enclosure(
         difference() {
             union() {
                 if (show_bottom) {
-                    _half(bottom_height, lip = false);
+                    _half(bottom_height, lip = true);
 
                     color(outer_color) {
                         difference() {
@@ -892,7 +894,7 @@ module enclosure(
                     difference() {
                         translate([0, 0, dimensions.z]) {
                             mirror([0, 0, 1]) {
-                                _half(top_height, lip = true);
+                                _half(top_height, lip = false);
                             }
                         }
 

@@ -159,7 +159,7 @@ module scout(
         * Bottom matches to top of PCB, otherwise will need to account for
           corner fixtures' cavity on enclosure top
      */
-    enclosure_bottom_height = pcb_z + enclosure_lip_height + PCB_HEIGHT;
+    enclosure_bottom_height = pcb_z + PCB_HEIGHT;
     enclosure_top_height = enclosure_height - enclosure_bottom_height;
 
     echo(
