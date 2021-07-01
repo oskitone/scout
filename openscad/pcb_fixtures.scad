@@ -1,5 +1,8 @@
 PCB_FIXTURE_CLEARANCE = .3;
 
+PCB_STOOL_DIAMETER = 4;
+PCB_STOOL_CHAMFER = 2;
+
 module _fixture_pcb_difference(
     pcb_position = [0, 0, 0],
     z = undef,
@@ -27,38 +30,38 @@ module pcb_enclosure_top_fixtures(
     pcb_position = [0, 0, 0],
     enclosure_dimensions = [0, 0, 0],
 
-    back_coverage = 4,
-    height_extension = 2,
+    size = PCB_STOOL_DIAMETER,
+    chamfer = PCB_STOOL_CHAMFER,
 
     // NOTE: these are eyeballed, and that's okay!
-    xs = [PCB_WIDTH * .24, PCB_WIDTH * .5, PCB_WIDTH * .79],
-
-    wall = ENCLOSURE_INNER_WALL,
-    clearance = PCB_FIXTURE_CLEARANCE,
-    tolerance = DEFAULT_TOLERANCE
+    positions = [
+        [PCB_WIDTH * .15, PCB_LENGTH * .75],
+        [PCB_WIDTH * .5, PCB_LENGTH * .85],
+    ]
 ) {
     e = .0876;
 
-    z = pcb_position.z - height_extension;
+    z = pcb_position.z + PCB_HEIGHT;
+    height = enclosure_dimensions.z - ENCLOSURE_FLOOR_CEILING - z;
 
-    height = enclosure_dimensions.z - ENCLOSURE_FLOOR_CEILING + e - z;
-
-    difference() {
-        for (x = xs) {
-            y = pcb_position.y + PCB_LENGTH - back_coverage;
-            end_y = enclosure_dimensions.y - ENCLOSURE_WALL + e;
-            length = end_y - y;
-
-            translate([pcb_position.x + x - wall / 2, y, z]) {
-                cube([wall, length, height]);
-            }
-        }
-
-        translate([0, 0, -height_extension - e]) {
-            _fixture_pcb_difference(
-                pcb_position,
-                height = PCB_HEIGHT + height_extension + e * 2
+    for (position = positions) {
+        translate([
+            pcb_position.x + position.x,
+            pcb_position.y + position.y,
+            z
+        ]) {
+            cylinder(
+                d = size,
+                h = height + e
             );
+
+            translate([0, 0, height - chamfer]) {
+                cylinder(
+                    d1 = size,
+                    d2 = size + chamfer * 2,
+                    h = chamfer
+                );
+            }
         }
     }
 }
@@ -79,7 +82,7 @@ module pcb_bottom_fixtures(
 
     z = ENCLOSURE_FLOOR_CEILING - e;
 
-    module _back_stools(size = 4) {
+    module _back_stools(size = PCB_STOOL_DIAMETER) {
         x_offset = 15; // NOTE: this is eye-balled!
         y = PCB_LENGTH - size / 2;
 
@@ -92,6 +95,12 @@ module pcb_bottom_fixtures(
                 cylinder(
                     d = size,
                     h = pcb_position.z - z
+                );
+
+                cylinder(
+                    d1 = size + PCB_STOOL_CHAMFER * 2,
+                    d2 = size,
+                    h = PCB_STOOL_CHAMFER
                 );
             }
         }
