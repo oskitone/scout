@@ -6,6 +6,7 @@ include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
 KEYS_MOUNT_LENGTH = NUT_DIAMETER;
+KEYS_FRONT_BOTTOM_CHAMFER = 1;
 
 function get_key_to_pcb_x_offset(
     key_width,
@@ -142,6 +143,8 @@ module keys(
     travel = 0,
     key_gutter,
 
+    front_bottom_chamfer = KEYS_FRONT_BOTTOM_CHAMFER,
+
     accidental_color = "#444",
     natural_color = "#fff",
     natural_color_cavity = "#eee",
@@ -150,6 +153,8 @@ module keys(
     show_clearance = false
 ) {
     e = .0234;
+
+    keys_full_width = get_keys_full_width(key_width, key_gutter);
 
     module _keys(
         include_natural = false,
@@ -219,11 +224,28 @@ module keys(
         color(natural_color_cavity) {
             key_lip_endstop(
                 keys_cavity_height_z,
-                keys_full_width = get_keys_full_width(key_width, key_gutter),
+                keys_full_width = keys_full_width,
                 distance_into_keys_bleed = tolerance * 4,
                 travel = travel,
                 key_gutter = key_gutter
             );
+
+            if (front_bottom_chamfer > 0) {
+                translate([
+                    keys_position.x - e,
+                    keys_position.y - e,
+                    keys_position.z - e
+                ]) {
+                    flat_top_rectangular_pyramid(
+                        top_width = keys_full_width + e * 2,
+                        top_length = 0,
+                        bottom_width = keys_full_width + e * 2,
+                        bottom_length = front_bottom_chamfer,
+                        height = front_bottom_chamfer,
+                        top_weight_y = 0
+                    );
+                }
+            }
         }
     }
 
@@ -234,7 +256,7 @@ module keys(
             keys_position.z - travel
         ]) {
             % cube([
-                get_keys_full_width(key_width, key_gutter),
+                keys_full_width,
                 key_length + e,
                 travel + e
             ]);
