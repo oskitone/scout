@@ -45,8 +45,7 @@ module switch_clutch(
         - ENCLOSURE_FLOOR_CEILING - vertical_clearance;
     web_x_gap = tolerance * 2 + x_clearance;
     web_width = web_available_width - web_x_gap * 2;
-    web_length = SWITCH_BASE_LENGTH
-        + web_length_extension * 2 + SWITCH_ACTUATOR_TRAVEL;
+    web_length = SWITCH_CLUTCH_GRIP_LENGTH + web_length_extension * 2;
     web_height = grip_height
         + web_height_lower_extension + web_height_upper_extension;
 
@@ -122,8 +121,11 @@ module switch_clutch(
 
     translate([
         -SWITCH_ORIGIN.x - web_x_gap,
-        -SWITCH_ORIGIN.y - SWITCH_ACTUATOR_LENGTH
-            + position * SWITCH_ACTUATOR_TRAVEL
+        -SWITCH_ORIGIN.y
+            + SWITCH_BASE_LENGTH / 2
+            - grip_length / 2
+            + SWITCH_ACTUATOR_TRAVEL / 2
+            - (1 - position) * SWITCH_ACTUATOR_TRAVEL
             - web_length_extension,
         -web_height_lower_extension - (grip_height - SWITCH_BASE_HEIGHT) / 2
     ]) {
