@@ -42,6 +42,7 @@ module scout(
     knob_vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT * 2,
 
     exposed_switch_clearance = 1,
+    switch_clutch_web_length_extension = 2.1, // NOTE: eyeballed!
 
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
@@ -236,7 +237,7 @@ module scout(
                 position = switch_position,
 
                 web_available_width = pcb_x - ENCLOSURE_WALL,
-                web_length_extension = 2.1, // NOTE: eyeballed!
+                web_length_extension = switch_clutch_web_length_extension,
                 switch_z = z,
                 enclosure_height = enclosure_height,
 
@@ -359,6 +360,9 @@ module scout(
 
             screw_head_clearance = screw_head_clearance,
             nut_lock_floor = nut_lock_floor,
+
+            switch_clutch_web_length_extension
+                = switch_clutch_web_length_extension,
 
             show_dfm = show_dfm,
 

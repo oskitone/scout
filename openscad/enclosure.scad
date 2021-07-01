@@ -82,6 +82,8 @@ module enclosure(
     screw_head_clearance = 0,
     nut_lock_floor = 0,
 
+    switch_clutch_web_length_extension = 0,
+
     show_dfm = false,
     brim_height = DEFAULT_DFM_LAYER_HEIGHT,
 
@@ -580,6 +582,13 @@ module enclosure(
         }
     }
 
+    function get_switch_peripheral_y(length = 0) = (
+        pcb_position.y + PCB_SWITCH_POSITION.y
+            - SWITCH_ORIGIN.y
+            + SWITCH_BASE_LENGTH / 2
+            - length / 2
+    );
+
     module _switch_exposure(
         just_assembly_valley = false,
         bleed = tolerance + .2 // intentionally loose
@@ -587,10 +596,7 @@ module enclosure(
         length = SWITCH_CLUTCH_GRIP_LENGTH + SWITCH_ACTUATOR_TRAVEL + bleed * 2;
         height = SWITCH_CLUTCH_GRIP_HEIGHT + bleed * 2;
 
-        y = pcb_position.y + PCB_SWITCH_POSITION.y
-            - SWITCH_ORIGIN.y
-            + SWITCH_BASE_LENGTH / 2
-            - length / 2;
+        y = get_switch_peripheral_y(length);
         z = pcb_position.z + PCB_HEIGHT + SWITCH_BASE_HEIGHT / 2 - height / 2;
 
         if (just_assembly_valley) {
@@ -608,6 +614,25 @@ module enclosure(
                 string = "POW",
                 y = y + length / 2
             );
+        }
+    }
+
+    module _switch_clutch_aligners(
+        bottom = false,
+        width = ENCLOSURE_INNER_WALL,
+        height = 2
+    ) {
+        length = SWITCH_CLUTCH_GRIP_LENGTH + SWITCH_ACTUATOR_TRAVEL
+            + switch_clutch_web_length_extension * 2;
+
+        x = pcb_position.x;
+        y = get_switch_peripheral_y(length);
+        z = bottom
+            ? ENCLOSURE_FLOOR_CEILING - e
+            : dimensions.z - ENCLOSURE_FLOOR_CEILING - height;
+
+        translate([x, y, z]) {
+            cube([width, length, height + e]);
         }
     }
 
@@ -881,6 +906,7 @@ module enclosure(
                         _pencil_stand(false);
                         _battery_holder_arm_fixtures();
                         _battery_holder_aligners();
+                        _switch_clutch_aligners(bottom = true);
                     }
                 }
 
@@ -914,6 +940,7 @@ module enclosure(
                             pcb_position = pcb_position,
                             enclosure_dimensions = dimensions
                         );
+                        _switch_clutch_aligners(bottom = false);
                     }
                 }
             }
