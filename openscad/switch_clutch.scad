@@ -16,7 +16,6 @@ module switch_clutch(
     web_available_width = 2,
     web_length_extension = 1,
 
-    switch_z = 0,
     enclosure_height = 0,
     vertical_clearance = DEFAULT_DFM_LAYER_HEIGHT,
 
@@ -37,17 +36,16 @@ module switch_clutch(
 ) {
     e = .0592;
 
-    switch_center_z = switch_z + SWITCH_BASE_HEIGHT / 2;
-    web_height_lower_extension = switch_center_z - grip_height / 2
-        - ENCLOSURE_FLOOR_CEILING - vertical_clearance;
-    web_height_upper_extension = enclosure_height - switch_center_z
+    web_height_extension = (
+        enclosure_height
+        - grip_height
+        - vertical_clearance * 2
         - ENCLOSURE_FLOOR_CEILING * 2
-        - ENCLOSURE_FLOOR_CEILING - vertical_clearance;
+    ) / 2;
     web_x_gap = tolerance * 2 + x_clearance;
     web_width = web_available_width - web_x_gap * 2;
     web_length = SWITCH_CLUTCH_GRIP_LENGTH + web_length_extension * 2;
-    web_height = grip_height
-        + web_height_lower_extension + web_height_upper_extension;
+    web_height = grip_height + web_height_extension * 2;
 
     exposed_grip_width = ENCLOSURE_WALL + side_overexposure
         + (web_available_width - web_width);
@@ -59,7 +57,7 @@ module switch_clutch(
         x = -web_width - exposed_grip_width;
         y = (web_length - grip_length) / 2;
 
-        translate([x, y, web_height_lower_extension]) {
+        translate([x, y, web_height_extension]) {
             difference() {
                 color(outer_color) {
                     rounded_cube(
@@ -99,7 +97,7 @@ module switch_clutch(
     }
 
     module _dfm_support() {
-        height = web_height_lower_extension - DEFAULT_DFM_LAYER_HEIGHT;
+        height = web_height_extension - DEFAULT_DFM_LAYER_HEIGHT;
 
         translate([dfm_support_x, dfm_support_y, 0]) {
             cube([BREAKAWAY_SUPPORT_DEPTH, grip_length, height]);
@@ -109,7 +107,7 @@ module switch_clutch(
     module _dfm_cavity() {
         x = dfm_support_x + BREAKAWAY_SUPPORT_DEPTH;
         y = dfm_support_y + BREAKAWAY_SUPPORT_DEPTH + fillet;
-        z = web_height_lower_extension;
+        z = web_height_extension;
 
         width = exposed_grip_width - fillet - BREAKAWAY_SUPPORT_DEPTH + e;
         length = grip_length - BREAKAWAY_SUPPORT_DEPTH * 2 - fillet * 2;
@@ -127,7 +125,7 @@ module switch_clutch(
             + SWITCH_ACTUATOR_TRAVEL / 2
             - (1 - position) * SWITCH_ACTUATOR_TRAVEL
             - web_length_extension,
-        -web_height_lower_extension - (grip_height - SWITCH_BASE_HEIGHT) / 2
+        ENCLOSURE_FLOOR_CEILING + vertical_clearance
     ]) {
         difference() {
             union() {

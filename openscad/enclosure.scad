@@ -597,7 +597,7 @@ module enclosure(
         height = SWITCH_CLUTCH_GRIP_HEIGHT + bleed * 2;
 
         y = get_switch_peripheral_y(length);
-        z = pcb_position.z + PCB_HEIGHT + SWITCH_BASE_HEIGHT / 2 - height / 2;
+        z = (dimensions.z - height) / 2;
 
         if (just_assembly_valley) {
             _assembly_valley_cavity(

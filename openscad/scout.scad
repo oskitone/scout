@@ -230,15 +230,13 @@ module scout(
     module _switch_clutch() {
         x = pcb_x + PCB_SWITCH_POSITION.x;
         y = pcb_y + PCB_SWITCH_POSITION.y;
-        z = pcb_z + PCB_HEIGHT;
 
-        translate([x, y, z]) {
+        translate([x, y]) {
             switch_clutch(
                 position = switch_position,
 
                 web_available_width = pcb_x - ENCLOSURE_WALL,
                 web_length_extension = switch_clutch_web_length_extension,
-                switch_z = z,
                 enclosure_height = enclosure_height,
 
                 tolerance = tolerance,
