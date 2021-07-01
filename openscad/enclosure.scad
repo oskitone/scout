@@ -850,6 +850,47 @@ module enclosure(
         _back_endstop();
     }
 
+    module _lip_retainer(
+        width = dimensions.x * .25,
+        support_floor_height = 1
+    ) {
+        lip_clearance = tolerance * 2;
+        keys_clearance = tolerance * 2;
+
+        // TODO: increase height when battery_holder isn't in the way
+        length = key_gutter - lip_clearance - keys_clearance;
+        height = bottom_height + lip_height - ENCLOSURE_FLOOR_CEILING -
+            (AAA_BATTERY_DIAMETER + battery_holder_floor);
+
+        x = (dimensions.x - width) / 2;
+        y = ENCLOSURE_WALL + lip_clearance;
+        z = bottom_height + lip_height - height;
+
+        support_length = y + length - ENCLOSURE_WALL;
+        support_height = support_length;
+
+        module _support() {
+            translate([0, length - support_length, height]) {
+                cube([width, support_length, support_floor_height]);
+
+                translate([0, 0, support_floor_height - e]) {
+                    flat_top_rectangular_pyramid(
+                        top_width = width,
+                        top_length = 0,
+                        bottom_width = width,
+                        bottom_length = support_length,
+                        height = support_height,
+                        top_weight_y = 0
+                    );
+                }
+            }
+        }
+
+        translate([x, y - e, z]) {
+            _support();
+            cube([width, length, height + e]);
+        }
+    }
 
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
@@ -921,6 +962,7 @@ module enclosure(
                             enclosure_dimensions = dimensions
                         );
                         _switch_clutch_aligners(bottom = false);
+                        _lip_retainer();
                     }
                 }
             }

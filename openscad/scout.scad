@@ -471,6 +471,9 @@ intersection() {
     // speaker
     /* translate([130, -10, -10]) { cube([200, 120, 100]); } */
 
+    // lip retainer
+    /* translate([70, -10, -10]) { cube([200, 120, 100]); } */
+
     // knob
     /* translate([-10, -10, -10]) { cube([155, 120, 100]); } */
 
