@@ -127,10 +127,11 @@ module scout(
     pencil_stand_angle_y = 10;
     pencil_stand_depth = 12.8;
 
-    batteries_x = ENCLOSURE_WALL + (
-        (enclosure_width - ENCLOSURE_WALL * 2) -
-        get_battery_holder_width(tolerance, battery_holder_wall)
-    ) * .4;
+    batteries_x = pcb_x
+        + PCB_RELIEF_HOLE_POSITIONS[0].x
+        + (PCB_RELIEF_HOLE_POSITIONS[1].x - PCB_RELIEF_HOLE_POSITIONS[0].x) / 2
+        + (tolerance + battery_holder_wall)
+        - get_battery_holder_width(tolerance, battery_holder_wall) / 2;
     batteries_y = ENCLOSURE_WALL + ENCLOSURE_INNER_WALL + tolerance * 2;
     batteries_z = ENCLOSURE_FLOOR_CEILING + battery_holder_floor;
 
@@ -441,7 +442,7 @@ intersection() {
     /* translate([18.5, -10, -10]) { cube([200, 120, 100]); } */
 
     // batteries
-    /* translate([40, -10, -10]) { cube([200, 120, 100]); } */
+    /* translate([80, -10, -10]) { cube([200, 120, 100]); } */
 
     // screw mount
     /* translate([10.3, -10, -10]) { cube([200, 120, 100]); } */

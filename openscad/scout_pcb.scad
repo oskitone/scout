@@ -48,8 +48,8 @@ PCB_HOLE_POSITIONS = [
 
 PCB_RELIEF_HOLE_DIAMETER = 3.5;
 PCB_RELIEF_HOLE_POSITIONS = [
-    _([135.128, 122.555], [0, 2.54 / 2 + MAGIC]),
     _([74.168, 122.555], [0, 2.54 / 2 + MAGIC]),
+    _([135.128, 122.555], [0, 2.54 / 2 + MAGIC]),
 ];
 
 PCB_LED_Z = 3; // RGB LED pin footprint prevents it from resting directly on PCB
