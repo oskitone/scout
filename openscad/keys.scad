@@ -49,6 +49,7 @@ module keys_mount_alignment_fixture(
     e = .0825;
 
     x_bleed = cavity ? 0 : tolerance + e;
+    z_bleed = cavity ? e : 0;
 
     fixture_width = cavity
         ? fixture_width + tolerance
@@ -65,8 +66,8 @@ module keys_mount_alignment_fixture(
 
     for (x = xs) {
         y = (KEYS_MOUNT_LENGTH - fixture_length) / 2;
-        translate([x, y, -e]) {
-            cube([fixture_width + e, fixture_length, height + e * 2]);
+        translate([x, y, -z_bleed]) {
+            cube([fixture_width + e, fixture_length, height + z_bleed * 2]);
         }
     }
 }
