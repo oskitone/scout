@@ -346,11 +346,19 @@ module battery_holder(
             wall_xy + end_gutter,
             wall_xy + width - _width - end_gutter
         ]) {
-            translate([x, length + wall_xy, -floor]) {
+            translate([x, length + wall_xy - fillet, -floor]) {
                 difference() {
-                    cube([_width, back_hitch_length, back_hitch_height]);
+                    cube([
+                        _width,
+                        back_hitch_length + fillet,
+                        back_hitch_height
+                    ]);
 
-                    translate([-e, hole_diameter / 2, back_hitch_height / 2]) {
+                    translate([
+                        -e,
+                        hole_diameter / 2 + fillet,
+                        back_hitch_height / 2
+                    ]) {
                         rotate([0, 90, 0]) {
                             cylinder(
                                 d = hole_diameter,
