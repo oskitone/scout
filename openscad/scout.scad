@@ -473,6 +473,7 @@ intersection() {
 
     // lip retainer
     /* translate([70, -10, -10]) { cube([200, 120, 100]); } */
+    /* translate([70, -10, -10]) { cube([20, 20, 100]); } */
 
     // knob
     /* translate([-10, -10, -10]) { cube([155, 120, 100]); } */

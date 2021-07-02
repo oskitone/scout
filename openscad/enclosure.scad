@@ -852,13 +852,15 @@ module enclosure(
 
     module _lip_retainer(
         width = dimensions.x * .25,
-        support_floor_height = 1
-    ) {
-        lip_clearance = tolerance * 2;
-        keys_clearance = tolerance * 2;
+        extra_lip_clearance = tolerance * 2,
 
-        // TODO: increase height when battery_holder isn't in the way
-        length = key_gutter - lip_clearance - keys_clearance;
+        // These two are eye-balled to not collide w/ chamfered front keys
+        keys_intrusion = .3,
+        support_floor_height = DEFAULT_DFM_LAYER_HEIGHT * 2
+    ) {
+        lip_clearance = tolerance * 2 + extra_lip_clearance;
+
+        length = key_gutter - lip_clearance + keys_intrusion;
         height = bottom_height + lip_height - ENCLOSURE_FLOOR_CEILING -
             (AAA_BATTERY_DIAMETER + battery_holder_floor);
 
