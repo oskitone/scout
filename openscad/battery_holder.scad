@@ -4,9 +4,10 @@ use <../../poly555/openscad/lib/basic_shapes.scad>;
 include <batteries.scad>;
 include <battery_contacts.scad>;
 
-BATTERY_HOLDER_ARM_FIXTURE_WIDTH = 10;
-BATTERY_HOLDER_ARM_FIXTURE_DEPTH = .6;
-BATTERY_HOLDER_ARM_FIXTURE_Z = 2;
+BATTERY_HOLDER_NUB_FIXTURE_WIDTH = 10;
+BATTERY_HOLDER_NUB_FIXTURE_DEPTH = .6;
+BATTERY_HOLDER_NUB_FIXTURE_HEIGHT = 1;
+BATTERY_HOLDER_NUB_FIXTURE_Z = AAA_BATTERY_DIAMETER;
 
 function get_battery_holder_cavity_width(
     tolerance = 0
@@ -262,6 +263,9 @@ module battery_holder(
     outer_color = undef,
     cavity_color = undef,
 
+    back_hitch_length = 0,
+    back_hitch_height = 0,
+
     quick_preview = true
 ) {
     e = .0837;
@@ -318,59 +322,43 @@ module battery_holder(
         }
     }
 
-    module _arm_fixture_cavities(clearance = .1) {
-        cavity_width = BATTERY_HOLDER_ARM_FIXTURE_WIDTH
-            + (clearance + tolerance) * 2;
-        cavity_length = BATTERY_HOLDER_ARM_FIXTURE_DEPTH
-            + (clearance + tolerance);
-        cavity_height = BATTERY_HOLDER_ARM_FIXTURE_DEPTH
+    module _nub_fixture_cavity(clearance = .1) {
+        _width = BATTERY_HOLDER_NUB_FIXTURE_WIDTH + (clearance + tolerance) * 2;
+        _length = wall + e * 2;
+        _height = BATTERY_HOLDER_NUB_FIXTURE_HEIGHT
             + (clearance + tolerance) * 2;
 
-        x = wall_xy + (width - cavity_width) / 2;
-        z = BATTERY_HOLDER_ARM_FIXTURE_Z - (clearance + tolerance) - floor;
+        x = wall_xy + (width - _width) / 2;
+        y = wall_xy - e;
+        z = BATTERY_HOLDER_NUB_FIXTURE_Z - (clearance + tolerance) - floor;
 
-        for (y = [wall_xy - e, wall_xy + length - cavity_length]) {
-            translate([x, y, z]) {
-                cube([cavity_width, cavity_length + e, cavity_height]);
-            }
+        translate([x, y, z]) {
+            cube([_width, _length + e, _height]);
         }
     }
 
     module _wire_relief_hitches(
         _width = 3,
-        _length = 4,
         end_gutter = wall,
-        ring = 2,
-        hole_diameter = 2 + tolerance * 2,
-        gutter = 8
+        hole_diameter = 2 + tolerance * 2
     ) {
-        module _c(diameter = hole_diameter, bleed = 0) {
-            z = (hole_diameter + ring) / 2;
-            translate([-bleed, hole_diameter / 2, z]) {
-                rotate([0, 90, 0]) {
-                    cylinder(
-                        d = diameter,
-                        h = _width + bleed * 2,
-                        $fn = 12
-                    );
-                }
-            }
-        }
-
         for (x = [
             wall_xy + end_gutter,
             wall_xy + width - _width - end_gutter
         ]) {
             translate([x, length + wall_xy, -floor]) {
                 difference() {
-                    hull() {
-                        translate([0, -fillet, 0]) {
-                            cube([_width, e, hole_diameter + ring]);
-                        }
-                        _c(diameter = hole_diameter + ring);
-                    }
+                    cube([_width, back_hitch_length, back_hitch_height]);
 
-                    _c(bleed = e);
+                    translate([-e, hole_diameter / 2, back_hitch_height / 2]) {
+                        rotate([0, 90, 0]) {
+                            cylinder(
+                                d = hole_diameter,
+                                h = _width + e * 2,
+                                $fn = quick_preview ? undef : LOFI_ROUNDING
+                            );
+                        }
+                    }
                 }
             }
         }
@@ -430,7 +418,7 @@ module battery_holder(
                 );
             }
 
-            _arm_fixture_cavities();
+            _nub_fixture_cavity();
         }
     }
 }

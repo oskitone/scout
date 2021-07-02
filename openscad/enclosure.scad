@@ -768,78 +768,24 @@ module enclosure(
         }
     }
 
-    module _battery_holder_arm_fixtures() {
-        _width = BATTERY_HOLDER_ARM_FIXTURE_WIDTH - tolerance * 2;
-        _length = BATTERY_HOLDER_ARM_FIXTURE_DEPTH - tolerance;
-        _height = BATTERY_HOLDER_ARM_FIXTURE_DEPTH - tolerance * 2;
+    module _battery_holder_nub_fixture() {
+        _width = BATTERY_HOLDER_NUB_FIXTURE_WIDTH - tolerance * 2;
+        _length = BATTERY_HOLDER_NUB_FIXTURE_DEPTH - tolerance;
+        _height = BATTERY_HOLDER_NUB_FIXTURE_HEIGHT - tolerance * 2;
 
         battery_holder_width =
             get_battery_holder_width(tolerance, battery_holder_wall);
-        battery_holder_length =
-            get_battery_holder_length(tolerance, battery_holder_wall);
 
         x = batteries_position.x
             + -(battery_holder_wall + tolerance)
             + (battery_holder_width - _width) / 2;
-
-        nib_z = ENCLOSURE_FLOOR_CEILING + BATTERY_HOLDER_ARM_FIXTURE_Z
+        y = batteries_position.y - battery_holder_wall - tolerance;
+        z = ENCLOSURE_FLOOR_CEILING + BATTERY_HOLDER_NUB_FIXTURE_Z
             + tolerance;
 
-        module _front_nib() {
-            y = batteries_position.y - battery_holder_wall - tolerance - e;
-
-            translate([x, y, nib_z]) {
-                cube([_width, _length + e, _height]);
-            }
+        translate([x, y - e, z]) {
+            cube([_width, _length + e, _height]);
         }
-
-        module _arm(
-            arm_length = ENCLOSURE_INNER_WALL,
-            support_depth = BATTERY_HOLDER_ARM_FIXTURE_Z * 2
-        ) {
-            y_gap = tolerance * 2;
-            y = batteries_position.y - battery_holder_wall - tolerance
-                + y_gap + battery_holder_length;
-            z = ENCLOSURE_FLOOR_CEILING - e;
-
-            arm_height = nib_z - z + _height;
-            nib_support = y_gap + _length + tolerance + e * 2;
-
-            translate([x, y, z]) {
-                cube([_width, arm_length, arm_height]);
-
-                translate([0, e, arm_height - nib_support - _height + e]) {
-                    flat_top_rectangular_pyramid(
-                        top_width = _width,
-                        top_length = nib_support,
-                        bottom_width = _width,
-                        bottom_length = 0,
-                        height = nib_support,
-                        top_weight_y = 1
-                    );
-                }
-
-                translate([0, -_length - y_gap - tolerance - e, arm_height - _height]) {
-                    cube([_width, _length + y_gap + e * 2 + tolerance, _height]);
-                }
-
-                for (x = [0, _width - ENCLOSURE_INNER_WALL]) {
-                    translate([x, arm_length - e, 0]) {
-                        flat_top_rectangular_pyramid(
-                            top_width = ENCLOSURE_INNER_WALL,
-                            top_length = 0,
-                            bottom_width = ENCLOSURE_INNER_WALL,
-                            bottom_length = support_depth + e,
-                            height = arm_height,
-                            top_weight_y = 0
-                        );
-                    }
-                }
-            }
-        }
-
-        _front_nib();
-        _arm();
     }
 
     module _battery_holder_aligners(
@@ -904,7 +850,7 @@ module enclosure(
                         }
                         _speaker_fixture();
                         _pencil_stand(false);
-                        _battery_holder_arm_fixtures();
+                        _battery_holder_nub_fixture();
                         _battery_holder_aligners();
                         _switch_clutch_aligners(bottom = true);
                     }

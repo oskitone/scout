@@ -89,6 +89,7 @@ BUTTON_HEIGHT = 6;
 
 PCB_CIRCUITRY_CLEARANCE = 12;
 PCB_PIN_CLEARANCE = 2;
+PCB_FRONT_PIN_Y = 2;
 
 module scout_pcb_holes(
     y,
@@ -237,8 +238,12 @@ module scout_pcb(
             % cube([PCB_WIDTH, length, PCB_CIRCUITRY_CLEARANCE + e]);
         }
 
-        translate([0, 0, -PCB_PIN_CLEARANCE]) {
-            % cube([PCB_WIDTH, PCB_LENGTH, PCB_PIN_CLEARANCE + e]);
+        translate([0, PCB_FRONT_PIN_Y, -PCB_PIN_CLEARANCE]) {
+            % cube([
+                PCB_WIDTH,
+                PCB_LENGTH - PCB_FRONT_PIN_Y,
+                PCB_PIN_CLEARANCE + e
+            ]);
         }
 
     }

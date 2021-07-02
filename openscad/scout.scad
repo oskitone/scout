@@ -251,6 +251,32 @@ module scout(
         }
     }
 
+    module _battery_holder(
+        outer_color = enclosure_outer_color,
+        cavity_color = enclosure_cavity_color
+    ) {
+        difference() {
+            e_translate([batteries_x, batteries_y, batteries_z]) {
+                battery_holder(
+                    wall = battery_holder_wall,
+                    floor = battery_holder_floor,
+                    fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
+                    tolerance = tolerance + e,
+                    outer_color = outer_color,
+                    cavity_color = cavity_color,
+                    back_hitch_length = 4, // TODO: derive
+                    back_hitch_height =
+                        pcb_z - ENCLOSURE_FLOOR_CEILING + PCB_HEIGHT - e,
+                    quick_preview = quick_preview
+                );
+            }
+
+            color(cavity_color) {
+                _fixture_pcb_difference(pcb_position = [pcb_x, pcb_y, pcb_z]);
+            }
+        }
+    }
+
     if (show_keys) {
         // TODO: experiment with arbitrary lengths:
         POLY555_CANTILEVER_LENGTH = 3;
@@ -375,17 +401,7 @@ module scout(
     }
 
     if (show_battery_holder) {
-        e_translate([batteries_x, batteries_y, batteries_z]) {
-            battery_holder(
-                wall = battery_holder_wall,
-                floor = battery_holder_floor,
-                fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
-                tolerance = tolerance + e,
-                outer_color = enclosure_outer_color,
-                cavity_color = enclosure_cavity_color,
-                quick_preview = quick_preview
-            );
-        }
+        _battery_holder();
     }
 
     if (show_accoutrements) {
