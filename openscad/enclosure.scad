@@ -64,6 +64,7 @@ module enclosure(
     speaker_position = [],
 
     battery_holder_wall = ENCLOSURE_INNER_WALL,
+    battery_holder_floor = 0,
     batteries_position = [],
 
     pencil_stand_position = [],
@@ -773,52 +774,78 @@ module enclosure(
         }
     }
 
-    module _battery_holder_nub_fixture() {
-        _width = BATTERY_HOLDER_NUB_FIXTURE_WIDTH - tolerance * 2;
-        _length = BATTERY_HOLDER_NUB_FIXTURE_DEPTH - tolerance;
-        _height = BATTERY_HOLDER_NUB_FIXTURE_HEIGHT - tolerance * 2;
-
+    module _battery_holder_fixtures() {
         battery_holder_width =
             get_battery_holder_width(tolerance, battery_holder_wall);
+        battery_holder_length =
+            get_battery_holder_length(tolerance, battery_holder_wall);
 
-        x = batteries_position.x
+        function get_center_x(width) = (
+            batteries_position.x
             + -(battery_holder_wall + tolerance)
-            + (battery_holder_width - _width) / 2;
-        y = batteries_position.y - battery_holder_wall - tolerance;
-        z = ENCLOSURE_FLOOR_CEILING + BATTERY_HOLDER_NUB_FIXTURE_Z
-            + tolerance;
+            + (battery_holder_width - width) / 2
+        );
 
-        translate([x, y - e, z]) {
-            cube([_width, _length + e, _height]);
-        }
-    }
+        module _front_nub() {
+            _width = BATTERY_HOLDER_NUB_FIXTURE_WIDTH - tolerance * 2;
+            _length = BATTERY_HOLDER_NUB_FIXTURE_DEPTH - tolerance;
+            _height = BATTERY_HOLDER_NUB_FIXTURE_HEIGHT - tolerance * 2;
 
-    module _battery_holder_aligners(
-        width = ENCLOSURE_INNER_WALL,
-        length = 4,
-        height = bottom_height - ENCLOSURE_FLOOR_CEILING - lip_height,
-        clearance = .2
-    ) {
-        battery_holder_width =
-            get_battery_holder_width(tolerance, battery_holder_wall);
+            x = get_center_x(_width);
+            y = batteries_position.y - battery_holder_wall - tolerance;
+            z = ENCLOSURE_FLOOR_CEILING + BATTERY_HOLDER_NUB_FIXTURE_Z
+                + tolerance;
 
-        for (x = [
-            -width - clearance - tolerance,
-             clearance + battery_holder_width
-        ]) {
-            x = x + batteries_position.x - battery_holder_wall - tolerance;
-
-            translate([x, ENCLOSURE_WALL - e, ENCLOSURE_FLOOR_CEILING - e]) {
-                flat_top_rectangular_pyramid(
-                    top_width = width,
-                    top_length = 0,
-                    bottom_width = width,
-                    bottom_length = length + e,
-                    height = height + e,
-                    top_weight_y = 0
-                );
+            translate([x, y - e, z]) {
+                cube([_width, _length + e, _height]);
             }
         }
+
+        module _side_aligners(
+            width = ENCLOSURE_INNER_WALL,
+            clearance = .2
+        ) {
+            length = battery_holder_wall
+                + (AAA_BATTERY_DIAMETER - KEYSTONE_5204_5226_TAB_WIDTH) / 2;
+            height = length;
+
+            for (x = [
+                -width - clearance - tolerance,
+                 clearance + battery_holder_width
+            ]) {
+                x = x + batteries_position.x - battery_holder_wall - tolerance;
+
+                translate([x, ENCLOSURE_WALL - e, ENCLOSURE_FLOOR_CEILING - e]) {
+                    flat_top_rectangular_pyramid(
+                        top_width = width,
+                        top_length = 0,
+                        bottom_width = width,
+                        bottom_length = length + e,
+                        height = height + e,
+                        top_weight_y = 0
+                    );
+                }
+            }
+        }
+
+        module _back_endstop(
+            width = AAA_BATTERY_LENGTH / 2,
+            height = battery_holder_floor
+        ) {
+            x = get_center_x(width);
+            y = batteries_position.y - (battery_holder_wall + tolerance)
+                + tolerance * 2
+                + battery_holder_length;
+            z = ENCLOSURE_FLOOR_CEILING;
+
+            translate([x, y, z - e]) {
+                cube([width, ENCLOSURE_INNER_WALL, height + e]);
+            }
+        }
+
+        _front_nub();
+        _side_aligners();
+        _back_endstop();
     }
 
 
@@ -856,8 +883,7 @@ module enclosure(
                         _keys_mount_alignment_fixture(top = false);
                         _speaker_fixture();
                         _pencil_stand(false);
-                        _battery_holder_nub_fixture();
-                        _battery_holder_aligners();
+                        _battery_holder_fixtures();
                         _switch_clutch_aligners(bottom = true);
                     }
                 }
