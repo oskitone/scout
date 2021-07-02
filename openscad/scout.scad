@@ -205,7 +205,10 @@ module scout(
 
         translate([batteries_x, batteries_y, batteries_z + e]) {
             % battery_array();
-            % # battery_contacts(tolerance = tolerance);
+            % # battery_contacts(
+                tolerance = tolerance,
+                end_terminal_bottom_right = false
+            );
         }
 
         % nuts(
@@ -262,6 +265,7 @@ module scout(
                     floor = battery_holder_floor,
                     fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
                     tolerance = tolerance + e,
+                    end_terminal_bottom_right = false,
                     outer_color = outer_color,
                     cavity_color = cavity_color,
                     back_hitch_length = 4, // TODO: derive
