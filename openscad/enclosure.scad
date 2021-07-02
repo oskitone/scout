@@ -486,11 +486,16 @@ module enclosure(
         }
     }
 
-    module _keys_mount_alignment_fixture() {
+    module _keys_mount_alignment_fixture(top) {
         keys_to_enclosure_distance =
             get_keys_to_enclosure_distance(tolerance, key_gutter);
-        z = bottom_height - lip_height;
-        height = keys_position.z - z + cantilver_mount_height;
+
+        z = top
+            ? bottom_height - lip_height
+            : ENCLOSURE_FLOOR_CEILING - e;
+        height = top
+            ? keys_position.z - z + cantilver_mount_height
+            : bottom_height - z - lip_height;
 
         translate([
             keys_position.x - keys_to_enclosure_distance,
@@ -848,6 +853,7 @@ module enclosure(
                                 );
                             }
                         }
+                        _keys_mount_alignment_fixture(top = false);
                         _speaker_fixture();
                         _pencil_stand(false);
                         _battery_holder_nub_fixture();
@@ -873,7 +879,7 @@ module enclosure(
 
                     color(outer_color) {
                         _knob_exposure(false);
-                        _keys_mount_alignment_fixture();
+                        _keys_mount_alignment_fixture(top = true);
                         _keys_mount_nut_lock_rail();
                         key_lip_endstop(
                             keys_cavity_height_z
