@@ -140,7 +140,8 @@ module battery_direction_engravings(
     z = 0,
     gutter = KEYSTONE_181_GUTTER,
     height = AAA_BATTERY_DIAMETER,
-    count = 3
+    count = 3,
+    quick_preview = true
 ) {
     e = .0351;
 
@@ -163,7 +164,7 @@ module battery_direction_engravings(
                     size = AAA_BATTERY_DIAMETER * .75,
                     bottom = true,
                     enclosure_height = z,
-                    quick_preview = false
+                    quick_preview = quick_preview
                 );
             }
         }
@@ -422,7 +423,8 @@ module battery_holder(
 
                 battery_direction_engravings(
                     tolerance = tolerance,
-                    z = floor
+                    z = floor,
+                    quick_preview = quick_preview
                 );
             }
 
