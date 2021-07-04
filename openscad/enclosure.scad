@@ -774,7 +774,7 @@ module enclosure(
         }
     }
 
-    module _battery_holder_fixtures() {
+    module _battery_holder_fixtures(top) {
         battery_holder_width =
             get_battery_holder_width(tolerance, battery_holder_wall);
         battery_holder_length =
@@ -843,9 +843,12 @@ module enclosure(
             }
         }
 
-        _front_nub();
-        _side_aligners();
-        _back_endstop();
+        if (top) {
+            _front_nub();
+        } else {
+            _side_aligners();
+            _back_endstop();
+        }
     }
 
 
@@ -883,7 +886,7 @@ module enclosure(
                         _keys_mount_alignment_fixture(top = false);
                         _speaker_fixture();
                         _pencil_stand(false);
-                        _battery_holder_fixtures();
+                        _battery_holder_fixtures(top = false);
                         _switch_clutch_aligners(bottom = true);
                     }
                 }
@@ -918,6 +921,7 @@ module enclosure(
                             pcb_position = pcb_position,
                             enclosure_dimensions = dimensions
                         );
+                        _battery_holder_fixtures(top = true);
                         _switch_clutch_aligners(bottom = false);
                     }
                 }
