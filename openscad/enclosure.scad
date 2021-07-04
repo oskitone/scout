@@ -868,7 +868,9 @@ module enclosure(
                         difference() {
                             pcb_bottom_fixtures(
                                 pcb_position = pcb_position,
-                                screw_head_clearance = screw_head_clearance
+                                screw_head_clearance = screw_head_clearance,
+                                enclosure_bottom_height = bottom_height,
+                                enclosure_lip_height = lip_height
                             );
 
                             translate([

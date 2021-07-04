@@ -159,8 +159,6 @@ module scout(
           awkward or inhibiting assembly
           * And cavity engraving/reach depths must not be so deep as to get
             messed up by tongue/groove
-        * Bottom matches to top of PCB, otherwise will need to account for
-          corner fixtures' cavity on enclosure top
      */
     enclosure_bottom_height = pcb_z + enclosure_lip_height + PCB_HEIGHT;
     enclosure_top_height = enclosure_height - enclosure_bottom_height;

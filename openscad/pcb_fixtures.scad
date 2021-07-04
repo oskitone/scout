@@ -70,6 +70,9 @@ module pcb_bottom_fixtures(
     pcb_position = [0, 0, 0],
     screw_head_clearance = 0,
 
+    enclosure_bottom_height,
+    enclosure_lip_height,
+
     corner_coverage = 4,
     corner_fixture_wall = ENCLOSURE_INNER_WALL,
     mounting_column_wall = ENCLOSURE_INNER_WALL,
@@ -163,12 +166,12 @@ module pcb_bottom_fixtures(
             translate([
                 pcb_position.x - offset - e,
                 pcb_position.y + PCB_LENGTH + tolerance * 4 - e,
-                z + height - height_extension - e
+                enclosure_bottom_height - enclosure_lip_height - e
             ]) {
                 cube([
                     PCB_WIDTH + offset * 2 + e * 2,
                     wall + e * 2,
-                    height_extension + e * 2
+                    enclosure_lip_height + height_extension + e * 2
                 ]);
             }
         }
