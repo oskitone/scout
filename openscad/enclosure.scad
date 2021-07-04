@@ -37,6 +37,8 @@ module enclosure(
     default_gutter = 0,
 
     dimensions = [],
+    bottom_height,
+    top_height,
 
     pcb_position = [],
 
@@ -72,7 +74,7 @@ module enclosure(
     label_text_size = 3.2,
     label_length = 5,
 
-    lip_height = 3,
+    lip_height,
 
     fillet = ENCLOSURE_FILLET,
     key_exposure_lip_fillet = ENCLOSURE_FILLET,
@@ -91,18 +93,6 @@ module enclosure(
     quick_preview = true
 ) {
     e = .0345;
-
-    /* NOTES:
-        * Top needs to be sturdy enough to enforce key_lip_endstop
-        * Division cut should go through back/side cavities w/o looking too
-          awkward or inhibiting assembly
-          * And cavity engraving/reach depths must not be so deep as to get
-            messed up by tongue/groove
-        * Bottom matches to top of PCB, otherwise will need to account for
-          corner fixtures' cavity on enclosure top
-     */
-    bottom_height = pcb_position.z + lip_height + PCB_HEIGHT;
-    top_height = dimensions.z - bottom_height;
 
     branding_available_width = dimensions.x
         - branding_position.x

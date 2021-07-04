@@ -53,6 +53,8 @@ module scout(
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
 
+    enclosure_lip_height = 3,
+
     switch_position = 1,
 
     tolerance = 0,
@@ -145,7 +147,24 @@ module scout(
         enclosure_height - keys_z
     );
 
-    echo("Enclosure", [enclosure_width, enclosure_length, enclosure_height]);
+
+    /* NOTES:
+        * Top needs to be sturdy enough to enforce key_lip_endstop
+        * Division cut should go through back/side cavities w/o looking too
+          awkward or inhibiting assembly
+          * And cavity engraving/reach depths must not be so deep as to get
+            messed up by tongue/groove
+        * Bottom matches to top of PCB, otherwise will need to account for
+          corner fixtures' cavity on enclosure top
+     */
+    enclosure_bottom_height = pcb_z + enclosure_lip_height + PCB_HEIGHT;
+    enclosure_top_height = enclosure_height - enclosure_bottom_height;
+
+    echo(
+        "Enclosure",
+        [enclosure_width, enclosure_length, enclosure_height],
+        [enclosure_bottom_height, enclosure_top_height]
+    );
     echo("Keys", [key_width, key_length, key_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
     echo("Screw clearance", screw_top_clearance, screw_head_clearance);
@@ -299,6 +318,8 @@ module scout(
                 enclosure_length,
                 enclosure_height
             ],
+            bottom_height = enclosure_bottom_height,
+            top_height = enclosure_top_height,
 
             pcb_position = [pcb_x, pcb_y, pcb_z],
 
@@ -333,6 +354,8 @@ module scout(
             pencil_stand_angle_x = pencil_stand_angle_x,
             pencil_stand_angle_y = pencil_stand_angle_y,
             pencil_stand_depth = pencil_stand_depth,
+
+            lip_height = enclosure_lip_height,
 
             screw_head_clearance = screw_head_clearance,
             nut_lock_floor = nut_lock_floor,
