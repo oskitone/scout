@@ -268,6 +268,10 @@ module scout(
         outer_color = enclosure_outer_color,
         cavity_color = enclosure_cavity_color
     ) {
+        back_y = batteries_y - (battery_holder_wall + tolerance)
+            + get_battery_holder_length(tolerance, battery_holder_wall);
+        back_hitch_length = pcb_y - back_y + PCB_FRONT_PIN_Y;
+
         difference() {
             e_translate([batteries_x, batteries_y, batteries_z]) {
                 battery_holder(
@@ -278,7 +282,7 @@ module scout(
                     end_terminal_bottom_right = false,
                     outer_color = outer_color,
                     cavity_color = cavity_color,
-                    back_hitch_length = 4, // TODO: derive
+                    back_hitch_length = back_hitch_length,
                     back_hitch_height =
                         pcb_z - ENCLOSURE_FLOOR_CEILING + PCB_HEIGHT - e,
                     quick_preview = quick_preview
