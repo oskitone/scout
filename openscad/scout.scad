@@ -136,7 +136,7 @@ module scout(
     pencil_stand_y = ENCLOSURE_WALL + (pcb_y - ENCLOSURE_WALL) / 2;
     pencil_stand_angle_x = -52;
     pencil_stand_angle_y = 10;
-    pencil_stand_depth = 12.8;
+    pencil_stand_depth = 17;
 
     batteries_x = pcb_x
         + PCB_RELIEF_HOLE_POSITIONS[0].x
@@ -518,6 +518,7 @@ intersection() {
 
     // pencil stand
     /* translate([-10, 20, -10]) { cube([200, 120, 100]); } */
+    /* translate([5, -10, -10]) { cube([200, 120, 100]); } */
 
     // switch_clutch
     /* translate([-10, 65, -10]) { cube([200, 120, 100]); } */
