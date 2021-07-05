@@ -107,6 +107,8 @@ module enclosure(
 
     shallow_engraving_depth = ENCLOSURE_WALL / 4;
 
+    uart_pin_z = pcb_position.z + PCB_HEIGHT + 2.54 / 2;
+
     module _half(
         _height,
         lip,
@@ -450,10 +452,8 @@ module enclosure(
         x_bleed = 1,
         height = 4
     ) {
-        pin_z = pcb_position.z + PCB_HEIGHT + 2.54 / 2;
-
         x = pcb_position.x + PCB_UART_HEADER_POSITION.x - x_bleed;
-        z = pin_z + UART_HEADER_PIN_SIZE / 2 - height / 2;
+        z = uart_pin_z + UART_HEADER_PIN_SIZE / 2 - height / 2;
 
         width = PCB_UART_HEADER_WIDTH + x_bleed * 2 + tolerance * 2;
 
@@ -482,7 +482,7 @@ module enclosure(
                 x = x + width / 2,
                 string = "G               B",
                 placard = false,
-                z = pin_z
+                z = uart_pin_z
             );
         }
     }
@@ -561,7 +561,7 @@ module enclosure(
         y = undef,
         string,
         width = SIDE_ENGRAVING_DEFAULT_WIDTH,
-        z = pcb_position.z - label_length / 2,
+        z = pcb_position.z - label_distance - label_length / 2,
         placard = true
     ) {
         is_left = y != undef;
@@ -619,6 +619,13 @@ module enclosure(
             _side_engraving(
                 string = "POW",
                 y = y + length / 2
+            );
+
+            _side_engraving(
+                string = "1            0",
+                y = y + length / 2,
+                placard = false,
+                z = uart_pin_z
             );
         }
     }
