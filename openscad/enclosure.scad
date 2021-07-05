@@ -13,7 +13,7 @@ include <keys.scad>;
 include <pcb_fixtures.scad>;
 
 /* TODO: extract */
-ENCLOSURE_WALL = 2.4;
+ENCLOSURE_WALL = 3;
 ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
 
@@ -50,6 +50,7 @@ module enclosure(
     key_length,
 
     cantilver_mount_height = 0,
+    cantilever_length_extension = 0,
 
     branding_position = [],
     branding_make_to_model_ratio = .4,
@@ -500,7 +501,7 @@ module enclosure(
 
         translate([
             keys_position.x - keys_to_enclosure_distance,
-            keys_position.y + key_length,
+            keys_position.y + key_length + cantilever_length_extension,
             z
         ]) {
             keys_mount_alignment_fixture(
@@ -670,7 +671,8 @@ module enclosure(
                 for (xy = PCB_HOLE_POSITIONS) {
                     translate([
                         pcb_position.x + xy.x - nut_cavity_size / 2,
-                        pcb_position.y + xy.y - nut_cavity_size / 2,
+                        pcb_position.y + xy.y - nut_cavity_size / 2
+                            + cantilever_length_extension,
                         z + nut_lock_floor
                     ]) {
                         translate([
@@ -690,7 +692,11 @@ module enclosure(
         }
 
         difference() {
-            translate([keys_position.x, keys_position.y, z]) {
+            translate([
+                keys_position.x,
+                keys_position.y + cantilever_length_extension,
+                z
+            ]) {
                 keys_mount_rail(
                     height = height,
                     key_width = key_width,

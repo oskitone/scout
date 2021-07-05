@@ -71,8 +71,15 @@ module scout(
     keys_x = ENCLOSURE_WALL + key_gutter;
     default_gutter = keys_x;
 
+    // TODO: if keeping, either tidy or update PCB to obviate
+    ORIGINAL_ENCLOSURE_WALL = 2.4;
+    ORIGINAL_LABEL_DISTANCE = (ORIGINAL_ENCLOSURE_WALL + key_gutter) / 2; // keys_x / 2
+    label_distance = keys_x / 2; // can be arbitrary
+    cantilever_length_extension = ENCLOSURE_WALL - ORIGINAL_ENCLOSURE_WALL
+        + (label_distance - ORIGINAL_LABEL_DISTANCE);
+
     key_width = PCB_KEY_PLOT * 2 - key_gutter;
-    key_length = 50;
+    key_length = 50 + cantilever_length_extension;
     key_min_height = 4;
 
     enclosure_width = default_gutter * 2
@@ -84,7 +91,8 @@ module scout(
     speaker_z = ENCLOSURE_FLOOR_CEILING;
 
     pcb_x = keys_x + get_key_to_pcb_x_offset(key_width, key_gutter);
-    pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y;
+    pcb_y = ENCLOSURE_WALL + key_gutter + key_length - pcb_key_mount_y
+        + cantilever_length_extension;
     pcb_z = max(
         ENCLOSURE_FLOOR_CEILING + battery_holder_floor + AAA_BATTERY_DIAMETER
             + key_travel - PCB_HEIGHT - BUTTON_HEIGHT,
@@ -93,7 +101,7 @@ module scout(
         speaker_z + SPEAKER_HEIGHT + PCB_PIN_CLEARANCE
     );
 
-    keys_y = pcb_y - key_length + pcb_key_mount_y;
+    keys_y = pcb_y - key_length + pcb_key_mount_y - cantilever_length_extension;
     keys_z = pcb_z + PCB_HEIGHT + BUTTON_HEIGHT;
 
     enclosure_length = max(
@@ -296,7 +304,8 @@ module scout(
                 accidental_height = accidental_height,
                 tolerance = tolerance,
 
-                cantilever_length = cantilever_length,
+                cantilever_length = cantilever_length
+                    + cantilever_length_extension,
                 cantilever_height = cantilever_height,
                 cantilver_mount_height = cantilver_mount_height,
                 nut_lock_floor = nut_lock_floor,
