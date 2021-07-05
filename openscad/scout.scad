@@ -328,10 +328,18 @@ module scout(
             );
         }
 
-        if (show_pcb) {
+        if (show_pcb || show_accoutrements) {
             e_translate([pcb_x, pcb_y, pcb_z]) {
                 scout_pcb(
+                    show_board = show_pcb,
+                    show_buttons = show_accoutrements,
+                    show_led = show_accoutrements,
+                    show_pot = show_accoutrements,
+                    show_switch = show_accoutrements,
+                    show_pcb_uart_header = show_accoutrements,
+                    show_headphone_jack = show_accoutrements,
                     show_circuitry_clearance = show_clearances,
+
                     switch_position = switch_position
                 );
             }

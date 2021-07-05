@@ -124,6 +124,7 @@ module scout_pcb_holes(
 }
 
 module scout_pcb(
+    show_board = true,
     show_buttons = true,
     show_silkscreen = true,
     show_led = true,
@@ -138,22 +139,24 @@ module scout_pcb(
     e = .0143;
     silkscreen_height = e;
 
-    difference() {
-        union() {
-            color("purple") cube([PCB_WIDTH, PCB_LENGTH, PCB_HEIGHT]);
+    if (show_board) {
+        difference() {
+            union() {
+                color("purple") cube([PCB_WIDTH, PCB_LENGTH, PCB_HEIGHT]);
 
-            if (show_silkscreen) {
-                translate([0, 0, PCB_HEIGHT - e]) {
-                    linear_extrude(silkscreen_height + e) {
-                        offset(.1) {
-                            import("../scout-brd.svg");
+                if (show_silkscreen) {
+                    translate([0, 0, PCB_HEIGHT - e]) {
+                        linear_extrude(silkscreen_height + e) {
+                            offset(.1) {
+                                import("../scout-brd.svg");
+                            }
                         }
                     }
                 }
             }
-        }
 
-        scout_pcb_holes();
+            scout_pcb_holes();
+        }
     }
 
     if (show_buttons) {
