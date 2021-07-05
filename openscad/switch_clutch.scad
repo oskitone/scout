@@ -25,6 +25,7 @@ module switch_clutch(
     grip_height = SWITCH_CLUTCH_GRIP_HEIGHT,
 
     fillet = ACCESSORY_FILLET,
+    chamfer = .6,
     side_overexposure = ENCLOSURE_SIDE_OVEREXPOSURE,
     tolerance = DEFAULT_TOLERANCE,
 
@@ -82,9 +83,37 @@ module switch_clutch(
     }
 
     module _web() {
-        translate([-web_width, 0, 0]) {
-            cube([web_width - tolerance, web_length, web_height]);
+        module _end(bottom) {
+            connecting_width = web_width - tolerance;
+            connecting_length = web_length;
+
+            end_width = connecting_width - chamfer * 2;
+            end_length = connecting_length - chamfer * 2;
+
+            position = bottom
+                ? [-web_width + chamfer, chamfer, 0]
+                : [-web_width, 0, web_height - chamfer];
+
+            translate(position) {
+                flat_top_rectangular_pyramid(
+                    top_width = bottom ? connecting_width : end_width,
+                    top_length = bottom ? connecting_length : end_length,
+                    bottom_width = bottom ? end_width : connecting_width,
+                    bottom_length = bottom ? end_length : connecting_length,
+                    height = chamfer
+                );
+            }
         }
+
+        _end(bottom = true);
+        translate([-web_width, 0, chamfer - e]) {
+            cube([
+                web_width - tolerance,
+                web_length,
+                web_height - chamfer * 2 + e
+            ]);
+        }
+        _end(bottom = false);
     }
 
     module _actuator_cavity() {
@@ -96,11 +125,19 @@ module switch_clutch(
         }
     }
 
-    module _dfm_support() {
+    module _dfm_support(brim_depth = 1) {
         height = web_height_extension - DEFAULT_DFM_LAYER_HEIGHT;
 
         translate([dfm_support_x, dfm_support_y, 0]) {
             cube([BREAKAWAY_SUPPORT_DEPTH, grip_length, height]);
+
+            translate([-brim_depth, -brim_depth, 0]) {
+                cube([
+                    BREAKAWAY_SUPPORT_DEPTH + brim_depth * 2,
+                    grip_length + brim_depth * 2,
+                    DEFAULT_DFM_LAYER_HEIGHT
+                ]);
+            }
         }
     }
 
