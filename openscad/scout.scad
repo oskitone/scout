@@ -160,7 +160,7 @@ module scout(
           * And cavity engraving/reach depths must not be so deep as to get
             messed up by tongue/groove
      */
-    enclosure_bottom_height = pcb_z + enclosure_lip_height + PCB_HEIGHT;
+    enclosure_bottom_height = pcb_z + PCB_HEIGHT;
     enclosure_top_height = enclosure_height - enclosure_bottom_height;
 
     echo(
