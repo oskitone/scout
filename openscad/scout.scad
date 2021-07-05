@@ -29,7 +29,7 @@ module scout(
     show_dfm = false,
     show_clearances = true,
 
-    cantilever_height = 2,
+    cantilever_height = 1.5,
     cantilver_mount_height = 2,
     accidental_height = 2,
     accidental_key_recession = 0,
