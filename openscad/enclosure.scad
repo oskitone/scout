@@ -843,16 +843,28 @@ module enclosure(
 
         module _back_endstop(
             width = AAA_BATTERY_LENGTH / 2,
-            height = battery_holder_floor
+            length = 2,
+            height = 3
         ) {
             x = get_center_x(width);
             y = batteries_position.y - (battery_holder_wall + tolerance)
-                + tolerance * 2
+                + tolerance // intentionally snug
                 + battery_holder_length;
             z = ENCLOSURE_FLOOR_CEILING;
 
             translate([x, y, z - e]) {
-                cube([width, ENCLOSURE_INNER_WALL, height + e]);
+                cube([width, length, height + e]);
+
+                translate([0, 0, height]) {
+                    flat_top_rectangular_pyramid(
+                        top_width = width,
+                        top_length = 0,
+                        bottom_width = width,
+                        bottom_length = length,
+                        height = length,
+                        top_weight_y = 1
+                    );
+                }
             }
         }
 
