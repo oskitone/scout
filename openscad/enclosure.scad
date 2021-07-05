@@ -125,7 +125,7 @@ module enclosure(
             lip_height = lip_height,
             fillet = quick_preview ? 0 : fillet,
             include_tongue_and_groove = true,
-            tongue_and_groove_snap = [.75, .25],
+            tongue_and_groove_snap = [.5, .9],
             tongue_and_groove_pull = tolerance * 2,
             tolerance = tolerance,
             outer_color = outer_color,
