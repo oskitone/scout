@@ -258,11 +258,14 @@ module keys(
             keys_position.y,
             keys_position.z - travel
         ]) {
-            % cube([
-                keys_full_width,
-                key_length + e,
-                travel + e
-            ]);
+            % flat_top_rectangular_pyramid(
+                top_width = keys_full_width,
+                top_length = key_length + cantilever_length_extension + e,
+                bottom_width = keys_full_width,
+                bottom_length = 0,
+                height = travel + e,
+                top_weight_y = 0
+            );
         }
     }
 }
