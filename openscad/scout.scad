@@ -467,7 +467,7 @@ SHOW_ACCOUTREMENTS = true;
 SHOW_KNOB = true;
 
 SHOW_DFM = false;
-SHOW_CLEARANCES = true;
+SHOW_CLEARANCES = false;
 
 CENTER = false;
 FLIP_VERTICALLY = false;
