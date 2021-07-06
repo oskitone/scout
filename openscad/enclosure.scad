@@ -41,6 +41,8 @@ module enclosure(
     top_height,
 
     pcb_position = [],
+    pcb_screw_hole_positions = [],
+    pcb_post_hole_positions = [],
 
     keys_cavity_height,
     keys_position = [],
@@ -399,7 +401,7 @@ module enclosure(
     }
 
     module _screw_cavities() {
-        for (p = PCB_HOLE_POSITIONS) {
+        for (p = pcb_screw_hole_positions) {
             translate([pcb_position.x + p.x, pcb_position.y + p.y, 0]) {
                 screw_head_exposure(
                     tolerance = tolerance,
@@ -660,6 +662,7 @@ module enclosure(
         module _nut_locks() {
             nuts(
                 pcb_position = pcb_position,
+                positions = pcb_screw_hole_positions,
                 z = keys_position.z + cantilver_mount_height + nut_lock_floor,
                 diameter = nut_cavity_size,
                 height = nut_cavity_height
@@ -668,7 +671,7 @@ module enclosure(
             if (show_dfm) {
                 dfm_length = PCB_HOLE_DIAMETER;
 
-                for (xy = PCB_HOLE_POSITIONS) {
+                for (xy = pcb_screw_hole_positions) {
                     translate([
                         pcb_position.x + xy.x - nut_cavity_size / 2,
                         pcb_position.y + xy.y - nut_cavity_size / 2
@@ -703,6 +706,7 @@ module enclosure(
                     key_length = key_length,
                     key_gutter = key_gutter,
                     include_alignment_fixture = false,
+                    pcb_screw_hole_positions = pcb_screw_hole_positions,
                     tolerance = -e
                 );
             }
@@ -893,9 +897,14 @@ module enclosure(
                         difference() {
                             pcb_bottom_fixtures(
                                 pcb_position = pcb_position,
+                                pcb_screw_hole_positions =
+                                    pcb_screw_hole_positions,
+                                pcb_post_hole_positions =
+                                    pcb_post_hole_positions,
                                 screw_head_clearance = screw_head_clearance,
                                 enclosure_bottom_height = bottom_height,
-                                enclosure_lip_height = lip_height
+                                enclosure_lip_height = lip_height,
+                                quick_preview = quick_preview
                             );
 
                             translate([

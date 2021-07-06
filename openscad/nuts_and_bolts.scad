@@ -8,13 +8,14 @@ SCREW_LENGTH = 3/4 * 25.4;
 
 module nuts(
     pcb_position = [],
+    positions = [],
     z = 0,
     diameter = NUT_DIAMETER,
     height = NUT_HEIGHT
 ) {
     e = .019;
 
-    for (xy = PCB_HOLE_POSITIONS) {
+    for (xy = positions) {
         translate([
             pcb_position.x + xy.x - diameter / 2,
             pcb_position.y + xy.y - diameter / 2,
@@ -26,6 +27,7 @@ module nuts(
 }
 
 module screws(
+    positions = PCB_HOLE_POSITIONS,
     pcb_position = [],
     diameter = PCB_HOLE_DIAMETER - .2,
     length = SCREW_LENGTH,
@@ -33,7 +35,7 @@ module screws(
 ) {
     e = .03;
 
-    for (xy = PCB_HOLE_POSITIONS) {
+    for (xy = positions) {
         translate([
             pcb_position.x + xy.x,
             pcb_position.y + xy.y,

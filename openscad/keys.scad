@@ -80,6 +80,7 @@ module keys_mount_rail(
     key_gutter,
     front_y_bleed = 0,
     include_alignment_fixture = true,
+    pcb_screw_hole_positions = [],
     tolerance = 0
 ) {
     keys_to_enclosure_distance =
@@ -102,6 +103,7 @@ module keys_mount_rail(
                 scout_pcb_holes(
                     y = 0,
                     height = height,
+                    positions = pcb_screw_hole_positions,
                     include_relief_holes = false
                 );
             }
@@ -137,6 +139,7 @@ module keys(
 
     keys_position = [],
     pcb_position = [],
+    pcb_screw_hole_positions = [],
 
     keys_cavity_height_z,
     key_width,
@@ -217,6 +220,7 @@ module keys(
                             key_length = key_length,
                             key_gutter = key_gutter,
                             front_y_bleed = e,
+                            pcb_screw_hole_positions = pcb_screw_hole_positions,
                             tolerance = tolerance
                         );
                     }

@@ -50,6 +50,16 @@ module scout(
     battery_holder_wall = ENCLOSURE_INNER_WALL,
     battery_holder_floor = 1,
 
+    pcb_screw_hole_positions = [
+        PCB_HOLE_POSITIONS[1],
+        PCB_HOLE_POSITIONS[3],
+    ],
+    pcb_post_hole_positions = [
+        PCB_HOLE_POSITIONS[0],
+        PCB_HOLE_POSITIONS[2],
+        PCB_HOLE_POSITIONS[4],
+    ],
+
     min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
     min_screw_top_clearance = .8,
     nut_lock_floor = ENCLOSURE_FLOOR_CEILING,
@@ -227,6 +237,7 @@ module scout(
         );
 
         % screws(
+            positions = pcb_screw_hole_positions,
             pcb_position = [pcb_x, pcb_y, pcb_z],
             z = screw_head_clearance
         );
@@ -316,6 +327,7 @@ module scout(
 
                 keys_position = [keys_x, keys_y, keys_z],
                 pcb_position = [pcb_x, pcb_y, pcb_z],
+                pcb_screw_hole_positions = pcb_screw_hole_positions,
 
                 keys_cavity_height_z = enclosure_height - keys_cavity_height,
                 key_width = key_width,
@@ -354,6 +366,7 @@ module scout(
                         key_length = key_length,
                         key_gutter = key_gutter,
                         front_y_bleed = 0,
+                        pcb_screw_hole_positions = pcb_screw_hole_positions,
                         tolerance = tolerance
                     );
                 }
@@ -376,6 +389,8 @@ module scout(
                 top_height = enclosure_top_height,
 
                 pcb_position = [pcb_x, pcb_y, pcb_z],
+                pcb_screw_hole_positions = pcb_screw_hole_positions,
+                pcb_post_hole_positions = pcb_post_hole_positions,
 
                 keys_cavity_height = keys_cavity_height,
                 keys_position = [keys_x, keys_y, keys_z],
@@ -501,7 +516,7 @@ intersection() {
     // switch
     /* translate([18.5, -10, -10]) { cube([200, 120, 100]); } */
 
-    // batteries
+    // batteries / pcb post
     /* translate([80, -10, -10]) { cube([200, 120, 100]); } */
 
     // screw mount

@@ -66,8 +66,43 @@ module pcb_enclosure_top_fixtures(
     }
 }
 
+module pcb_stool(
+    height,
+
+    diameter = PCB_STOOL_DIAMETER,
+    chamfer = PCB_STOOL_CHAMFER,
+
+    registration_nub = false,
+    registration_nub_diameter = PCB_HOLE_DIAMETER - DEFAULT_TOLERANCE * 2,
+    registration_nub_height = PCB_HEIGHT,
+
+    quick_preview = false
+) {
+    e = .0524;
+
+    cylinder(d = diameter, h = height);
+
+    cylinder(
+        d1 = diameter + chamfer * 2,
+        d2 = diameter,
+        h = chamfer
+    );
+
+    if (registration_nub) {
+        translate([0, 0, height - e]) {
+            cylinder(
+                d = registration_nub_diameter,
+                h = registration_nub_height + e,
+                $fn = quick_preview ? 12 : HIDEF_ROUNDING
+            );
+        }
+    }
+}
+
 module pcb_bottom_fixtures(
     pcb_position = [0, 0, 0],
+    pcb_screw_hole_positions = [],
+    pcb_post_hole_positions = [],
     screw_head_clearance = 0,
 
     enclosure_bottom_height,
@@ -78,7 +113,9 @@ module pcb_bottom_fixtures(
     mounting_column_wall = ENCLOSURE_INNER_WALL,
 
     clearance = PCB_FIXTURE_CLEARANCE,
-    tolerance = DEFAULT_TOLERANCE
+    tolerance = DEFAULT_TOLERANCE,
+
+    quick_preview = true
 ) {
     e = .09876;
     offset = clearance + tolerance;
@@ -95,16 +132,7 @@ module pcb_bottom_fixtures(
                 pcb_position.y + position.y,
                 z
             ]) {
-                cylinder(
-                    d = size,
-                    h = pcb_position.z - z
-                );
-
-                cylinder(
-                    d1 = size + PCB_STOOL_CHAMFER * 2,
-                    d2 = size,
-                    h = PCB_STOOL_CHAMFER
-                );
+                pcb_stool(height = pcb_position.z - z);
             }
         }
     }
@@ -127,9 +155,12 @@ module pcb_bottom_fixtures(
         shaft_column_height = pcb_position.z - head_column_height;
         shaft_column_z = head_column_height - e;
 
-        for (p = PCB_HOLE_POSITIONS) {
-            translate([pcb_position.x + p.x, pcb_position.y + p.y, 0]) {
-                translate([0, 0, head_column_z]) {
+        module _column(p, screw = false, post = false) {
+            x = pcb_position.x + p.x;
+            y = pcb_position.y + p.y;
+
+            if (screw) {
+                translate([x, y, head_column_z]) {
                     cylinder(
                         h = head_column_height - head_column_z,
                         d = SCREW_HEAD_DIAMETER
@@ -137,14 +168,30 @@ module pcb_bottom_fixtures(
                     );
                 }
 
-                translate([0, 0, shaft_column_z]) {
+                translate([x, y, shaft_column_z]) {
                     cylinder(
                         h = pcb_position.z - shaft_column_z,
                         d = PCB_HOLE_DIAMETER
                             + tolerance * 2 + mounting_column_wall * 2
                     );
                 }
+            } else {
+                translate([x, y, z]) {
+                    pcb_stool(
+                        height = pcb_position.z - z,
+                        registration_nub = true,
+                        quick_preview = quick_preview
+                    );
+                }
             }
+        }
+
+        for (p = pcb_screw_hole_positions) {
+            _column(p, screw = true);
+        }
+
+        for (p = pcb_post_hole_positions) {
+            _column(p, post = true);
         }
     }
 
