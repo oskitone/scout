@@ -62,10 +62,12 @@ module enclosure_engraving(
                     ]) {
                         flat_top_rectangular_pyramid(
                             top_width = placard.x,
-                            top_length = placard.y,
+                            top_length = chamfer_placard_top
+                                ? placard.y + depth / 2
+                                : placard.y,
                             bottom_width = placard.x,
                             bottom_length = chamfer_placard_top
-                                ? placard.y - depth
+                                ? placard.y - depth / 2
                                 : placard.y,
                             height = depth + e,
                             top_weight_y = 0
