@@ -556,13 +556,13 @@ module enclosure(
         }
     }
 
-    SIDE_ENGRAVING_DEFAULT_WIDTH = 15;
     module _side_engraving(
         x = undef,
         y = undef,
         string,
         width = SIDE_ENGRAVING_DEFAULT_WIDTH,
-        z = pcb_position.z - label_distance - label_length / 2,
+        z = (dimensions.z - SWITCH_CLUTCH_GRIP_HEIGHT - label_length) / 2
+            - 1,
         placard = true
     ) {
         is_left = y != undef;

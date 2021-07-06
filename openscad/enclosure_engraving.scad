@@ -4,6 +4,7 @@ use <../../poly555/openscad/lib/engraving.scad>;
 
 ENCLOSURE_ENGRAVING_DEPTH = 1.2;
 OSKITONE_LENGTH_WIDTH_RATIO = 4.6 / 28; // TODO: extract
+SIDE_ENGRAVING_DEFAULT_WIDTH = 15;
 
 function get_branding_model_length(
     gutter = 0,
