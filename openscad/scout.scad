@@ -148,11 +148,7 @@ module scout(
     pencil_stand_angle_y = 10;
     pencil_stand_depth = 17;
 
-    batteries_x = pcb_x
-        + PCB_RELIEF_HOLE_POSITIONS[0].x
-        + (PCB_RELIEF_HOLE_POSITIONS[1].x - PCB_RELIEF_HOLE_POSITIONS[0].x) / 2
-        + (tolerance + battery_holder_wall)
-        - get_battery_holder_width(tolerance, battery_holder_wall) / 2;
+    batteries_x = enclosure_width * .25;
     batteries_y = ENCLOSURE_WALL + ENCLOSURE_INNER_WALL + tolerance * 2;
     batteries_z = ENCLOSURE_FLOOR_CEILING + battery_holder_floor;
 
