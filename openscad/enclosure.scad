@@ -880,6 +880,18 @@ module enclosure(
         }
     }
 
+    module _disassembly_wedge_cavity(
+        length = 8,
+        height = lip_height + e
+    ) {
+        translate([
+            dimensions.x - ENCLOSURE_WALL,
+            (dimensions.y - length) / 2,
+            bottom_height - lip_height
+        ]) {
+            cube([ENCLOSURE_WALL + e, length, height]);
+        }
+    }
 
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
@@ -891,7 +903,13 @@ module enclosure(
         difference() {
             union() {
                 if (show_bottom) {
-                    _half(bottom_height, lip = false);
+                    difference() {
+                        _half(bottom_height, lip = false);
+
+                        color(cavity_color) {
+                            _disassembly_wedge_cavity();
+                        }
+                    }
 
                     color(outer_color) {
                         difference() {
