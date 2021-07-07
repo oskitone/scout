@@ -13,7 +13,7 @@ include <keys.scad>;
 include <pcb_fixtures.scad>;
 
 /* TODO: extract */
-ENCLOSURE_WALL = 3;
+ENCLOSURE_WALL = 4;
 ENCLOSURE_FLOOR_CEILING = 1.8;
 ENCLOSURE_INNER_WALL = 1.2;
 
