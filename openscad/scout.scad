@@ -59,7 +59,10 @@ module scout(
     switch_position = 1,
 
     tolerance = 0,
-    quick_preview = true
+    quick_preview = true,
+
+    flip_vertically = false,
+    center = false
 ) {
     e = .0432;
 
@@ -282,144 +285,155 @@ module scout(
         }
     }
 
-    if (show_keys) {
-        // TODO: experiment with arbitrary lengths:
-        POLY555_CANTILEVER_LENGTH = 3;
-        20_KEY_MATRIX_CANTILEVER_LENGTH = 4;
-        unexposed_cantilever_length = key_height - cantilver_mount_height;
-        cantilever_length = unexposed_cantilever_length;
+    module _output() {
+        if (show_keys) {
+            // TODO: experiment with arbitrary lengths:
+            POLY555_CANTILEVER_LENGTH = 3;
+            20_KEY_MATRIX_CANTILEVER_LENGTH = 4;
+            unexposed_cantilever_length = key_height - cantilver_mount_height;
+            cantilever_length = unexposed_cantilever_length;
 
-        keys(
-            key_height = key_height,
-            accidental_height = accidental_height,
-            tolerance = tolerance,
+            keys(
+                key_height = key_height,
+                accidental_height = accidental_height,
+                tolerance = tolerance,
 
-            cantilever_length = cantilever_length,
-            cantilever_height = cantilever_height,
-            cantilver_mount_height = cantilver_mount_height,
-            nut_lock_floor = nut_lock_floor,
+                cantilever_length = cantilever_length,
+                cantilever_height = cantilever_height,
+                cantilver_mount_height = cantilver_mount_height,
+                nut_lock_floor = nut_lock_floor,
 
-            keys_position = [keys_x, keys_y, keys_z],
-            pcb_position = [pcb_x, pcb_y, pcb_z],
+                keys_position = [keys_x, keys_y, keys_z],
+                pcb_position = [pcb_x, pcb_y, pcb_z],
 
-            keys_cavity_height_z = enclosure_height - keys_cavity_height,
-            key_width = key_width,
-            key_length = key_length,
-            travel = key_travel,
-            key_gutter = key_gutter,
+                keys_cavity_height_z = enclosure_height - keys_cavity_height,
+                key_width = key_width,
+                key_length = key_length,
+                travel = key_travel,
+                key_gutter = key_gutter,
 
-            quick_preview = quick_preview,
-            show_clearance = show_clearances
-        );
-    }
-
-    if (show_pcb) {
-        e_translate([pcb_x, pcb_y, pcb_z]) {
-            scout_pcb(
-                show_circuitry_clearance = show_clearances,
-                switch_position = switch_position
+                quick_preview = quick_preview,
+                show_clearance = show_clearances
             );
         }
-    }
 
-    if (show_keys_mount_rail) {
-        translate([keys_x, keys_y, pcb_z + PCB_HEIGHT]) {
-            color(enclosure_outer_color) {
-                keys_mount_rail(
-                    height = BUTTON_HEIGHT,
-                    key_width = key_width,
-                    key_length = key_length,
-                    key_gutter = key_gutter,
-                    front_y_bleed = 0,
-                    tolerance = tolerance
+        if (show_pcb) {
+            e_translate([pcb_x, pcb_y, pcb_z]) {
+                scout_pcb(
+                    show_circuitry_clearance = show_clearances,
+                    switch_position = switch_position
                 );
             }
         }
+
+        if (show_keys_mount_rail) {
+            translate([keys_x, keys_y, pcb_z + PCB_HEIGHT]) {
+                color(enclosure_outer_color) {
+                    keys_mount_rail(
+                        height = BUTTON_HEIGHT,
+                        key_width = key_width,
+                        key_length = key_length,
+                        key_gutter = key_gutter,
+                        front_y_bleed = 0,
+                        tolerance = tolerance
+                    );
+                }
+            }
+        }
+
+        if (show_enclosure_top || show_enclosure_bottom) {
+            enclosure(
+                show_top = show_enclosure_top,
+                show_bottom = show_enclosure_bottom,
+
+                default_gutter = default_gutter,
+
+                dimensions = [
+                    enclosure_width,
+                    enclosure_length,
+                    enclosure_height
+                ],
+                bottom_height = enclosure_bottom_height,
+                top_height = enclosure_top_height,
+
+                pcb_position = [pcb_x, pcb_y, pcb_z],
+
+                keys_cavity_height = keys_cavity_height,
+                keys_position = [keys_x, keys_y, keys_z],
+                key_gutter = key_gutter,
+                keys_full_width = get_keys_full_width(key_width, key_gutter),
+                key_width = key_width,
+                key_length = key_length,
+
+                cantilver_mount_height = cantilver_mount_height,
+
+                branding_position = [branding_x, branding_y],
+
+                label_distance = default_gutter / 2,
+
+                knob_radius = knob_radius,
+                knob_dimple_y = knob_dimple_y,
+                knob_position = [
+                    pcb_x + PCB_POT_POSITION.x,
+                    pcb_y + PCB_POT_POSITION.y,
+                    knob_z
+                ],
+                knob_vertical_clearance = knob_vertical_clearance,
+
+                speaker_position = [speaker_x, speaker_y, speaker_z],
+
+                battery_holder_wall = battery_holder_wall,
+                battery_holder_floor = battery_holder_floor,
+                batteries_position = [batteries_x, batteries_y, batteries_z],
+
+                pencil_stand_position = [pencil_stand_x, pencil_stand_y],
+                pencil_stand_angle_x = pencil_stand_angle_x,
+                pencil_stand_angle_y = pencil_stand_angle_y,
+                pencil_stand_depth = pencil_stand_depth,
+
+                lip_height = enclosure_lip_height,
+
+                screw_head_clearance = screw_head_clearance,
+                nut_lock_floor = nut_lock_floor,
+
+                switch_clutch_web_length_extension
+                    = switch_clutch_web_length_extension,
+
+                show_dfm = show_dfm,
+
+                tolerance = tolerance,
+
+                outer_color = enclosure_outer_color,
+                cavity_color = enclosure_cavity_color,
+
+                quick_preview = quick_preview
+            );
+        }
+
+        if (show_battery_holder) {
+            _battery_holder();
+        }
+
+        if (show_accoutrements) {
+            _accoutrements();
+        }
+
+        if (show_knob) {
+            _knob();
+        }
+
+        if (show_switch_clutch) {
+            _switch_clutch();
+        }
     }
 
-    if (show_enclosure_top || show_enclosure_bottom) {
-        enclosure(
-            show_top = show_enclosure_top,
-            show_bottom = show_enclosure_bottom,
+    rotation = FLIP_VERTICALLY ? [0, 180, 0] : [0, 0, 0];
+    position = center
+        ? [enclosure_width / -2, enclosure_length / -2, enclosure_height / -2]
+        : [0, 0, 0];
 
-            default_gutter = default_gutter,
-
-            dimensions = [
-                enclosure_width,
-                enclosure_length,
-                enclosure_height
-            ],
-            bottom_height = enclosure_bottom_height,
-            top_height = enclosure_top_height,
-
-            pcb_position = [pcb_x, pcb_y, pcb_z],
-
-            keys_cavity_height = keys_cavity_height,
-            keys_position = [keys_x, keys_y, keys_z],
-            key_gutter = key_gutter,
-            keys_full_width = get_keys_full_width(key_width, key_gutter),
-            key_width = key_width,
-            key_length = key_length,
-
-            cantilver_mount_height = cantilver_mount_height,
-
-            branding_position = [branding_x, branding_y],
-
-            label_distance = default_gutter / 2,
-
-            knob_radius = knob_radius,
-            knob_dimple_y = knob_dimple_y,
-            knob_position = [
-                pcb_x + PCB_POT_POSITION.x,
-                pcb_y + PCB_POT_POSITION.y,
-                knob_z
-            ],
-            knob_vertical_clearance = knob_vertical_clearance,
-
-            speaker_position = [speaker_x, speaker_y, speaker_z],
-
-            battery_holder_wall = battery_holder_wall,
-            battery_holder_floor = battery_holder_floor,
-            batteries_position = [batteries_x, batteries_y, batteries_z],
-
-            pencil_stand_position = [pencil_stand_x, pencil_stand_y],
-            pencil_stand_angle_x = pencil_stand_angle_x,
-            pencil_stand_angle_y = pencil_stand_angle_y,
-            pencil_stand_depth = pencil_stand_depth,
-
-            lip_height = enclosure_lip_height,
-
-            screw_head_clearance = screw_head_clearance,
-            nut_lock_floor = nut_lock_floor,
-
-            switch_clutch_web_length_extension
-                = switch_clutch_web_length_extension,
-
-            show_dfm = show_dfm,
-
-            tolerance = tolerance,
-
-            outer_color = enclosure_outer_color,
-            cavity_color = enclosure_cavity_color,
-
-            quick_preview = quick_preview
-        );
-    }
-
-    if (show_battery_holder) {
-        _battery_holder();
-    }
-
-    if (show_accoutrements) {
-        _accoutrements();
-    }
-
-    if (show_knob) {
-        _knob();
-    }
-
-    if (show_switch_clutch) {
-        _switch_clutch();
+    rotate(rotation) translate(position) {
+        _output();
     }
 }
 
@@ -435,9 +449,11 @@ SHOW_KNOB = true;
 
 SHOW_DFM = false;
 SHOW_CLEARANCES = true;
-FLIP_VERTICALLY = false;
 
-rotate(FLIP_VERTICALLY ? [0, 180, 0] : [0, 0, 0])
+CENTER = false;
+FLIP_VERTICALLY = false;
+QUICK_PREVIEW = $preview;
+
 intersection() {
     scout(
         show_enclosure_bottom = SHOW_ENCLOSURE_BOTTOM,
@@ -454,7 +470,10 @@ intersection() {
         show_clearances = SHOW_CLEARANCES,
 
         tolerance = DEFAULT_TOLERANCE,
-        quick_preview = $preview
+        quick_preview = QUICK_PREVIEW,
+
+        flip_vertically = FLIP_VERTICALLY,
+        center = CENTER
     );
 
     // LED
