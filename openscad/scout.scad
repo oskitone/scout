@@ -529,7 +529,7 @@ intersection() {
     /* translate([-10, -10, -10]) { cube([122, 120, 100]); } */
 
     // pencil stand
-    /* translate([-10, 20, -10]) { cube([200, 120, 100]); } */
+    /* translate([-10, 25, -10]) { cube([200, 120, 100]); } */
     /* translate([5, -10, -10]) { cube([200, 120, 100]); } */
 
     // switch_clutch

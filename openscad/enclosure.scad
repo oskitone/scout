@@ -748,7 +748,9 @@ module enclosure(
                     wall = ENCLOSURE_INNER_WALL,
                     depth = pencil_stand_depth + e,
                     angle_x = pencil_stand_angle_x,
-                    angle_y = pencil_stand_angle_y
+                    angle_y = pencil_stand_angle_y,
+                    add_tightening_webs = true,
+                    chamfer = .6
                 );
             }
         } else {
