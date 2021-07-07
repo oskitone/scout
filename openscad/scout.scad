@@ -207,6 +207,7 @@ module scout(
             % battery_array();
             % # battery_contacts(
                 tolerance = tolerance,
+                show_tabs = false,
                 end_terminal_bottom_right = false
             );
         }

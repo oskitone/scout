@@ -139,6 +139,7 @@ module keystone_wire_contact(
 module keystone_tabbed_contact(
     type = BUTTON,
     flip = false,
+    show_tab = true,
 
     width = KEYSTONE_5204_5226_WIDTH,
     length = KEYSTONE_5204_5226_LENGTH,
@@ -157,8 +158,10 @@ module keystone_tabbed_contact(
     module _output() {
         cube([width, length, height]);
 
-        translate([(width - tab_width) / 2, 0, -tab_height]) {
-            cube([tab_width, length, tab_height + e]);
+        if (show_tab) {
+            translate([(width - tab_width) / 2, 0, -tab_height]) {
+                cube([tab_width, length, tab_height + e]);
+            }
         }
 
         translate([width / 2, length - e, contact_z]) {
@@ -191,6 +194,7 @@ module keystone_tabbed_contact(
 
 module battery_contacts(
     tolerance = 0,
+    show_tabs = true,
     gutter = KEYSTONE_181_GUTTER,
     count = 3,
     end_terminal_bottom_right = true
@@ -232,7 +236,8 @@ module battery_contacts(
                 translate([x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
                     keystone_tabbed_contact(
                         flip = !start_on_right,
-                        type = BUTTON
+                        type = BUTTON,
+                        show_tab = show_tabs
                     );
                 }
             } else if (i == count - 1) {
@@ -241,7 +246,8 @@ module battery_contacts(
                 translate([x, get_y(KEYSTONE_5204_5226_WIDTH, i), z]) {
                     keystone_tabbed_contact(
                         flip = start_on_right,
-                        type = SPRING
+                        type = SPRING,
+                        show_tab = show_tabs
                     );
                 }
             }
