@@ -30,9 +30,6 @@ module pcb_enclosure_top_fixtures(
     pcb_position = [0, 0, 0],
     enclosure_dimensions = [0, 0, 0],
 
-    size = PCB_STOOL_DIAMETER,
-    chamfer = PCB_STOOL_CHAMFER,
-
     // NOTE: these are eyeballed, and that's okay!
     positions = [
         [PCB_WIDTH * .15, PCB_LENGTH * .75],
@@ -50,16 +47,10 @@ module pcb_enclosure_top_fixtures(
             pcb_position.y + position.y,
             z
         ]) {
-            cylinder(
-                d = size,
-                h = height + e
-            );
-
-            translate([0, 0, height - chamfer]) {
-                cylinder(
-                    d1 = size,
-                    d2 = size + chamfer * 2,
-                    h = chamfer
+            translate([0, 0, height + e]) mirror([0, 0, 1]) {
+                pcb_stool(
+                    height = height + e,
+                    registration_nub = false
                 );
             }
         }
@@ -71,6 +62,9 @@ module pcb_stool(
 
     diameter = PCB_STOOL_DIAMETER,
     chamfer = PCB_STOOL_CHAMFER,
+
+    support_web_count = 3,
+    support_web_width = ENCLOSURE_INNER_WALL,
 
     registration_nub = false,
     registration_nub_diameter = PCB_HOLE_DIAMETER - DEFAULT_TOLERANCE * 2,
@@ -87,6 +81,22 @@ module pcb_stool(
         d2 = diameter,
         h = chamfer
     );
+
+    overlap = diameter / 6;
+    for (i = [0 : support_web_count - 1]) {
+        rotate([0, 0, 360 / support_web_count * i]) {
+            translate([support_web_width / -2, diameter / 2 - overlap, 0]) {
+                flat_top_rectangular_pyramid(
+                    top_width = support_web_width,
+                    top_length = 0,
+                    bottom_width = support_web_width,
+                    bottom_length = overlap + chamfer,
+                    height = height - e,
+                    top_weight_y = 0
+                );
+            }
+        }
+    }
 
     if (registration_nub) {
         translate([0, 0, height - e]) {
