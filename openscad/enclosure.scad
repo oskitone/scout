@@ -111,8 +111,6 @@ module enclosure(
 
     shallow_engraving_depth = ENCLOSURE_WALL / 4;
 
-    uart_pin_z = pcb_position.z + PCB_HEIGHT + 2.54 / 2;
-
     module _half(
         _height,
         lip,
@@ -454,12 +452,15 @@ module enclosure(
     module _uart_header_exposure(
         just_assembly_valley = false,
         x_bleed = 1,
-        height = 4
+        min_height = 4
     ) {
+        uart_pin_z = pcb_position.z + PCB_HEIGHT + 2.54 / 2;
+
         x = pcb_position.x + PCB_UART_HEADER_POSITION.x - x_bleed;
-        z = uart_pin_z + UART_HEADER_PIN_SIZE / 2 - height / 2;
+        z = uart_pin_z + UART_HEADER_PIN_SIZE / 2 - min_height / 2;
 
         width = PCB_UART_HEADER_WIDTH + x_bleed * 2 + tolerance * 2;
+        height = dimensions.z - z * 2;
 
         if (just_assembly_valley) {
             _assembly_valley_cavity(
@@ -486,7 +487,7 @@ module enclosure(
                 x = x + width / 2,
                 string = "G               B",
                 placard = false,
-                z = uart_pin_z
+                z = dimensions.z / 2
             );
         }
     }
@@ -629,7 +630,7 @@ module enclosure(
                 string = "1            0",
                 y = y + length / 2,
                 placard = false,
-                z = uart_pin_z
+                z = dimensions.z / 2
             );
         }
     }
