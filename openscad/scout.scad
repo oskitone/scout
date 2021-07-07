@@ -427,6 +427,7 @@ module scout(
 
                 lip_height = enclosure_lip_height,
 
+                screw_top_clearance = screw_top_clearance,
                 screw_head_clearance = screw_head_clearance,
                 nut_lock_floor = nut_lock_floor,
 
@@ -520,7 +521,7 @@ intersection() {
     /* translate([80, -10, -10]) { cube([200, 120, 100]); } */
 
     // screw mount
-    /* translate([10.3, -10, -10]) { cube([200, 120, 100]); } */
+    /* translate([44, -10, -10]) { cube([200, 120, 100]); } */
 
     // speaker
     /* translate([130, -10, -10]) { cube([200, 120, 100]); } */

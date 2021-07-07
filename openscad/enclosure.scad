@@ -83,6 +83,7 @@ module enclosure(
     fillet = ENCLOSURE_FILLET,
     key_exposure_lip_fillet = ENCLOSURE_FILLET,
 
+    screw_top_clearance = 0,
     screw_head_clearance = 0,
     nut_lock_floor = 0,
 
@@ -659,14 +660,29 @@ module enclosure(
         z = keys_position.z + cantilver_mount_height;
         height = dimensions.z - z - ENCLOSURE_FLOOR_CEILING + e;
 
+        module _nuts(entry) {
+            e_translate() {
+                nuts(
+                    pcb_position = pcb_position,
+                    positions = pcb_screw_hole_positions,
+                    y = entry ? nut_cavity_size - e * 2 : 0,
+                    z = entry
+                        ? z + nut_lock_floor + nut_cavity_height
+                        : z + nut_lock_floor,
+                    diameter = entry
+                        ? nut_cavity_size + e * 2
+                        : nut_cavity_size,
+                    height = entry ? screw_top_clearance : nut_cavity_height
+                );
+            }
+        }
+
+        module _nut_entry_paths() {
+            _nuts(entry = true);
+        }
+
         module _nut_locks() {
-            nuts(
-                pcb_position = pcb_position,
-                positions = pcb_screw_hole_positions,
-                z = keys_position.z + cantilver_mount_height + nut_lock_floor,
-                diameter = nut_cavity_size,
-                height = nut_cavity_height
-            );
+            _nuts(entry = false);
 
             if (show_dfm) {
                 dfm_length = PCB_HOLE_DIAMETER;
@@ -695,20 +711,24 @@ module enclosure(
         }
 
         difference() {
-            translate([
-                keys_position.x,
-                keys_position.y + cantilever_length_extension,
-                z
-            ]) {
-                keys_mount_rail(
-                    height = height,
-                    key_width = key_width,
-                    key_length = key_length,
-                    key_gutter = key_gutter,
-                    include_alignment_fixture = false,
-                    pcb_screw_hole_positions = pcb_screw_hole_positions,
-                    tolerance = -e
-                );
+            union() {
+                translate([
+                    keys_position.x,
+                    keys_position.y + cantilever_length_extension,
+                    z
+                ]) {
+                    keys_mount_rail(
+                        height = height,
+                        key_width = key_width,
+                        key_length = key_length,
+                        key_gutter = key_gutter,
+                        include_alignment_fixture = false,
+                        pcb_screw_hole_positions = pcb_screw_hole_positions,
+                        tolerance = -e
+                    );
+                }
+
+                _nut_entry_paths();
             }
 
             _nut_locks();

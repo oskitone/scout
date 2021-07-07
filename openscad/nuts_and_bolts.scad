@@ -9,6 +9,7 @@ SCREW_LENGTH = 3/4 * 25.4;
 module nuts(
     pcb_position = [],
     positions = [],
+    y = 0,
     z = 0,
     diameter = NUT_DIAMETER,
     height = NUT_HEIGHT
@@ -18,7 +19,7 @@ module nuts(
     for (xy = positions) {
         translate([
             pcb_position.x + xy.x - diameter / 2,
-            pcb_position.y + xy.y - diameter / 2,
+            y + pcb_position.y + xy.y - diameter / 2,
             z
         ]) {
             cube([diameter, diameter, height]);
