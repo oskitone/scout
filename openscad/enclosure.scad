@@ -869,7 +869,7 @@ module enclosure(
         ) {
             x = get_center_x(width);
             y = batteries_position.y - (battery_holder_wall + tolerance)
-                + tolerance // intentionally snug
+                + tolerance * 0 // intentionally snug
                 + battery_holder_length;
             z = ENCLOSURE_FLOOR_CEILING;
 
