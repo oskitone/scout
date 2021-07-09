@@ -1,6 +1,6 @@
 # Scout
 
-Work in progress
+![Scout](scout_render.png)
 
 ## Goals
 
