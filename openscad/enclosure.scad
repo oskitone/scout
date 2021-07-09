@@ -911,15 +911,15 @@ module enclosure(
     }
 
     module _disassembly_wedge_cavity(
-        length = 8,
-        height = lip_height + e
+        width = 8,
+        height = 1.4
     ) {
         translate([
-            dimensions.x - ENCLOSURE_WALL,
-            (dimensions.y - length) / 2,
-            bottom_height - lip_height
+            (dimensions.x - width) * .25,
+            -e,
+            bottom_height - height
         ]) {
-            cube([ENCLOSURE_WALL + e, length, height]);
+            cube([width, ENCLOSURE_WALL, height + e]);
         }
     }
 
