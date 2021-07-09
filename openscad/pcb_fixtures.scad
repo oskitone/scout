@@ -123,7 +123,7 @@ module pcb_bottom_fixtures(
     enclosure_lip_height,
 
     corner_coverage = 4,
-    corner_fixture_wall = ENCLOSURE_INNER_WALL,
+    corner_fixture_wall = 2,
     mounting_column_wall = ENCLOSURE_INNER_WALL,
 
     clearance = PCB_FIXTURE_CLEARANCE,
