@@ -67,8 +67,10 @@ module pcb_stool(
     support_web_width = ENCLOSURE_INNER_WALL,
 
     registration_nub = false,
-    registration_nub_diameter = PCB_HOLE_DIAMETER - DEFAULT_TOLERANCE * 2,
     registration_nub_height = PCB_HEIGHT,
+    registration_nub_clearance = .2,
+
+    tolerance = 0,
 
     quick_preview = false
 ) {
@@ -101,7 +103,9 @@ module pcb_stool(
     if (registration_nub) {
         translate([0, 0, height - e]) {
             cylinder(
-                d = registration_nub_diameter,
+                d = PCB_HOLE_DIAMETER
+                    - tolerance * 2
+                    - registration_nub_clearance * 2,
                 h = registration_nub_height + e,
                 $fn = quick_preview ? 12 : HIDEF_ROUNDING
             );
@@ -190,6 +194,7 @@ module pcb_bottom_fixtures(
                     pcb_stool(
                         height = pcb_position.z - z,
                         registration_nub = true,
+                        tolerance = tolerance,
                         quick_preview = quick_preview
                     );
                 }
