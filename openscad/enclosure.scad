@@ -12,6 +12,19 @@ include <key_lip_endstop.scad>;
 include <keys.scad>;
 include <pcb_fixtures.scad>;
 
+/*
+ * NOTES ON ENCLOSURE_WALL:
+    * The PCB's knob-to-key distance assumes a 2.4 wall. See commit ff765d34d7
+      for a compromise to do anything else, like...
+    * 3 works well enough and feels very sturdy.
+    * 4 is so thick that the lips don't have enough "give" to bend into place,
+      hurting assembly -- may be fixable w/ a much looser tolerance fit.
+    * I wonder if tight fits cause the bottom to concave bend as its sides are
+      pushed down and in by the top.
+    * No thickness seems to fix the issue where the grooved half is bigger than
+      the lipped half. Could be a tolerance fit issue?
+ */
+
 /* TODO: extract */
 ENCLOSURE_WALL = 2.4;
 ENCLOSURE_FLOOR_CEILING = 1.8;
