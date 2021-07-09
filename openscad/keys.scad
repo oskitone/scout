@@ -129,7 +129,6 @@ module keys(
     tolerance = 0,
 
     cantilever_length = 0,
-    cantilever_length_extension = 0,
     cantilever_height = 0,
     cantilver_mount_height = 0,
     nut_lock_floor = 0,
@@ -187,7 +186,7 @@ module keys(
             include_accidental = include_accidental,
             include_cantilevers = include_cantilevers,
 
-            cantilever_length = cantilever_length + cantilever_length_extension,
+            cantilever_length = cantilever_length,
             cantilever_height = cantilever_height,
             cantilever_recession = cantilever_length
         );
@@ -213,17 +212,15 @@ module keys(
                         include_cantilevers = true
                     );
 
-                    translate([0, cantilever_length_extension, 0]) {
-                        keys_mount_rail(
-                            height = cantilver_mount_height,
-                            key_width = key_width,
-                            key_length = key_length,
-                            key_gutter = key_gutter,
-                            front_y_bleed = e,
-                            pcb_screw_hole_positions = pcb_screw_hole_positions,
-                            tolerance = tolerance
-                        );
-                    }
+                    keys_mount_rail(
+                        height = cantilver_mount_height,
+                        key_width = key_width,
+                        key_length = key_length,
+                        key_gutter = key_gutter,
+                        front_y_bleed = e,
+                        pcb_screw_hole_positions = pcb_screw_hole_positions,
+                        tolerance = tolerance
+                    );
                 }
             }
         }
@@ -264,7 +261,7 @@ module keys(
         ]) {
             % flat_top_rectangular_pyramid(
                 top_width = keys_full_width,
-                top_length = key_length + cantilever_length_extension + e,
+                top_length = key_length + e,
                 bottom_width = keys_full_width,
                 bottom_length = 0,
                 height = travel + e,
