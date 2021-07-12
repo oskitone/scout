@@ -121,8 +121,6 @@ module enclosure(
         - default_gutter;
     branding_gutter = label_distance;
 
-    shallow_engraving_depth = ENCLOSURE_WALL / 4;
-
     module _half(
         _height,
         lip,
@@ -533,7 +531,7 @@ module enclosure(
     module _headphone_jack_cavity(
         just_assembly_valley = false,
         cavity_diameter = HEADPHONE_JACK_BARREL_DIAMETER + tolerance * 2,
-        plug_clearance_depth = shallow_engraving_depth,
+        plug_clearance_depth = ENCLOSURE_ENGRAVING_DEPTH,
         plug_clearance_diameter = 10 + tolerance * 2,
         plug_diameter = 10,
         engraving_width = 16
@@ -592,9 +590,7 @@ module enclosure(
                 enclosure_engraving(
                     string = string,
                     size = label_text_size,
-                    depth = placard
-                        ? ENCLOSURE_ENGRAVING_DEPTH
-                        : shallow_engraving_depth,
+                    depth = ENCLOSURE_ENGRAVING_DEPTH,
                     placard = placard ? [width, label_length] : undef,
                     chamfer_placard_top = true,
                     bottom = true,
