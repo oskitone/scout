@@ -1,28 +1,40 @@
 # Scout
 
+**Work-In-Progress!** PCBs are done (I hope!), but enclosure is still baking and I need to write up proper documentation. Stay tuned.
+
+---
+
 ![Scout](scout_render.png)
+
+**scout** (_/skout/_):
+
+1. _One sent to obtain information_
+2. _Jean Louise “Scout” Finch, of Atticus Finch_
+3. _The first synth from Oskitone to venture into the big ol' world of microcontrollers_
+
+The Scout is:
+
+- **Hackable:** Powered by an ATmega328 and can be re-programmed just like an Arduino Uno using an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70). And fully open source!
+- **3D-Printable:** Besides the electronics and some common nuts and bolts, all parts can be 3D-printed. And with a width of ~160mm (about 6.3"), the Scout can fit on smaller, "mini" print beds.
+- **Minimally featured:** Monophonic square wave with fixed glide and octave. 1.5 octaves of keys, a volume knob, on/off switch, headphone jack. No MIDI/CV or other IO.
+- **Beginner-friendly:** All through-hole components for soldering and assembles in about 45min. Standalone, battery-powered, doesn't need a computer or external speakers to work. Fun!
 
 ## Goals
 
-Quickest "Time-to-Noise" (TTN) from starting kit to making noise with it:
+In addition to the Scout being the first microcontroller-controlled instrument from Oskitone, it would also make a fine first DIY instrument for the budding electronics hobbyist.
 
-- Minimum number of components for reduced build time
-- Ideally 0 off-board connections; no ribbon cable,
+As such, its design is guided by a metric I'm calling "Time-to-Noise" (TTN): the time it takes from starting the kit to making music with it. The lower the better.
+
+- Minimum number of components for reduced assembly time
 - Able to print on "mini" (18x18x18cm) sized 3D printers
 - Built-in speaker
-- Minimum octave of notes
+- Minimum number of notes
 - Volume control
 
-Any secondary features should be optional; circuit must function w/o them:
+~Any secondary features should be optional; circuit must function w/o them:~
 
-- Line-out jack
-- Octave control
-
-Doesn't need to include but documentation should address:
-
-- CV, MIDI or other IO
-- Polyphony
-- Wave types besides square, envelopes, portamento, vibrato
+- ~Line-out jack~ _Eh, easier said than done_
+- ~Octave control~ _Removed!_
 
 ## Annotated BOM
 
