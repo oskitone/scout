@@ -32,8 +32,8 @@ module pcb_enclosure_top_fixtures(
 
     // NOTE: these are eyeballed, and that's okay!
     positions = [
-        [PCB_WIDTH * .15, PCB_LENGTH * .75],
-        [PCB_WIDTH * .5, PCB_LENGTH * .85],
+        [PCB_WIDTH * .07, PCB_LENGTH * .7],
+        [PCB_WIDTH * .5, PCB_LENGTH * .8],
     ]
 ) {
     e = .0876;
