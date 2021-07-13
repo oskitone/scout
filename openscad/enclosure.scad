@@ -459,6 +459,53 @@ module enclosure(
         }
     }
 
+    module _side_engraving(
+        x = undef,
+        y = undef,
+        string,
+        width = SIDE_ENGRAVING_DEFAULT_WIDTH,
+        z = (dimensions.z - SWITCH_CLUTCH_GRIP_HEIGHT - label_length) / 2
+            - 1,
+        placard = true
+    ) {
+        is_left = y != undef;
+
+        translate([
+            is_left ? -e : x,
+            is_left ? y : dimensions.y + e,
+            z
+        ]) {
+            rotate([90, 0, is_left ? 90 : 0]) {
+                enclosure_engraving(
+                    string = string,
+                    size = label_text_size,
+                    depth = ENCLOSURE_ENGRAVING_DEPTH,
+                    placard = placard ? [width, label_length] : undef,
+                    chamfer_placard_top = true,
+                    bottom = true,
+                    quick_preview = quick_preview,
+                    enclosure_height = dimensions.z
+                );
+            }
+        }
+    }
+
+    module _pow_engraving_lip_reinforcement(cavity) {
+        width = cavity ? ENCLOSURE_WALL : ENCLOSURE_WALL - e * 2;
+        length = cavity
+            ? SIDE_ENGRAVING_DEFAULT_WIDTH + e * 2 + tolerance * 4
+            : SIDE_ENGRAVING_DEFAULT_WIDTH + e * 2;
+        height = lip_height;
+
+        translate([
+            e,
+            get_switch_peripheral_y(length),
+            bottom_height - height - e
+        ]) {
+            cube([width, length, height + e]);
+        }
+    }
+
     module _uart_header_exposure(
         just_assembly_valley = false,
         x_bleed = 1,
@@ -567,37 +614,6 @@ module enclosure(
                 width = engraving_width,
                 string = "LINE"
             );
-        }
-    }
-
-    module _side_engraving(
-        x = undef,
-        y = undef,
-        string,
-        width = SIDE_ENGRAVING_DEFAULT_WIDTH,
-        z = (dimensions.z - SWITCH_CLUTCH_GRIP_HEIGHT - label_length) / 2
-            - 1,
-        placard = true
-    ) {
-        is_left = y != undef;
-
-        translate([
-            is_left ? -e : x,
-            is_left ? y : dimensions.y + e,
-            z
-        ]) {
-            rotate([90, 0, is_left ? 90 : 0]) {
-                enclosure_engraving(
-                    string = string,
-                    size = label_text_size,
-                    depth = ENCLOSURE_ENGRAVING_DEPTH,
-                    placard = placard ? [width, label_length] : undef,
-                    chamfer_placard_top = true,
-                    bottom = true,
-                    quick_preview = quick_preview,
-                    enclosure_height = dimensions.z
-                );
-            }
         }
     }
 
@@ -968,6 +984,7 @@ module enclosure(
                         _pencil_stand(false);
                         _battery_holder_fixtures(top = false);
                         _switch_clutch_aligners(bottom = true);
+                        _pow_engraving_lip_reinforcement(cavity = false);
                     }
                 }
 
@@ -983,6 +1000,7 @@ module enclosure(
                             _uart_header_exposure(just_assembly_valley = true);
                             _headphone_jack_cavity(just_assembly_valley = true);
                             _switch_exposure(just_assembly_valley = true);
+                            _pow_engraving_lip_reinforcement(cavity = true);
                         }
                     }
 

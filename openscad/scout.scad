@@ -534,4 +534,5 @@ intersection() {
 
     // switch_clutch
     /* translate([-10, 65, -10]) { cube([200, 120, 100]); } */
+    /* translate([-10, 56, -10]) { cube([14, 24, 100]); } */
 }
