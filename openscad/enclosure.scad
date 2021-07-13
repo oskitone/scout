@@ -139,7 +139,7 @@ module enclosure(
             include_tongue_and_groove = true,
             tongue_and_groove_snap = [.3, .9], // eyeballed vs placard labels
             tongue_and_groove_pull = tolerance,
-            tolerance = tolerance * 2, // intentionally loose
+            tolerance = tolerance,
             outer_color = outer_color,
             cavity_color = cavity_color,
             $fn = quick_preview ? undef : DEFAULT_ROUNDING
