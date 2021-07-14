@@ -29,7 +29,7 @@ module scout(
     show_dfm = false,
     show_clearances = true,
 
-    cantilever_height = 1.5,
+    cantilever_height = 1,
     cantilver_mount_height = 2,
     accidental_height = 2,
     accidental_key_recession = 0,
@@ -302,7 +302,7 @@ module scout(
             POLY555_CANTILEVER_LENGTH = 3;
             20_KEY_MATRIX_CANTILEVER_LENGTH = 4;
             unexposed_cantilever_length = key_height - cantilver_mount_height;
-            cantilever_length = unexposed_cantilever_length;
+            cantilever_length = POLY555_CANTILEVER_LENGTH;
 
             keys(
                 key_height = key_height,
