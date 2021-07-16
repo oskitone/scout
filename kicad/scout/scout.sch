@@ -853,4 +853,10 @@ $EndComp
 Wire Wire Line
 	1700 4300 1700 4350
 NoConn ~ 1700 4300
+Text Notes 7400 7500 0    50   ~ 0
+Scout
+Text Notes 8150 7650 0    50   ~ 0
+2020/07/16
+Text Notes 10600 7650 0    50   ~ 0
+A
 $EndSCHEMATC
