@@ -119,10 +119,10 @@ Wire Wire Line
 Text GLabel 4800 3600 2    50   Input ~ 0
 RESET
 $Comp
-L Device:R_Small_US R6
+L Device:R_Small_US R5
 U 1 1 60821C2F
 P 4650 3400
-F 0 "R6" H 4800 3400 50  0000 L CNN
+F 0 "R5" H 4800 3400 50  0000 L CNN
 F 1 "10k" H 4950 3400 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4650 3400 50  0001 C CNN
 F 3 "~" H 4650 3400 50  0001 C CNN
@@ -281,8 +281,6 @@ Wire Wire Line
 	1900 3900 1900 4050
 Text GLabel 1900 3900 1    50   Input ~ 0
 D13
-Wire Wire Line
-	1700 3900 1700 4050
 $Comp
 L power:VCC #PWR01
 U 1 1 608902D3
@@ -309,12 +307,8 @@ F 3 "" H 1700 4900 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1500 3900 1500 4050
-Text GLabel 1700 3900 1    50   Input ~ 0
-RXD
 Wire Wire Line
 	1900 4250 1900 4350
-Wire Wire Line
-	1700 4250 1700 4350
 Wire Wire Line
 	1500 4250 1500 4350
 $Comp
@@ -329,25 +323,14 @@ F 3 "~" H 1700 4500 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Device:R_Small_US R3
+L Device:R_Small_US R2
 U 1 1 6015EB62
 P 1900 4150
-F 0 "R3" H 1750 4300 50  0000 L CNN
+F 0 "R2" H 1750 4300 50  0000 L CNN
 F 1 "220" V 1800 4050 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 1900 4150 50  0001 C CNN
 F 3 "~" H 1900 4150 50  0001 C CNN
 	1    1900 4150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_Small_US R2
-U 1 1 6015E344
-P 1700 4150
-F 0 "R2" H 1550 4300 50  0000 L CNN
-F 1 "220" V 1600 4050 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 1700 4150 50  0001 C CNN
-F 3 "~" H 1700 4150 50  0001 C CNN
-	1    1700 4150
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -588,10 +571,10 @@ F 3 "http://www.ti.com/lit/ds/symlink/lm386.pdf" H 5150 6050 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R_Small_US R4
+L Device:R_Small_US R3
 U 1 1 608C9015
 P 3200 6100
-F 0 "R4" V 3450 6050 50  0000 L CNN
+F 0 "R3" V 3450 6050 50  0000 L CNN
 F 1 "1k" V 3350 6050 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 3200 6100 50  0001 C CNN
 F 3 "~" H 3200 6100 50  0001 C CNN
@@ -820,10 +803,10 @@ Wire Wire Line
 Wire Wire Line
 	7000 4500 7500 4500
 $Comp
-L Device:R_Small_US R5
+L Device:R_Small_US R4
 U 1 1 60D823A9
 P 4250 5750
-F 0 "R5" V 4500 5700 50  0000 L CNN
+F 0 "R4" V 4500 5700 50  0000 L CNN
 F 1 "330k" V 4400 5650 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4250 5750 50  0001 C CNN
 F 3 "~" H 4250 5750 50  0001 C CNN
@@ -867,4 +850,7 @@ F 3 "" H 6250 6400 50  0001 C CNN
 	1    6250 6400
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	1700 4300 1700 4350
+NoConn ~ 1700 4300
 $EndSCHEMATC
