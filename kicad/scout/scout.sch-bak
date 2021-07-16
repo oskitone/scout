@@ -281,8 +281,6 @@ Wire Wire Line
 	1900 3900 1900 4050
 Text GLabel 1900 3900 1    50   Input ~ 0
 D13
-Wire Wire Line
-	1700 3900 1700 4050
 $Comp
 L power:VCC #PWR01
 U 1 1 608902D3
@@ -309,12 +307,8 @@ F 3 "" H 1700 4900 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1500 3900 1500 4050
-Text GLabel 1700 3900 1    50   Input ~ 0
-RXD
 Wire Wire Line
 	1900 4250 1900 4350
-Wire Wire Line
-	1700 4250 1700 4350
 Wire Wire Line
 	1500 4250 1500 4350
 $Comp
@@ -337,17 +331,6 @@ F 1 "220" V 1800 4050 50  0000 L CNN
 F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 1900 4150 50  0001 C CNN
 F 3 "~" H 1900 4150 50  0001 C CNN
 	1    1900 4150
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_Small_US R2
-U 1 1 6015E344
-P 1700 4150
-F 0 "R2" H 1550 4300 50  0000 L CNN
-F 1 "220" V 1600 4050 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 1700 4150 50  0001 C CNN
-F 3 "~" H 1700 4150 50  0001 C CNN
-	1    1700 4150
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -706,17 +689,17 @@ Wire Wire Line
 Wire Wire Line
 	2800 6250 2800 6400
 Text GLabel 4150 3000 2    50   Input ~ 0
-AI0
+A0
 Text GLabel 4150 3100 2    50   Input ~ 0
-AI1
+A1
 Text GLabel 4150 3200 2    50   Input ~ 0
-AI2
+A2
 Text GLabel 4150 3300 2    50   Input ~ 0
-AI3
+A3
 Text GLabel 4150 3400 2    50   Input ~ 0
-AI4
+A4
 Text GLabel 4150 3500 2    50   Input ~ 0
-AI5
+A5
 Text GLabel 4150 2500 2    50   Input ~ 0
 D12
 Wire Wire Line
@@ -734,17 +717,17 @@ Wire Wire Line
 Wire Wire Line
 	4150 3500 4050 3500
 Text GLabel 7400 3500 0    50   Input ~ 0
-AI0
+A0
 Text GLabel 7400 3600 0    50   Input ~ 0
-AI1
+A1
 Text GLabel 7400 3700 0    50   Input ~ 0
-AI2
+A2
 Text GLabel 7400 3800 0    50   Input ~ 0
-AI3
+A3
 Text GLabel 7400 3900 0    50   Input ~ 0
-AI4
+A4
 Text GLabel 7400 4000 0    50   Input ~ 0
-AI5
+A5
 Text GLabel 7400 4100 0    50   Input ~ 0
 D12
 Wire Wire Line
@@ -867,4 +850,7 @@ F 3 "" H 6250 6400 50  0001 C CNN
 	1    6250 6400
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	1700 4300 1700 4350
+NoConn ~ 1700 4300
 $EndSCHEMATC
