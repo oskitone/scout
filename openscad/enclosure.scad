@@ -630,10 +630,11 @@ module enclosure(
 
     module _switch_exposure(
         just_assembly_valley = false,
-        bleed = tolerance + .2 // intentionally loose
+        length_clearance = .2 // intentionally loose
     ) {
-        length = SWITCH_CLUTCH_GRIP_LENGTH + SWITCH_ACTUATOR_TRAVEL + bleed * 2;
-        height = SWITCH_CLUTCH_GRIP_HEIGHT + bleed * 2;
+        length = SWITCH_CLUTCH_GRIP_LENGTH + SWITCH_ACTUATOR_TRAVEL
+            + tolerance * 4 + length_clearance * 2;
+        height = SWITCH_CLUTCH_GRIP_HEIGHT + tolerance * 4;
 
         y = get_switch_peripheral_y(length);
         z = (dimensions.z - height) / 2;
