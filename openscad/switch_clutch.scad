@@ -10,6 +10,11 @@ DEFAULT_TOLERANCE = .1;
 SWITCH_CLUTCH_GRIP_LENGTH = 10;
 SWITCH_CLUTCH_GRIP_HEIGHT = 7;
 
+function get_switch_clutch_length_with_travel(web_length_extension) = (
+    SWITCH_CLUTCH_GRIP_LENGTH + SWITCH_ACTUATOR_TRAVEL
+    + web_length_extension * 2
+);
+
 module switch_clutch(
     position = 0,
 

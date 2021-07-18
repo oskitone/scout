@@ -121,6 +121,10 @@ module enclosure(
         - default_gutter;
     branding_gutter = label_distance;
 
+    switch_clutch_length_with_travel = get_switch_clutch_length_with_travel(
+        switch_clutch_web_length_extension
+    );
+
     module _half(
         _height,
         lip,
@@ -664,17 +668,14 @@ module enclosure(
         width = ENCLOSURE_INNER_WALL,
         height = 2
     ) {
-        length = SWITCH_CLUTCH_GRIP_LENGTH + SWITCH_ACTUATOR_TRAVEL
-            + switch_clutch_web_length_extension * 2;
-
         x = pcb_position.x;
-        y = get_switch_peripheral_y(length);
+        y = get_switch_peripheral_y(switch_clutch_length_with_travel);
         z = bottom
             ? ENCLOSURE_FLOOR_CEILING - e
             : dimensions.z - ENCLOSURE_FLOOR_CEILING - height;
 
         translate([x, y, z]) {
-            cube([width, length, height + e]);
+            cube([width, switch_clutch_length_with_travel, height + e]);
         }
     }
 
@@ -935,6 +936,27 @@ module enclosure(
         }
     }
 
+    module _back_corner_reinforcements(clearance = 1) {
+        width = pcb_position.x - ENCLOSURE_WALL - clearance;
+        length = dimensions.y
+            - get_switch_peripheral_y(switch_clutch_length_with_travel)
+            - ENCLOSURE_WALL - switch_clutch_length_with_travel - clearance;
+
+        y = dimensions.y - ENCLOSURE_WALL - length;
+        z = bottom_height - lip_height;
+
+        height = dimensions.z - z - ENCLOSURE_FLOOR_CEILING;
+
+        for (x = [
+            ENCLOSURE_WALL - e,
+            dimensions.x - ENCLOSURE_WALL - width
+        ]) {
+            translate([x, y, z]) {
+                cube([width + e, length + e, height + e]);
+            }
+        }
+    }
+
     if (show_top || show_bottom) {
         if (show_top && show_dfm) {
             color(outer_color) {
@@ -1021,6 +1043,7 @@ module enclosure(
                         );
                         _battery_holder_fixtures(top = true);
                         _switch_clutch_aligners(bottom = false);
+                        _back_corner_reinforcements();
                     }
                 }
             }
