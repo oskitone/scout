@@ -925,15 +925,16 @@ module enclosure(
     }
 
     module _disassembly_wedge_cavity(
-        width = 8,
-        height = 1.4
+        width = 10,
+        height = FLATHEAD_SCREWDRIVER_POINT,
+        corner_clearance = ENCLOSURE_WALL
     ) {
         translate([
-            (dimensions.x - width) * .25,
-            -e,
+            dimensions.x - width - corner_clearance,
+            dimensions.y - ENCLOSURE_WALL - e,
             bottom_height - height
         ]) {
-            cube([width, ENCLOSURE_WALL, height + e]);
+            cube([width, ENCLOSURE_WALL + e * 2, height + e]);
         }
     }
 

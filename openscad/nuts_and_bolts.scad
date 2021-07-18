@@ -6,6 +6,8 @@ NUT_HEIGHT = 2.4;
 
 SCREW_LENGTH = 3/4 * 25.4;
 
+FLATHEAD_SCREWDRIVER_POINT = .8;
+
 module nuts(
     pcb_position = [],
     positions = [],
