@@ -285,18 +285,27 @@ module battery_holder(
 
     center_z = height / 2 - floor;
 
+    wire_channel_diameter = RIBBON_CABLE_HEIGHT + tolerance * 2;
+
     module _alignment_rails(
         _width = AAA_BATTERY_LENGTH * .33,
-        _length = ENCLOSURE_INNER_WALL,
+        top_length = 1,
+        bottom_length = RIBBON_CABLE_HEIGHT + ENCLOSURE_INNER_WALL * 3,
         _height = AAA_BATTERY_DIAMETER * .25
     ) {
         x = (cavity_width - _width) / 2 - tolerance;
 
         for (i = [1 : count - 1]) {
-            y = i * (AAA_BATTERY_DIAMETER + gutter) - _length / 2;
+            y = i * (AAA_BATTERY_DIAMETER + gutter) - bottom_length / 2;
 
             translate([x, y, -e]) {
-                cube([_width, _length, _height + e]);
+                flat_top_rectangular_pyramid(
+                    top_width = _width,
+                    top_length = top_length,
+                    bottom_width = _width,
+                    bottom_length = bottom_length,
+                    height = _height + e
+                );
             }
         }
     }
@@ -346,7 +355,7 @@ module battery_holder(
     module _wire_relief_hitches(
         hole_diameter = RIBBON_CABLE_WIDTH + tolerance * 2,
         wall = ENCLOSURE_INNER_WALL,
-        _length = AAA_BATTERY_DIAMETER
+        _length = AAA_BATTERY_DIAMETER - wire_channel_diameter
     ) {
         _width = wall + hole_diameter;
 
@@ -394,23 +403,25 @@ module battery_holder(
 
     module _wire_channel(
         _length = RIBBON_CABLE_HEIGHT,
-        _height = RIBBON_CABLE_WIDTH
+        _height = RIBBON_CABLE_WIDTH,
+
+        diameter = wire_channel_diameter
     ) {
-        hull() {
-            for (z = [
-                center_z - _height / 2 - tolerance,
-                center_z + _height / 2 + tolerance
-            ]) {
-                translate([wall_xy - e, wall_xy, z]) {
-                    rotate([0, 90, 0]) {
-                        cylinder(
-                            d = (_length + tolerance) * 2,
-                            h = width + e * 2,
-                            $fn = 4
-                        );
-                    }
-                }
+        x = wall_xy;
+        y = AAA_BATTERY_DIAMETER;
+
+        translate([x - e, y, diameter - floor - tolerance * 2]) {
+            rotate([0, 90, 0]) {
+                cylinder(
+                    d = diameter,
+                    h = width + e * 2,
+                    $fn = LOFI_ROUNDING
+                );
             }
+        }
+
+        translate([x - e, y + diameter / -2, -floor - e]) {
+            cube([width + e * 2, diameter, floor]);
         }
     }
 
@@ -476,8 +487,11 @@ module battery_holder(
     }
 }
 
-* translate([0, -40, 0]) {
+* difference() {
+translate([0, -40, 0]) {
     # % battery_array();
-    battery_holder(wall = 3, tolerance = .3, floor = 1, end_terminal_bottom_right = 1);
+    battery_holder(wall = 3, tolerance = .3, floor = 1, end_terminal_bottom_right = 1, quick_preview = false);
     % battery_contacts(tolerance = .3, end_terminal_bottom_right = 1);
+}
+translate([-10, -50, -10]) cube([20, 50, 30]);
 }
