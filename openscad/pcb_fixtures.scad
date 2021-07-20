@@ -3,6 +3,8 @@ PCB_FIXTURE_CLEARANCE = .3;
 PCB_STOOL_DIAMETER = 4;
 PCB_STOOL_CHAMFER = 2;
 
+PCB_FIXTURE_BUTTON_RAIL_LENGTH = 3;
+
 module _fixture_pcb_difference(
     pcb_position = [0, 0, 0],
     z = undef,
@@ -151,7 +153,7 @@ module pcb_bottom_fixtures(
         }
     }
 
-    module _button_rail(length = 3) {
+    module _button_rail(length = PCB_FIXTURE_BUTTON_RAIL_LENGTH) {
         translate([
             pcb_position.x,
             pcb_position.y + PCB_BUTTON_POSITIONS[0].y - length / 2,

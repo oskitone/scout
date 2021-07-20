@@ -47,7 +47,7 @@ module scout(
     enclosure_outer_color = "#FF69B4",
     enclosure_cavity_color = "#cc5490",
 
-    battery_holder_wall = ENCLOSURE_INNER_WALL,
+    battery_holder_wall = BATTERY_HOLDER_DEFAULT_WALL,
     battery_holder_floor = 1,
 
     pcb_screw_hole_positions = PCB_HOLE_POSITIONS,
@@ -216,8 +216,7 @@ module scout(
             % battery_array();
             % # battery_contacts(
                 tolerance = tolerance,
-                show_tabs = false,
-                end_terminal_bottom_right = false
+                show_tabs = false
             );
         }
 
@@ -269,30 +268,16 @@ module scout(
         outer_color = enclosure_outer_color,
         cavity_color = enclosure_cavity_color
     ) {
-        back_y = batteries_y - (battery_holder_wall + tolerance)
-            + get_battery_holder_length(tolerance, battery_holder_wall);
-        back_hitch_length = pcb_y - back_y + PCB_FRONT_PIN_Y;
-
-        difference() {
-            e_translate([batteries_x, batteries_y, batteries_z]) {
-                battery_holder(
-                    wall = battery_holder_wall,
-                    floor = battery_holder_floor,
-                    fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
-                    tolerance = tolerance + e,
-                    end_terminal_bottom_right = false,
-                    outer_color = outer_color,
-                    cavity_color = cavity_color,
-                    back_hitch_length = back_hitch_length,
-                    back_hitch_height =
-                        pcb_z - ENCLOSURE_FLOOR_CEILING + PCB_HEIGHT - e,
-                    quick_preview = quick_preview
-                );
-            }
-
-            color(cavity_color) {
-                _fixture_pcb_difference(pcb_position = [pcb_x, pcb_y, pcb_z]);
-            }
+        e_translate([batteries_x, batteries_y, batteries_z]) {
+            battery_holder(
+                wall = battery_holder_wall,
+                floor = battery_holder_floor,
+                fillet = quick_preview ? 0 : ENCLOSURE_INNER_FILLET,
+                tolerance = tolerance + e,
+                outer_color = outer_color,
+                cavity_color = cavity_color,
+                quick_preview = quick_preview
+            );
         }
     }
 

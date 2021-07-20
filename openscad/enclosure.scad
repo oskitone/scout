@@ -891,19 +891,27 @@ module enclosure(
 
         module _back_endstop(
             width = AAA_BATTERY_LENGTH / 2,
-            length = 2,
-            height = 3
+            web_width = ENCLOSURE_INNER_WALL,
+            length = ENCLOSURE_INNER_WALL
         ) {
-            x = get_center_x(width);
-            y = batteries_position.y - (battery_holder_wall + tolerance)
-                + tolerance * 0 // intentionally snug
-                + battery_holder_length;
             z = ENCLOSURE_FLOOR_CEILING;
 
-            translate([x, y, z - e]) {
-                cube([width, length, height + e]);
+            height = pcb_position.z - z - PCB_PIN_CLEARANCE;
 
-                translate([0, 0, height]) {
+            endstop_x = get_center_x(width);
+            endstop_y = batteries_position.y - (battery_holder_wall + tolerance)
+                + tolerance * 0 // intentionally snug
+                + battery_holder_length;
+
+            web_length =
+                (pcb_position.y + PCB_BUTTON_POSITIONS[0].y -
+                    PCB_FIXTURE_BUTTON_RAIL_LENGTH / 2)
+                - (endstop_y + length);
+
+            translate([endstop_x, endstop_y, z - e]) {
+                cube([width, length, height - length + e]);
+
+                translate([0, 0, height - length]) {
                     flat_top_rectangular_pyramid(
                         top_width = width,
                         top_length = 0,
@@ -912,6 +920,12 @@ module enclosure(
                         height = length,
                         top_weight_y = 1
                     );
+                }
+            }
+
+            for (x = [endstop_x, endstop_x + width - web_width]) {
+                translate([x, endstop_y + length - e, z - e]) {
+                    cube([web_width, web_length + e * 2, height + e]);
                 }
             }
         }

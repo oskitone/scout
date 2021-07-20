@@ -3,11 +3,17 @@ use <../../poly555/openscad/lib/basic_shapes.scad>;
 
 include <batteries.scad>;
 include <battery_contacts.scad>;
+include <enclosure.scad>;
 
 BATTERY_HOLDER_NUB_FIXTURE_WIDTH = 10;
 BATTERY_HOLDER_NUB_FIXTURE_DEPTH = .6;
 BATTERY_HOLDER_NUB_FIXTURE_HEIGHT = 1;
 BATTERY_HOLDER_NUB_FIXTURE_Z = AAA_BATTERY_DIAMETER;
+
+BATTERY_HOLDER_DEFAULT_WALL = ENCLOSURE_INNER_WALL;
+
+RIBBON_CABLE_WIDTH = 2.6;
+RIBBON_CABLE_HEIGHT = 1;
 
 function get_battery_holder_cavity_width(
     tolerance = 0
@@ -20,7 +26,7 @@ function get_battery_holder_cavity_width(
 
 function get_battery_holder_width(
     tolerance = 0,
-    wall = ENCLOSURE_INNER_WALL
+    wall = BATTERY_HOLDER_DEFAULT_WALL
 ) = (
     get_battery_holder_cavity_width(tolerance)
     + wall * 2
@@ -38,7 +44,7 @@ function get_battery_holder_cavity_length(
 
 function get_battery_holder_length(
     tolerance = 0,
-    wall = ENCLOSURE_INNER_WALL
+    wall = BATTERY_HOLDER_DEFAULT_WALL
 ) = (
     get_battery_holder_cavity_length(3, tolerance)
     + wall * 2
@@ -248,7 +254,7 @@ module battery_contact_fixtures(
 }
 
 module battery_holder(
-    wall = ENCLOSURE_INNER_WALL,
+    wall = BATTERY_HOLDER_DEFAULT_WALL,
     wall_height_extension = 0,
     floor = 0,
     tolerance = 0,
@@ -264,9 +270,6 @@ module battery_holder(
     outer_color = undef,
     cavity_color = undef,
 
-    back_hitch_length = 0,
-    back_hitch_height = 0,
-
     quick_preview = true
 ) {
     e = .0837;
@@ -279,6 +282,8 @@ module battery_holder(
     height = AAA_BATTERY_DIAMETER + floor + wall_height_extension;
 
     wall_xy = -(wall + tolerance);
+
+    center_z = height / 2 - floor;
 
     module _alignment_rails(
         _width = AAA_BATTERY_LENGTH * .33,
@@ -339,34 +344,70 @@ module battery_holder(
     }
 
     module _wire_relief_hitches(
-        _width = 3,
-        end_gutter = wall,
-        hole_diameter = 2 + tolerance * 2
+        hole_diameter = RIBBON_CABLE_WIDTH + tolerance * 2,
+        wall = ENCLOSURE_INNER_WALL,
+        _length = AAA_BATTERY_DIAMETER
     ) {
-        for (x = [
-            wall_xy + end_gutter,
-            wall_xy + width - _width - end_gutter
-        ]) {
-            translate([x, length + wall_xy - fillet, -floor]) {
-                difference() {
-                    cube([
-                        _width,
-                        back_hitch_length + fillet,
-                        back_hitch_height
-                    ]);
+        _width = wall + hole_diameter;
 
-                    translate([
-                        -e,
-                        hole_diameter / 2 + fillet,
-                        back_hitch_height / 2
-                    ]) {
-                        rotate([0, 90, 0]) {
+        module _hitch(x, flip_horizontally = true) {
+            y = wall_xy + (length - _length) / 2;
+
+            cylinder_x = wall + hole_diameter / 2;
+            cylinder_z = floor + center_z;
+
+            connection_x = flip_horizontally ? 0 : wall_xy - x + e;
+
+            translate([x, y, -floor]) {
+                difference() {
+                    hull($fn = quick_preview ? undef : DEFAULT_ROUNDING) {
+                        translate([cylinder_x, 0, cylinder_z]) {
+                            rotate([-90, 0, 0]) {
+                                cylinder(
+                                    d = hole_diameter + wall * 2,
+                                    h = _length
+                                );
+                            }
+                        }
+
+                        translate([connection_x, 0, fillet]) {
+                            cube([e, _length, height - floor - fillet]);
+                        }
+                    }
+
+                    translate([cylinder_x, -e, cylinder_z]) {
+                        rotate([-90, 0, 0]) {
                             cylinder(
                                 d = hole_diameter,
-                                h = _width + e * 2,
+                                h = _length + e * 2,
                                 $fn = quick_preview ? undef : LOFI_ROUNDING
                             );
                         }
+                    }
+                }
+            }
+        }
+
+        _hitch(wall_xy - _width, flip_horizontally = false);
+        _hitch(wall_xy + width - wall, flip_horizontally = true);
+    }
+
+    module _wire_channel(
+        _length = RIBBON_CABLE_HEIGHT,
+        _height = RIBBON_CABLE_WIDTH
+    ) {
+        hull() {
+            for (z = [
+                center_z - _height / 2 - tolerance,
+                center_z + _height / 2 + tolerance
+            ]) {
+                translate([wall_xy - e, wall_xy, z]) {
+                    rotate([0, 90, 0]) {
+                        cylinder(
+                            d = (_length + tolerance) * 2,
+                            h = width + e * 2,
+                            $fn = 4
+                        );
                     }
                 }
             }
@@ -429,6 +470,8 @@ module battery_holder(
             }
 
             _nub_fixture_cavity();
+
+            _wire_channel();
         }
     }
 }
