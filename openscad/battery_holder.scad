@@ -229,7 +229,7 @@ module battery_contact_fixtures(
                         floor_cavity_height = floor_cavity_height,
                         diameter = KEYSTONE_5204_5226_WIDTH,
                         wall = tab_contact_fixture_wall,
-                        tolerance = tolerance,
+                        tolerance = tolerance * 2, // intentionally loose
                         contact_z = 0,
                         height = height - e
                     );
@@ -243,7 +243,7 @@ module battery_contact_fixtures(
                         floor_cavity_height = floor_cavity_height,
                         diameter = KEYSTONE_5204_5226_WIDTH,
                         wall = tab_contact_fixture_wall,
-                        tolerance = tolerance,
+                        tolerance = tolerance * 2, // intentionally loose
                         contact_z = 0,
                         height = height - e
                     );
