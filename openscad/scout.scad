@@ -50,8 +50,14 @@ module scout(
     battery_holder_wall = BATTERY_HOLDER_DEFAULT_WALL,
     battery_holder_floor = 1,
 
-    pcb_screw_hole_positions = PCB_HOLE_POSITIONS,
-    pcb_post_hole_positions = [],
+    pcb_screw_hole_positions = [
+        PCB_HOLE_POSITIONS[1],
+        PCB_HOLE_POSITIONS[3],
+    ],
+    pcb_post_hole_positions = [
+        PCB_HOLE_POSITIONS[0],
+        PCB_HOLE_POSITIONS[4],
+    ],
 
     min_screw_bottom_clearance = DEFAULT_DFM_LAYER_HEIGHT,
     min_screw_top_clearance = .8,
