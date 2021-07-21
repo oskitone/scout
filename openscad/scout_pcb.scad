@@ -156,6 +156,9 @@ module scout_pcb(
             }
 
             scout_pcb_holes();
+
+            translate([9.4, 40.4, -e]) cube([15.8, 10, PCB_HEIGHT + e * 2]);
+            translate([103.2, 43.4, -e]) cube([6, 10, PCB_HEIGHT + e * 2]);
         }
     }
 
