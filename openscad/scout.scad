@@ -31,6 +31,7 @@ module scout(
 
     cantilever_height = 1,
     cantilver_mount_height = 2,
+    cantilever_length = 3,
     accidental_height = 2,
     accidental_key_recession = 0,
     key_lip_exposure = 3,
@@ -290,12 +291,6 @@ module scout(
 
     module _output() {
         if (show_keys) {
-            // TODO: experiment with arbitrary lengths:
-            POLY555_CANTILEVER_LENGTH = 3;
-            20_KEY_MATRIX_CANTILEVER_LENGTH = 4;
-            unexposed_cantilever_length = key_height - cantilver_mount_height;
-            cantilever_length = POLY555_CANTILEVER_LENGTH;
-
             keys(
                 key_height = key_height,
                 accidental_height = accidental_height,
