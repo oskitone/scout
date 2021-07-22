@@ -337,18 +337,24 @@ module battery_holder(
         }
     }
 
-    module _nub_fixture_cavity(clearance = .1) {
+    module _nub_fixture_cavities(clearance = .1) {
         _width = BATTERY_HOLDER_NUB_FIXTURE_WIDTH + (clearance + tolerance) * 2;
         _length = wall + e * 2;
         _height = BATTERY_HOLDER_NUB_FIXTURE_HEIGHT
             + (clearance + tolerance) * 2;
 
         x = wall_xy + (width - _width) / 2;
-        y = wall_xy - e;
-        z = BATTERY_HOLDER_NUB_FIXTURE_Z - (clearance + tolerance) - floor;
 
-        translate([x, y, z]) {
-            cube([_width, _length + e, _height]);
+        for (
+            y = [wall_xy - e, wall_xy + length - _length],
+            z = [
+                -floor - e,
+                BATTERY_HOLDER_NUB_FIXTURE_Z - (clearance + tolerance) - floor
+            ]
+        ) {
+            translate([x, y, z]) {
+                cube([_width, _length + e, _height + e]);
+            }
         }
     }
 
@@ -480,7 +486,7 @@ module battery_holder(
                 );
             }
 
-            _nub_fixture_cavity();
+            _nub_fixture_cavities();
 
             _wire_channel();
         }
