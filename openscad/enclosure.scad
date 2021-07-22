@@ -940,11 +940,10 @@ module enclosure(
 
     module _disassembly_wedge_cavity(
         width = 10,
-        height = FLATHEAD_SCREWDRIVER_POINT,
-        corner_clearance = ENCLOSURE_WALL
+        height = FLATHEAD_SCREWDRIVER_POINT
     ) {
         translate([
-            dimensions.x - width - corner_clearance,
+            knob_position.x - width / 2,
             dimensions.y - ENCLOSURE_WALL - e,
             bottom_height - height
         ]) {
