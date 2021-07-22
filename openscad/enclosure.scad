@@ -892,11 +892,17 @@ module enclosure(
         module _back_endstop(
             width = AAA_BATTERY_LENGTH / 2,
             web_width = ENCLOSURE_INNER_WALL,
-            length = ENCLOSURE_INNER_WALL
+            chamfer = ENCLOSURE_INNER_WALL
         ) {
+            back_y = batteries_position.y - (battery_holder_wall + tolerance)
+                + get_battery_holder_length(tolerance, battery_holder_wall);
+            length = pcb_position.y - back_y
+                - tolerance - PCB_FIXTURE_CLEARANCE;
+
             z = ENCLOSURE_FLOOR_CEILING;
 
-            height = pcb_position.z - z - PCB_PIN_CLEARANCE;
+            height = pcb_position.z + PCB_HEIGHT - z;
+            web_height = pcb_position.z - z - PCB_PIN_CLEARANCE;
 
             endstop_x = get_center_x(width);
             endstop_y = batteries_position.y - (battery_holder_wall + tolerance)
@@ -908,24 +914,25 @@ module enclosure(
                     PCB_FIXTURE_BUTTON_RAIL_LENGTH / 2)
                 - (endstop_y + length);
 
-            translate([endstop_x, endstop_y, z - e]) {
-                cube([width, length, height - length + e]);
+            difference() {
+                translate([endstop_x, endstop_y, z - e]) {
+                    cube([width, length, height + e]);
+                }
 
-                translate([0, 0, height - length]) {
-                    flat_top_rectangular_pyramid(
-                        top_width = width,
-                        top_length = 0,
-                        bottom_width = width,
-                        bottom_length = length,
-                        height = length,
-                        top_weight_y = 1
-                    );
+                translate([endstop_x - e, endstop_y, z + height]) {
+                    rotate([0, 90, 0]) {
+                        cylinder(
+                            r = chamfer,
+                            h = width + e * 2,
+                            $fn = 4
+                        );
+                    }
                 }
             }
 
             for (x = [endstop_x, endstop_x + width - web_width]) {
                 translate([x, endstop_y + length - e, z - e]) {
-                    cube([web_width, web_length + e * 2, height + e]);
+                    cube([web_width, web_length + e * 2, web_height + e]);
                 }
             }
         }
