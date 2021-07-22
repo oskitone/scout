@@ -121,9 +121,6 @@ module pcb_bottom_fixtures(
     pcb_post_hole_positions = [],
     screw_head_clearance = 0,
 
-    enclosure_bottom_height,
-    enclosure_lip_height,
-
     corner_coverage = 3, // eyeballed to not collide w/ switch_clutch
     corner_fixture_wall = 2,
     mounting_column_wall = ENCLOSURE_INNER_WALL,
@@ -220,25 +217,11 @@ module pcb_bottom_fixtures(
 
         corner_size = offset + corner_coverage;
         corner_xs = [-offset, PCB_WIDTH + offset - corner_size];
-        corner_ys = [-offset, PCB_LENGTH + offset - corner_size];
+        corner_ys = [-offset];
 
         z = ENCLOSURE_FLOOR_CEILING - e;
 
         height = pcb_position.z - z + PCB_HEIGHT + height_extension;
-
-        module _enclosure_lip_clearance() {
-            translate([
-                pcb_position.x - offset - e,
-                pcb_position.y + PCB_LENGTH + tolerance * 4 - e,
-                enclosure_bottom_height - enclosure_lip_height - e
-            ]) {
-                cube([
-                    PCB_WIDTH + offset * 2 + e * 2,
-                    wall + e * 2,
-                    enclosure_lip_height + height_extension + e * 2
-                ]);
-            }
-        }
 
         difference() {
             for (x = corner_xs, y = corner_ys) {
@@ -252,8 +235,6 @@ module pcb_bottom_fixtures(
                 z = z,
                 height = height
             );
-
-            _enclosure_lip_clearance();
         }
     }
 

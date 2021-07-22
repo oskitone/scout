@@ -1000,8 +1000,6 @@ module enclosure(
                                 pcb_post_hole_positions =
                                     pcb_post_hole_positions,
                                 screw_head_clearance = screw_head_clearance,
-                                enclosure_bottom_height = bottom_height,
-                                enclosure_lip_height = lip_height,
                                 quick_preview = quick_preview
                             );
 
