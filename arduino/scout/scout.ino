@@ -1,4 +1,5 @@
 #include "KeyBuffer.h"
+#include "Notes.h"
 
 // SETTINGS
 int octave = 3;
@@ -7,38 +8,23 @@ bool glideOnFreshKeyPresses = true;
 bool printToSerial = false;
 
 const int CYCLES_PER_GLIDE_MAX = printToSerial ? 25 : 250;
-
-const float MIDDLE_A = 440;
-const int NOTES_COUNT = 17;
 const int STARTING_NOTE_DISTANCE_FROM_MIDDLE_A = -9;
 
 const int SPEAKER_PIN = 11;
 
-const float FREQUENCY_RATIO = 1.059463; // magic! 2 to the power of 1/12
-float getNoteFrequency(int distance, float origin = MIDDLE_A) {
-  return origin * pow(FREQUENCY_RATIO, distance);
-}
-
-float notes[NOTES_COUNT];
-void populateNotes() {
-  for (int i = 0; i < NOTES_COUNT; i++) {
-    notes[i] = getNoteFrequency(STARTING_NOTE_DISTANCE_FROM_MIDDLE_A + i);
-  }
-}
-
+Notes notes(STARTING_NOTE_DISTANCE_FROM_MIDDLE_A);
 KeyBuffer buffer;
 
-float frequency = 0;
-float glideStep;
-
 float getFrequency(long key) {
-  return notes[key] / 4 * pow(2, octave);
+  return notes.get(key) / 4 * pow(2, octave);
 }
 
 float getTargetFrequency() {
   return getFrequency(buffer.getFirst());
 }
 
+float frequency = 0;
+float glideStep;
 float previousTargetFrequency;
 void updateFrequency() {
   float target = getTargetFrequency();
@@ -80,7 +66,6 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
 
   blink();
-  populateNotes();
 }
 
 void loop() {
