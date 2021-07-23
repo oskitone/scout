@@ -1,14 +1,10 @@
-/*
-   WiP
-*/
-
 #include "KeyBuffer.h"
 
 // SETTINGS
 int octave = 3;
 float glide = .25;
-bool printToSerial = false;
 bool glideOnFreshKeyPresses = true;
+bool printToSerial = false;
 
 const int CYCLES_PER_GLIDE_MAX = printToSerial ? 25 : 250;
 
@@ -18,9 +14,9 @@ const int STARTING_NOTE_DISTANCE_FROM_MIDDLE_A = -9;
 
 const int SPEAKER_PIN = 11;
 
+const float FREQUENCY_RATIO = 1.059463; // magic! 2 to the power of 1/12
 float getNoteFrequency(int distance, float origin = MIDDLE_A) {
-  float frequency_ratio = 1.059463; // pow(2, 1/12)
-  return origin * pow(frequency_ratio, distance);
+  return origin * pow(FREQUENCY_RATIO, distance);
 }
 
 float notes[NOTES_COUNT];
@@ -54,13 +50,13 @@ void updateFrequency() {
     } else {
       if (target != previousTargetFrequency) {
         glideStep = abs(target - previousTargetFrequency)
-          / (glide * CYCLES_PER_GLIDE_MAX);
+                    / (glide * CYCLES_PER_GLIDE_MAX);
       }
 
       frequency = (target > frequency)
-        ? min(target, frequency + glideStep)
-        : max(target, frequency - glideStep);
-      }
+                  ? min(target, frequency + glideStep)
+                  : max(target, frequency - glideStep);
+    }
   }
 
   if (!needsUpdate) {
@@ -69,14 +65,14 @@ void updateFrequency() {
 }
 
 void blink(int count = 2, int wait = 200) {
-    while (count >= 0) {
-        digitalWrite(LED_BUILTIN, HIGH);
-        delay(wait);
-        digitalWrite(LED_BUILTIN, LOW);
-        delay(wait);
+  while (count >= 0) {
+    digitalWrite(LED_BUILTIN, HIGH);
+    delay(wait);
+    digitalWrite(LED_BUILTIN, LOW);
+    delay(wait);
 
-        count = count - 1;
-    }
+    count = count - 1;
+  }
 }
 
 void setup() {

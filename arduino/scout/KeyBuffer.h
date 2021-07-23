@@ -2,9 +2,6 @@
 #include <CircularBuffer.h>
 #include <Keypad.h>
 
-/*
-  WiP
-*/
 #ifndef KeyBuffer_h
 #define KeyBuffer_h
 
@@ -20,8 +17,6 @@ class KeyBuffer {
     void populate();
   private:
     CircularBuffer<int, 4> _buffer;
-    // Keypad _buttons;
-
     bool isInBuffer(int c);
     bool removeFromBuffer(int c);
 };
