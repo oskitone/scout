@@ -5,6 +5,7 @@ use <../../poly555/openscad/lib/utils.scad>;
 include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
+KEYS_COUNT = 17;
 KEYS_MOUNT_LENGTH = NUT_DIAMETER;
 KEYS_FRONT_BOTTOM_CHAMFER = 1;
 
@@ -17,8 +18,8 @@ function get_keys_full_width(
     key_width,
     key_gutter
 ) = (
-    10 * key_width // TODO: derive natural key count
-    + 9 * key_gutter // TODO: derive natural key count - 1
+    let (natural_key_count = get_natural_key_count(KEYS_COUNT, 0))
+    natural_key_count * key_width + (natural_key_count - 1) * key_gutter
 );
 
 function get_keys_to_enclosure_distance(
@@ -133,7 +134,7 @@ module keys(
     cantilver_mount_height = 0,
     nut_lock_floor = 0,
 
-    keys_count = 17,
+    keys_count = KEYS_COUNT,
     starting_natural_key_index = 0,
 
     keys_position = [],
