@@ -148,7 +148,7 @@ module scout_pcb(
                     translate([0, 0, PCB_HEIGHT - e]) {
                         linear_extrude(silkscreen_height + e) {
                             offset(.1) {
-                                import("../scout-brd.svg");
+                                import("../kicad/scout/scout-brd.svg");
                             }
                         }
                     }
