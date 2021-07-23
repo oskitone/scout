@@ -1,3 +1,4 @@
+#include "Frequency.h"
 #include "KeyBuffer.h"
 #include "Notes.h"
 
@@ -14,41 +15,7 @@ const int SPEAKER_PIN = 11;
 
 Notes notes(STARTING_NOTE_DISTANCE_FROM_MIDDLE_A);
 KeyBuffer buffer;
-
-float getFrequency(long key) {
-  return notes.get(key) / 4 * pow(2, octave);
-}
-
-float getTargetFrequency() {
-  return getFrequency(buffer.getFirst());
-}
-
-float frequency = 0;
-float glideStep;
-float previousTargetFrequency;
-void updateFrequency() {
-  float target = getTargetFrequency();
-  bool needsUpdate = frequency != target;
-
-  if (needsUpdate) {
-    if ((frequency == 0) || (glide == 0)) {
-      frequency = target;
-    } else {
-      if (target != previousTargetFrequency) {
-        glideStep = abs(target - previousTargetFrequency)
-                    / (glide * CYCLES_PER_GLIDE_MAX);
-      }
-
-      frequency = (target > frequency)
-                  ? min(target, frequency + glideStep)
-                  : max(target, frequency - glideStep);
-    }
-  }
-
-  if (!needsUpdate) {
-    previousTargetFrequency = target;
-  }
-}
+Frequency frequency(glide, CYCLES_PER_GLIDE_MAX);
 
 void blink(int count = 2, int wait = 200) {
   while (count >= 0) {
@@ -72,24 +39,20 @@ void loop() {
   buffer.populate();
 
   if (printToSerial) {
-    Serial.println(
-      "frequency:" + String(frequency)
-      + ",target:" + String(getTargetFrequency())
-      + ",previousTargetFrequency:" + String(previousTargetFrequency)
-    );
+    frequency.print();
   }
 
   if (buffer.isEmpty()) {
     if (!glideOnFreshKeyPresses) {
-      frequency = 0;
+      frequency.reset();
     }
 
     noTone(SPEAKER_PIN);
     digitalWrite(LED_BUILTIN, LOW);
   } else {
-    updateFrequency();
+    frequency.update(notes.get(buffer.getFirst()) / 4 * pow(2, octave));
 
-    tone(SPEAKER_PIN, frequency);
+    tone(SPEAKER_PIN, frequency.get());
     digitalWrite(LED_BUILTIN, HIGH);
   }
 }
