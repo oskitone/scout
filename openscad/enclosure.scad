@@ -847,13 +847,12 @@ module enclosure(
             + (battery_holder_width - width) / 2
         );
 
-        module _front_nub() {
+        module _nub(y) {
             _width = BATTERY_HOLDER_NUB_FIXTURE_WIDTH - tolerance * 2;
             _length = BATTERY_HOLDER_NUB_FIXTURE_DEPTH;
             _height = BATTERY_HOLDER_NUB_FIXTURE_HEIGHT - tolerance * 2;
 
             x = get_center_x(_width);
-            y = batteries_position.y - battery_holder_wall - tolerance * 2;
             z = ENCLOSURE_FLOOR_CEILING + BATTERY_HOLDER_NUB_FIXTURE_Z
                 + tolerance;
 
@@ -889,10 +888,9 @@ module enclosure(
             }
         }
 
-        module _back_endstop(
+        module _back_hitch(
             width = AAA_BATTERY_LENGTH / 2,
-            web_width = ENCLOSURE_INNER_WALL,
-            chamfer = ENCLOSURE_INNER_WALL
+            web_width = ENCLOSURE_INNER_WALL
         ) {
             back_y = batteries_position.y - (battery_holder_wall + tolerance)
                 + get_battery_holder_length(tolerance, battery_holder_wall);
@@ -901,7 +899,7 @@ module enclosure(
 
             z = ENCLOSURE_FLOOR_CEILING;
 
-            height = pcb_position.z + PCB_HEIGHT - z;
+            height = battery_holder_floor + AAA_BATTERY_DIAMETER;
             web_height = pcb_position.z - z - PCB_PIN_CLEARANCE;
 
             endstop_x = get_center_x(width);
@@ -914,21 +912,11 @@ module enclosure(
                     PCB_FIXTURE_BUTTON_RAIL_LENGTH / 2)
                 - (endstop_y + length);
 
-            difference() {
-                translate([endstop_x, endstop_y, z - e]) {
-                    cube([width, length, height + e]);
-                }
-
-                translate([endstop_x - e, endstop_y, z + height]) {
-                    rotate([0, 90, 0]) {
-                        cylinder(
-                            r = chamfer,
-                            h = width + e * 2,
-                            $fn = 4
-                        );
-                    }
-                }
+            translate([endstop_x, endstop_y, z - e]) {
+                cube([width, length, height + e]);
             }
+
+            _nub(endstop_y - BATTERY_HOLDER_NUB_FIXTURE_DEPTH + e);
 
             for (x = [endstop_x, endstop_x + width - web_width]) {
                 translate([x, endstop_y + length - e, z - e]) {
@@ -938,10 +926,10 @@ module enclosure(
         }
 
         if (top) {
-            _front_nub();
+            _nub(batteries_position.y - battery_holder_wall - tolerance * 2);
         } else {
             _side_aligners();
-            _back_endstop();
+            _back_hitch();
         }
     }
 
