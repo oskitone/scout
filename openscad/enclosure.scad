@@ -849,11 +849,11 @@ module enclosure(
 
         module _front_nub() {
             _width = BATTERY_HOLDER_NUB_FIXTURE_WIDTH - tolerance * 2;
-            _length = BATTERY_HOLDER_NUB_FIXTURE_DEPTH - tolerance;
+            _length = BATTERY_HOLDER_NUB_FIXTURE_DEPTH;
             _height = BATTERY_HOLDER_NUB_FIXTURE_HEIGHT - tolerance * 2;
 
             x = get_center_x(_width);
-            y = batteries_position.y - battery_holder_wall - tolerance;
+            y = batteries_position.y - battery_holder_wall - tolerance * 2;
             z = ENCLOSURE_FLOOR_CEILING + BATTERY_HOLDER_NUB_FIXTURE_Z
                 + tolerance;
 
