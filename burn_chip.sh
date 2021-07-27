@@ -43,7 +43,19 @@ function upload_program_using_uart_with_adafruit_cable() {
         -Uflash:w:/var/folders/br/87phc45d2szgdhd23089g7m40000gn/T/arduino_build_95463/scout.ino.hex:i
 }
 
-burn_bootloader_using_programmer
-upload_program_using_uart_with_adafruit_cable
+function pause() {
+    read -n1 -rs
+}
+
+while true; do
+    burn_bootloader_using_programmer
+    upload_program_using_uart_with_adafruit_cable
+
+    echo
+    echo "Done! Press any key to burn another chip or CTRL+C to quit."
+    pause
+
+    echo
+done
 
 }
