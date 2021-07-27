@@ -11,7 +11,7 @@ avrdude="$avrdude_folder/tools/avrdude/6.3.0-arduino17/bin/avrdude"
 avrdude_config="$avrdude_folder/tools/avrdude/6.3.0-arduino17/etc/avrdude.conf"
 
 optiboot="$avrdude_folder/hardware/avr/1.8.3/bootloaders/optiboot/optiboot_atmega328.hex"
-scout_hex="/var/folders/br/87phc45d2szgdhd23089g7m40000gn/T/arduino_build_95463/scout.ino.hex"
+scout_hex="build/scout.ino.hex"
 
 function burn_bootloader_using_programmer() {
     $avrdude \
@@ -56,6 +56,17 @@ function very_file_exists() {
         exit 1
     fi
 }
+
+function compile_hex() {
+    mkdir -pv build
+
+    arduino-cli compile \
+        --fqbn arduino:avr:uno \
+        --build-path=$PWD/build \
+        arduino/scout
+}
+
+compile_hex
 
 very_file_exists "$optiboot"
 very_file_exists "$scout_hex"
