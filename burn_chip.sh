@@ -84,6 +84,8 @@ very_file_exists "$optiboot"
 very_file_exists "$scout_hex"
 
 while true; do
+    start=`date +%s`
+
     if $use_uart_for_upload; then
         burn_bootloader_using_programmer
         upload_program_using_adafruit_cable
@@ -91,8 +93,13 @@ while true; do
         upload_program_with_bootloader_using_programmer
     fi
 
+    end=`date +%s`
+    runtime=$((end-start))
+
     echo
-    echo "Done! Press any key to burn another chip or CTRL+C to quit."
+    echo "Done! Finished in $runtime seconds."
+    echo "Press any key to burn another chip or CTRL+C to quit."
+
     pause
 
     echo
