@@ -6,12 +6,15 @@
 set -o errexit
 set -o errtrace
 
+use_uart_for_upload=true
+
 avrdude_folder="$HOME/Library/Arduino15/packages/arduino"
 avrdude="$avrdude_folder/tools/avrdude/6.3.0-arduino17/bin/avrdude"
 avrdude_config="$avrdude_folder/tools/avrdude/6.3.0-arduino17/etc/avrdude.conf"
 
 optiboot="$avrdude_folder/hardware/avr/1.8.3/bootloaders/optiboot/optiboot_atmega328.hex"
 scout_hex="build/scout.ino.hex"
+scout_hex_with_bootloader="build/scout.ino.with_bootloader.hex"
 
 function burn_bootloader_using_programmer() {
     $avrdude \
@@ -34,7 +37,16 @@ function burn_bootloader_using_programmer() {
         -Ulock:w:0x0F:m
 }
 
-function upload_program_using_uart_with_adafruit_cable() {
+function upload_program_with_bootloader_using_programmer() {
+    $avrdude \
+        -C"$avrdude_config" \
+        -v \
+        -patmega328p \
+        -cusbtiny \
+        -U"flash:w:$scout_hex_with_bootloader:i"
+}
+
+function upload_program_using_adafruit_cable() {
     $avrdude \
         -C"$avrdude_config" \
         -v \
@@ -72,8 +84,12 @@ very_file_exists "$optiboot"
 very_file_exists "$scout_hex"
 
 while true; do
-    burn_bootloader_using_programmer
-    upload_program_using_uart_with_adafruit_cable
+    if $use_uart_for_upload; then
+        burn_bootloader_using_programmer
+        upload_program_using_adafruit_cable
+    else
+        upload_program_with_bootloader_using_programmer
+    fi
 
     echo
     echo "Done! Press any key to burn another chip or CTRL+C to quit."
