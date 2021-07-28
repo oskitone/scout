@@ -58,8 +58,8 @@ function upload_program_using_adafruit_cable() {
         -U"flash:w:$scout_hex:i"
 }
 
-function pause() {
-    read -n1 -rs
+function wait_for_space_key() {
+    read -s -d ' '
 }
 
 function very_file_exists() {
@@ -98,9 +98,8 @@ while true; do
 
     echo
     echo "Done! Finished in $runtime seconds."
-    echo "Press any key to burn another chip or CTRL+C to quit."
-
-    pause
+    echo "Press SPACE to burn another chip or CTRL+C to quit."
+    wait_for_space_key
 
     echo
 done
