@@ -460,17 +460,6 @@ F 3 "" H 1550 2500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:CP1 C1
-U 1 1 60908D99
-P 1550 2700
-F 0 "C1" H 1700 2800 50  0000 L CNN
-F 1 "100uF+" H 1700 2700 50  0000 L CNN
-F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 1550 2700 50  0001 C CNN
-F 3 "~" H 1550 2700 50  0001 C CNN
-	1    1550 2700
-	1    0    0    -1  
-$EndComp
-$Comp
 L power:PWR_FLAG #FLG02
 U 1 1 60926741
 P 2050 1150
@@ -569,17 +558,6 @@ F 2 "Package_DIP:DIP-8_W7.62mm" H 5050 5950 50  0001 C CNN
 F 3 "http://www.ti.com/lit/ds/symlink/lm386.pdf" H 5150 6050 50  0001 C CNN
 	1    4950 5850
 	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R_Small_US R3
-U 1 1 608C9015
-P 3200 6100
-F 0 "R3" V 3450 6050 50  0000 L CNN
-F 1 "1k" V 3350 6050 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 3200 6100 50  0001 C CNN
-F 3 "~" H 3200 6100 50  0001 C CNN
-	1    3200 6100
-	0    -1   -1   0   
 $EndComp
 Wire Wire Line
 	3100 6100 2950 6100
@@ -802,17 +780,6 @@ Wire Wire Line
 	7000 4400 7500 4400
 Wire Wire Line
 	7000 4500 7500 4500
-$Comp
-L Device:R_Small_US R4
-U 1 1 60D823A9
-P 4250 5750
-F 0 "R4" V 4500 5700 50  0000 L CNN
-F 1 "330k" V 4400 5650 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4250 5750 50  0001 C CNN
-F 3 "~" H 4250 5750 50  0001 C CNN
-	1    4250 5750
-	0    -1   -1   0   
-$EndComp
 Wire Wire Line
 	3650 5750 4150 5750
 Wire Wire Line
@@ -859,4 +826,37 @@ Text Notes 8150 7650 0    50   ~ 0
 2020/07/16
 Text Notes 10600 7650 0    50   ~ 0
 A
+$Comp
+L Device:CP1 C1
+U 1 1 60908D99
+P 1550 2700
+F 0 "C1" H 1700 2800 50  0000 L CNN
+F 1 "220uF" H 1700 2700 50  0000 L CNN
+F 2 "Capacitor_THT:CP_Radial_D8.0mm_P3.50mm" H 1550 2700 50  0001 C CNN
+F 3 "~" H 1550 2700 50  0001 C CNN
+	1    1550 2700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Small_US R3
+U 1 1 608C9015
+P 3200 6100
+F 0 "R3" V 3450 6050 50  0000 L CNN
+F 1 "10k" V 3350 6050 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 3200 6100 50  0001 C CNN
+F 3 "~" H 3200 6100 50  0001 C CNN
+	1    3200 6100
+	0    -1   -1   0   
+$EndComp
+$Comp
+L Device:R_Small_US R4
+U 1 1 60D823A9
+P 4250 5750
+F 0 "R4" V 4500 5700 50  0000 L CNN
+F 1 "1m" V 4400 5650 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" H 4250 5750 50  0001 C CNN
+F 3 "~" H 4250 5750 50  0001 C CNN
+	1    4250 5750
+	0    -1   -1   0   
+$EndComp
 $EndSCHEMATC

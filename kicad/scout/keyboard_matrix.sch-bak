@@ -443,4 +443,10 @@ Wire Wire Line
 Connection ~ 7000 4400
 Wire Wire Line
 	7000 4400 7200 4400
+Text Notes 7450 7500 0    50   ~ 0
+Scout keyboard matrix
+Text Notes 10600 7650 0    50   ~ 0
+A
+Text Notes 8150 7650 0    50   ~ 0
+2020/07/16
 $EndSCHEMATC
