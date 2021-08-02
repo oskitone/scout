@@ -790,7 +790,7 @@ module enclosure(
         cavity = true,
         chamfer_shroud_wall = 3,
         chamfer_shroud_height = 6,
-        shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 3,
+        shade_depth = DEFAULT_DFM_LAYER_HEIGHT * 4,
         led_clearance = .4,
         wall = ENCLOSURE_INNER_WALL,
         $fn = quick_preview ? undef : DEFAULT_ROUNDING
