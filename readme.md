@@ -36,6 +36,82 @@ As such, its design is guided by a metric I'm calling "Time-to-Noise" (TTN): the
 - ~Line-out jack~ _Eh, easier said than done_
 - ~Octave control~ _Removed!_
 
+## Detailed Assembly Steps
+
+### PCB Soldering Instructions
+
+(Not your first electronics kit? Skip to the BOM below! :) )
+
+**Required tools:** soldering iron and solder for electronics, wire stripper or cutters, 3 AAA batteries
+**Recommended:** multimeter for debugging, PCB vice or “helping hands” holder, “Solder sucker” or desoldering braid, headphones
+
+Each group of steps in the Scout's assembly has a test at the end to make sure everything is working as expected. If it doesn't work, don't fret! Look over the troubleshooting tips below. Don't move on in the instructions until you've got it working.
+
+1. **Assemble battery pack**
+   1. Insert tabbed battery contact terminals
+      1. The springed contact goes to the spot with a "-".
+      2. The flat, button contact goes near "+". Its button should face inward towards where the battery will be.
+      3. Fold their tabs over to hold them in place.
+   2. Insert wire dual contacts
+      1. Again, springs go to "-" and buttons to "+"
+   3. Add wire
+      1. Thread the 7" ribbon cable through battery holder's hitches. Your ribbon cable will probably have different colors, and that's okay! A common convention is to use the darker color for "-" and the lighter one for "+".
+      2. Strip 1/4" of insulation off the wires and solder to the battery contacts.
+      3. Strip the other ends of the wires.
+   4. Insert three AAA batteries, matching their "+" and "-" sides to the battery holder's labels.
+   5. _Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages._
+2. **Power up**
+   1. Solder LED at **D1**
+      1. The LED has four pins for three different colors plus ground. The longest one is to ground and it goes to the hole that has a line coming out of it.
+      2. Get the LED as vertically close to the PCB as reasonable; it doesn't have to be flat against PCB but does need to be straight up and down -- no leaning!
+   2. Solder sliding toggle switch **SW1** and resistor **R1**
+   3. Wire battery pack to **BT1**
+      1. Thread the other side of the ribbon cable connected to the battery pack up through the hole near **BT1**, then strip and solder in place. Make sure the "+" and "-" wires are going where they should!
+   4. _Toggling **SW1** should now light one color of the LED! Power off before continuing soldering._
+3. **Boot the microcontroller**
+   1. Solder capacitors **C1** and **C2**, oscillator **Y1**, and resistor **R5**.
+      1. **C1** has polarity. Match its white side to the white side of its footprint.
+   2. Solder resistor **R2**.
+   3. Solder **U1** socket. It will have a dimple at one end, which should match the footprint on the PCB.
+   4. Carefully insert ATmega328. It will have a dimple (and/or a small dot in a corner), which should match the socket.
+   5. _Turn the power switch back on, and the LED should blink a new, different color a couple times. This lets you know that the ATmega is booted up and ready. Power off._
+4. **Get logical**
+   1. Solder an SPST switch to **SW2**.
+   2. _With power on, press the switch. The LED should light just like it does on boot! Power off._
+5. **Make some noise**
+   1. Solder volume pot **RV1**, resistor **R3**, and headphone jack **J1**.
+      1. Make sure **RV1** and **J1** are pushed all the way into PCB before soldering all the way.
+   2. Connect your headphones into the headphone jack. Push firmly until it clicks in all the way.
+   3. _With power on, press **SW2**. You should hear a tone from the headphones, and the volume potentiometer should adjust its volume. Power off._
+6. **Get loud**
+   1. Solder amp capacitors **C6** and **C5**.
+      1. Make sure **C5**'s polariy matches its footprint, just like **C1**.
+   2. Wire speaker to **LS1**.
+      1. Thread remaining ribbon cable through hole.
+      2. Strip insulation and solder to **LS1**.
+      3. Strip and solder the other ends to the speaker, matching the "+" and "-" sides.
+   3. Solder socket **U2**. Match its dimple to the footprint, just like **U1**.
+   4. Insert LM386 chip, again making sure its inserted the correct way.
+   5. _Power on, unplug your headphones, and press the switch. It should be playing out of the speaker now. Power off._
+7. **More notes**
+   1. Solder the remaining tactile 16 switches, **SW3** through **SW18**.
+   2. _Power on and press each. They should all play different notes out of the speaker. Power off._
+8. **Get louder (Optional. Skip if it's already loud enough for you!)**
+   1. Solder cap **C3**.
+      1. Match polarity.
+   2. _Power on, unplug your headphones, and press the switch. The speaker should now be much louder now! Power off._
+
+#### Troubleshooting
+
+- Turn the PCB over and check all solder joints. A majority of problems are caused by insufficient or errant soldering. Familiarize yourself with what a good joint looks like in the [Adafruit Guide To Excellent Soldering](https://learn.adafruit.com/adafruit-guide-excellent-soldering).
+- Are all chips in the right orientation? Each has a notch/dimple that should match the footprint outline on the PCB.
+- Do the batteries have enough power? The three batteries should have a total voltage of 3.6 to 4.5 volts.
+- If there’s buzzing, check for any metal scraps stuck to the speaker’s magnet.
+
+<!-- ### Final Assembly -->
+
+<!-- TODO! -->
+
 ## Annotated BOM
 
 Based on KiCad board BOM, with non-essential footprints removed and usages explained.
@@ -63,10 +139,10 @@ Based on KiCad board BOM, with non-essential footprints removed and usages expla
 Also:
 
 - 10" wire
-  - BT1 6"
+  - BT1 7"
   - LS1 4"
 - Battery terminal contacts for BT1
-  - 2 dual spring+button wire contacts
+- 2 dual spring+button wire contacts
   - 1 tabbed spring contact
   - 1 tabbed button contact
 - 2 sockets
