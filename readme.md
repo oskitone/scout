@@ -38,12 +38,55 @@ As such, its design is guided by a metric I'm calling "Time-to-Noise" (TTN): the
 
 ## Detailed Assembly Steps
 
+### Inventory
+
+#### What You'll Need
+
+- The [Oskitone Scout Synth DIY Electronics Kit](https://www.oskitone.com/product/http://www.oskitone.com/product/scout-synth-diy-electronics-kit)!
+- Soldering iron and solder for electronics
+- Wire stripper or cutters
+- 3 AAA batteries
+
+#### Good to have
+
+While not required, it'd be good to have these tools around too.
+
+- Multimeter for debugging
+- PCB vice or “helping hands” holder
+- “Solder sucker” or desoldering braid
+- Headphones
+- Patience, patience, patience
+
+### 3D-Printing
+
+(If you bought a kit with 3D-printed parts included, you can skip this!)
+
+<!-- Download STLs of the models at [https://oskitone.github.io/apc/](https://oskitone.github.io/apc/). --> There are seven files to print:
+
+<!-- ![Exploded CAD view of the four models](TODO) -->
+
+| Part             | Layer Height | Supports? | Color change at height | Estimated Time |
+| ---------------- | ------------ | --------- | ---------------------- | -------------- |
+| battery_holder   | .2mm         | No        | n/a                    | 40min          |
+| enclosure_bottom | .2mm         | No        | n/a                    | 1hr 10min      |
+| enclosure_top    | .2mm         | No        | n/a                    | 3hr            |
+| keys_mount_rail  | .2mm         | No        | n/a                    | 30min          |
+| keys             | .2mm         | No        | 7.2mm                  | 3hr            |
+| knob             | .2mm         | No        | n/a                    | 20min          |
+| switch_clutch    | .2mm         | No        | n/a                    | 20min          |
+
+**Notes:**
+
+- Models don't need supports and should already be rotated to the correct orientation for printing.
+- Watch the first couple layers of the enclosure pieces while printing, especially around the text engravings -- if you see bad adhesion, stop the print to remedy the situation and start again.
+- If the prints aren't fitting together well, check to see that the corners aren't bulging. See if your slicer has settings for "coasting" or "linear advance."
+- The switch clutch has a narrow support wall that will break off when it's done printing.
+
 ### PCB Soldering Instructions
 
-(Not your first electronics kit? Skip to the BOM below! :) )
+( _Not your first electronics kit? Skip to the BOM below!_ 😅 )
 
-**Required tools:** soldering iron and solder for electronics, wire stripper or cutters, 3 AAA batteries
-**Recommended:** multimeter for debugging, PCB vice or “helping hands” holder, “Solder sucker” or desoldering braid, headphones
+<!-- ![A soldered Scout PCB](TODO) -->
 
 Each group of steps in the Scout's assembly has a test at the end to make sure everything is working as expected. If it doesn't work, don't fret! Look over the troubleshooting tips below. Don't move on in the instructions until you've got it working.
 
@@ -100,6 +143,9 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
    1. Solder cap **C3**.
       1. Match polarity.
    2. _Power on, unplug your headphones, and press the switch. The speaker should now be much louder now! Power off._
+9. **Prep for hacking (Optional. Skip if you don't plan on changing the code.)**
+   1. Solder **J2** header and **C4** cap.
+   2. _See "Hacking" section below on how to use this!_
 
 #### Troubleshooting
 
@@ -108,9 +154,60 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
 - Do the batteries have enough power? The three batteries should have a total voltage of 3.6 to 4.5 volts.
 - If there’s buzzing, check for any metal scraps stuck to the speaker’s magnet.
 
-<!-- ### Final Assembly -->
+### Final Assembly
 
-<!-- TODO! -->
+1. Assemble top
+   1. Slide **square nuts** into nut locks on **enclosure top**. It'll be snug, but they'll fit! Use needle-nose pliers or a similar tool to push them in until their holes line up with those on the enclosure.
+   2. Add the **keys**. Notice that 1) their rail has cavities on the sides that fit onto matching aligners on the enclosure and 2) the front of the keys have a cutout that matches an endstop on the enclosure, which will prevent the keys from being pressed too far down or being pulled up. Guide the keys down onto the aligners and into the endstop. It'll take some careful wiggling!
+2. Assemble bottom
+   1. Slide the two **machine screws** up through the bottom of the **enclosure bottom**. _(Optional: a bit of tape can hold them in place while we work.)_
+   2. Align **PCB** onto the screws and then onto the **enclosure bottom**, nestled into its aligners.
+   3. Pop the **speaker** and **battery holder** into their cavities on the **enclosure bottom**. Orient them so that their wires are relatively contained within the space there and not poking up into where the keys will be.
+   4. Add the **keys mount rail** onto the screws on top of the PCB.
+   5. Add the **switch clutch** into its spot around the switch.
+3. Finish
+   1. Align **enclosure top** onto **enclosure bottom** and snap the two halves together.
+   2. Fix **knob** onto the volume pot shaft, aligning its dimple to to the little marker on the pot.
+   3. Tighten **screws** on bottom. Not too tight!
+
+All done!
+
+### Opening the enclosure
+
+Later, when you need to change the batteries (or maybe just want to admire your hard work!), you'll need to open the enclosure back up.
+
+1. Unscrew bottom **machine screws**. They don't have to come all the way out, just loosen.
+2. Pop off the volume **knob**. A flathead screwdriver (or similar tool) may help provide leverage.
+3. Find the horizontal wedge cavity on the back right of the enclosure. Insert a wide flathead screwdriver and twist to wedge the two halves of the enclosure apart.
+
+### Optional: Hacking!
+
+Ready to experiment and get your hands dirty with some code?
+
+1. Install the [Arduino IDE](https://www.arduino.cc/en/software) and follow their instructions to install whatever drivers you'd need for an Arduino Uno.
+2. With the Scout's power off, use an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70) to connect the Scout's UART header to your computer.
+   1. The Scout's UART header has "B" and "G" labels on its sides to match the cables Black and Green wires.
+   2. The cable provides power to the Scout, so it should now be on and working normally
+   3. Don't turn the power switch on, as the extra voltage from the batteries can damage the ATmega!
+3. In the IDE, under "Tools->Board", select "Arduino Uno". Under "Tools->Port" select your new cable; its exact name will depend on the brand. If you're not sure which it is, try unplugging and restarting the IDE -- whichever it was will no longer be listed, so you'll know which it is when reconnecting and restarting.
+4. Download the code from this repo and load `arduino/scout.ino` in the Arduino IDE. You'll also need the `CircularBuffer` and `Keypad` libraries, so open up "Tools->Manage libraries" and search for those to install them.
+   1. Try uploading this to the Scout by going to "Sketch->Upload". If it works, after 10 seconds or so, it will blink just like it does when you switch its power on. If it doesn't work, the IDE will print out an error that you can google to find out how to fix.
+   2. Experiment with the `octave` and `glide` values at the top of `scout.ino` and observe how your Scout has changed its sound.
+5. "Blink"
+   1. The Arduino IDE has a default program called "Blink" (available in "File->Examples->Basics->Blink").
+   2. After uploading, the Scout won't be playable anymore but one of the colors on the RGB LED should blink off and on.
+   3. Try changing the delay values in the example to make it blink faster or slower.
+   4. Follow the steps above to bring the original Scout code back.
+
+Once you're comfortable with the Arduino code and really want to expand on what the Scout can do, take a look at the unpopulated HACK header on the PCB. It exposes all the unused pins on the ATmega328 that are safe to use for whatever you'd like:
+
+| HACK         | ATmega pins | Description                                         |
+| ------------ | ----------- | --------------------------------------------------- |
+| VCC          | n/a         | Voltage from batteries or USB                       |
+| A0-A5        | 23-28       | Analog pins                                         |
+| D12          | 18          | There's only one unused digital pin, and this is it |
+| SWC, SW1-SW3 | 16; 6,11,12 | Unused spots in the key matrix                      |
+| GND          | n/a         | Ground                                              |
 
 ## Annotated BOM
 
@@ -138,16 +235,19 @@ Based on KiCad board BOM, with non-essential footprints removed and usages expla
 
 Also:
 
-- 10" wire
-  - BT1 7"
-  - LS1 4"
-- Battery terminal contacts for BT1
-- 2 dual spring+button wire contacts
+- 2 2-wire ribbon cables (or similar small gauge, stranded wire)
+  - 1 7" for BT1
+  - 1 4" for LS1
+- 4 battery terminal contacts for BT1
+  - 2 dual spring+button wire contacts
   - 1 tabbed spring contact
   - 1 tabbed button contact
 - 2 sockets
   - 1 28 pin for U1
   - 1 8 pin for U2
+- 4 nuts and bolts
+  - 2 4/40 square nuts
+  - 2 4/40 3/4" machine screws
 
 ## License
 
