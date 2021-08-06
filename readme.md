@@ -4,7 +4,7 @@
 
 ---
 
-![Scout](scout_render.png)
+![Scout](images/scout_render.png)
 
 **scout** (_/skout/_):
 
@@ -37,6 +37,8 @@ As such, its design is guided by a metric I'm calling "Time-to-Noise" (TTN): the
 - ~Octave control~ _Removed!_
 
 ## Detailed Assembly Steps
+
+![Scout](images/scout_pieces.png)
 
 ### Inventory
 
