@@ -136,10 +136,10 @@ module pcb_bottom_fixtures(
     z = ENCLOSURE_FLOOR_CEILING - e;
 
     module _back_stools(size = PCB_STOOL_DIAMETER) {
-        x_offset = 15; // NOTE: this is eye-balled!
-        y = PCB_LENGTH - size / 2;
+        corner_inset = size / 2 + PCB_STOOL_CHAMFER;
+        y = PCB_LENGTH - corner_inset;
 
-        for (position = [[x_offset, y], [PCB_WIDTH - x_offset, y]]) {
+        for (position = [[corner_inset, y], [PCB_WIDTH - corner_inset, y]]) {
             translate([
                 pcb_position.x + position.x,
                 pcb_position.y + position.y,
