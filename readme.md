@@ -225,9 +225,9 @@ Based on KiCad board BOM, with non-essential footprints removed and usages expla
 | J1         | AudioJack2_SwitchT | 1        | n/a                | Line out headphone jack                                                               |
 | J2         | Conn_01x06_Male    | 1        | n/a                | Programming header                                                                    |
 | LS1        | Speaker            | 1        | n/a                | Wires to output speaker                                                               |
-| R1,R2,R3   | 220                | 3        | Red Red Brown      | LED current limiters                                                                  |
-| R4,R6      | 10k                | 1        | Brown Black Orange | Brings volume closer to ear-safe level for line out, "pull up" resistor for RESET pin |
-| R5         | 1m                 | 1        | Brown Black Green  | Drops volume even more before amp                                                     |
+| R1,R2      | 220                | 2        | Red Red Brown      | LED current limiters                                                                  |
+| R3,R5      | 10k                | 1        | Brown Black Orange | Brings volume closer to ear-safe level for line out, "pull up" resistor for RESET pin |
+| R4         | 1m                 | 1        | Brown Black Green  | Drops volume even more before amp                                                     |
 | RV1        | 10k Log            | 1        | n/a                | Volume control                                                                        |
 | SW1        | SW_SPST            | 1        | n/a                | On/off power switch                                                                   |
 | SW2-SW18   | SPST               | 17       | n/a                | Key buttons                                                                           |
