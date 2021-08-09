@@ -149,6 +149,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
    2. _Power on and press some switches. The speaker should now be louder now! Power off._
 9. **Prep for hacking (Optional. Skip if you don't plan on changing the code.)**
    1. Solder **J2** header and **C4** cap.
+      1. Try to get **J2**'s pins parallel to the PCB and sticking straight out.
    2. _See "Hacking" section below on how to use this!_
 
 #### Troubleshooting
