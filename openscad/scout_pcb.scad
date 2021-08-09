@@ -57,8 +57,10 @@ PCB_LED_POSITION = _([156.474, 86.706], [-2.54, 2.54 - MAGIC]);
 PCB_POT_POSITION = _([172.824, 97.796], [-2.54, 7 + 2.54 / 2 + MAGIC]);
 PCB_SWITCH_POSITION = _([34.544, 91.98], [0, -2.54]);
 
+// https://www.digikey.com/en/products/detail/adam-tech/PH1RB-06-UA/9830592
 PCB_UART_HEADER_POSITION = _([42.926, 88.773], [2.54 / -2, 2.54 / 2]);
 PCB_UART_HEADER_WIDTH = 2.54 * 6;
+PCB_UART_HEADER_HEIGHT = 2.5;
 UART_HEADER_PIN_SIZE = .8;
 
 HEADPHONE_JACK_WIDTH = 12;
@@ -203,12 +205,20 @@ module scout_pcb(
 
     if (show_pcb_uart_header) {
         x = 2.54 / 2 - UART_HEADER_PIN_SIZE / 2;
-        z = 2.54 / 2;
+        z = PCB_UART_HEADER_HEIGHT / 2 - UART_HEADER_PIN_SIZE / 2;
 
         _translate(PCB_UART_HEADER_POSITION) {
+            translate([0, 1.8, 0]) {
+                % cube([
+                    PCB_UART_HEADER_WIDTH,
+                    PCB_UART_HEADER_HEIGHT,
+                    PCB_UART_HEADER_HEIGHT
+                ]);
+            }
+
             for (i = [0 : 5]) {
                 translate([x + i * 2.54, 0, z]) {
-                    % cube([UART_HEADER_PIN_SIZE, 10, UART_HEADER_PIN_SIZE]);
+                    % cube([UART_HEADER_PIN_SIZE, 10.25, UART_HEADER_PIN_SIZE]);
                 }
             }
         }
