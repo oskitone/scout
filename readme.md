@@ -1,10 +1,6 @@
 # Scout
 
-**Work-In-Progress!** PCBs are done (I hope!), but enclosure is still baking and I need to write up proper documentation. Stay tuned.
-
----
-
-![Scout](images/scout_render.png)
+![Scout](images/scout-10-838-032.gif)
 
 **scout** (_/skout/_):
 
@@ -14,58 +10,45 @@
 
 The Scout is:
 
-- **Hackable:** Powered by an ATmega328 and can be re-programmed just like an Arduino Uno using an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70). And fully open source!
-- **3D-Printable:** Besides the electronics and some common nuts and bolts, all parts can be 3D-printed. And with a width of ~160mm (about 6.3"), the Scout can fit on smaller, "mini" print beds.
-- **Minimally featured:** Monophonic square wave with fixed glide and octave. 1.5 octaves of keys, a volume knob, on/off switch, headphone jack. No MIDI/CV or other IO.
-- **Beginner-friendly:** All through-hole components for soldering and assembles in about 45min. Standalone, battery-powered, doesn't need a computer or external speakers to work. Fun!
+- **Beginner-friendly:** All components are through-hole (instead of surface mount) for easier soldering, and full assembly takes about 45min. Standalone, battery-powered, doesn't need a computer or external speakers to work. Fun!
+- **3D-Printable:** Besides the electronics and nuts and bolts, all parts are 3D-printed. And with a total width of ~160mm (about 6.3"), the Scout can fit on smaller, "Mini" (18x18x18cm) size print beds.
+- **Hackable:** Arduino-compatible and fully open source! Hook up an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70) (sold separately) to update its code using the Arduino IDE.
+- **Minimally featured:** 1.5 octaves of keys, a volume knob, on/off switch, speaker, headphone jack. Monophonic square wave with fixed glide and octave.
 
-## Goals
+In addition to it being the first microcontroller-controlled instrument from Oskitone, the Scout would also make a fine introductory DIY instrument for the budding electronics hobbyist. (Some experience soldering and a general familiarity with how electricity works are recommended though!)
 
-In addition to the Scout being the first microcontroller-controlled instrument from Oskitone, it would also make a fine first DIY instrument for the budding electronics hobbyist.
+As such, it is intentionally minimal, with the goal of the shortest possible time from starting the kit to making music with it. No MIDI/CV or other IO, as is. If you're looking for a full-featured studio instrument, this ain't it, bub! :)
 
-As such, its design is guided by a metric I'm calling "Time-to-Noise" (TTN): the time it takes from starting the kit to making music with it. The lower the better.
+## Detailed assembly steps
 
-- Minimum number of components for reduced assembly time
-- Able to print on "mini" (18x18x18cm) sized 3D printers
-- Built-in speaker
-- Minimum number of notes
-- Volume control
-
-~Any secondary features should be optional; circuit must function w/o them:~
-
-- ~Line-out jack~ _Eh, easier said than done_
-- ~Octave control~ _Removed!_
-
-## Detailed Assembly Steps
-
-![Scout](images/scout_pieces.png)
+[![Timelapse of soldering and assembling a Scout](images/scout_assembly-16-420-8-128.gif)](https://vimeo.com/586501851)
 
 ### Inventory
 
-#### What You'll Need
+#### Required
 
-- The [Oskitone Scout Synth DIY Electronics Kit](https://www.oskitone.com/product/http://www.oskitone.com/product/scout-synth-diy-electronics-kit)!
-- Soldering iron and solder for electronics
+- The [Oskitone Scout Synth DIY Electronics Kit](http://www.oskitone.com/product/scout-synth-diy-electronics-kit) and its 3D-printed parts
+- Soldering iron and solder specifically for electronics
 - Wire stripper or cutters
 - 3 AAA batteries
+- Headphones
 
-#### Good to have
-
-While not required, it'd be good to have these tools around too.
+#### Recommended
 
 - Multimeter for debugging
 - PCB vice or “helping hands” holder
 - “Solder sucker” or desoldering braid
-- Headphones
 - Patience, patience, patience
 
 ### 3D-Printing
 
 (If you bought a kit with 3D-printed parts included, you can skip this!)
 
-<!-- Download STLs of the models at [https://oskitone.github.io/apc/](https://oskitone.github.io/apc/). --> There are seven files to print:
+![Scout 3D-printed parts](images/scout_3d_printed_parts.png)
 
-<!-- ![Exploded CAD view of the four models](TODO) -->
+<!-- TODO: Download STLs of the models at [https://oskitone.github.io/apc/](https://oskitone.github.io/apc/). -->
+
+There are seven files to print, taking about 9 hours total.
 
 | Part             | Layer Height | Supports? | Color change at height | Estimated Time |
 | ---------------- | ------------ | --------- | ---------------------- | -------------- |
@@ -82,15 +65,15 @@ While not required, it'd be good to have these tools around too.
 - Models don't need supports and should already be rotated to the correct orientation for printing.
 - Watch the first couple layers of the enclosure pieces while printing, especially around the text engravings -- if you see bad adhesion, stop the print to remedy the situation and start again.
 - If the prints aren't fitting together well, check to see that the corners aren't bulging. See if your slicer has settings for "coasting" or "linear advance."
-- The switch clutch has a narrow support wall that will break off when it's done printing.
+- The enclosure_top and switch_clutch both have narrow support walls that will break off when they're done printing.
 
-### PCB Soldering Instructions
+### Detailed PCB soldering instructions
 
-( _Not your first electronics kit? Skip to the BOM below!_ 😅 )
+This is what we'll end up with when we're done:
 
-<!-- ![A soldered Scout PCB](TODO) -->
+![090200@0.5x.jpg](images/pcb_assembly/090200@0.5x.jpg)
 
-Each group of steps in the Scout's assembly has a test at the end to make sure everything is working as expected. If it doesn't work, don't fret! Look over the troubleshooting tips below. Don't move on in the instructions until you've got it working.
+Each group of steps in the Scout's assembly has a test at the end to make sure everything you just did is working as expected. If it doesn't work, don't fret! Look over the troubleshooting tips below. Don't move on in the instructions until you've got the test working.
 
 1. **Assemble battery pack**
    1. Insert tabbed battery contact terminals
@@ -101,17 +84,17 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       1. Again, springs go to "-" and buttons to "+".
          ![010201@0.5x.jpg](images/pcb_assembly/010201@0.5x.jpg)
    3. Add wire
-      1. Your ribbon cable will probably have different colors, and that's okay! A common convention is to use the darker color for "-" and the lighter one for "+".
+      1. Cut your ribbon cable into two pieces of about 7" and 3".
       2. With the battery holder oriented so its "+" contact tab is on the left and "-" on the right, thread the 7" ribbon cable through the hitch on the left, about halfway though, and then split the bottom pair of wires.
          ![010302@0.5x.jpg](images/pcb_assembly/010302@0.5x.jpg)
-      3. Thread the darker wire of the now separated pair through the channel on the bottom of the battery holder and up through the right hitch.
+      3. Thread the darker wire of the now separated pair through the channel on the bottom of the battery holder and up through the right hitch. (Your ribbon cable will probably have different colors, and that's okay! A common convention is to use the darker color for "-" and the lighter one for "+".)
          ![010303@0.5x.jpg](images/pcb_assembly/010303@0.5x.jpg)
       4. Strip 1/4" of insulation off that right wire and solder to its contact tab.
       5. Cut the wire on the left to meet its tab, then strip and solder it.
       6. Separate and strip the other side of wires. Make sure they don't touch!
          ![010306@0.5x.jpg](images/pcb_assembly/010306@0.5x.jpg)
       7. Insert three AAA batteries, matching their "+" and "-" sides to the battery holder's labels.
-      8. _Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages. When done, remove batteries to prevent accidentally draining them if the exposed wires touch._
+      8. _TEST: Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages. When done, remove batteries to prevent accidentally draining them if the exposed wires touch._
          ![010308@0.5x.jpg](images/pcb_assembly/010308@0.5x.jpg)
 2. **Power up**
    1. Solder LED at **D1**
@@ -123,25 +106,25 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       - Make sure the switch is flat against the PCB.
    3. Wire battery pack to **BT1**
       1. Thread the other side of the ribbon cable connected to the battery pack up through the hole near **BT1**, then strip and solder in place. Make sure the "+" and "-" wires are going to the right places.
-   4. _Add the batteries back. Toggling **SW1** should now light one color of the LED! Power off before continuing soldering._
+   4. _TEST: Add the batteries back. Toggling **SW1** should now light one color of the LED! Power off before continuing soldering._
       ![020400@0.5x.jpg](images/pcb_assembly/020400@0.5x.jpg)
 3. **Boot the microcontroller**
    1. Solder capacitors **C1** (220uF) and **C2** (.1uF), oscillator **Y1**, and resistors **R2** (220) and **R5** (10k).
       - **C1** has polarity. Match its white side to the white side of its footprint.
    2. Solder **U1** socket. It will have a dimple at one end, which should match the footprint on the PCB.
-   3. Carefully insert **ATmega328**. It will have a dimple (and/or a small dot in a corner), which should match the socket.
-   4. _Turn the power switch back on, and the LED should blink a new, different color a couple times. This lets you know that the ATmega is booted up and ready. Power off._
+   3. With the power off, carefully insert **ATmega328**. It will have a dimple (and/or a small dot in a corner), which should match the socket.
+   4. _TEST: Turn the power switch back on, and the LED should blink a new, different color a couple times. This lets you know that the ATmega is booted up and ready. Power off._
       ![030400@0.5x.jpg](images/pcb_assembly/030400@0.5x.jpg)
 4. **Get logical**
    1. Solder an SPST switch to **SW2**.
       - **_Make sure the switch is absolutely flat against the PCB before soldering all of its pins._** One way to do this is to solder one pin to hold it in place, then use one hand to push it into the PCB while melting the solder with your other hand; if there's any gap there it should pop in. Visually inspect to make sure it's good, then repeat with the opposite pin. Then inspect and do the remaining pins. It takes time but is worth it.
-   2. _With power on, press the switch. The LED should light just like it does on boot! Power off._
+   2. _TEST: With power on, press the switch. The LED should light just like it does on boot! Power off._
       ![040200@0.5x.jpg](images/pcb_assembly/040200@0.5x.jpg)
 5. **Make some noise**
    1. Solder volume pot **RV1**, resistor **R3** (10k), and headphone jack **J1**.
       - Make sure **RV1** and **J1** are pushed all the way into PCB before soldering all the way.
    2. Connect your headphones into the headphone jack. Push firmly until it clicks in all the way.
-   3. _With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones. Power off._
+   3. _TEST: With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones. Power off._
       ![050300@0.5x.jpg](images/pcb_assembly/050300@0.5x.jpg)
 6. **Get loud**
    1. Solder capacitors **C5** (220uF) and **C6** (.1uF) and resistor **R4** (1m).
@@ -152,25 +135,25 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       2. Strip insulation and solder to **LS1**.
       3. Strip and solder the other ends to the speaker, matching the "+" and "-" sides.
    3. Solder socket **U2**. Match its dimple to the footprint, just like **U1**.
-   4. Insert **LM386** chip, again making sure its inserted the correct way.
-   5. _Power on, unplug your headphones, and press the switch. It should be playing out of the speaker now. Power off._
+   4. With the power off, carefully insert **LM386** chip, again making sure its inserted the correct way.
+   5. _TEST: Power on, unplug your headphones, and press the switch. It should be playing out of the speaker now. Power off._
       ![060500@0.5x.jpg](images/pcb_assembly/060500@0.5x.jpg)
 7. **More notes**
    1. Solder the remaining tactile 16 switches, **SW3** through **SW18**.
       - We want them all as flat against the PCB as **SW2**, so take your time here. They should line up perfectly!
-   2. _Power on and press each. They should all play different notes out of the speaker. Power off._
+   2. _TEST: Power on and press each. They should all play different notes out of the speaker. Power off._
       ![070200@0.5x.jpg](images/pcb_assembly/070200@0.5x.jpg)
 8. **Get louder (Optional. Skip if it's already loud enough for you!)**
    1. Solder cap **C3** (1uF).
       - Match polarity.
-   2. _Power on and press some switches. The speaker should now be louder now! Power off._
+   2. _TEST: Power on and press some switches. The speaker should now be louder now! Power off._
 9. **Prep for hacking (Optional. Skip if you don't plan on changing the code.)**
    1. Solder **J2** header and **C4** (.1uF) cap.
       - Try to get **J2**'s pins parallel to the PCB and sticking straight out.
-   2. _See "Hacking" section below on how to use this!_
+   2. _TEST: See "Hacking" section below on how to use this!_
       ![090200@0.5x.jpg](images/pcb_assembly/090200@0.5x.jpg)
 
-#### Troubleshooting
+#### PCB troubleshooting
 
 - Turn the PCB over and check all solder joints. A majority of problems are caused by insufficient or errant soldering. Familiarize yourself with what a good joint looks like in the [Adafruit Guide To Excellent Soldering](https://learn.adafruit.com/adafruit-guide-excellent-soldering).
 - Are all chips in the right orientation? Each has a notch/dimple that should match the footprint outline on the PCB.
@@ -178,7 +161,9 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
 - If there’s buzzing, check for any metal scraps stuck to the speaker’s magnet.
 - If some keys are touchy or behaving weird, check to see that they're inserted all the way and flat against the PCB.
 
-### Final Assembly
+### Final assembly
+
+![Scout's final assembly](images/scout_pieces.png)
 
 1. Assemble top
    1. Slide **square nuts** into nut locks on **enclosure top**. It'll be snug, but they'll fit! Use needle-nose pliers or a similar tool to push them in until their holes line up with those on the enclosure.
@@ -236,8 +221,6 @@ Once you're comfortable with the Arduino code and really want to expand on what 
 
 ## Annotated BOM
 
-Based on KiCad board BOM, with non-essential footprints removed and usages explained.
-
 | Designator | Designation        | Quantity | Marking            | Usage                                                                                 |
 | ---------- | ------------------ | -------- | ------------------ | ------------------------------------------------------------------------------------- |
 | BT1        | 3.6v-4.5v          | 1        | n/a                | Power; wires to 3\*AAA battery pack                                                   |
@@ -262,7 +245,7 @@ Also:
 
 - 2 2-wire ribbon cables (or similar small gauge, stranded wire)
   - 1 7" for BT1
-  - 1 4" for LS1
+  - 1 3" for LS1
 - 4 battery terminal contacts for BT1
   - 2 dual spring+button wire contacts
   - 1 tabbed spring contact
@@ -273,6 +256,25 @@ Also:
 - 4 nuts and bolts
   - 2 4/40 square nuts
   - 2 4/40 3/4" machine screws
+
+## 3D Models
+
+The Scout's 3D-printed models are written in OpenSCAD.
+
+### Dependencies
+
+Assumes `poly555` and `apc` repos are in a sibling directory. Here's how I've got it:
+
+    \ oskitone
+        \ apc
+        \ poly555
+        \ scout
+
+### Building
+
+STLs are generated with `make_stls.sh`. Run `./make_stls.sh -h` for full flags list.
+
+---
 
 ## License
 
