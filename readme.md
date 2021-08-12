@@ -99,53 +99,67 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       3. Fold their tabs over to hold them in place.
    2. Insert wire dual contacts
       1. Again, springs go to "-" and buttons to "+".
+         ![010201@0.5x.jpg](images/pcb_assembly/010201@0.5x.jpg)
    3. Add wire
       1. Your ribbon cable will probably have different colors, and that's okay! A common convention is to use the darker color for "-" and the lighter one for "+".
       2. With the battery holder oriented so its "+" contact tab is on the left and "-" on the right, thread the 7" ribbon cable through the hitch on the left, about halfway though, and then split the bottom pair of wires.
+         ![010302@0.5x.jpg](images/pcb_assembly/010302@0.5x.jpg)
       3. Thread the darker wire of the now separated pair through the channel on the bottom of the battery holder and up through the right hitch.
+         ![010303@0.5x.jpg](images/pcb_assembly/010303@0.5x.jpg)
       4. Strip 1/4" of insulation off that right wire and solder to its contact tab.
       5. Cut the wire on the left to meet its tab, then strip and solder it.
       6. Separate and strip the other side of wires. Make sure they don't touch!
+         ![010306@0.5x.jpg](images/pcb_assembly/010306@0.5x.jpg)
       7. Insert three AAA batteries, matching their "+" and "-" sides to the battery holder's labels.
       8. _Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages. When done, remove batteries to prevent accidentally draining them if the exposed wires touch._
+         ![010308@0.5x.jpg](images/pcb_assembly/010308@0.5x.jpg)
 2. **Power up**
    1. Solder LED at **D1**
       1. The LED has four pins for three different colors plus ground. The longest one is to ground and it goes to the hole that has a line coming out of it.
+         ![020101@0.5x.jpg](images/pcb_assembly/020101@0.5x.jpg)
       2. Get the LED as vertically close to the PCB as reasonable; it doesn't have to be flat against PCB but does need to be straight up and down -- no leaning!
+         ![020102@0.5x.jpg](images/pcb_assembly/020102@0.5x.jpg)
    2. Solder sliding toggle switch **SW1** and resistor **R1** (220).
       - Make sure the switch is flat against the PCB.
    3. Wire battery pack to **BT1**
       1. Thread the other side of the ribbon cable connected to the battery pack up through the hole near **BT1**, then strip and solder in place. Make sure the "+" and "-" wires are going to the right places.
    4. _Add the batteries back. Toggling **SW1** should now light one color of the LED! Power off before continuing soldering._
+      ![020400@0.5x.jpg](images/pcb_assembly/020400@0.5x.jpg)
 3. **Boot the microcontroller**
    1. Solder capacitors **C1** (220uF) and **C2** (.1uF), oscillator **Y1**, and resistors **R2** (220) and **R5** (10k).
       - **C1** has polarity. Match its white side to the white side of its footprint.
    2. Solder **U1** socket. It will have a dimple at one end, which should match the footprint on the PCB.
    3. Carefully insert **ATmega328**. It will have a dimple (and/or a small dot in a corner), which should match the socket.
    4. _Turn the power switch back on, and the LED should blink a new, different color a couple times. This lets you know that the ATmega is booted up and ready. Power off._
+      ![030400@0.5x.jpg](images/pcb_assembly/030400@0.5x.jpg)
 4. **Get logical**
    1. Solder an SPST switch to **SW2**.
       - **_Make sure the switch is absolutely flat against the PCB before soldering all of its pins._** One way to do this is to solder one pin to hold it in place, then use one hand to push it into the PCB while melting the solder with your other hand; if there's any gap there it should pop in. Visually inspect to make sure it's good, then repeat with the opposite pin. Then inspect and do the remaining pins. It takes time but is worth it.
    2. _With power on, press the switch. The LED should light just like it does on boot! Power off._
+      ![040200@0.5x.jpg](images/pcb_assembly/040200@0.5x.jpg)
 5. **Make some noise**
    1. Solder volume pot **RV1**, resistor **R3** (10k), and headphone jack **J1**.
       - Make sure **RV1** and **J1** are pushed all the way into PCB before soldering all the way.
    2. Connect your headphones into the headphone jack. Push firmly until it clicks in all the way.
    3. _With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones. Power off._
+      ![050300@0.5x.jpg](images/pcb_assembly/050300@0.5x.jpg)
 6. **Get loud**
    1. Solder capacitors **C5** (220uF) and **C6** (.1uF) and resistor **R4** (1m).
       - Make sure **C5**'s polariy matches its footprint, just like **C1**.
    2. Wire speaker to **LS1**.
       1. Thread remaining ribbon cable through hole.
+         ![060201@0.5x.jpg](images/pcb_assembly/060201@0.5x.jpg)
       2. Strip insulation and solder to **LS1**.
       3. Strip and solder the other ends to the speaker, matching the "+" and "-" sides.
    3. Solder socket **U2**. Match its dimple to the footprint, just like **U1**.
    4. Insert **LM386** chip, again making sure its inserted the correct way.
    5. _Power on, unplug your headphones, and press the switch. It should be playing out of the speaker now. Power off._
+      ![060500@0.5x.jpg](images/pcb_assembly/060500@0.5x.jpg)
 7. **More notes**
    1. Solder the remaining tactile 16 switches, **SW3** through **SW18**.
       - We want them all as flat against the PCB as **SW2**, so take your time here. They should line up perfectly!
    2. _Power on and press each. They should all play different notes out of the speaker. Power off._
+      ![070200@0.5x.jpg](images/pcb_assembly/070200@0.5x.jpg)
 8. **Get louder (Optional. Skip if it's already loud enough for you!)**
    1. Solder cap **C3** (1uF).
       - Match polarity.
@@ -154,6 +168,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
    1. Solder **J2** header and **C4** (.1uF) cap.
       - Try to get **J2**'s pins parallel to the PCB and sticking straight out.
    2. _See "Hacking" section below on how to use this!_
+      ![090200@0.5x.jpg](images/pcb_assembly/090200@0.5x.jpg)
 
 #### Troubleshooting
 
