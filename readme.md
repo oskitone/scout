@@ -46,7 +46,7 @@ As such, it is intentionally minimal, with the goal of the shortest possible tim
 
 ![Scout 3D-printed parts](images/scout_3d_printed_parts.png)
 
-<!-- TODO: Download STLs of the models at [https://oskitone.github.io/apc/](https://oskitone.github.io/apc/). -->
+Download STLs of the models on Thingiverse: [https://www.thingiverse.com/thing:4933700](https://www.thingiverse.com/thing:4933700)
 
 There are seven files to print, taking about 9 hours total.
 
