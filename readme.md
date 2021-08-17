@@ -19,6 +19,10 @@ In addition to it being the first microcontroller-controlled instrument from Osk
 
 As such, it is intentionally minimal, with the goal of the shortest possible time from starting the kit to making music with it. No MIDI/CV or other IO, as is. If you're looking for a full-featured studio instrument, this ain't it, bub! :)
 
+**Demo:** [https://vimeo.com/587660426](https://vimeo.com/587660426)<br />
+**Purchase a kit:** [https://www.oskitone.com/product/scout-synth-diy-electronics-kit](https://www.oskitone.com/product/scout-synth-diy-electronics-kit)<br />
+**Blog post:** [https://blog.tommy.sh/posts/scout/](https://blog.tommy.sh/posts/scout/)
+
 ## Detailed assembly steps
 
 [![Timelapse of soldering and assembling a Scout](images/scout_assembly-16-420-8-128.gif)](https://vimeo.com/586501851)
