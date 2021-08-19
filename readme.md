@@ -46,7 +46,7 @@ As such, it is intentionally minimal, with the goal of the shortest possible tim
 
 ### 3D-Printing
 
-(If you bought a kit with 3D-printed parts included, you can skip this!)
+(If you bought a kit with 3D-printed parts included, you can skip this section, but do read below on [how to open the enclosure](#opening-the-enclosure) to confirm you have all the right pieces ready before continuing.)
 
 ![Scout 3D-printed parts](images/scout_3d_printed_parts.png)
 
@@ -193,6 +193,8 @@ Later, when you need to change the batteries (or maybe just want to admire your 
 1. Unscrew bottom **machine screws**. They don't have to come all the way out, just loosen.
 2. Pop off the volume **knob**. A flathead screwdriver (or similar tool) may help provide leverage.
 3. Insert that same flat tool on the UART cavity or the horizontal gap on the back right, then wedge the enclosure apart.
+
+[![How to open](images/video-how_to_open.jpg)](https://vimeo.com/589544440)
 
 ### Optional: Hacking!
 
