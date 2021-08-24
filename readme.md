@@ -174,7 +174,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
    2. Add the **keys**. Notice that 1) their rail has cavities on the sides that fit onto matching aligners on the enclosure and 2) the front of the keys have a cutout that matches an endstop on the enclosure, which will prevent the keys from being pressed too far down or being pulled up. Guide the keys down onto the aligners and into the endstop. It'll take some careful wiggling!
 2. Assemble bottom
    1. Align **PCB** onto the **enclosure bottom**, nestled into its aligners.
-   2. Pop the **speaker** and **battery holder** into their cavities on the **enclosure bottom**. Orient them so that their wires are relatively contained within the space there and not poking up into where the keys will be.
+   2. Pop the **speaker** into its cavity on the **enclosure bottom** with the speaker's shiny side up. Pop the **battery holder** into its cavity too. Orient them so that their wires are relatively contained within the space there and not poking up into where the keys will be.
    3. Add the **keys mount rail** onto its aligners and on top of the PCB.
    4. Add the **switch clutch** into its spot around the switch.
 3. Finish
@@ -182,7 +182,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
    2. Fix **knob** onto the volume pot shaft, aligning its dimple to to the little marker on the top of the pot shaft.
    3. Slide two **machine screws** up through the bottom of the **enclosure bottom**.
       - If they don't insert easily, you may have something misaligned inside. Pop the enclosure back open (see below for help) and make sure the **PCB**, **keys mount rail**, and **keys** are all lined up correctly.
-   4. Tighten **screws** on bottom. Not too tight!
+   4. Cautiosly tighten **screws** on bottom but not too tight! If you overtighten, the keys will get held down.
 
 All done!
 
