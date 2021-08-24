@@ -15,10 +15,11 @@ const int STARTING_NOTE_DISTANCE_FROM_MIDDLE_A = -9;
 
 const int SPEAKER_PIN = 11;
 const int OCTAVE_CONTROL_PIN = A0;
+const int GLIDE_CONTROL_PIN = A1;
 
 Notes notes(STARTING_NOTE_DISTANCE_FROM_MIDDLE_A);
 KeyBuffer buffer;
-Frequency frequency(glide, CYCLES_PER_GLIDE_MAX);
+Frequency frequency(CYCLES_PER_GLIDE_MAX);
 
 void blink(int count = 2, int wait = 200) {
   while (count >= 0) {
@@ -43,6 +44,7 @@ void updateSettings(bool skipPoll = false) {
 
   if (skipPoll || pollPasses) {
     octave = round(getVoltage(OCTAVE_CONTROL_PIN) * (OCTAVE_RANGE - 1)) + 1;
+    glide = getVoltage(GLIDE_CONTROL_PIN);
 
     settingsPreviousMillis = millis();
   }
@@ -74,7 +76,7 @@ void loop() {
     noTone(SPEAKER_PIN);
     digitalWrite(LED_BUILTIN, LOW);
   } else {
-    frequency.update(notes.get(buffer.getFirst()) / 4 * pow(2, octave));
+    frequency.update(notes.get(buffer.getFirst()) / 4 * pow(2, octave), glide);
 
     tone(SPEAKER_PIN, frequency.get());
     digitalWrite(LED_BUILTIN, HIGH);
