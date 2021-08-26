@@ -53,7 +53,8 @@ Examples:
 function export_stl() {
     stub="$1"
     override="$2"
-    flip_vertically="$3"
+    show_dfm="$3"
+    flip_vertically="$4"
 
     function _run() {
         ascii_filename="$dir/$prefix-$timestamp-$commit_hash-$stub-ascii.stl"
@@ -74,7 +75,7 @@ function export_stl() {
             -D 'SHOW_ENCLOSURE_TOP=false '\
             -D 'SHOW_ACCOUTREMENTS=false '\
             -D 'SHOW_KNOB=false '\
-            -D 'SHOW_DFM=true '\
+            -D "SHOW_DFM=$show_dfm "\
             -D 'SHOW_CLEARANCES=false' \
             -D "FLIP_VERTICALLY=$flip_vertically" \
             -D "$override=true" \
@@ -122,13 +123,15 @@ function run() {
     start=`date +%s`
 
     # The "& \" at the end runs everything in parallel!
-    export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' 'false' & \
-    export_stl 'battery_holder' 'SHOW_BATTERY_HOLDER' 'false' & \
-    export_stl 'keys_mount_rail' 'SHOW_KEYS_MOUNT_RAIL' 'false' & \
-    export_stl 'keys' 'SHOW_KEYS' 'false' & \
-    export_stl 'switch_clutch' 'SHOW_SWITCH_CLUTCH' 'false' & \
-    export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' & \
-    export_stl 'knob' 'SHOW_KNOB' 'false' & \
+    export_stl 'enclosure_bottom' 'SHOW_ENCLOSURE_BOTTOM' 'true' 'false' & \
+    export_stl 'battery_holder' 'SHOW_BATTERY_HOLDER' 'true' 'false' & \
+    export_stl 'keys_mount_rail' 'SHOW_KEYS_MOUNT_RAIL' 'true' 'false' & \
+    export_stl 'keys' 'SHOW_KEYS' 'true' 'false' & \
+    export_stl 'switch_clutch' 'SHOW_SWITCH_CLUTCH' 'true' 'false' & \
+    export_stl 'switch_clutch-no_support' 'SHOW_SWITCH_CLUTCH' 'false' 'false' & \
+    export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' 'true' & \
+    export_stl 'enclosure_top-no_support' 'SHOW_ENCLOSURE_TOP' 'false' 'true' & \
+    export_stl 'knob' 'SHOW_KNOB' 'true' 'false' & \
     wait
 
     end=`date +%s`
