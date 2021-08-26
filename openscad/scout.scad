@@ -196,12 +196,13 @@ module scout(
                 hub_ceiling = top_of_knob - top_of_pot_actuator,
                 spokes_count = 0,
                 brodie_knob_count = 0,
+                chamfer = 1.4,
                 dimple_count = 1,
                 dimple_depth = ENCLOSURE_ENGRAVING_DEPTH,
                 dimple_y = knob_dimple_y,
                 color = "#fff",
                 cavity_color = "#eee",
-                tolerance = tolerance,
+                tolerance = tolerance * 2,
                 $fn = quick_preview ? undef : DEFAULT_ROUNDING
             );
         }
