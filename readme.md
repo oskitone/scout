@@ -66,7 +66,8 @@ There are seven files to print, taking about 9 hours total.
 
 **Notes:**
 
-- Models assume Fused Deposition Modeling. Any supports they need they'll already have, and they'll also already rotated to the correct orientation for printing. If you're not using FDM, try the `*-no_support` STLs that don't have supports.
+- Models assume Fused Deposition Modeling with a standard .4mm nozzle. Using a bigger nozzle will likely result in a loss of detail and possibly missing internal walls.
+- Any supports they need they'll already have, and they'll also already rotated to the correct orientation for printing. If you're not using FDM, try the `*-no_support` STLs that don't have supports.
 - Watch the first couple layers of the enclosure pieces while printing, especially around the text engravings -- if you see bad adhesion, stop the print to remedy the situation and start again.
 - If the prints aren't fitting together well, check to see that the corners aren't bulging. See if your slicer has settings for "coasting" or "linear advance."
 - The enclosure_top and switch_clutch both have narrow support walls that will break off when they're done printing.
