@@ -165,6 +165,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
 - Do the batteries have enough power? The three batteries should have a total voltage of 3.6 to 4.5 volts.
 - If there’s buzzing, check for any metal scraps stuck to the speaker’s magnet.
 - If some keys are touchy or behaving weird, check to see that they're inserted all the way and flat against the PCB.
+- If you're hearing an unwanted hum from the speaker when the Scout isn't being played, verify all .1uF caps are soldered well. It may also be from noise added by long wires, so try to use the recommended wire lengths in this guide.
 
 ### Final assembly
 
@@ -187,6 +188,12 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
 
 All done!
 
+#### Assembly troubleshooting
+
+- If the screws are hard to insert into the enclosure bottom, don't force them but look to see if the **keys mount rail** is in the way. It may have come loose from its aligners.
+- A note is stuck on? The key mounting screw(s) may be too tight. Try loosening until the note turns off.
+- A note turns off when pressing another near it? The key mounting screw(s) may be too loose. Try tightening.
+
 ### Opening the enclosure
 
 Later, when you need to change the batteries (or maybe just want to admire your hard work!), you'll need to open the enclosure back up.
@@ -205,7 +212,7 @@ Ready to experiment and get your hands dirty with some code?
 2. With the Scout's power off, use an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70) to connect the Scout's UART header to your computer.
    1. The Scout's UART header has "B" and "G" labels on its sides to match the cables Black and Green wires.
    2. The cable provides power to the Scout, so it should now be on and working normally
-   3. Don't turn the power switch on, as the extra voltage from the batteries can damage the ATmega!
+   3. **Double check that the power switch is OFF!** Leaving it on can permanently damage the microcontroller or batteries!
 3. In the IDE, under "Tools->Board", select "Arduino Uno". Under "Tools->Port" select your new cable; its exact name will depend on the brand. If you're not sure which it is, try unplugging and restarting the IDE -- whichever it was will no longer be listed, so you'll know which it is when reconnecting and restarting.
 4. Download the code from this repo and load `arduino/scout.ino` in the Arduino IDE. You'll also need the `CircularBuffer` and `Keypad` libraries, so open up "Tools->Manage libraries" and search for those to install them.
    1. Try uploading this to the Scout by going to "Sketch->Upload". If it works, after 10 seconds or so, it will blink just like it does when you switch its power on. If it doesn't work, the IDE will print out an error that you can google to find out how to fix.
