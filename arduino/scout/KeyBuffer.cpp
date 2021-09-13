@@ -5,8 +5,6 @@
 #include <CircularBuffer.h>
 #include <Keypad.h>
 
-#define BUFFER_MAX 4
-
 const byte ROWS = 4;
 const byte COLS = 5;
 byte key_indexes[ROWS][COLS] = {

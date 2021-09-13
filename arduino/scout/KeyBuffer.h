@@ -7,6 +7,8 @@
 
 #include "Arduino.h"
 
+#define BUFFER_MAX 4
+
 class KeyBuffer {
   public:
     KeyBuffer();
@@ -16,7 +18,7 @@ class KeyBuffer {
     void printBuffer();
     void populate();
   private:
-    CircularBuffer<int, 4> _buffer;
+    CircularBuffer<int, BUFFER_MAX> _buffer;
     bool isInBuffer(int c);
     bool removeFromBuffer(int c);
 };
