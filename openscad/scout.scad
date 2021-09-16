@@ -24,10 +24,11 @@ module scout(
     show_switch_clutch = true,
     show_enclosure_top = true,
     show_accoutrements = true,
-    show_knob = true,
+    show_knobs = true,
 
     show_dfm = false,
     show_clearances = true,
+    knobs_count = undef,
 
     cantilever_height = 1,
     cantilver_mount_height = 2,
@@ -180,31 +181,48 @@ module scout(
     echo("Screw clearance", screw_top_clearance, screw_head_clearance);
     echo("PCB", [PCB_WIDTH, PCB_LENGTH], [pcb_x, pcb_y, pcb_z]);
 
-    module _knob() {
+    knob_gutter = default_gutter;
+    knob_labels = ["VOL"];
+
+    function get_knob_x(
+        index = 0,
+        use_pcb_x = true
+    ) = (
+        let (
+            start = use_pcb_x
+                ? pcb_x + PCB_POT_POSITION.x
+                : enclosure_width + knob_radius - default_gutter - (
+                    knob_radius * 2 * len(knob_labels)
+                    + knob_gutter * (len(knob_labels) - 1)
+                )
+        )
+        start + index * (knob_radius * 2 + knob_gutter)
+    );
+
+    module _knobs() {
         top_of_knob = (knob_z + knob_height);
         top_of_pot_actuator = pcb_z + PCB_HEIGHT
             + PTV09A_POT_BASE_HEIGHT + PTV09A_POT_ACTUATOR_HEIGHT;
+        count = knobs_count != undef ? KNOBS_COUNT : len(knob_labels);
 
-        translate([
-            pcb_x + PCB_POT_POSITION.x,
-            pcb_y + PCB_POT_POSITION.y,
-            knob_z
-        ]) {
-            wheel(
-                diameter = knob_radius * 2,
-                height = knob_height,
-                hub_ceiling = top_of_knob - top_of_pot_actuator,
-                spokes_count = 0,
-                brodie_knob_count = 0,
-                chamfer = 1.4,
-                dimple_count = 1,
-                dimple_depth = ENCLOSURE_ENGRAVING_DEPTH,
-                dimple_y = knob_dimple_y,
-                color = "#fff",
-                cavity_color = "#eee",
-                tolerance = tolerance,
-                $fn = quick_preview ? undef : DEFAULT_ROUNDING
-            );
+        for (i = [0 : count - 1]) {
+            translate([get_knob_x(i), pcb_y + PCB_POT_POSITION.y, knob_z]) {
+                wheel(
+                    diameter = knob_radius * 2,
+                    height = knob_height,
+                    hub_ceiling = top_of_knob - top_of_pot_actuator,
+                    spokes_count = 0,
+                    brodie_knob_count = 0,
+                    chamfer = 1.4,
+                    dimple_count = 1,
+                    dimple_depth = ENCLOSURE_ENGRAVING_DEPTH,
+                    dimple_y = knob_dimple_y,
+                    color = "#fff",
+                    cavity_color = "#eee",
+                    tolerance = tolerance,
+                    $fn = quick_preview ? undef : DEFAULT_ROUNDING
+                );
+            }
         }
     }
 
@@ -376,11 +394,12 @@ module scout(
 
                 knob_radius = knob_radius,
                 knob_dimple_y = knob_dimple_y,
-                knob_position = [
-                    pcb_x + PCB_POT_POSITION.x,
-                    pcb_y + PCB_POT_POSITION.y,
-                    knob_z
+                knob_labels = knob_labels,
+                knob_positions = [
+                    for (i = [0 : len(knob_labels) - 1])
+                        [get_knob_x(i), pcb_y + PCB_POT_POSITION.y, knob_z]
                 ],
+                knob_gutter = knob_gutter,
                 knob_vertical_clearance = knob_vertical_clearance,
 
                 speaker_position = [speaker_x, speaker_y, speaker_z],
@@ -422,8 +441,8 @@ module scout(
             _accoutrements();
         }
 
-        if (show_knob) {
-            _knob();
+        if (show_knobs) {
+            _knobs();
         }
 
         if (show_switch_clutch) {
@@ -449,10 +468,11 @@ SHOW_KEYS = true;
 SHOW_SWITCH_CLUTCH = true;
 SHOW_ENCLOSURE_TOP = true;
 SHOW_ACCOUTREMENTS = true;
-SHOW_KNOB = true;
+SHOW_KNOBS = true;
 
 SHOW_DFM = false;
 SHOW_CLEARANCES = false;
+KNOBS_COUNT = undef;
 
 CENTER = false;
 FLIP_VERTICALLY = false;
@@ -467,11 +487,12 @@ intersection() {
         show_keys = SHOW_KEYS,
         show_enclosure_top = SHOW_ENCLOSURE_TOP,
         show_accoutrements = SHOW_ACCOUTREMENTS,
-        show_knob = SHOW_KNOB,
+        show_knobs = SHOW_KNOBS,
         show_switch_clutch = SHOW_SWITCH_CLUTCH,
 
         show_dfm = SHOW_DFM,
         show_clearances = SHOW_CLEARANCES,
+        knobs_count = KNOBS_COUNT,
 
         tolerance = DEFAULT_TOLERANCE,
         quick_preview = QUICK_PREVIEW,

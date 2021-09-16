@@ -74,9 +74,10 @@ function export_stl() {
             -D 'SHOW_SWITCH_CLUTCH=false '\
             -D 'SHOW_ENCLOSURE_TOP=false '\
             -D 'SHOW_ACCOUTREMENTS=false '\
-            -D 'SHOW_KNOB=false '\
+            -D 'SHOW_KNOBS=false '\
             -D "SHOW_DFM=$show_dfm "\
             -D 'SHOW_CLEARANCES=false' \
+            -D 'KNOBS_COUNT=1' \
             -D "FLIP_VERTICALLY=$flip_vertically" \
             -D "$override=true" \
 
@@ -131,7 +132,7 @@ function run() {
     export_stl 'switch_clutch-no_support' 'SHOW_SWITCH_CLUTCH' 'false' 'false' & \
     export_stl 'enclosure_top' 'SHOW_ENCLOSURE_TOP' 'true' 'true' & \
     export_stl 'enclosure_top-no_support' 'SHOW_ENCLOSURE_TOP' 'false' 'true' & \
-    export_stl 'knob' 'SHOW_KNOB' 'true' 'false' & \
+    export_stl 'knob' 'SHOW_KNOBS' 'true' 'false' & \
     wait
 
     end=`date +%s`

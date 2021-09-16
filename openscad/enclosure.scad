@@ -73,7 +73,9 @@ module enclosure(
 
     knob_radius,
     knob_dimple_y = 0,
-    knob_position = [],
+    knob_labels = [],
+    knob_positions = [],
+    knob_gutter = 0,
     knob_vertical_clearance = 0,
 
     speaker_position = [],
@@ -113,9 +115,11 @@ module enclosure(
 ) {
     e = .0345;
 
+    knob_count = len(knob_labels);
     branding_available_width = dimensions.x
         - branding_position.x
-        - knob_radius * 2
+        - knob_radius * 2 * knob_count
+        - knob_gutter * (knob_count - 1)
         - default_gutter * 2;
     branding_available_length = dimensions.y - branding_position.y
         - default_gutter;
@@ -338,12 +342,12 @@ module enclosure(
         }
     }
 
-    module _knob_exposure(
+    module _knob_exposures(
         cavity,
         well_clearance = 1,
         shaft_clearance = .5
     ) {
-        cavity_z = knob_position.z - knob_vertical_clearance;
+        cavity_z = knob_positions[0].z - knob_vertical_clearance;
         cavity_height = dimensions.z - cavity_z + e;
         cavity_diameter = (knob_radius + well_clearance + tolerance) * 2;
 
@@ -351,7 +355,7 @@ module enclosure(
         well_height = dimensions.z - well_z - ENCLOSURE_FLOOR_CEILING + e;
         well_diameter = cavity_diameter + ENCLOSURE_INNER_WALL;
 
-        translate([knob_position.x, knob_position.y, 0]) {
+        module _exposure(label = " ") {
             translate([0, 0, cavity ? cavity_z : well_z]) {
                 cylinder(
                     d = cavity ? cavity_diameter : well_diameter,
@@ -382,7 +386,7 @@ module enclosure(
                 }
 
                 enclosure_engraving(
-                    string = "VOL",
+                    string = label,
                     size = label_text_size,
                     position = [
                         0,
@@ -392,6 +396,12 @@ module enclosure(
                     quick_preview = quick_preview,
                     enclosure_height = dimensions.z
                 );
+            }
+        }
+
+        for (i = [0 : len(knob_positions) - 1]) {
+            translate([knob_positions[i].x, knob_positions[i].y, 0]) {
+                _exposure(knob_labels[i]);
             }
         }
     }
@@ -939,7 +949,7 @@ module enclosure(
         height = FLATHEAD_SCREWDRIVER_POINT
     ) {
         translate([
-            knob_position.x - width / 2,
+            knob_positions[len(knob_positions) - 1].x - width / 2,
             dimensions.y - ENCLOSURE_WALL - e,
             bottom_height - height
         ]) {
@@ -1036,7 +1046,7 @@ module enclosure(
                     }
 
                     color(outer_color) {
-                        _knob_exposure(false);
+                        _knob_exposures(false);
                         _keys_mount_alignment_fixture(top = true);
                         _keys_mount_nut_lock_rail();
                         key_lip_endstop(
@@ -1060,7 +1070,7 @@ module enclosure(
             color(cavity_color) {
                 _keys_exposure();
                 _branding();
-                _knob_exposure(true);
+                _knob_exposures(true);
                 _bottom_engraving();
                 _screw_cavities();
                 _uart_header_exposure();
