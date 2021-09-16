@@ -5,7 +5,8 @@ use <../../poly555/openscad/lib/utils.scad>;
 include <nuts_and_bolts.scad>;
 include <utils.scad>;
 
-KEYS_COUNT = 17;
+KEYS_COUNT = 25;
+STARTING_NATURAL_KEY_INDEX = 0;
 KEYS_MOUNT_LENGTH = NUT_DIAMETER;
 KEYS_FRONT_BOTTOM_CHAMFER = 1;
 
@@ -135,7 +136,7 @@ module keys(
     nut_lock_floor = 0,
 
     keys_count = KEYS_COUNT,
-    starting_natural_key_index = 0,
+    starting_natural_key_index = STARTING_NATURAL_KEY_INDEX,
 
     keys_position = [],
     pcb_position = [],

@@ -182,11 +182,11 @@ module scout(
     echo("PCB", [PCB_WIDTH, PCB_LENGTH], [pcb_x, pcb_y, pcb_z]);
 
     knob_gutter = default_gutter;
-    knob_labels = ["VOL"];
+    knob_labels = ["GLIDE", "OCT", "EQ", "VOL"];
 
     function get_knob_x(
         index = 0,
-        use_pcb_x = true
+        use_pcb_x = false
     ) = (
         let (
             start = use_pcb_x
