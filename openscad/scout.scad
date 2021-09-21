@@ -202,7 +202,7 @@ module scout(
                 dimple_y = knob_dimple_y,
                 color = "#fff",
                 cavity_color = "#eee",
-                tolerance = tolerance * 2,
+                tolerance = tolerance,
                 $fn = quick_preview ? undef : DEFAULT_ROUNDING
             );
         }
