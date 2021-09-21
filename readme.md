@@ -277,7 +277,7 @@ The Scout's 3D-printed models are written in OpenSCAD.
 
 ### Dependencies
 
-Assumes `poly555` and `apc` repos are in a sibling directory. Here's how I've got it:
+Assumes `poly555` and `apc` repos are in a sibling directory and are _both up to date_ on the `main` branch. Here's how I've got it:
 
     \ oskitone
         \ apc
@@ -287,6 +287,11 @@ Assumes `poly555` and `apc` repos are in a sibling directory. Here's how I've go
 ### Building
 
 STLs are generated with `make_stls.sh`. Run `./make_stls.sh -h` for full flags list.
+
+### Changelog
+
+- **September 6, 2021:** Loosen knob fit on pot shaft (6cce7a7)
+- **August 9, 2021:** Init (9b5ffe5)
 
 ---
 
