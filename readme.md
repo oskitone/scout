@@ -70,7 +70,7 @@ There are seven files to print, taking about 9 hours total.
 
 - Models assume Fused Deposition Modeling with a standard .4mm nozzle. Using a bigger nozzle will likely result in a loss of detail and possibly missing internal walls.
 - The 3D-printed parts were designed using PLA. Other filament types like ABS are not recommended and will likely have fit or tolerance issues. (If you find that you need to drill or file your prints, that's a good sign there'll be other problems too.)
-- Any supports they need they'll already have, and they'll also already rotated to the correct orientation for printing. If you're not using FDM, try the `*-no_support` STLs that don't have supports.
+- Any supports the models need they'll already have, they'll already be rotated to the correct orientation for printing, and they shouldn't need brims. Brims on the keys, in fact, could cause warping on removal. (If you're experimenting with not using FDM, try the `*-no_support` STLs that don't have supports.)
 - Watch the first couple layers of the enclosure pieces while printing, especially around the text engravings -- if you see bad adhesion, stop the print to remedy the situation and start again.
 - If the prints aren't fitting together well, check to see that the corners aren't bulging. See if your slicer has settings for "coasting" or "linear advance."
 - The enclosure_top and switch_clutch both have narrow support walls that will break off when they're done printing.
