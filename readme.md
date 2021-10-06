@@ -27,6 +27,8 @@ As such, it is intentionally minimal, with the goal of the shortest possible tim
 
 [![Timelapse of soldering and assembling a Scout](images/scout_assembly-16-420-8-128.gif)](https://vimeo.com/586501851)
 
+**NOTE:** Take your time and be patient! If you run into a problem, try to keep a cool head and refer to the relevant troubleshooting section. If your problem remains unfixed and you can't figure it out, [please _email_ me to let me know](https://www.oskitone.com/contact)! I'll do my best to help you, and your feedback will help improve the guide and other future Oskitone designs.
+
 ### Inventory
 
 #### Required
@@ -67,6 +69,7 @@ There are seven files to print, taking about 9 hours total.
 **Notes:**
 
 - Models assume Fused Deposition Modeling with a standard .4mm nozzle. Using a bigger nozzle will likely result in a loss of detail and possibly missing internal walls.
+- The 3D-printed parts were designed using PLA. Other filament types like ABS are not recommended and will likely have fit or tolerance issues. (If you find that you need to drill or file your prints, that's a good sign there'll be other problems too.)
 - Any supports they need they'll already have, and they'll also already rotated to the correct orientation for printing. If you're not using FDM, try the `*-no_support` STLs that don't have supports.
 - Watch the first couple layers of the enclosure pieces while printing, especially around the text engravings -- if you see bad adhesion, stop the print to remedy the situation and start again.
 - If the prints aren't fitting together well, check to see that the corners aren't bulging. See if your slicer has settings for "coasting" or "linear advance."
@@ -74,7 +77,26 @@ There are seven files to print, taking about 9 hours total.
 
 ### Detailed PCB soldering instructions
 
-This is what we'll end up with when we're done:
+#### General Tips
+
+- **Component colors** \
+  This guide's components' brands and body colors (and even the PCB color itself) may look different from yours, and that's okay! What's important is that the part types and values are in the right spots.
+- **Resistors are labeled with colors, capacitors with numbers** \
+  Resistors' values are marked as colored bands on their body. Ceramic capacitors use a number system to denote their value.
+- **Ceramic and electrolytic capacitors** \
+  There are two kinds of “caps” used in this kit. Ceramic capacitors are small, circular, and have no polarity; they can be placed in either direction. Electrolytic caps are bigger, cylindrical, and have marked +/- polarities.
+- **IC chips are static-sensitive** \
+  The included IC chips can be damaged by static electricity. Leave them in their packaging until ready to install. Before handling, discharge any static electricity on your body by touching a large piece of metal. You can even use an anti-static mat and/or wrist strap for extra caution.
+- **ICs in sockets** \
+  Each IC chip comes with a corresponding socket with the same number of pins. You will solder the socket to the PCB, not the chip itself. This prevents overheating the IC with the soldering iron and makes it easier to switch a faulty one out.
+- **Component polarities** \
+  LEDs, batteries, and electrolytic capacitors have positive and negative leads. Where applicable, the PCB will be labeled where each lead goes or a component outline to denote orientation.
+- **IC orientation** \
+  The IC chips also have an orientation, marked by a notch at their top. Make sure these line up when soldering the sockets and again when inserting the chips. A chip can be permanently damaged if inserted incorrectly!
+
+#### Let's get started!
+
+We'll end up with something like this when we're done:
 
 ![090200@0.5x.jpg](images/pcb_assembly/090200@0.5x.jpg)
 
@@ -99,7 +121,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       6. Separate and strip the other side of wires. Make sure they don't touch!
          ![010306@0.5x.jpg](images/pcb_assembly/010306@0.5x.jpg)
       7. Insert three AAA batteries, matching their "+" and "-" sides to the battery holder's labels.
-      8. _TEST: Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages. When done, remove batteries to prevent accidentally draining them if the exposed wires touch._
+      8. _TEST: Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages -- ideally 3.6 to 4.5, depending on what kind of batteries they are. When done, remove the batteries to prevent accidentally draining them if the exposed wires touch._
          ![010308@0.5x.jpg](images/pcb_assembly/010308@0.5x.jpg)
 2. **Power up**
    1. Solder LED at **D1**
@@ -108,10 +130,10 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       2. Get the LED as vertically close to the PCB as reasonable; it doesn't have to be flat against PCB but does need to be straight up and down -- no leaning!
          ![020102@0.5x.jpg](images/pcb_assembly/020102@0.5x.jpg)
    2. Solder sliding toggle switch **SW1** and resistor **R1** (220).
-      - Make sure the switch is flat against the PCB.
+      - Make sure the switch is flat against the PCB and its actuator is pointing left, away from the PCB.
    3. Wire battery pack to **BT1**
       1. Thread the other side of the ribbon cable connected to the battery pack up through the hole near **BT1**, then strip and solder in place. Make sure the "+" and "-" wires are going to the right places.
-   4. _TEST: Add the batteries back. Toggling **SW1** should now light one color of the LED! Power off before continuing soldering._
+   4. _TEST: Add the batteries back. Toggling **SW1** should now light one color of the LED! Yes, it is bright!! Power off before continuing soldering._
       ![020400@0.5x.jpg](images/pcb_assembly/020400@0.5x.jpg)
 3. **Boot the microcontroller**
    1. Solder capacitors **C1** (220uF) and **C2** (.1uF), oscillator **Y1**, and resistors **R2** (220) and **R5** (10k).
@@ -122,7 +144,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       ![030400@0.5x.jpg](images/pcb_assembly/030400@0.5x.jpg)
 4. **Get logical**
    1. Solder an SPST switch to **SW2**.
-      - **_Make sure the switch is absolutely flat against the PCB before soldering all of its pins._** One way to do this is to solder one pin to hold it in place, then use one hand to push it into the PCB while melting the solder with your other hand; if there's any gap there it should pop in. Visually inspect to make sure it's good, then repeat with the opposite pin. Then inspect and do the remaining pins. It takes time but is worth it.
+      - **_Make sure the switch is absolutely flat against the PCB before soldering all of its pins._** One way to do this is to solder one pin to hold it in place, then use one hand to push it into the PCB while melting the solder with your other hand; if there's any gap there it should pop in. Visually inspect to make sure it's good, then repeat with the pin on the _opposite corner_. Then inspect and do the remaining pins. It takes time but is worth it.
    2. _TEST: With power on, press the switch. The LED should light just like it does on boot! Power off._
       ![040200@0.5x.jpg](images/pcb_assembly/040200@0.5x.jpg)
 5. **Make some noise**
