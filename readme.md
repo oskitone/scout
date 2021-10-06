@@ -129,14 +129,14 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
          ![020101@0.5x.jpg](images/pcb_assembly/020101@0.5x.jpg)
       2. Get the LED as vertically close to the PCB as reasonable; it doesn't have to be flat against PCB but does need to be straight up and down -- no leaning!
          ![020102@0.5x.jpg](images/pcb_assembly/020102@0.5x.jpg)
-   2. Solder sliding toggle switch **SW1** and resistor **R1** (220).
+   2. Solder sliding toggle switch **SW1** and resistor **R1** (220, Red Red Brown).
       - Make sure the switch is flat against the PCB and its actuator is pointing left, away from the PCB.
    3. Wire battery pack to **BT1**
       1. Thread the other side of the ribbon cable connected to the battery pack up through the hole near **BT1**, then strip and solder in place. Make sure the "+" and "-" wires are going to the right places.
    4. _TEST: Add the batteries back. Toggling **SW1** should now light one color of the LED! Yes, it is bright!! Power off before continuing soldering._
       ![020400@0.5x.jpg](images/pcb_assembly/020400@0.5x.jpg)
 3. **Boot the microcontroller**
-   1. Solder capacitors **C1** (220uF) and **C2** (.1uF), oscillator **Y1**, and resistors **R2** (220) and **R5** (10k).
+   1. Solder capacitors **C1** (220uF) and **C2** (.1uF, marked 104), oscillator **Y1**, and resistors **R2** (220, Red Red Brown) and **R5** (10k, Brown Black Orange).
       - **C1** has polarity. Match its white side to the white side of its footprint.
    2. Solder **U1** socket. It will have a dimple at one end, which should match the footprint on the PCB.
    3. With the power off, carefully insert **ATmega328**. It will have a dimple (and/or a small dot in a corner), which should match the socket.
@@ -154,7 +154,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
    3. _TEST: With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones. Power off._
       ![050300@0.5x.jpg](images/pcb_assembly/050300@0.5x.jpg)
 6. **Get loud**
-   1. Solder capacitors **C5** (220uF) and **C6** (.1uF) and resistor **R4** (1m).
+   1. Solder capacitors **C5** (220uF) and **C6** (.1uF, marked 104) and resistor **R4** (1m, Brown Black Green).
       - Make sure **C5**'s polariy matches its footprint, just like **C1**.
    2. Wire speaker to **LS1**.
       1. Thread remaining ribbon cable through hole.
@@ -175,7 +175,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
       - Match polarity.
    2. _TEST: Power on and press some switches. The speaker should now be louder now! Power off._
 9. **Prep for hacking (Optional. Skip if you don't plan on changing the code.)**
-   1. Solder **J2** header and **C4** (.1uF) cap.
+   1. Solder **J2** header and **C4** (.1uF, marked 104) cap.
       - Try to get **J2**'s pins parallel to the PCB and sticking straight out.
    2. _TEST: See "Hacking" section below on how to use this!_
       ![090200@0.5x.jpg](images/pcb_assembly/090200@0.5x.jpg)
@@ -276,7 +276,7 @@ Once you're comfortable with the Arduino code and really want to expand on what 
 | SW2-SW18   | SPST               | 17       | n/a                | Key buttons                                                                           |
 | U1         | ATmega328P-PU      | 1        | n/a                | Microcontroller chip                                                                  |
 | U2         | LM386              | 1        | n/a                | Amplifier chip                                                                        |
-| Y1         | 16.00MHz           | 1        | 160B               | Ceramic oscillator for microcontroller                                                |
+| Y1         | 16.00MHz           | 1        | n/a                | Ceramic oscillator for microcontroller                                                |
 
 Also:
 
