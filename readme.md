@@ -154,7 +154,7 @@ Each group of steps in the Scout's assembly has a test at the end to make sure e
    3. _TEST: With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones. Power off._
       ![050300@0.5x.jpg](images/pcb_assembly/050300@0.5x.jpg)
 6. **Get loud**
-   1. Solder capacitors **C5** (220uF) and **C6** (.1uF, marked 104) and resistor **R4** (1m, Brown Black Green).
+   1. Solder capacitors **C5** (220uF) and **C6** (.1uF, marked 104) and resistor **R4** (1m, Brown Black Green; resistor body may be blue in your kit).
       - Make sure **C5**'s polariy matches its footprint, just like **C1**.
    2. Wire speaker to **LS1**.
       1. Thread remaining ribbon cable through hole.
