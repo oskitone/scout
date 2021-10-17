@@ -74,6 +74,8 @@ There are seven files to print, taking about 9 hours total.
 - Watch the first couple layers of the enclosure pieces while printing, especially around the text engravings -- if you see bad adhesion, stop the print to remedy the situation and start again.
 - If the prints aren't fitting together well, check to see that the corners aren't bulging. See if your slicer has settings for "coasting" or "linear advance."
 - The enclosure_top and switch_clutch both have narrow support walls that will break off when they're done printing.
+- If your slicer has it, you can experiment with "variable layer height", but pay attention to the details on the enclosure's text engravings and the aforementioned supports.
+- Similarly, you may also like to play around with "ironing" the tops of the keys to make them shiny and flat. _This will significantly increase print time!_
 
 ### Detailed PCB soldering instructions
 
