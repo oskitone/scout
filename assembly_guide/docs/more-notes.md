@@ -1,0 +1,17 @@
+---
+id: more-notes
+title: More notes
+sidebar_label: More notes
+slug: /more-notes
+---
+
+## Steps
+
+1. Solder the remaining tactile 16 switches, **SW3** through **SW18**.
+   - We want them all as flat against the PCB as **SW2**, so take your time here. They should line up perfectly!
+
+## Test
+
+Power on and press each. They should all play different notes out of the speaker. Power off.
+
+![070200@0.5x.jpg](../../images/pcb_assembly/070200@0.5x.jpg)

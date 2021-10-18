@@ -1,6 +1,20 @@
-# Scout
+---
+id: what-youll-be-making
+title: Oskitone Scout Assembly Guide
+sidebar_label: What You'll Be Making
+description: The Scout is a 3D-printed, Arduino-compatible, 17-key mono synth.
+image: ../../images/scout-10-838-032.gif
+slug: /
+---
 
-![Scout](images/scout-10-838-032.gif)
+![Scout](../../images/scout-10-838-032.gif)
+
+**Purchase:**
+
+- [Scout Synth (fully assembled)](https://www.oskitone.com/product/scout-synth)
+- [Scout Synth DIY Electronics Kit](https://www.oskitone.com/product/scout-synth-diy-electronics-kit)
+
+## What You'll Be Making
 
 **scout** (_/skout/_):
 
@@ -19,34 +33,20 @@ In addition to it being the first microcontroller-controlled instrument from Osk
 
 As such, it is intentionally minimal, with the goal of the shortest possible time from starting the kit to making music with it. No MIDI/CV or other IO, as is. If you're looking for a full-featured studio instrument, this ain't it, bub! :)
 
-**Demo:** [https://vimeo.com/587660426](https://vimeo.com/587660426)<br />
-**Purchase a kit:** [https://www.oskitone.com/product/scout-synth-diy-electronics-kit](https://www.oskitone.com/product/scout-synth-diy-electronics-kit)<br />
-**Blog post:** [https://blog.tommy.sh/posts/scout/](https://blog.tommy.sh/posts/scout/)
+<p><iframe src="https://player.vimeo.com/video/587660426" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></p>
 
-## 3D Models
+More information about the Scout, its development, and history: [https://blog.tommy.sh/posts/scout/](https://blog.tommy.sh/posts/scout/)
 
-The Scout's 3D-printed models are written in OpenSCAD.
+### Disclaimers
 
-### Dependencies
+You've been warned!
 
-Assumes `poly555` and `apc` repos are in a sibling directory and are _both up to date_ on the `main` branch. Here's how I've got it:
+:::warning
+Not a toy. Choking hazard. Small parts. Not for children under 3 years.
+:::
 
-    \ oskitone
-        \ apc
-        \ poly555
-        \ scout
+## About this guide
 
-### Building
+To save cost, trees, and frustration from outdated information, printed instructions are not included by default with Scout kits. This online guide will always be up to date and be the best source of information for how to assembly your new Scout.
 
-STLs are generated with `make_stls.sh`. Run `./make_stls.sh -h` for full flags list.
-
-### Changelog
-
-- **September 6, 2021:** Loosen knob fit on pot shaft (6cce7a7)
-- **August 9, 2021:** Init (9b5ffe5)
-
-## License
-
-Designed by Oskitone. Please support future synth projects by purchasing from [Oskitone](https://www.oskitone.com/).
-
-Creative Commons Attribution/Share-Alike, all text above must be included in any redistribution. See license.txt for additional details.
+Thank you for understanding!
