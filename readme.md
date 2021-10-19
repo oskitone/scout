@@ -21,6 +21,7 @@ As such, it is intentionally minimal, with the goal of the shortest possible tim
 
 **Demo:** [https://vimeo.com/587660426](https://vimeo.com/587660426)<br />
 **Purchase a kit:** [https://www.oskitone.com/product/scout-synth-diy-electronics-kit](https://www.oskitone.com/product/scout-synth-diy-electronics-kit)<br />
+**Assembly guide:** [https://oskitone.github.io/scout/](https://oskitone.github.io/scout/)<br />
 **Blog post:** [https://blog.tommy.sh/posts/scout/](https://blog.tommy.sh/posts/scout/)
 
 ## 3D Models
