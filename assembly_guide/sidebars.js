@@ -14,19 +14,16 @@ module.exports = {
       "get-louder",
       "prep-for-hacking"
     ],
-    Assembly: [
-      "final-assembly"
-      // "care"
-    ],
+    Assembly: ["final-assembly"],
     Hacking: ["hacking"],
     Appendix: [
       "bom",
       "pcb-troubleshooting",
       "assembly-troubleshooting",
-      "opening-the-enclosure"
+      "opening-the-enclosure",
+      "source-and-license"
+      // TODO
       //   "schematics",
-      //   "hacking",
-      //   "source-and-license"
     ]
   }
 };
