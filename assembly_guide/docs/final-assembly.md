@@ -5,7 +5,7 @@ sidebar_label: Final assembly
 slug: /final-assembly
 ---
 
-![Scout's final assembly](../../images/scout_pieces.png)
+![Scout's final assembly](/img/scout_pieces.png)
 
 1. Assemble top
    1. Slide **square nuts** into nut locks on **enclosure top**. It'll be snug, but they'll fit! Use needle-nose pliers or a similar tool to push them in until their holes line up with those on the enclosure.

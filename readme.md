@@ -1,6 +1,6 @@
 # Scout
 
-![Scout](images/scout-10-838-032.gif)
+![Scout](assembly_guide/static/img/scout-10-838-032.gif)
 
 **scout** (_/skout/_):
 

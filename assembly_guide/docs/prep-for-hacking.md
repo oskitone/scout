@@ -14,4 +14,4 @@ slug: /prep-for-hacking
 
 See ["Hacking" section](hacking) on how to use this!
 
-![090200@0.5x.jpg](../../images/pcb_assembly/090200@0.5x.jpg)
+![090200@0.5x.jpg](/img/pcb_assembly/090200@0.5x.jpg)

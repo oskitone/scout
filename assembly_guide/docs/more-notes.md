@@ -14,4 +14,4 @@ slug: /more-notes
 
 Power on and press each. They should all play different notes out of the speaker. Power off.
 
-![070200@0.5x.jpg](../../images/pcb_assembly/070200@0.5x.jpg)
+![070200@0.5x.jpg](/img/pcb_assembly/070200@0.5x.jpg)

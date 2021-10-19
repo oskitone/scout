@@ -15,4 +15,4 @@ slug: /get-logical
 
 With power on, press the switch. The LED should light just like it does on boot! Power off.
 
-![040200@0.5x.jpg](../../images/pcb_assembly/040200@0.5x.jpg)
+![040200@0.5x.jpg](/img/pcb_assembly/040200@0.5x.jpg)

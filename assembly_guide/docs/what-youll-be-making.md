@@ -2,12 +2,12 @@
 id: what-youll-be-making
 title: Oskitone Scout Assembly Guide
 sidebar_label: What You'll Be Making
-description: The Scout is a 3D-printed, Arduino-compatible, 17-key mono synth.
-image: ../../images/scout-10-838-032.gif
+description: How to solder and assemble the Oskitone Scout Electronics Kit
+image: /img/scout-10-838-032.gif
 slug: /
 ---
 
-![Scout](../../images/scout-10-838-032.gif)
+![Scout](/img/scout-10-838-032.gif)
 
 **Purchase:**
 

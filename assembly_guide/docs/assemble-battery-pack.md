@@ -13,21 +13,21 @@ slug: /assemble-battery-pack
    3. Fold their tabs over to hold them in place.
 2. Insert wire dual contacts
    1. Again, springs go to "-" and buttons to "+".
-      ![010201@0.5x.jpg](../../images/pcb_assembly/010201@0.5x.jpg)
+      ![010201@0.5x.jpg](/img/pcb_assembly/010201@0.5x.jpg)
 3. Add wire
    1. Cut your ribbon cable into two pieces of about 7" and 3".
    2. With the battery holder oriented so its "+" contact tab is on the left and "-" on the right, thread the 7" ribbon cable through the hitch on the left, about halfway though, and then split the bottom pair of wires.
-      ![010302@0.5x.jpg](../../images/pcb_assembly/010302@0.5x.jpg)
+      ![010302@0.5x.jpg](/img/pcb_assembly/010302@0.5x.jpg)
    3. Thread the darker wire of the now separated pair through the channel on the bottom of the battery holder and up through the right hitch. (Your ribbon cable will probably have different colors, and that's okay! A common convention is to use the darker color for "-" and the lighter one for "+".)
-      ![010303@0.5x.jpg](../../images/pcb_assembly/010303@0.5x.jpg)
+      ![010303@0.5x.jpg](/img/pcb_assembly/010303@0.5x.jpg)
    4. Strip 1/4" of insulation off that right wire and solder to its contact tab.
    5. Cut the wire on the left to meet its tab, then strip and solder it.
    6. Separate and strip the other side of wires. Make sure they don't touch!
-      ![010306@0.5x.jpg](../../images/pcb_assembly/010306@0.5x.jpg)
+      ![010306@0.5x.jpg](/img/pcb_assembly/010306@0.5x.jpg)
    7. Insert three AAA batteries, matching their "+" and "-" sides to the battery holder's labels.
 
 ## Test
 
 Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages -- ideally 3.6 to 4.5, depending on what kind of batteries they are. When done, remove the batteries to prevent accidentally draining them if the exposed wires touch.
 
-![010308@0.5x.jpg](../../images/pcb_assembly/010308@0.5x.jpg)
+![010308@0.5x.jpg](/img/pcb_assembly/010308@0.5x.jpg)
