@@ -178,7 +178,7 @@ module scout(
     echo("Keys", [key_width, key_length, key_height]);
     echo("Knob", [knob_radius * 2, knob_height]);
     echo("Screw clearance", screw_top_clearance, screw_head_clearance);
-    echo("PCB", [PCB_WIDTH, PCB_LENGTH], [pcb_x, pcb_y]);
+    echo("PCB", [PCB_WIDTH, PCB_LENGTH], [pcb_x, pcb_y, pcb_z]);
 
     module _knob() {
         top_of_knob = (knob_z + knob_height);
@@ -196,6 +196,7 @@ module scout(
                 hub_ceiling = top_of_knob - top_of_pot_actuator,
                 spokes_count = 0,
                 brodie_knob_count = 0,
+                chamfer = 1.4,
                 dimple_count = 1,
                 dimple_depth = ENCLOSURE_ENGRAVING_DEPTH,
                 dimple_y = knob_dimple_y,
