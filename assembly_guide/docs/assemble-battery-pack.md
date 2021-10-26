@@ -10,7 +10,7 @@ slug: /assemble-battery-pack
 1. Insert tabbed battery contact terminals
    1. The springed contact goes to the spot with a "-".
    2. The flat, button contact goes near "+". Its button should face inward towards where the battery will be.
-   3. Fold their tabs over to hold them in place.
+   3. These tabbed contacts will have a tight fit! You can use pliers to push/pull them in, then fold their tabs over to hold them in place.
 2. Insert wire dual contacts
    1. Again, springs go to "-" and buttons to "+".
       ![010201@0.5x.jpg](/img/pcb_assembly/010201@0.5x.jpg)
@@ -20,7 +20,7 @@ slug: /assemble-battery-pack
       ![010302@0.5x.jpg](/img/pcb_assembly/010302@0.5x.jpg)
    3. Thread the darker wire of the now separated pair through the channel on the bottom of the battery holder and up through the right hitch. (Your ribbon cable will probably have different colors, and that's okay! A common convention is to use the darker color for "-" and the lighter one for "+".)
       ![010303@0.5x.jpg](/img/pcb_assembly/010303@0.5x.jpg)
-   4. Strip 1/4" of insulation off that right wire and solder to its contact tab.
+   4. Strip 1/4" of insulation off that right wire and solder to its contact tab. Try not to melt the plastic around it!
    5. Cut the wire on the left to meet its tab, then strip and solder it.
    6. Separate and strip the other side of wires. Make sure they don't touch!
       ![010306@0.5x.jpg](/img/pcb_assembly/010306@0.5x.jpg)
@@ -31,3 +31,5 @@ slug: /assemble-battery-pack
 Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages -- ideally 3.6 to 4.5, depending on what kind of batteries they are. When done, remove the batteries to prevent accidentally draining them if the exposed wires touch.
 
 ![010308@0.5x.jpg](/img/pcb_assembly/010308@0.5x.jpg)
+
+If you're having trouble with your multimeter, try measuring each battery individually and see if they read as you expect. Then install them into the battery pack and check their combined voltage.

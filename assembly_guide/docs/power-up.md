@@ -14,11 +14,12 @@ slug: /power-up
       ![020102@0.5x.jpg](/img/pcb_assembly/020102@0.5x.jpg)
 2. Solder sliding toggle switch **SW1** and resistor **R1** (220, Red Red Brown).
    - Make sure the switch is flat against the PCB and its actuator is pointing left, away from the PCB.
+   - You can use a bit of tape or "Blu-Tack" adhesive to hold the switch in place as you solder.
 3. Wire battery pack to **BT1**
    1. Thread the other side of the ribbon cable connected to the battery pack up through the hole near **BT1**, then strip and solder in place. Make sure the "+" and "-" wires are going to the right places.
 
 ## Test
 
-Add the batteries back. Toggling **SW1** should now light one color of the LED! Yes, it is bright!! Power off before continuing soldering.\_
+Add the batteries back. Toggling **SW1** should now light one color of the LED! Yes, it is bright!! Power off before continuing soldering.
 
 ![020400@0.5x.jpg](/img/pcb_assembly/020400@0.5x.jpg)

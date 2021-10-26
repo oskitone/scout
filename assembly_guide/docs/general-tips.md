@@ -34,4 +34,12 @@ We'll end up with something like this when we're done:
 
 ![090200@0.5x.jpg](/img/pcb_assembly/090200@0.5x.jpg)
 
-Each group of steps in the Scout's assembly has a test at the end to make sure everything you just did is working as expected. If it doesn't work, don't fret! Look over the troubleshooting tips below. Don't move on in the instructions until you've got the test working.
+### How this guide is organized
+
+Each group of steps in the Scout's assembly has a test at the end to make sure everything you just did is working as expected, ie: "Make sure the LED lights up", "Make sure the microcontroller works", "Make sure the speaker has sound", etc.
+
+If it doesn't work, don't fret! Look over the [PCB troubleshooting](pcb-troubleshooting) tips. Don't move on in the instructions until you've got the test working.
+
+:::note Note for the experienced/impatient
+The guide's steps are intentionally ordered. If you don't want to follow the guide, that's okay! But it may be harder to debug later if anything doesn't work as expected.
+:::
