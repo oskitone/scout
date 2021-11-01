@@ -11,6 +11,7 @@ slug: /boot-the-microcontroller
    - **C1** has polarity. Match its white side to the white side of its footprint.
    - **Y1** has three legs and no polarity.
 2. Solder **U1** socket. It will have a dimple at one end, which should match the footprint on the PCB.
+   - Solder two pins on opposite sides and verify the socket is perfectly flat before soldering the rest. If it's not and you try pushing it in, you can accidentally pop out a pin &mdash; not good!
 3. With the power off, carefully insert **ATmega328**. It will have a dimple (and/or a small dot in a corner), which should match the socket.
 
 ## Test

@@ -33,7 +33,7 @@ In addition to it being the first microcontroller-controlled instrument from Osk
 
 As such, it is intentionally minimal, with the goal of the shortest possible time from starting the kit to making music with it. No MIDI/CV or other IO, as is. If you're looking for a full-featured studio instrument, this ain't it, bub! :)
 
-<p><iframe src="https://player.vimeo.com/video/587660426" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></p>
+<p><iframe src="https://player.vimeo.com/video/641270244" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></p>
 
 More information about the Scout, its development, and history: [https://blog.tommy.sh/posts/scout/](https://blog.tommy.sh/posts/scout/)
 

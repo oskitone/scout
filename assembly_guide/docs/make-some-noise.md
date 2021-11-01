@@ -7,8 +7,10 @@ slug: /make-some-noise
 
 ## Steps
 
-1. Solder volume pot **RV1**, resistor **R3** (10k), and headphone jack **J1**.
+1. Solder volume potentiometer (aka "pot") **RV1**, resistor **R3** (10k), and headphone jack **J1**.
+   - A trick to get the pot to snap in better is to _gently_ push its tabs inward before popping it onto the PCB.
    - Make sure **RV1** and **J1** are pushed all the way into PCB before soldering all the way.
+   - You can use a bit of tape or "Blu-Tack" adhesive to hold **J1** in place as you solder.
 2. Connect your headphones into the headphone jack. Push firmly until it clicks in all the way.
 
 ## Test

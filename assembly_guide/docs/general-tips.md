@@ -27,6 +27,8 @@ Take your time and be patient! If you run into a problem, try to keep a cool hea
   LEDs, batteries, and electrolytic capacitors have positive and negative leads. Where applicable, the PCB will be labeled where each lead goes or a component outline to denote orientation.
 - **IC orientation**<br />
   The IC chips also have an orientation, marked by a notch at their top. Make sure these line up when soldering the sockets and again when inserting the chips. A chip can be permanently damaged if inserted incorrectly!
+- **Get tricky/sticky with short-lead components**<br />
+  Components with short leads can be hard to get to stay on the PCB, because you can't really bend their leads to get them to stay put. But there are tricks! Try using tape or "Blu-Tack" adhesive to hold them. Or clip the solder into your "holding hands", and try bringing the _board to the solder_ (instead of the typical reverse of solder to board).
 
 ## Let's get started!
 
