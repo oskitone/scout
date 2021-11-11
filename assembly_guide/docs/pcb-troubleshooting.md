@@ -1,7 +1,9 @@
 ---
 id: pcb-troubleshooting
 title: PCB troubleshooting
+description: Common problems that come up when soldering the Scout PCB.
 sidebar_label: PCB troubleshooting
+image: /img/scout_assembly-16-420-8-128.gif
 slug: /pcb-troubleshooting
 ---
 

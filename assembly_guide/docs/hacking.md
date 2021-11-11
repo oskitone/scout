@@ -1,7 +1,9 @@
 ---
 id: hacking
 title: Hacking
+description: Hack, hack, hack, hack, hack, hack.
 sidebar_label: Hacking
+image: /img/scout-10-838-032.gif
 slug: /hacking
 ---
 

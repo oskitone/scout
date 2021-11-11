@@ -1,7 +1,9 @@
 ---
 id: get-loud
 title: Get loud
+description: How to solder the Scout's amp to, you guessed it!, get loud.
 sidebar_label: Get loud
+image: /img/pcb_assembly/060500@0.5x.jpg
 slug: /get-loud
 ---
 

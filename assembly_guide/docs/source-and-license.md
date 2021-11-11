@@ -1,7 +1,9 @@
 ---
 id: source-and-license
 title: "Appendix: Source and License"
+description: The Scout is open-source hardware.
 sidebar_label: Source and License
+image: /img/scout_assembly-16-420-8-128.gif
 ---
 
 ## Source

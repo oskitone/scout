@@ -1,7 +1,9 @@
 ---
 id: inventory
 title: Inventory
+description: What you'll need to gather before getting started.
 sidebar_label: Inventory
+image: /img/scout-10-838-032.gif
 slug: /inventory
 ---
 

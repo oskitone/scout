@@ -1,7 +1,9 @@
 ---
 id: 3d-printing-parts-and-slicing
 title: 3D-Printing Parts and Slicing
+description: How to 3D-print your Scout's parts.
 sidebar_label: 3D-Printing Parts and Slicing
+image: /img/scout_3d_printed_parts.png
 slug: /3d-printing-parts-and-slicing
 ---
 

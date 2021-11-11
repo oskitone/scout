@@ -1,7 +1,9 @@
 ---
 id: opening-the-enclosure
 title: Opening the enclosure
+description: How to open up the Scout enclosure after it's snapped together.
 sidebar_label: Opening the enclosure
+image: /img/scout_assembly-16-420-8-128.gif
 slug: /opening-the-enclosure
 ---
 

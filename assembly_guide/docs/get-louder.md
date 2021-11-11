@@ -1,7 +1,9 @@
 ---
 id: get-louder
 title: Get louder
+description: Not loud enough for ya? Get LOUDER.
 sidebar_label: Get louder
+image: /img/scout_assembly-16-420-8-128.gif
 slug: /get-louder
 ---
 

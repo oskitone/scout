@@ -1,7 +1,9 @@
 ---
 id: assembly-troubleshooting
 title: Assembly troubleshooting
+description: Common problems that come up when assembling the Scout.
 sidebar_label: Assembly troubleshooting
+image: /img/scout_assembly-16-420-8-128.gif
 slug: /assembly-troubleshooting
 ---
 

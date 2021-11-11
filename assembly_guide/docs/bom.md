@@ -1,7 +1,9 @@
 ---
 id: bom
 title: Annotated BOM
+description: Bill of Materials, annotated.
 sidebar_label: Annotated BOM
+image: /img/scout_assembly-16-420-8-128.gif
 slug: /bom
 ---
 

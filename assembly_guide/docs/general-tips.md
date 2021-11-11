@@ -1,7 +1,9 @@
 ---
 id: general-tips
 title: General tips and getting started
+description: Things to keep in mind as you solder your Scout. Take your time and be patient!
 sidebar_label: General tips and getting started
+image: /img/scout_assembly-16-420-8-128.gif
 slug: /general-tips
 ---
 

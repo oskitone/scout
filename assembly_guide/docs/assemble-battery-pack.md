@@ -1,7 +1,9 @@
 ---
 id: assemble-battery-pack
 title: Assemble battery pack
+description: How to assemble the Scout's battery pack.
 sidebar_label: Assemble battery pack
+image: /img/pcb_assembly/010308@0.5x.jpg
 slug: /assemble-battery-pack
 ---
 

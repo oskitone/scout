@@ -1,7 +1,9 @@
 ---
 id: more-notes
 title: More notes
+description: Add the rest of the Scout's note buttons.
 sidebar_label: More notes
+image: /img/pcb_assembly/070200@0.5x.jpg
 slug: /more-notes
 ---
 

@@ -1,7 +1,9 @@
 ---
 id: boot-the-microcontroller
 title: Boot the microcontroller
+description: How to get the Scout's microcontroller working and booted up.
 sidebar_label: Boot the microcontroller
+image: /img/pcb_assembly/030400@0.5x.jpg
 slug: /boot-the-microcontroller
 ---
 

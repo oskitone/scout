@@ -1,7 +1,9 @@
 ---
 id: get-logical
 title: Get logical
+description: Test the microcontroller's logic!
 sidebar_label: Get logical
+image: /img/pcb_assembly/040200@0.5x.jpg
 slug: /get-logical
 ---
 

@@ -1,7 +1,9 @@
 ---
 id: make-some-noise
 title: Make some noise
+description: How to start getting noises out of the Scout.
 sidebar_label: Make some noise
+image: /img/pcb_assembly/050300@0.5x.jpg
 slug: /make-some-noise
 ---
 

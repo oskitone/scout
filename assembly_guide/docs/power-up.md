@@ -1,7 +1,9 @@
 ---
 id: power-up
 title: Power up
+description: Getting power to Scout's PCB and toggling an LED.
 sidebar_label: Power up
+image: /img/pcb_assembly/020400@0.5x.jpg
 slug: /power-up
 ---
 

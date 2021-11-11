@@ -1,7 +1,9 @@
 ---
 id: final-assembly
 title: Final assembly
+description: With the PCB done soldering and working, it's time to finish the job!
 sidebar_label: Final assembly
+image: /img/scout_pieces.png
 slug: /final-assembly
 ---
 
