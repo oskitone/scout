@@ -37,6 +37,8 @@ Assumes `poly555` and `apc` repos are in a sibling directory and are _both up to
         \ poly555
         \ scout
 
+You'll also need to install the [Orbitron](https://fonts.google.com/specimen/Orbitron) font.
+
 ### Building
 
 STLs are generated with `make_stls.sh`. Run `./make_stls.sh -h` for full flags list.
