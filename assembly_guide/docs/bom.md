@@ -20,7 +20,7 @@ slug: /bom
 | R4         | 1m                 | 1        | Brown Black Green  | Drops volume even more before amp                                                     |
 | RV1        | 10k Log            | 1        | n/a                | Volume control                                                                        |
 | SW1        | SW_SPST            | 1        | n/a                | On/off power switch                                                                   |
-| SW2-SW18   | SPST               | 17       | n/a                | Key buttons                                                                           |
+| SW2-SW18   | SPST, 6mm tall     | 17       | n/a                | Key buttons                                                                           |
 | U1         | ATmega328P-PU      | 1        | n/a                | Microcontroller chip                                                                  |
 | U2         | LM386              | 1        | n/a                | Amplifier chip                                                                        |
 | Y1         | 16.00MHz           | 1        | n/a                | Ceramic oscillator for microcontroller                                                |
