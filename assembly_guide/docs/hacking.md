@@ -11,6 +11,8 @@ slug: /hacking
 This is optional!
 :::
 
+## Change the Arduino code
+
 Ready to experiment and get your hands dirty with some code?
 
 1. Install the [Arduino IDE](https://www.arduino.cc/en/software) and follow their instructions to install whatever drivers you'd need for an Arduino Uno.
@@ -38,8 +40,12 @@ Once you're comfortable with the Arduino code and really want to expand on what 
 | SWC, SW1-SW3 | 16; 6,11,12 | Unused spots in the key matrix                      |
 | GND          | n/a         | Ground                                              |
 
-#### Community hacks
+## Community hacks
 
 - **[arpeggio_hack](https://github.com/shamlian/scout/tree/arpeggio_hack) from [Steven Shamlian](https://github.com/shamlian):** Adds polyphony by arpeggiating through the held notes. The full hack requires diodes on the switches to prevent key ghosting, but otherwise the Arduino code can work w/o any hardware changes... provided you only play certain chords or don't mind the occasional wrong note. Pretty interesting!
 
 [Got one to add?](https://www.oskitone.com/contact)
+
+## Other ideas
+
+- For extra stability, add ruber feet to the bottom of your Scout.

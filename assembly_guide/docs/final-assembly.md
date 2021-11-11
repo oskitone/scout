@@ -30,6 +30,7 @@ Check out the [Assembly troubleshooting](assembly-troubleshooting) section if yo
    2. Fix **knob** onto the volume pot shaft, aligning its dimple to to the little marker on the top of the pot shaft.
    3. Slide two **machine screws** up through the bottom of the **enclosure bottom**.
       - If they don't insert easily, you may have something misaligned inside. Pop the enclosure back open (see below for help) and make sure the **PCB**, **keys mount rail**, and **keys** are all lined up correctly.
+      - These screws may seem unnecessary &mdash; after all, all the notes can be played and the enclosure is snapped together &mdash; but using them will cut down on mechanical "click" noises from playing. Don't skip them!
    4. Cautiosly tighten **screws** on bottom but not too tight! If you overtighten, the keys will get held down.
 
 All done!
