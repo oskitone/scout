@@ -7,6 +7,10 @@ image: /img/pcb_assembly/040200@0.5x.jpg
 slug: /get-logical
 ---
 
+:::note
+Take your time and make sure the switch is perfectly flat against the PCB before soldering all of its pins.
+:::
+
 ## Steps
 
 1. Solder an SPST switch to **SW2**.
