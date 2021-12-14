@@ -21,9 +21,8 @@ module.exports = {
       "pcb-troubleshooting",
       "assembly-troubleshooting",
       "opening-the-enclosure",
+      "schematics",
       "source-and-license"
-      // TODO
-      //   "schematics",
     ]
   }
 };
