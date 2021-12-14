@@ -1,9 +1,10 @@
 ---
 id: schematics
-title: "Appendix: Schematics"
+title: "Schematics"
 description: Scout circuit schematics
 sidebar_label: Schematics
 image: /img/schematics/scout.svg
+hide_table_of_contents: true
 ---
 
 [![Scout schematic](/img/schematics/scout.svg)](/img/schematics/scout.svg)
