@@ -305,7 +305,7 @@ module enclosure(
         );
 
         enclosure_engraving(
-            string = "SCOUT",
+            string = "SCOUT2",
             size = model_length,
             center = false,
             position = [
