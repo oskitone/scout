@@ -111,7 +111,7 @@ module scout(
         keys_y + key_length
             + PCB_LENGTH - pcb_key_mount_y
             + ENCLOSURE_WALL,
-        pcb_y + PCB_POT_POSITION.y + knob_radius + default_gutter
+        pcb_y + PCB_POT_POSITIONS[0].y + knob_radius + default_gutter
     );
     enclosure_height = max(
         keys_z + key_min_height + accidental_height + accidental_key_recession,
@@ -190,7 +190,7 @@ module scout(
     ) = (
         let (
             start = use_pcb_x
-                ? pcb_x + PCB_POT_POSITION.x
+                ? pcb_x + PCB_POT_POSITIONS[0].x
                 : enclosure_width + knob_radius - default_gutter - (
                     knob_radius * 2 * len(knob_labels)
                     + knob_gutter * (len(knob_labels) - 1)
@@ -206,7 +206,7 @@ module scout(
         count = knobs_count != undef ? KNOBS_COUNT : len(knob_labels);
 
         for (i = [0 : count - 1]) {
-            translate([get_knob_x(i), pcb_y + PCB_POT_POSITION.y, knob_z]) {
+            translate([get_knob_x(i), pcb_y + PCB_POT_POSITIONS[0].y, knob_z]) {
                 wheel(
                     diameter = knob_radius * 2,
                     height = knob_height,
@@ -397,7 +397,7 @@ module scout(
                 knob_labels = knob_labels,
                 knob_positions = [
                     for (i = [0 : len(knob_labels) - 1])
-                        [get_knob_x(i), pcb_y + PCB_POT_POSITION.y, knob_z]
+                        [get_knob_x(i), pcb_y + PCB_POT_POSITIONS[0].y, knob_z]
                 ],
                 knob_gutter = knob_gutter,
                 knob_vertical_clearance = knob_vertical_clearance,

@@ -54,7 +54,12 @@ PCB_RELIEF_HOLE_POSITIONS = [
 
 PCB_LED_Z = 3; // RGB LED pin footprint prevents it from resting directly on PCB
 PCB_LED_POSITION = _([156.474, 86.706], [-2.54, 2.54 - MAGIC]);
-PCB_POT_POSITION = _([172.824, 97.796], [-2.54, 7 + 2.54 / 2 + MAGIC]);
+PCB_POT_POSITIONS = [
+    // kicad x - original x + desired x
+    _([172.824 - 144.8 + 174.2, 97.796], [-2.54, 7 + 2.54 / 2 + MAGIC]),
+    _([172.824 - 144.8 + 197.6, 97.796], [-2.54, 7 + 2.54 / 2 + MAGIC]),
+    _([172.824 - 144.8 + 221, 97.796], [-2.54, 7 + 2.54 / 2 + MAGIC]),
+];
 PCB_SWITCH_POSITION = _([34.544, 91.98], [0, -2.54]);
 
 // https://www.digikey.com/en/products/detail/adam-tech/PH1RB-06-UA/9830592
@@ -192,8 +197,10 @@ module scout_pcb(
     }
 
     if (show_pot) {
-        _translate(PCB_POT_POSITION) {
-            % pot();
+        for (position = PCB_POT_POSITIONS) {
+            _translate(position) {
+                % pot();
+            }
         }
     }
 
