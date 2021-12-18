@@ -11,6 +11,17 @@ slug: /hacking
 This is optional!
 :::
 
+## Required equipment
+
+To keep the Scout's price more accessible, it doesn't come with a built-in USB controller chip, so, out of the box, you can't easily hook it up to your computer as-is.
+
+Thankfully, that USB chip is readily available as a cable, which you can connect between your Scout and your computer.
+
+These cables have been tested and confirmed to work with the Scout:
+
+- [FTDI Serial TTL-232 USB Cable](https://www.adafruit.com/product/70) from Adafruit
+- [USB Serial Cable](https://cornfieldelectronics.com/cfe/products/buy.php?productId=usbcable&PHPSESSID=oos5v81hlitjvb0grhgolsrq96) from Cornfield Electronics
+
 ## Change the Arduino code
 
 Ready to experiment and get your hands dirty with some code?
