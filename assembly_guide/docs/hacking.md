@@ -54,6 +54,7 @@ Once you're comfortable with the Arduino code and really want to expand on what 
 ## Community hacks
 
 - **[arpeggio_hack](https://github.com/shamlian/scout/tree/arpeggio_hack) from [Steven Shamlian](https://github.com/shamlian):** Adds polyphony by arpeggiating through the held notes. The full hack requires diodes on the switches to prevent key ghosting, but otherwise the Arduino code can work w/o any hardware changes... provided you only play certain chords or don't mind the occasional wrong note. Pretty interesting!
+- **[MozziScout](https://github.com/todbot/MozziScout) from [todbot](https://todbot.com/):** With some careful pin swapping on the ATmega328, the Scout can use [Mozzi](https://sensorium.github.io/Mozzi/), the popular sound synthesis library for Arduino. For this hack, it's a good idea to plug into an amplifier &mdash; the new sounds your Scout will make are much richer than what its built-in speaker is capable!
 
 [Got one to add?](https://www.oskitone.com/contact)
 
