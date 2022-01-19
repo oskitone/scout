@@ -30,6 +30,7 @@ There are seven files to print, taking about 9 hours total.
 **Notes:**
 
 - Models assume Fused Deposition Modeling with a standard .4mm nozzle. Using a bigger nozzle will likely result in a loss of detail (like missing "VOL" label text on the enclosure_top) and possibly missing internal walls.
+- You may find the bottoms of the keys stick together because the plastic has expanded too far into the gap between them. See if your slicer has a setting called something like ["Elephant foot compensation"](https://help.prusa3d.com/en/article/elephant-foot-compensation_114487). Otherwise you'll need to carefully cut off the excess plastic with a utility knife.
 - The 3D-printed parts were designed using PLA. Other filament types like ABS are not recommended and will likely have fit or tolerance issues. (If you find that you need to drill or file your prints, that's a good sign there'll be other problems too.)
 - 20% infill works well across all models. I wouldn't advise going lower than 15% on the keys.
 - Some slicers have trouble with the "color change" GCODE. Try a smaller test print first if you're unfamiliar, and maybe try "pause at layer" instead of "color change".
