@@ -1,5 +1,5 @@
 module.exports = {
-  title: "Scout",
+  title: "Oskitone Scout Assembly Guide",
   url: "https://oskitone.github.io",
   baseUrl: "/scout/",
   onBrokenLinks: "throw",
