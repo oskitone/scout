@@ -40,3 +40,5 @@ Orient the wires so that they're relatively contained within the space there and
 Add the **switch clutch** into its spot around the switch.
 
 ![switch_clutch](/img/final_assembly/switch_clutch.jpg)
+
+This piece is vertically symmetrical, so either way is fine.
