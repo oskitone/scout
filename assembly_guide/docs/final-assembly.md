@@ -68,6 +68,13 @@ When you can, please [let me know](https://www.oskitone.com/contact) how it went
 
 I act and rely on customers' feedback to make future kits even better. Even just knowing that you got it done successfully is valuable feedback, so I do want to hear from you. Thank you so much!
 
+### Share your make
+
+Like your Scout? I'd love to have you share that!
+
+* If you 3D-printed it at home, share your make on the [Thingiverse](https://www.thingiverse.com/thing:4933700) or [PrusaPrinters](https://www.prusaprinters.org/prints/76472-scout-synth) page where you downloaded the models. It's a good signal to other potential makers to see successful makes.
+* Tell your friends, post on social, etc. You know the deal!
+
 ### Further reading
 
 For the curious, I've written [a blog post where you can read more about the Scout's development and history](https://blog.tommy.sh/posts/scout/).
