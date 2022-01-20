@@ -14,7 +14,7 @@ module.exports = {
       "get-louder",
       "prep-for-hacking"
     ],
-    Assembly: ["final-assembly"],
+    Assembly: ["assemble-top","assemble-bottom","final-assembly"],
     Hacking: ["hacking"],
     Appendix: [
       "bom",
