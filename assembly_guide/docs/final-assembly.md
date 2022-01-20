@@ -21,24 +21,41 @@ Align **enclosure top** onto **enclosure bottom** and snap the two halves togeth
 
 ![enclosure](/img/final_assembly/enclosure.jpg)
 
-### 2. Add knob
+### 2. Quick test
+
+With the **enclosure** together, try turning the Scout on and pressing each key.
+
+You should find that:
+
+1. No notes are playing unless you intentionally press them.
+2. Some notes are kind of finicky and require more pressure. Don't worry, we'll fix those in a second!
+
+If not, [pop the enclosure open](opening-the-enclosure) and revisit adding the keys in the [Assemble Top](assemble-top) step.
+
+### 3. Add knob
 
 Fix **knob** onto the volume pot shaft, aligning its dimple to to the little marker on the top of the pot shaft.
 
 ![knob](/img/final_assembly/knob.jpg)
 
-### 3. Add machine screws
+### 4. Add machine screws
 
 Slide two **machine screws** up through the bottom of the **enclosure bottom**.
 
-- If they don't insert easily, you may have something misaligned inside. Pop the enclosure back open (see below for help) and make sure the **PCB**, **keys mount rail**, and **keys** are all lined up correctly.
-- These screws may seem unnecessary &mdash; after all, all the notes can be played and the enclosure is snapped together &mdash; but using them will cut down on mechanical "click" noises from playing. Don't skip them!
+![insert screws](/img/final_assembly/insert_screws.jpg)
 
-### 4. Tighten screws
+If they don't insert easily, you may have something misaligned inside. [pop the enclosure open](opening-the-enclosure) and make sure the **PCB**, **keys mount rail**, and **keys** are all lined up correctly.
 
-Cautiosly tighten **screws** on bottom but not too tight! If you overtighten, the keys will get held down.
+### 5. Tighten screws
 
 ![screws](/img/final_assembly/screws.jpg)
+
+1. With the Scout on (and no notes playing, see above in "Quick test"), cautiosly tighten the **screws**.
+2. If/when a note starts playing, that indicates the screw is too tight. Loosen it until the note subsides.
+
+As you may have figured out, the screws hold the Scout together _but also control the keys' "action"_ (how much effort is required to trigger each note). Without them, keys towards the middle are more difficult to play.
+
+You basically want the screws tight enough that all keys require the same amount of effort, so adjust them until everything feels good.
 
 ## All done!
 

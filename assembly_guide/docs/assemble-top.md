@@ -31,8 +31,8 @@ This part can be a little tricky and is easy to mess up, so let's first take a l
 
 Notice a couple things:
 
-1. The front of the **keys** (on the right side of the above picture) have an endstop cavity
-2. That cavity fits onto matching endstop lip on the **enclosure top**
+1. The front of the **keys** (on the right side of the above picture) have an endstop cavity.
+2. That cavity fits onto matching endstop lip on the **enclosure top**.
 3. Those two together prevent the keys from being pressed too far down or being pulled up.
 
 Add the **keys**. Its rail has cavities on the sides that fit into matching aligners  on the **enclosure top**.
@@ -43,7 +43,7 @@ It'll take some careful wiggling, but your goal is to guide the keys down _onto 
 
 When done, view the keys from the side and confirm none of them are visibly held down. Then test that the endstop is working correctly by pushing the keys _both up and down_ &mdash; they shouldn't be able to travel too far.
 
-Here's a video explaining exactly what that looks like:
+Here's a video showing exactly what that looks like:
 
 <p><iframe src="https://player.vimeo.com/video/668413823" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></p>
 
