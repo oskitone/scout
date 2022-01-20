@@ -11,9 +11,13 @@ slug: /3d-printing-parts-and-slicing
 If you bought a kit with 3D-printed parts included, you can skip this section, but do [open up the enclosure](opening-the-enclosure) and confirm you have all the right pieces ready before continuing.
 :::
 
+## Download
+
 ![Scout 3D-printed parts](/img/scout_3d_printed_parts.png)
 
-Download STLs of the models on Thingiverse: [https://www.thingiverse.com/thing:4933700](https://www.thingiverse.com/thing:4933700)
+Download STLs of the models on [Thingiverse](https://www.thingiverse.com/thing:4933700) or [PrusaPrinters](https://www.prusaprinters.org/prints/76472-scout-synth).
+
+## Slicing
 
 There are seven files to print, taking about 9 hours total.
 
