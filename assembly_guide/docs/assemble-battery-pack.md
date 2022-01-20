@@ -13,6 +13,7 @@ slug: /assemble-battery-pack
    1. The springed contact goes to the spot with a "-".
    2. The flat, button contact goes near "+". Its button should face inward towards where the battery will be.
    3. These tabbed contacts will have a tight fit! You can use pliers to push/pull them in, then fold their tabs over to hold them in place.
+     ![battery_tabs](/img/pcb_assembly/battery_tabs.jpg)
 2. Insert wire dual contacts
    1. Again, springs go to "-" and buttons to "+".
       ![010201@0.5x.jpg](/img/pcb_assembly/010201@0.5x.jpg)
