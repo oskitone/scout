@@ -25,9 +25,31 @@ Slide **square nuts** into nut locks on **enclosure top**. It'll be snug, but th
 
 ### 2. Keys
 
-Add the **keys**. Notice that 1) their rail has cavities on the sides that fit onto matching aligners on the enclosure and 2) the front of the keys have a cutout that matches an endstop on the enclosure, which will prevent the keys from being pressed too far down or being pulled up. Guide the keys down onto the aligners and into the endstop. It'll take some careful wiggling, but don't continue until they look good!
+This part can be a little tricky and is easy to mess up, so let's first take a look at a cross section of how the **keys** fit into the **enclosure top**:
+
+![Cross section of the Scout with keys endstop annotated](/img/keys_endstop.gif)
+
+Notice a couple things:
+
+1. The front of the **keys** (on the right side of the above picture) have an endstop cavity
+2. That cavity fits onto matching endstop lip on the **enclosure top**
+3. Those two together prevent the keys from being pressed too far down or being pulled up.
+
+Add the **keys**. Its rail has cavities on the sides that fit into matching aligners  on the **enclosure top**.
 
 ![keys](/img/final_assembly/keys.jpg)
+
+It'll take some careful wiggling, but your goal is to guide the keys down _onto the aligners and into the endstop_.
+
+When done, view the keys from the side and confirm none of them are visibly held down. Then test that the endstop is working correctly by pushing the keys _both up and down_ &mdash; they shouldn't be able to travel too far.
+
+Here's a video explaining exactly what that looks like:
+
+<p><iframe src="https://player.vimeo.com/video/668413823" width="640" height="360" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe></p>
+
+:::caution
+Don't move on until this looks good!
+:::
 
 ### 3. Keys mount rail
 
