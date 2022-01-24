@@ -10,7 +10,7 @@ slug: /final-assembly
 :::note
 You're almost done! Take your time to follow the directions in order.
 
-And check out the [Assembly troubleshooting](assembly-troubleshooting) section if you run into any trouble.
+And check out the [Assembly troubleshooting](assembly-troubleshooting.md) section if you run into any trouble.
 :::
 
 ## Steps
@@ -30,7 +30,7 @@ You should find that:
 1. No notes are playing unless you intentionally press them.
 2. Some notes are kind of finicky and require more pressure. Don't worry, we'll fix those in a second!
 
-If not, [pop the enclosure open](opening-the-enclosure) and revisit adding the keys in the [Assemble Top](assemble-top) step.
+If not, [pop the enclosure open](opening-the-enclosure.md) and revisit adding the keys in the [Assemble Top](assemble-top.md) step.
 
 ### 3. Add knob
 
@@ -44,7 +44,7 @@ Slide two **machine screws** up through the bottom of the **enclosure bottom**.
 
 ![insert screws](/img/final_assembly/insert_screws.jpg)
 
-If they don't insert easily, you may have something misaligned inside. [pop the enclosure open](opening-the-enclosure) and make sure the **PCB**, **keys mount rail**, and **keys** are all lined up correctly.
+If they don't insert easily, you may have something misaligned inside. [pop the enclosure open](opening-the-enclosure.md) and make sure the **PCB**, **keys mount rail**, and **keys** are all lined up correctly.
 
 ### 5. Tighten screws
 
@@ -90,4 +90,4 @@ Each Oskitone product gets it's own blog post, so dig around in there and see if
 
 ### Hacking
 
-When you're done with the hardware, the obvious next step is to play with [the software](hacking)...
+When you're done with the hardware, the obvious next step is to play with [the software](hacking.md)...

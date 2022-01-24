@@ -18,6 +18,6 @@ If you have no intention of ever changing the Scout's code, you can skip this pa
 
 ## Test
 
-See ["Hacking" section](hacking) on how to use this!
+See ["Hacking" section](hacking.md) on how to use this!
 
 ![090200@0.5x.jpg](/img/pcb_assembly/090200@0.5x.jpg)

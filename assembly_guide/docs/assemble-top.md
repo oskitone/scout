@@ -10,7 +10,7 @@ slug: /assemble-top
 :::note
 You're almost done! Take your time to follow the directions in order.
 
-And check out the [Assembly troubleshooting](assembly-troubleshooting) section if you run into any trouble.
+And check out the [Assembly troubleshooting](assembly-troubleshooting.md) section if you run into any trouble.
 :::
 
 With the PCB done soldering and working, it's time to finish the job! Let's put the rest together, and we'll start with the top.

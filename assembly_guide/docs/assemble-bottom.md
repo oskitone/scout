@@ -10,7 +10,7 @@ slug: /assemble-bottom
 :::note
 You're almost done! Take your time to follow the directions in order.
 
-And check out the [Assembly troubleshooting](assembly-troubleshooting) section if you run into any trouble.
+And check out the [Assembly troubleshooting](assembly-troubleshooting.md) section if you run into any trouble.
 :::
 
 ## Steps

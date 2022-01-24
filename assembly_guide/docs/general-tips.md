@@ -10,7 +10,7 @@ slug: /general-tips
 [![Timelapse of soldering and assembling a Scout](/img/scout_assembly-16-420-8-128.gif)](https://vimeo.com/586501851)
 
 :::note
-Take your time and be patient! If you run into a problem, try to keep a cool head and refer to the [PCB troubleshooting](pcb-troubleshooting) section. If your problem remains unfixed and you can't figure it out, [please _email_ me to let me know](https://www.oskitone.com/contact)! I'll do my best to help you, and your feedback will help improve the guide and other future Oskitone designs.
+Take your time and be patient! If you run into a problem, try to keep a cool head and refer to the [PCB troubleshooting](pcb-troubleshooting.md) section. If your problem remains unfixed and you can't figure it out, [please _email_ me to let me know](https://www.oskitone.com/contact)! I'll do my best to help you, and your feedback will help improve the guide and other future Oskitone designs.
 :::
 
 ## General tips
@@ -42,7 +42,7 @@ We'll end up with something like this when we're done:
 
 Each group of steps in the Scout's assembly has a test at the end to make sure everything you just did is working as expected, ie: "Make sure the LED lights up", "Make sure the microcontroller works", "Make sure the speaker has sound", etc.
 
-If it doesn't work, don't fret! Look over the [PCB troubleshooting](pcb-troubleshooting) tips. Don't move on in the instructions until you've got the test working.
+If it doesn't work, don't fret! Look over the [PCB troubleshooting](pcb-troubleshooting.md) tips. Don't move on in the instructions until you've got the test working.
 
 :::note Note for the experienced/impatient
 The guide's steps are intentionally ordered. If you don't want to follow the guide, that's okay! But it may be harder to debug later if anything doesn't work as expected.

@@ -8,7 +8,7 @@ slug: /3d-printing-parts-and-slicing
 ---
 
 :::note
-If you bought a kit with 3D-printed parts included, you can skip this section, but do [open up the enclosure](opening-the-enclosure) and confirm you have all the right pieces ready before continuing.
+If you bought a kit with 3D-printed parts included, you can skip this section, but do [open up the enclosure](opening-the-enclosure.md) and confirm you have all the right pieces ready before continuing.
 :::
 
 ## Download
