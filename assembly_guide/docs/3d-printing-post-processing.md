@@ -32,6 +32,8 @@ The **enclosure top** and **switch clutch** pieces both have print supports, hig
 1. Snap off supports
 2. Use a utility knife to trim off any excess plastic on the **enclosure top**
 
+![Snap off support on enclosure top](/img/remove_print_support.jpg)
+
 ## Test fit before soldering
 
 :::note
