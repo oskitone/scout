@@ -22,6 +22,8 @@ slug: /
 2. _Jean Louise “Scout” Finch, of Atticus Finch_
 3. _The first synth from Oskitone to venture into the big ol' world of microcontrollers_
 
+![A finished Scout](/img/scout.jpg)
+
 The Scout is:
 
 - **Beginner-friendly:** All components are through-hole (instead of surface mount) for easier soldering, and full assembly takes about 45min. Standalone, battery-powered, doesn't need a computer or external speakers to work. Fun!
