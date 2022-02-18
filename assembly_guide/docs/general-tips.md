@@ -34,7 +34,7 @@ Take your time and be patient! If you run into a problem, try to keep a cool hea
 
 ## Let's get started!
 
-We'll end up with something like this when we're done:
+For reference, we'll end up with something like this when we're done:
 
 ![090200@0.5x.jpg](/img/pcb_assembly/090200@0.5x.jpg)
 
