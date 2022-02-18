@@ -52,3 +52,7 @@ Not a toy. Choking hazard. Small parts. Not for children under 3 years.
 To save cost, trees, and frustration from outdated information, printed instructions are not included by default with Scout kits. This online guide will always be up to date and be the best source of information for how to assembly your new Scout.
 
 Thank you for understanding!
+
+:::note
+If you run into any problems with your build or something in the guide seems incorrect, please [please _email_ me to let me know](https://www.oskitone.com/contact)! I'll do my best to help you, and your feedback will help improve the guide and other future Oskitone designs.
+:::
