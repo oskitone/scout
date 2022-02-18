@@ -26,3 +26,5 @@ If they don't line up perfectly as pictured above, you'll have problems later wi
 Power on and press each. They should all play different notes out of the speaker. See if you can play a little tune! Power off.
 
 ![070200@0.5x.jpg](/img/pcb_assembly/070200@0.5x.jpg)
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.

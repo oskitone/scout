@@ -22,3 +22,5 @@ Take your time and make sure the switch is perfectly flat against the PCB before
 With power on, press the switch. The LED should light just like it does on boot! Power off.
 
 ![040200@0.5x.jpg](/img/pcb_assembly/040200@0.5x.jpg)
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.

@@ -24,3 +24,5 @@ slug: /get-loud
 Power on, unplug your headphones, and press the switch. It should be playing out of the speaker now. Power off.
 
 ![060500@0.5x.jpg](/img/pcb_assembly/060500@0.5x.jpg)
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.

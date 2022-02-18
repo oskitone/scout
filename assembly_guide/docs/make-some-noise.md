@@ -20,3 +20,5 @@ slug: /make-some-noise
 With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones. Power off.
 
 ![050300@0.5x.jpg](/img/pcb_assembly/050300@0.5x.jpg)
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.

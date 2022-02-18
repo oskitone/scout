@@ -36,3 +36,5 @@ Using a multimeter, measure the total voltage on those two wires. It should meas
 ![010308@0.5x.jpg](/img/pcb_assembly/010308@0.5x.jpg)
 
 If you're having trouble with your multimeter, try measuring each battery individually and see if they read as you expect. Then install them into the battery pack and check their combined voltage.
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.

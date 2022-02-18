@@ -18,4 +18,6 @@ Optional. Skip if it's already loud enough for you (or whoever you're giving it 
 
 ## Test
 
-Power on and press some switches. The speaker should now be louder now! Power off.
+Power on and press some switches. The speaker should be louder now! Power off.
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.

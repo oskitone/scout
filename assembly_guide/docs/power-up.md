@@ -25,3 +25,5 @@ slug: /power-up
 Add the batteries back. Toggling **SW1** should now light one color of the LED! Yes, it is bright!! Power off before continuing soldering.
 
 ![020400@0.5x.jpg](/img/pcb_assembly/020400@0.5x.jpg)
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.

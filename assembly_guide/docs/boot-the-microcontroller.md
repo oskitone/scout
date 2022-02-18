@@ -21,3 +21,5 @@ slug: /boot-the-microcontroller
 Turn the power switch back on, and the LED should blink a new, different color a couple times. This lets you know that the ATmega is booted up and ready. Power off.
 
 ![030400@0.5x.jpg](/img/pcb_assembly/030400@0.5x.jpg)
+
+Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.
