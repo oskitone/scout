@@ -19,12 +19,12 @@ Download STLs of the models on [Thingiverse](https://www.thingiverse.com/thing:4
 
 ## Slicing
 
-There are seven files to print, taking about 9 hours total.
+There are seven files to print, taking about 11 hours total.
 
 | Part             | Layer Height | Supports? | Color change at height | Estimated Time |
 | ---------------- | ------------ | --------- | ---------------------- | -------------- |
 | battery_holder   | .2mm         | No        | n/a                    | 40min          |
-| enclosure_bottom | .2mm         | No        | n/a                    | 1hr 10min      |
+| enclosure_bottom | .2mm         | No        | n/a                    | 3hr 10min      |
 | enclosure_top    | .2mm         | No        | n/a                    | 3hr            |
 | keys_mount_rail  | .2mm         | No        | n/a                    | 30min          |
 | keys             | .2mm         | No        | 7.2mm                  | 3hr            |
