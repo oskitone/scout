@@ -17,8 +17,10 @@ slug: /make-some-noise
 
 ## Test
 
-With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones. Power off.
+With power on, turn up the volume with the potentiometer and press **SW2**. You should hear a tone from the headphones in both the left and right channels. Power off.
 
 ![050300@0.5x.jpg](/img/pcb_assembly/050300@0.5x.jpg)
 
-Not working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.
+If only one side of the headphones is making noise, check to see that the headphone jack is pushed all the way in.
+
+Still working as expected? Check the [PCB troubleshooting](pcb-troubleshooting.md) section. Otherwise, continue to the next step.
