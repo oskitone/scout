@@ -2611,11 +2611,6 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 2ac8ac47-db94-4168-a192-2e5aa5284501)
   )
-  (text "CONFIRM: are RX/TX still usable w/ J2?\nMay need \"soft\" pins for MIDI, if so."
-    (at 237.236 104.902 0)
-    (effects (font (size 1.27 1.27)) (justify left bottom))
-    (uuid 41a402fb-41bc-486e-85c7-fdd47a6049d0)
-  )
   (text "MIDI out" (at 212.598 111.506 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 52c64bad-4bfb-42e9-86c4-1fe4ea9916e3)
