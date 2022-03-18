@@ -3030,7 +3030,7 @@
   (symbol (lib_id "Device:R_Small_US") (at 48.26 105.41 0) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 00000000-0000-0000-0000-00006015eb62)
-    (property "Reference" "R7" (id 0) (at 45.339 103.251 0)
+    (property "Reference" "R3" (id 0) (at 45.339 103.251 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "220" (id 1) (at 47.244 110.744 90)
@@ -3743,7 +3743,7 @@
   (symbol (lib_id "Device:R_Small_US") (at 44.069 146.05 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 0ba2a9bf-fa99-49e6-b755-16db36cf1987)
-    (property "Reference" "R5" (id 0) (at 45.339 141.097 90)
+    (property "Reference" "R4" (id 0) (at 45.339 141.097 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10K" (id 1) (at 45.593 143.129 90)
@@ -3862,7 +3862,7 @@
   (symbol (lib_id "Device:R_Small_US") (at 43.942 172.72 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 449fdbe1-24c9-4092-a82e-a5df0f19eb8e)
-    (property "Reference" "R4" (id 0) (at 45.212 167.767 90)
+    (property "Reference" "R7" (id 0) (at 45.212 167.767 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10K" (id 1) (at 45.466 169.799 90)
@@ -3958,7 +3958,7 @@
   (symbol (lib_id "Device:R_Small_US") (at 43.942 163.83 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 780387b2-d0c0-4870-b345-d38f56c69ef4)
-    (property "Reference" "R3" (id 0) (at 45.212 158.877 90)
+    (property "Reference" "R6" (id 0) (at 45.212 158.877 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10K" (id 1) (at 45.466 160.909 90)
@@ -3977,7 +3977,7 @@
   (symbol (lib_id "Device:R_Small_US") (at 44.069 154.94 90) (unit 1)
     (in_bom yes) (on_board yes)
     (uuid 87869458-5c5b-4e23-8e5a-6f03ca35810d)
-    (property "Reference" "R6" (id 0) (at 45.339 149.987 90)
+    (property "Reference" "R5" (id 0) (at 45.339 149.987 90)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "10K" (id 1) (at 45.593 152.019 90)
@@ -4325,20 +4325,20 @@
     (path "/930d1a2e-a191-4e5c-a48e-3f139b8edda9"
       (reference "R2") (unit 1) (value "220") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
     )
-    (path "/780387b2-d0c0-4870-b345-d38f56c69ef4"
-      (reference "R3") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
-    )
-    (path "/449fdbe1-24c9-4092-a82e-a5df0f19eb8e"
-      (reference "R4") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+    (path "/00000000-0000-0000-0000-00006015eb62"
+      (reference "R3") (unit 1) (value "220") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
     )
     (path "/0ba2a9bf-fa99-49e6-b755-16db36cf1987"
-      (reference "R5") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+      (reference "R4") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
     )
     (path "/87869458-5c5b-4e23-8e5a-6f03ca35810d"
+      (reference "R5") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+    )
+    (path "/780387b2-d0c0-4870-b345-d38f56c69ef4"
       (reference "R6") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
     )
-    (path "/00000000-0000-0000-0000-00006015eb62"
-      (reference "R7") (unit 1) (value "220") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
+    (path "/449fdbe1-24c9-4092-a82e-a5df0f19eb8e"
+      (reference "R7") (unit 1) (value "10K") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
     )
     (path "/00000000-0000-0000-0000-000060d823a9"
       (reference "R8") (unit 1) (value "1m") (footprint "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal")
