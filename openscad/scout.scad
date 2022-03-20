@@ -160,7 +160,6 @@ module scout(
         enclosure_height - keys_z
     );
 
-
     /* NOTES:
         * Top needs to be sturdy enough to enforce key_lip_endstop
         * Division cut should go through back/side cavities w/o looking too
@@ -171,42 +170,57 @@ module scout(
     enclosure_bottom_height = pcb_z + PCB_HEIGHT;
     enclosure_top_height = enclosure_height - enclosure_bottom_height;
 
+    function get_knob_x(
+        index = 0,
+        radius,
+        count,
+        use_pcb_x = false, // TODO: use it or lose it
+        gutter = 0
+    ) = (
+        let (
+            start = use_pcb_x
+                ? pcb_x + PCB_POT_POSITIONS[0].x
+                : enclosure_width + radius - default_gutter - (
+                    radius * 2 * count
+                    + gutter * (count - 1)
+                )
+        )
+        start + index * (knob_radius * 2 + gutter)
+    );
+
+    knob_gutter = default_gutter;
+    knob_labels = ["PORT", "OCT", "VOL"];
+    knobs_count = knobs_count != undef ? KNOBS_COUNT : len(knob_labels);
+    knob_positions = [
+        for (i = [0 : knobs_count - 1]) [
+            get_knob_x(
+                index = i,
+                radius = knob_radius,
+                count = knobs_count,
+                gutter = knob_gutter
+            ),
+            pcb_y + PCB_POT_POSITIONS[0].y,
+            knob_z
+        ]
+    ];
+
     echo(
         "Enclosure",
         [enclosure_width, enclosure_length, enclosure_height],
         [enclosure_bottom_height, enclosure_top_height]
     );
     echo("Keys", [key_width, key_length, key_height]);
-    echo("Knob", [knob_radius * 2, knob_height]);
+    echo("Knob", [knob_radius * 2, knob_height, knob_positions]);
     echo("Screw clearance", screw_top_clearance, screw_head_clearance);
     echo("PCB", [PCB_WIDTH, PCB_LENGTH], [pcb_x, pcb_y, pcb_z]);
-
-    knob_gutter = default_gutter;
-    knob_labels = ["PORT", "OCT", "VOL"];
-
-    function get_knob_x(
-        index = 0,
-        use_pcb_x = false
-    ) = (
-        let (
-            start = use_pcb_x
-                ? pcb_x + PCB_POT_POSITIONS[0].x
-                : enclosure_width + knob_radius - default_gutter - (
-                    knob_radius * 2 * len(knob_labels)
-                    + knob_gutter * (len(knob_labels) - 1)
-                )
-        )
-        start + index * (knob_radius * 2 + knob_gutter)
-    );
 
     module _knobs() {
         top_of_knob = (knob_z + knob_height);
         top_of_pot_actuator = pcb_z + PCB_HEIGHT
             + PTV09A_POT_BASE_HEIGHT + PTV09A_POT_ACTUATOR_HEIGHT;
-        count = knobs_count != undef ? KNOBS_COUNT : len(knob_labels);
 
-        for (i = [0 : count - 1]) {
-            translate([get_knob_x(i), pcb_y + PCB_POT_POSITIONS[0].y, knob_z]) {
+        for (i = [0 : knobs_count - 1]) {
+            translate(knob_positions[i]) {
                 wheel(
                     diameter = knob_radius * 2,
                     height = knob_height,
@@ -395,10 +409,7 @@ module scout(
                 knob_radius = knob_radius,
                 knob_dimple_y = knob_dimple_y,
                 knob_labels = knob_labels,
-                knob_positions = [
-                    for (i = [0 : len(knob_labels) - 1])
-                        [get_knob_x(i), pcb_y + PCB_POT_POSITIONS[0].y, knob_z]
-                ],
+                knob_positions = knob_positions,
                 knob_gutter = knob_gutter,
                 knob_vertical_clearance = knob_vertical_clearance,
 
