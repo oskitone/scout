@@ -1,6 +1,7 @@
 /* TODO: extract into common parts repo */
 use <../../apc/openscad/pcb.scad>;
 
+include <headphone_jack.scad>;
 include <switch.scad>;
 
 PCB_WIDTH = 177.292 - 32.004;
@@ -63,12 +64,6 @@ PCB_UART_HEADER_WIDTH = 2.54 * 6;
 PCB_UART_HEADER_HEIGHT = 2.5;
 UART_HEADER_PIN_SIZE = .8;
 
-HEADPHONE_JACK_WIDTH = 12;
-HEADPHONE_JACK_LENGTH = 11;
-HEADPHONE_JACK_HEIGHT = 5;
-HEADPHONE_JACK_BARREL_LENGTH = 3;
-HEADPHONE_JACK_BARREL_DIAMETER = 6;
-HEADPHONE_JACK_BARREL_Z = HEADPHONE_JACK_BARREL_DIAMETER / 2;
 PCB_HEADPHONE_JACK_POSITION = _(
     [138.176, 84.11],
     [HEADPHONE_JACK_WIDTH / -2, HEADPHONE_JACK_LENGTH / -2 - MAGIC]
@@ -226,24 +221,7 @@ module scout_pcb(
 
     if (show_headphone_jack) {
         _translate(PCB_HEADPHONE_JACK_POSITION) {
-            % cube([
-                HEADPHONE_JACK_WIDTH,
-                HEADPHONE_JACK_LENGTH,
-                HEADPHONE_JACK_HEIGHT
-            ]);
-
-            translate([
-                HEADPHONE_JACK_WIDTH / 2,
-                HEADPHONE_JACK_LENGTH - e,
-                HEADPHONE_JACK_BARREL_Z
-            ]) {
-                rotate([-90, 0, 0]) {
-                    % cylinder(
-                        d = HEADPHONE_JACK_BARREL_DIAMETER,
-                        h = HEADPHONE_JACK_BARREL_LENGTH + e
-                    );
-                }
-            }
+            % headphone_jack();
         }
     }
 
