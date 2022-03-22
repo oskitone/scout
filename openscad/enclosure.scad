@@ -585,7 +585,6 @@ module enclosure(
         cavity_diameter = HEADPHONE_JACK_BARREL_DIAMETER + tolerance * 2,
         plug_clearance_depth = ENCLOSURE_ENGRAVING_DEPTH,
         plug_clearance_diameter = 10 + tolerance * 2,
-        plug_diameter = 10,
         engraving_width = 16
     ) {
         x = pcb_position.x + PCB_HEADPHONE_JACK_POSITION.x
