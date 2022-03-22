@@ -1,7 +1,6 @@
-PCB_FIXTURE_CLEARANCE = .3;
+include <pcb_stool.scad>;
 
-PCB_STOOL_DIAMETER = 4;
-PCB_STOOL_CHAMFER = 2;
+PCB_FIXTURE_CLEARANCE = .3;
 
 PCB_FIXTURE_BUTTON_RAIL_LENGTH = 3;
 
@@ -50,67 +49,8 @@ module pcb_enclosure_top_fixtures(
             z
         ]) {
             translate([0, 0, height + e]) mirror([0, 0, 1]) {
-                pcb_stool(
-                    height = height + e,
-                    registration_nub = false
-                );
+                pcb_stool(height = height + e);
             }
-        }
-    }
-}
-
-module pcb_stool(
-    height,
-
-    diameter = PCB_STOOL_DIAMETER,
-    chamfer = PCB_STOOL_CHAMFER,
-
-    support_web_count = 3,
-    support_web_width = ENCLOSURE_INNER_WALL,
-
-    registration_nub = false,
-    registration_nub_height = PCB_HEIGHT,
-    registration_nub_clearance = .2,
-
-    tolerance = 0,
-
-    quick_preview = false
-) {
-    e = .0524;
-
-    cylinder(d = diameter, h = height);
-
-    cylinder(
-        d1 = diameter + chamfer * 2,
-        d2 = diameter,
-        h = chamfer
-    );
-
-    overlap = diameter / 6;
-    for (i = [0 : support_web_count - 1]) {
-        rotate([0, 0, 360 / support_web_count * i]) {
-            translate([support_web_width / -2, diameter / 2 - overlap, 0]) {
-                flat_top_rectangular_pyramid(
-                    top_width = support_web_width,
-                    top_length = 0,
-                    bottom_width = support_web_width,
-                    bottom_length = overlap + chamfer,
-                    height = height - e,
-                    top_weight_y = 0
-                );
-            }
-        }
-    }
-
-    if (registration_nub) {
-        translate([0, 0, height - e]) {
-            cylinder(
-                d = PCB_HOLE_DIAMETER
-                    - tolerance * 2
-                    - registration_nub_clearance * 2,
-                h = registration_nub_height + e,
-                $fn = quick_preview ? 12 : HIDEF_ROUNDING
-            );
         }
     }
 }
