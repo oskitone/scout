@@ -15,6 +15,7 @@ module pcb_stool(
 
     registration_nub = false,
     registration_nub_height = 1.6, // PCB_HEIGHT
+    registration_nub_hole_diameter = 3.2, // PCB_HOLE_DIAMETER
     registration_nub_clearance = .2,
 
     tolerance = 0,
@@ -50,7 +51,7 @@ module pcb_stool(
     if (registration_nub) {
         translate([0, 0, height - e]) {
             cylinder(
-                d = PCB_HOLE_DIAMETER
+                d = registration_nub_hole_diameter
                     - tolerance * 2
                     - registration_nub_clearance * 2,
                 h = registration_nub_height + e,
