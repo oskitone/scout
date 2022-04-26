@@ -12,6 +12,7 @@ module pcb_stool(
 
     support_web_count = 3,
     support_web_width = 1.2, // ENCLOSURE_INNER_WALL
+    support_web_length = undef,
 
     registration_nub = false,
     registration_nub_height = 1.6, // PCB_HEIGHT
@@ -42,7 +43,9 @@ module pcb_stool(
                     top_width = support_web_width,
                     top_length = 0,
                     bottom_width = support_web_width,
-                    bottom_length = overlap + chamfer,
+                    bottom_length = support_web_length
+                        ? support_web_length
+                        : overlap + chamfer,
                     height = height - e,
                     top_weight_y = 0
                 );
