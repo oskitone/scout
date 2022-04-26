@@ -20,6 +20,8 @@ module pcb_stool(
 
     tolerance = 0,
 
+    hidef_rounding = 120, // HIDEF_ROUNDING
+
     quick_preview = false
 ) {
     e = .0524;
@@ -55,7 +57,7 @@ module pcb_stool(
                     - tolerance * 2
                     - registration_nub_clearance * 2,
                 h = registration_nub_height + e,
-                $fn = quick_preview ? 12 : HIDEF_ROUNDING
+                $fn = quick_preview ? 12 : hidef_rounding
             );
         }
     }
