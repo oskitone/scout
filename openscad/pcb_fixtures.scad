@@ -1,3 +1,4 @@
+include <pcb_mounting_columns.scad>;
 include <pcb_stool.scad>;
 
 PCB_FIXTURE_CLEARANCE = .3;
@@ -100,55 +101,6 @@ module pcb_bottom_fixtures(
         }
     }
 
-    module _mounting_columns() {
-        head_column_height = SCREW_HEAD_HEIGHT + ENCLOSURE_FLOOR_CEILING
-            + screw_head_clearance;
-        head_column_z = z;
-
-        shaft_column_height = pcb_position.z - head_column_height;
-        shaft_column_z = head_column_height - e;
-
-        module _column(p, screw = false, post = false) {
-            x = pcb_position.x + p.x;
-            y = pcb_position.y + p.y;
-
-            if (screw) {
-                translate([x, y, head_column_z]) {
-                    cylinder(
-                        h = head_column_height - head_column_z,
-                        d = SCREW_HEAD_DIAMETER
-                            + tolerance * 2 + mounting_column_wall * 2
-                    );
-                }
-
-                translate([x, y, shaft_column_z]) {
-                    cylinder(
-                        h = pcb_position.z - shaft_column_z,
-                        d = PCB_HOLE_DIAMETER
-                            + tolerance * 2 + mounting_column_wall * 2
-                    );
-                }
-            } else {
-                translate([x, y, z]) {
-                    pcb_stool(
-                        height = pcb_position.z - z,
-                        registration_nub = true,
-                        tolerance = tolerance,
-                        quick_preview = quick_preview
-                    );
-                }
-            }
-        }
-
-        for (p = pcb_screw_hole_positions) {
-            _column(p, screw = true);
-        }
-
-        for (p = pcb_post_hole_positions) {
-            _column(p, post = true);
-        }
-    }
-
     module _corners(
         wall = corner_fixture_wall,
         height_extension = 1
@@ -180,6 +132,23 @@ module pcb_bottom_fixtures(
 
     _back_stools();
     _button_rail();
-    _mounting_columns();
     _corners();
+
+    pcb_mounting_columns(
+        pcb_position = pcb_position,
+
+        screw_head_clearance = screw_head_clearance,
+        wall = mounting_column_wall,
+
+        pcb_screw_hole_positions = pcb_screw_hole_positions,
+        pcb_post_hole_positions = pcb_post_hole_positions,
+
+        tolerance = tolerance,
+
+        enclosure_floor_ceiling = ENCLOSURE_FLOOR_CEILING,
+        screw_head_diameter = SCREW_HEAD_DIAMETER,
+        pcb_hole_diameter = PCB_HOLE_DIAMETER,
+
+        quick_preview = quick_preview
+    );
 }
