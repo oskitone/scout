@@ -2,12 +2,12 @@
 use <../../poly555/openscad/lib/basic_shapes.scad>;
 use <../../poly555/openscad/lib/enclosure.scad>;
 use <../../poly555/openscad/lib/pencil_stand.scad>;
-use <../../poly555/openscad/lib/screw_head_exposures.scad>;
 use <../../poly555/openscad/lib/switch.scad>;
 
 use <../../apc/openscad/floating_hole_cavity.scad>;
 
 include <enclosure_engraving.scad>;
+include <enclosure_screw_cavities.scad>;
 include <key_lip_endstop.scad>;
 include <keys.scad>;
 include <pcb_fixtures.scad>;
@@ -411,26 +411,6 @@ module enclosure(
             quick_preview = quick_preview,
             enclosure_height = dimensions.z
         );
-    }
-
-    module _screw_cavities() {
-        for (p = pcb_screw_hole_positions) {
-            translate([pcb_position.x + p.x, pcb_position.y + p.y, 0]) {
-                screw_head_exposure(
-                    tolerance = tolerance,
-                    clearance = screw_head_clearance,
-                    show_dfm = show_dfm
-                );
-
-                translate([0, 0, -e]) {
-                    cylinder(
-                        d = PCB_HOLE_DIAMETER,
-                        h = pcb_position.z + e * 2,
-                        $fn = quick_preview ? undef : HIDEF_ROUNDING
-                    );
-                }
-            }
-        }
     }
 
     module _speaker_fixture() {
@@ -1061,12 +1041,21 @@ module enclosure(
                 _branding();
                 _knob_exposure(true);
                 _bottom_engraving();
-                _screw_cavities();
                 _uart_header_exposure();
                 _headphone_jack_cavity();
                 _pencil_stand(true);
                 _led_exposure(cavity = true);
                 _switch_exposure();
+
+                enclosure_screw_cavities(
+                    screw_head_clearance = screw_head_clearance,
+                    pcb_position = pcb_position,
+                    pcb_screw_hole_positions = pcb_screw_hole_positions,
+                    tolerance = tolerance,
+                    pcb_hole_diameter = PCB_HOLE_DIAMETER,
+                    show_dfm = show_dfm,
+                    quick_preview = quick_preview
+                );
             }
         }
     }
