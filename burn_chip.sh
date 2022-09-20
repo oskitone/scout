@@ -62,7 +62,7 @@ function wait_for_space_key() {
     read -s -d ' '
 }
 
-function very_file_exists() {
+function verify_file_exists() {
     if [ ! -f "$1" ]; then
         echo "ERROR: $1 does not exist"
         exit 1
@@ -80,8 +80,8 @@ function compile_hex() {
 
 compile_hex
 
-very_file_exists "$optiboot"
-very_file_exists "$scout_hex"
+verify_file_exists "$optiboot"
+verify_file_exists "$scout_hex"
 
 while true; do
     start=`date +%s`
