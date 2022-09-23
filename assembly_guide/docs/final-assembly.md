@@ -87,7 +87,3 @@ Like your Scout? I'd love to have you share that!
 For the curious, I've written [a blog post where you can read more about the Scout's development and history](https://blog.tommy.sh/posts/scout/).
 
 Each Oskitone product gets it's own blog post, so dig around in there and see if there's anything else you find interesting.
-
-### Hacking
-
-When you're done with the hardware, the obvious next step is to play with [the software](hacking.md)...
