@@ -2,7 +2,7 @@
 id: 3d-printing-post-processing
 title: 3D-Printing Post-Processing
 description: Getting your new 3D prints ready.
-sidebar_label: 3D-Printing Post-Processing
+sidebar_label: Post-Processing
 image: /img/scout_3d_printed_parts.png
 slug: /3d-printing-post-processing
 ---
