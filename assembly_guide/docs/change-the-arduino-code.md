@@ -1,10 +1,10 @@
 ---
-id: hacking
-title: Hacking
+id: change-the-arduino-code
+title: Change the Arduino code
 description: Hack, hack, hack, hack, hack, hack.
-sidebar_label: Hacking
+sidebar_label: Change the Arduino code
 image: /img/scout-10-838-032.gif
-slug: /hacking
+slug: /change-the-arduino-code
 ---
 
 :::info
@@ -27,12 +27,12 @@ These cables have been tested and confirmed to work with the Scout:
 Successfully use a different brand of cable? [Contact me](https://www.oskitone.com/contact) and I can add it to the list.
 :::
 
-## Change the Arduino code
+## Steps
 
 Ready to experiment and get your hands dirty with some code?
 
 1. Install the [Arduino IDE](https://www.arduino.cc/en/software) and follow their instructions to install whatever drivers you'd need for an Arduino Uno.
-2. With the Scout's power off, use an [FTDI Serial TTL-232 cable](https://www.adafruit.com/product/70) to connect the Scout's UART header to your computer.
+2. With the Scout's power off, connect the Scout's UART header to your computer using one of the cables listed above.
    1. The Scout's UART header has "B" and "G" labels on its sides to match the cables Black and Green wires.
    2. The cable provides power to the Scout, so it should now be on and working normally
    3. **Double check that the power switch is OFF!** Leaving it on can permanently damage the microcontroller or batteries!
@@ -46,6 +46,8 @@ Ready to experiment and get your hands dirty with some code?
    3. Try changing the delay values in the example to make it blink faster or slower.
    4. Follow the steps above to bring the original Scout code back.
 
+## Pins
+
 Once you're comfortable with the Arduino code and really want to expand on what the Scout can do, take a look at the unpopulated HACK header on the PCB. It exposes all the unused pins on the ATmega328 that are safe to use for whatever you'd like:
 
 | HACK         | ATmega pins | Description                                         |
@@ -55,17 +57,3 @@ Once you're comfortable with the Arduino code and really want to expand on what 
 | D12          | 18          | There's only one unused digital pin, and this is it |
 | SWC, SW1-SW3 | 16; 6,11,12 | Unused spots in the key matrix                      |
 | GND          | n/a         | Ground                                              |
-
-## Community hacks
-
-- **[arpeggio_hack](https://github.com/shamlian/scout/tree/arpeggio_hack) from [Steven Shamlian](https://github.com/shamlian):** Adds polyphony by arpeggiating through the held notes. The full hack requires diodes on the switches to prevent key ghosting, but otherwise the Arduino code can work w/o any hardware changes... provided you only play certain chords or don't mind the occasional wrong note. Pretty interesting!
-- **[MozziScout](https://github.com/todbot/MozziScout) from [todbot](https://todbot.com/):** With some careful pin swapping on the ATmega328, the Scout can use [Mozzi](https://sensorium.github.io/Mozzi/), the popular sound synthesis library for Arduino. For this hack, it's a good idea to plug into an amplifier &mdash; the new sounds your Scout will make are much richer than what its built-in speaker is capable!
-- **[2-piece Keyboard Mod](https://cults3d.com/en/3d-model/game/oskitone-scout-2-piece-keyboard-mod) from [Cyb3rn0id](https://cults3d.com/en/users/Cyb3rn0id/creations):** If your 3D printer can't easily do the color channge GCODE for the keyboard color swap, this mod splits the keys' colors into two parts that snap and glue together.
-
-:::note
-Got a hack you want to share? [Contact me](https://www.oskitone.com/contact) and I can add it to the list.
-:::
-
-## Other ideas
-
-- For extra stability, add ruber feet to the bottom of your Scout.

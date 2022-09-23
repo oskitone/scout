@@ -18,7 +18,7 @@ module.exports = {
       "prep-for-hacking"
     ],
     Assembly: ["assemble-top", "assemble-bottom", "final-assembly", "care"],
-    Hacking: ["hacking"],
+    Hacking: ["change-the-arduino-code", "community-hacks"],
     Appendix: [
       "bom",
       "pcb-troubleshooting",
