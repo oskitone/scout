@@ -3,7 +3,7 @@ id: change-the-arduino-code
 title: Change the Arduino code
 description: Hack, hack, hack, hack, hack, hack.
 sidebar_label: Change the Arduino code
-image: /img/scout-10-838-032.gif
+image: /img/hack/serial-plotter.png
 slug: /change-the-arduino-code
 ---
 
@@ -45,6 +45,18 @@ Ready to experiment and get your hands dirty with some code?
    2. After uploading, the Scout won't be playable anymore but one of the colors on the RGB LED should blink off and on.
    3. Try changing the delay values in the example to make it blink faster or slower.
    4. Follow the steps above to bring the original Scout code back.
+
+## Serial debugging
+
+Check out the `printToSerial` variable at the top of `scout.ino`. Setting it to `true` and opening up the Arduino's Serial Plotter while playing notes will visualize the notes being held and how the playing frequency glides between its targets.
+
+[![Screengrab of the Arduino serial plotter visualizing the Scout's frequency math](/img/hack/serial-plotter.png)](/img/hack/serial-plotter.png)
+
+Now swap `frequency.print();` in the `loop()` for `buffer.print();` and switch to the Serial Monitor, and you'll get a running list of the indexes of the key(s) the Scout sees being played.
+
+:::note
+All this observation slows down the Scout's performance/glide. Remember to put `printToSerial` back to `false` before disconnecting from your computer!
+:::
 
 ## Pins
 
