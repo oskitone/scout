@@ -24,6 +24,7 @@ module.exports = {
       "pcb-troubleshooting",
       "assembly-troubleshooting",
       "opening-the-enclosure",
+      "the-chord-problem",
       "schematics",
       "source-and-license"
     ]
