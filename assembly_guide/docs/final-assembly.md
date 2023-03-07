@@ -67,20 +67,19 @@ You basically want the screws tight enough that all keys require the same amount
 
 When you can, please [let me know](https://www.oskitone.com/contact) how it went for you:
 
-- What did you like? Did you have fun?!
-- Not including printing time, about how long did it take?
-- Were there any parts missing or damaged?
-- Any problems encountered with the instructions?
-- Is there anything you'd change about the Scout itself?
+- **What did you like?** Did you have fun?!
+- Not including printing time, about **how long did it take?**
+- **How'd the kit show up?** Were there any parts missing or damaged? Or any **problems with the instructions**?
+- The Scout is intentionally simple, but that doesn't mean future kits will be too. Any **feature requests** for the next Oskitone instrument?
 
-I act and rely on customers' feedback to make future kits even better. Even just knowing that you got it done successfully is valuable feedback, so I do want to hear from you. Thank you so much!
+I act and rely on customers' feedback to make the next products even better. Even just knowing that you got it done successfully is valuable feedback, so I do want to hear from you. Thank you so much!
 
 ### Share your make
 
 Like your Scout? I'd love to have you share that!
 
-* If you 3D-printed it at home, share your make on the [Thingiverse](https://www.thingiverse.com/thing:4933700) or [PrusaPrinters](https://www.prusaprinters.org/prints/76472-scout-synth) page where you downloaded the models. It's a good signal to other potential makers to see successful makes.
-* Tell your friends, post on social, etc. You know the deal!
+- If you 3D-printed it at home, share your make on the [Thingiverse](https://www.thingiverse.com/thing:4933700) or [PrusaPrinters](https://www.prusaprinters.org/prints/76472-scout-synth) page where you downloaded the models. It's a good signal to other potential makers to see successful makes.
+- Tell your friends, post on social, etc. You know the deal!
 
 ### Further reading
 
