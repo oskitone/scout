@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="60.959999mm"
+   height="20.18mm"
+   viewBox="0 0 60.959999 20.180001"
+   version="1.1"
+   id="svg2278"
+   inkscape:version="1.2.2 (b0a8486, 2022-12-01)"
+   sodipodi:docname="label_single-pcb-2.4-min.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview2280"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     units="in"
+     inkscape:zoom="3.7946873"
+     inkscape:cx="121.6174"
+     inkscape:cy="48.884133"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="g11431-7-85"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
+  <defs
+     id="defs2275" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       id="g11431-7-85"
+       transform="matrix(0.94195151,0,0,0.94194433,-71.279561,-138.00529)">
+      <g
+         aria-label="DIY Synthesizer Electronics Kit"
+         transform="matrix(0.38894853,0,0,0.38894853,58.442266,174.40649)"
+         id="text931-9-6-9-3-50-89"
+         style="font-style:normal;font-weight:normal;font-size:5.12286px;line-height:0.75;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.128072">
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-weight:normal;font-size:9.97704px;line-height:9.97704px;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0329981"
+           x="127.44717"
+           y="-50.632504"
+           id="text2883-5-5-1-9-2-9"><tspan
+             sodipodi:role="line"
+             x="127.44717"
+             y="-50.632504"
+             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:9.97704px;font-family:'Work Sans';-inkscape-font-specification:'Work Sans Medium';text-align:center;text-anchor:middle;stroke-width:0.0329981"
+             id="tspan2885-8-9-5-7-1-9"><tspan
+   id="tspan2084-5-5-3-8-3"
+   style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-family:'Work Sans';-inkscape-font-specification:'Work Sans Heavy'">OSKITONE</tspan> <tspan
+   id="tspan2086-4-5-7-7-37"
+   style="font-style:normal;font-variant:normal;font-weight:900;font-stretch:normal;font-family:Orbitron;-inkscape-font-specification:'Orbitron Heavy'">SCOUT</tspan></tspan><tspan
+             sodipodi:role="line"
+             x="127.44717"
+             y="-40.600506"
+             style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:9.97704px;font-family:'Work Sans';-inkscape-font-specification:'Work Sans Medium';text-align:center;text-anchor:middle;stroke-width:0.0329981"
+             id="tspan2895-2-9-8-5-15-7">PCB</tspan><tspan
+             sodipodi:role="line"
+             x="127.44717"
+             y="-30.623465"
+             style="font-style:normal;font-variant:normal;font-weight:300;font-stretch:normal;font-size:8.16303px;font-family:'Work Sans';-inkscape-font-specification:'Work Sans Light';text-align:center;text-anchor:middle;stroke-width:0.0329981"
+             id="tspan2897-5-1-2-0-5-3">Rev A</tspan></text>
+      </g>
+    </g>
+  </g>
+</svg>
