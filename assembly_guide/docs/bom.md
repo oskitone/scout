@@ -8,25 +8,25 @@ slug: /bom
 hide_table_of_contents: true
 ---
 
-| Designator | Designation                 | Quantity | Marking            | Usage                                                                                 |
-| ---------- | --------------------------- | -------- | ------------------ | ------------------------------------------------------------------------------------- |
-| BT1        | 3.6v-4.5v                   | 1        | n/a                | Power; wires to 3\*AAA battery pack                                                   |
-| C1,C5      | 220uF                       | 2        | n/a                | Big bypass cap, Amp output                                                            |
-| C3         | 1uF                         | 1        | n/a                | Amp gain                                                                              |
-| C2,C4,C6   | .1uF                        | 3        | 104                | Bypass caps, RESET pin cap (C4)                                                       |
-| D1         | LED_CRGB                    | 1        | n/a                | On/off+playing indicators                                                             |
-| J1         | AudioJack2_SwitchT          | 1        | n/a                | Line out headphone jack                                                               |
-| J2         | Conn_01x06_Male             | 1        | n/a                | Programming header                                                                    |
-| LS1        | Speaker, AZ40R 40mm wide    | 1        | n/a                | Wires to output speaker                                                               |
-| R1,R2      | 220                         | 2        | Red Red Brown      | LED current limiters                                                                  |
-| R3,R5      | 10k                         | 2        | Brown Black Orange | Brings volume closer to ear-safe level for line out, "pull up" resistor for RESET pin |
-| R4         | 1m                          | 1        | Brown Black Green  | Drops volume even more before amp                                                     |
-| RV1        | 10k Log, RV09AF-40-20K-A10K | 1        | n/a                | Volume control                                                                        |
-| SW1        | SW_SPST, OS102011MA1QN1     | 1        | n/a                | On/off power switch                                                                   |
-| SW2-SW18   | SPST, 6mm tall              | 17       | n/a                | Key buttons                                                                           |
-| U1         | ATmega328P-PU               | 1        | n/a                | Microcontroller chip                                                                  |
-| U2         | LM386                       | 1        | n/a                | Amplifier chip                                                                        |
-| Y1         | 16.00MHz                    | 1        | n/a                | Ceramic oscillator for microcontroller                                                |
+| Designator | Designation                   | Quantity | Marking            | Usage                                                                                 |
+| ---------- | ----------------------------- | -------- | ------------------ | ------------------------------------------------------------------------------------- |
+| BT1        | 3.6v-4.5v                     | 1        | n/a                | Power; wires to 3\*AAA battery pack                                                   |
+| C1,C5      | 220uF                         | 2        | n/a                | Big bypass cap, Amp output                                                            |
+| C3         | 1uF                           | 1        | n/a                | Amp gain                                                                              |
+| C2,C4,C6   | .1uF                          | 3        | 104                | Bypass caps, RESET pin cap (C4)                                                       |
+| D1         | LED_CRGB                      | 1        | n/a                | On/off+playing indicators                                                             |
+| J1         | AudioJack2_SwitchT            | 1        | n/a                | Line out headphone jack                                                               |
+| J2         | Conn_01x06_Male               | 1        | n/a                | Programming header                                                                    |
+| LS1        | Speaker, AZ40R 40mm wide      | 1        | n/a                | Wires to output speaker                                                               |
+| R1,R2      | 220                           | 2        | Red Red Brown      | LED current limiters                                                                  |
+| R3,R5      | 10k                           | 2        | Brown Black Orange | Brings volume closer to ear-safe level for line out, "pull up" resistor for RESET pin |
+| R4         | 1m                            | 1        | Brown Black Green  | Drops volume even more before amp                                                     |
+| RV1        | 10k Log, RV09AF-40-20K-A10K   | 1        | n/a                | Volume control                                                                        |
+| SW1        | SW_SPST, OS102011MA1QN1       | 1        | n/a                | On/off power switch                                                                   |
+| SW2-SW18   | SPST, 6mm tall                | 17       | n/a                | Key buttons                                                                           |
+| U1         | ATmega328P-PU with bootloader | 1        | n/a                | Microcontroller chip                                                                  |
+| U2         | LM386                         | 1        | n/a                | Amplifier chip                                                                        |
+| Y1         | 16.00MHz                      | 1        | n/a                | Ceramic oscillator for microcontroller                                                |
 
 Also:
 

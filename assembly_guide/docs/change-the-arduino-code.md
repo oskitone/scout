@@ -11,6 +11,10 @@ slug: /change-the-arduino-code
 This section is optional!
 :::
 
+:::tip
+If you're building your [Scout from scratch](bom.md) and sourced your own ATmega328, it _must_ have a bootloader programmed onto it for these instructions to work.
+:::
+
 ## Required equipment
 
 To keep the Scout's price more accessible, it doesn't come with a built-in USB controller chip, so, out of the box, you can't easily hook it up to your computer as-is.
