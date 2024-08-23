@@ -73,3 +73,13 @@ Once you're comfortable with the Arduino code and really want to expand on what 
 | D12          | 18          | There's only one unused digital pin, and this is it |
 | SWC, SW1-SW3 | 16; 6,11,12 | Unused spots in the key matrix                      |
 | GND          | n/a         | Ground                                              |
+
+## Troubleshooting
+
+* Does the ATmega328 have a [bootloader](https://docs.arduino.cc/retired/hacking/software/Bootloader/) on it?
+* Is the chip all the way in its socket at the correct orientation?
+* Confirm the Scout powers up and operates with just the cable (and Scout's power switch off!).
+* Are you using one of the [known good](#required-equipment) FTDI cables? Confirm it's plugged in with green/black sides correctly.
+* In the Arduino IDE, confirm you've got the right board selected, and try different ports.
+* Take a closer look at the at the [UART header and its cap's soldering](prep-for-hacking) if you haven't already. Refer to the [schematics](schematics) and confirm its contact to the appropriate chip pins with a multimeter's continuity tester.
+* As a last resort, try swapping to a new chip. Make sure it has a bootloader.
