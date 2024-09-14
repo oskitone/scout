@@ -48,6 +48,15 @@ STLs are generated with `make_stls.sh`. Run `./make_stls.sh -h` for full flags l
 - **September 6, 2021:** Loosen knob fit on pot shaft (6cce7a7)
 - **August 9, 2021:** Init (9b5ffe5)
 
+## Documentation
+
+To develop, `cd assembly_guide` then `npm run start`.
+
+<!--
+FOR TOMMY, to deploy:
+GIT_USER=rocktronica USE_SSH=true npm run deploy
+-->
+
 ## License
 
 Designed by Oskitone. Please support future synth projects by purchasing from [Oskitone](https://www.oskitone.com/).
