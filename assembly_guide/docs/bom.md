@@ -22,7 +22,7 @@ hide_table_of_contents: true
 | R3,R5      | 10k                           | 2        | Brown Black Orange | Brings volume closer to ear-safe level for line out, "pull up" resistor for RESET pin |
 | R4         | 1m                            | 1        | Brown Black Green  | Drops volume even more before amp                                                     |
 | RV1        | 10k Log, RV09AF-40-20K-A10K   | 1        | n/a                | Volume control                                                                        |
-| SW1        | SW_SPST, OS102011MA1QN1       | 1        | n/a                | On/off power switch                                                                   |
+| SW1        | SPDT, OS102011MA1QN1          | 1        | n/a                | On/off power switch                                                                   |
 | SW2-SW18   | SPST, 6mm tall                | 17       | n/a                | Key buttons                                                                           |
 | U1         | ATmega328P-PU with bootloader | 1        | n/a                | Microcontroller chip                                                                  |
 | U2         | LM386                         | 1        | n/a                | Amplifier chip                                                                        |
