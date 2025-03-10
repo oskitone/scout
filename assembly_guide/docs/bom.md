@@ -17,7 +17,7 @@ hide_table_of_contents: true
 | D1         | LED_CRGB                      | 1        | n/a                | On/off+playing indicators                                                             |
 | J1         | AudioJack2_SwitchT            | 1        | n/a                | Line out headphone jack                                                               |
 | J2         | Conn_01x06_Male               | 1        | n/a                | Programming header                                                                    |
-| LS1        | Speaker, AZ40R 40mm wide      | 1        | n/a                | Wires to output speaker                                                               |
+| LS1        | Speaker, AZ40R 40mm x 5mm     | 1        | n/a                | Wires to output speaker                                                               |
 | R1,R2      | 220                           | 2        | Red Red Brown      | LED current limiters                                                                  |
 | R3,R5      | 10k                           | 2        | Brown Black Orange | Brings volume closer to ear-safe level for line out, "pull up" resistor for RESET pin |
 | R4         | 1m                            | 1        | Brown Black Green  | Drops volume even more before amp                                                     |
@@ -43,3 +43,11 @@ Also:
 - 4 nuts and bolts
   - 2 4/40 square nuts
   - 2 4/40 3/4" machine screws
+
+Alternate speakers for the AZ40R:
+
+- PSR-40N08A05-JQ
+- AS04008MR-21-R
+- CMS-4051-058SP
+
+Any circular 8ohm speaker that matches the dimensions will probably work, thought you may find you need a bit of hot glue to hold it in place.
