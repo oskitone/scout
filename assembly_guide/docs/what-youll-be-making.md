@@ -49,7 +49,7 @@ Not a toy. Choking hazard. Small parts. Not for children under 3 years.
 
 ## About this guide
 
-To save cost, trees, and frustration from outdated information, printed instructions are not included by default with Scout kits. This online guide will always be up to date and be the best source of information for how to assembly your new Scout.
+To save cost, trees, and frustration from outdated information, printed instructions are not included by default with Scout kits. This online guide will always be up to date and the best source of information for how to assemble your new Scout.
 
 Thank you for understanding!
 

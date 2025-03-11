@@ -31,7 +31,7 @@ slug: /assemble-battery-pack
 
 ## Test
 
-Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three indivual batteries' voltages -- ideally 3.6 to 4.5, depending on what kind of batteries they are. When done, remove the batteries to prevent accidentally draining them if the exposed wires touch.
+Using a multimeter, measure the total voltage on those two wires. It should measure the sum of the three individual batteries' voltages -- ideally 3.6 to 4.5, depending on what kind of batteries they are. When done, remove the batteries to prevent accidentally draining them if the exposed wires touch.
 
 ![010308@0.5x.jpg](/img/pcb_assembly/010308@0.5x.jpg)
 
