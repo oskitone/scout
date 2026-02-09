@@ -41,7 +41,7 @@ Ready to experiment and get your hands dirty with some code?
    2. The cable provides power to the Scout, so it should now be on and working normally
    3. **Double check that the power switch is OFF!** Leaving it on can permanently damage the microcontroller or batteries!
 3. In the IDE, under "Tools->Board", select "Arduino Uno". Under "Tools->Port" select your new cable; its exact name will depend on the brand. If you're not sure which it is, try unplugging and restarting the IDE -- whichever it was will no longer be listed, so you'll know which it is when reconnecting and restarting.
-4. Download the code from this repo and load `arduino/scout.ino` in the Arduino IDE. You'll also need the `CircularBuffer` and `Keypad` libraries, so open up "Tools->Manage libraries" and search for those to install them.
+4. Download the code from this repo and load `arduino/scout.ino` in the Arduino IDE. You'll also need the [`CircularBuffer`](https://docs.arduino.cc/libraries/circularbuffer/) and [`Keypad`](https://docs.arduino.cc/libraries/keypad/) libraries, so open up "Tools->Manage libraries" and search for those to install them.
    1. Try uploading this to the Scout by going to "Sketch->Upload". If it works, after 10 seconds or so, it will blink just like it does when you switch its power on. If it doesn't work, the IDE will print out an error that you can google to find out how to fix.
    2. Experiment with the `octave` and `glide` values at the top of `scout.ino` and observe how your Scout has changed its sound.
 5. "Blink"
@@ -78,6 +78,7 @@ Once you're comfortable with the Arduino code and really want to expand on what 
 
 * Does the ATmega328 have a [bootloader](https://docs.arduino.cc/retired/hacking/software/Bootloader/) on it?
 * Is the chip all the way in its socket at the correct orientation?
+* Do you have the right Arduino libraries installed?
 * Confirm the Scout powers up and operates with just the cable (and Scout's power switch off!).
 * Are you using one of the [known good](#required-equipment) FTDI cables? Confirm it's plugged in with green/black sides correctly.
 * In the Arduino IDE, confirm you've got the right board selected, and try different ports.
