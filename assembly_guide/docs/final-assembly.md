@@ -78,7 +78,7 @@ I act and rely on customers' feedback to make the next products even better. Eve
 
 Like your Scout? I'd love to have you share that!
 
-- If you 3D-printed it at home, share your make on the [Thingiverse](https://www.thingiverse.com/thing:4933700) or [PrusaPrinters](https://www.prusaprinters.org/prints/76472-scout-synth) page where you downloaded the models. It's a good signal to other potential makers to see successful makes.
+- If you 3D-printed it at home, share your make on the [Thingiverse](https://www.thingiverse.com/thing:4933700) or [Printables](https://www.printables.com/model/76472-scout-synth) page where you downloaded the models. It's a good signal to other potential makers to see successful makes.
 - Tell your friends, post on social, etc. You know the deal!
 
 ### Further reading

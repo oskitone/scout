@@ -15,7 +15,7 @@ If you bought a kit with 3D-printed parts included, you can skip this section, b
 
 ![Scout 3D-printed parts](/img/scout_3d_printed_parts.png)
 
-Download STLs of the models on [Thingiverse](https://www.thingiverse.com/thing:4933700) or [PrusaPrinters](https://www.prusaprinters.org/prints/76472-scout-synth).
+Download STLs of the models on [Thingiverse](https://www.thingiverse.com/thing:4933700) or [Printables](https://www.printables.com/model/76472-scout-synth).
 
 ## Slicing
 
